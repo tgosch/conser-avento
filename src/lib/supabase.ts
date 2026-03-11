@@ -41,12 +41,17 @@ export interface InvestmentIntent {
 
 export interface Document {
   id: string
-  section: string
-  category?: string   // optional – column may not exist in DB, derived client-side
+  // New confirmed columns
+  name?: string
+  file_path?: string
+  category?: string
+  owner_id?: string
+  // Legacy columns (may exist in older rows)
+  section?: string
   file_name?: string
   file_url?: string
-  visible_to_investors: boolean
-  updated_at: string
+  visible_to_investors?: boolean
+  updated_at?: string
 }
 
 export interface Update {

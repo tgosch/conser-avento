@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronRight, ChevronLeft, Maximize2, Minimize2 } from 'lucide-react'
-import { supabase } from '../../lib/supabase'
+import { supabase, supabaseAdmin } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 
 const planOrder = [
@@ -94,21 +94,28 @@ export default function InvestorPlanDetail() {
           {fullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
         </button>
 
-        {loading ? (
-          <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>
-            <div className="w-16 h-16 rounded-2xl animate-pulse bg-gray-200" />
-          </div>
-        ) : doc?.file_url && /\.(png|jpe?g)(\?|$)/i.test(doc.file_url) ? (
-          <img src={doc.file_url} alt={meta.label} className="w-full h-full object-contain" />
-        ) : doc?.file_url ? (
-          <iframe src={doc.file_url} title={meta.label} className="w-full h-full border-0" />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
-            <div className="text-6xl mb-4">{meta.icon}</div>
-            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Inhalt wird bald hinzugefügt</h3>
-            <p className="text-sm max-w-sm" style={{ color: 'var(--text-secondary)' }}>Dieses Dokument wird in Kürze für Sie bereitgestellt.</p>
-          </div>
-        )}
+        {(() => {
+          // Resolve URL: prefer file_url (legacy), fall back to file_path via storage
+          const url = doc?.file_url
+            ?? (doc?.file_path
+              ? supabaseAdmin.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
+              : null)
+          return loading ? (
+            <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>
+              <div className="w-16 h-16 rounded-2xl animate-pulse bg-gray-200" />
+            </div>
+          ) : url && /\.(png|jpe?g|gif|webp)(\?|$)/i.test(url) ? (
+            <img src={url} alt={meta.label} className="w-full h-full object-contain" />
+          ) : url ? (
+            <iframe src={url} title={meta.label} className="w-full h-full border-0" />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
+              <div className="text-6xl mb-4">{meta.icon}</div>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Inhalt wird bald hinzugefügt</h3>
+              <p className="text-sm max-w-sm" style={{ color: 'var(--text-secondary)' }}>Dieses Dokument wird in Kürze für Sie bereitgestellt.</p>
+            </div>
+          )
+        })()}
       </div>
 
       <div className="flex items-center justify-between gap-2">

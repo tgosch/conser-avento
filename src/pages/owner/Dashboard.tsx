@@ -62,9 +62,9 @@ export default function OwnerDashboard() {
             <div className="flex flex-col gap-2">
               {docs.map(d => (
                 <div key={d.id} className="flex items-center justify-between py-2 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
-                  <span className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>{d.file_name || d.section}</span>
+                  <span className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>{d.name || d.file_name || d.section || 'Dokument'}</span>
                   <span className="text-xs ml-2 shrink-0" style={{ color: 'var(--text-tertiary)' }}>
-                    {new Date(d.updated_at).toLocaleDateString('de-DE')}
+                    {d.updated_at ? new Date(d.updated_at).toLocaleDateString('de-DE') : '—'}
                   </span>
                 </div>
               ))}
