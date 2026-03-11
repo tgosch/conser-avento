@@ -63,8 +63,10 @@ function fileType(name?: string) {
   return { label: 'FILE', color: '#8E8E93', bg: 'rgba(142,142,147,0.10)', icon: FileText }
 }
 
-function relativeTime(dateStr: string) {
+function relativeTime(dateStr?: string) {
+  if (!dateStr) return 'Hochgeladen'
   const diff = Date.now() - new Date(dateStr).getTime()
+  if (isNaN(diff)) return 'Hochgeladen'
   const m = Math.floor(diff / 60000)
   if (m < 1) return 'Gerade eben'
   if (m < 60) return `vor ${m} Min.`
@@ -175,7 +177,7 @@ function FileCard({
         </p>
         <div className="flex items-center justify-between">
           <p className="text-xs" style={{ color: '#999999' }}>
-            {relativeTime(doc.updated_at)}
+            {relativeTime(doc.updated_at ?? undefined)}
           </p>
           <span
             className="text-[10px] font-medium px-1.5 py-0.5 rounded-full"
@@ -226,9 +228,9 @@ function FileCard({
   )
 }
 
-/* category intentionally omitted – derived client-side from SECTION_TO_CATEGORY.
-   PostgREST schema cache may lag behind DDL changes; omitting avoids cache errors. */
-const DOC_COLUMNS = 'id, section, file_name, file_url, visible_to_investors, updated_at'
+/* Only columns confirmed in PostgREST schema cache. updated_at + category
+   omitted – cache lags behind DDL; updated_at fallback = insert time client-side */
+const DOC_COLUMNS = 'id, section, file_name, file_url, visible_to_investors'
 
 /* ─── Main Component ────────────────────────────────────────────── */
 export default function OwnerDocs() {
@@ -312,7 +314,6 @@ export default function OwnerDocs() {
         file_name: file.name,
         file_url: urlData.publicUrl,
         visible_to_investors: form.visible,
-        updated_at: new Date().toISOString(),
       })
       if (dbErr) throw new Error(`DB Insert: ${dbErr.message}`)
 
