@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import type { DragEvent, ChangeEvent } from 'react'
-import { supabase, supabaseAdmin } from '../../lib/supabase'
+import { supabaseAdmin } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 import {
   Upload, Trash2, Eye, EyeOff, FileText, Image, Presentation,
@@ -226,9 +226,14 @@ function FileCard({
   )
 }
 
+/* Explicit columns avoids schema-cache issues with optional columns */
+const DOC_COLUMNS = 'id, section, category, file_name, file_url, visible_to_investors, updated_at'
+
 /* ─── Main Component ────────────────────────────────────────────── */
 export default function OwnerDocs() {
   const [docs, setDocs] = useState<Document[]>([])
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const [tab, setTab] = useState('Alle')
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -242,9 +247,21 @@ export default function OwnerDocs() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const progressTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const fetchDocs = () =>
-    supabase.from('documents').select('*').order('updated_at', { ascending: false })
-      .then(({ data }) => { if (data) setDocs(data as Document[]) })
+  const fetchDocs = async () => {
+    setLoading(true)
+    setFetchError(null)
+    // Use supabaseAdmin to bypass RLS; explicit columns to avoid schema-cache mismatch
+    const { data, error } = await supabaseAdmin
+      .from('documents')
+      .select(DOC_COLUMNS)
+      .order('updated_at', { ascending: false })
+    if (error) {
+      setFetchError(error.message)
+    } else {
+      setDocs((data ?? []) as Document[])
+    }
+    setLoading(false)
+  }
 
   useEffect(() => { fetchDocs() }, [])
 
@@ -291,12 +308,13 @@ export default function OwnerDocs() {
 
       const { error: dbErr } = await supabaseAdmin.from('documents').insert({
         section: form.section,
+        category,                          // column now exists (nullable)
         file_name: file.name,
         file_url: urlData.publicUrl,
         visible_to_investors: form.visible,
         updated_at: new Date().toISOString(),
       })
-      if (dbErr) throw new Error(`DB: ${dbErr.message}`)
+      if (dbErr) throw new Error(`DB Insert: ${dbErr.message}`)
 
       finishProgress(true)
       toast.success('Dokument erfolgreich hochgeladen')
@@ -587,8 +605,30 @@ export default function OwnerDocs() {
         ))}
       </div>
 
-      {/* File grid / Empty */}
-      {filtered.length === 0 ? (
+      {/* File grid / Loading / Error / Empty */}
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#E5E7EB', borderTopColor: '#0066FF' }} />
+            <p className="text-sm" style={{ color: '#999999' }}>Dokumente laden…</p>
+          </div>
+        </div>
+      ) : fetchError ? (
+        <div
+          className="rounded-[20px] border p-8 text-center"
+          style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}
+        >
+          <p className="font-semibold text-sm mb-1" style={{ color: '#FF3B30' }}>Fehler beim Laden</p>
+          <p className="text-xs mb-3" style={{ color: '#666666' }}>{fetchError}</p>
+          <button
+            onClick={fetchDocs}
+            className="text-xs px-4 py-2 rounded-lg text-white font-semibold"
+            style={{ background: '#FF3B30' }}
+          >
+            Erneut versuchen
+          </button>
+        </div>
+      ) : filtered.length === 0 ? (
         <div
           className="rounded-[20px] border"
           style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
