@@ -20,7 +20,7 @@ export default function OwnerDashboard() {
       <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Owner Dashboard</h1>
       <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Übersicht über alle Aktivitäten</p>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
         {[
           { label: 'Interessenten', value: investorCount, icon: '👥' },
           { label: 'Investitionsabsichten', value: intentCount, icon: '💼' },

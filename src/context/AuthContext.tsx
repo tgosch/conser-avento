@@ -75,6 +75,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Don't overwrite an active admin session
+      if (readAdminSession()) return
+
       if (event === 'SIGNED_IN' && session?.user) {
         const { data: inv } = await supabase
           .from('investors')

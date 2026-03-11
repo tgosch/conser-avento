@@ -45,9 +45,9 @@ export default function OwnerChat() {
     <div className="max-w-5xl">
       <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Investor-Chat</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:h-[560px]">
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6" style={{ height: undefined }}>
         {/* Investor List */}
-        <div className="rounded-[20px] border overflow-y-auto h-64 md:h-auto" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="rounded-[20px] border overflow-y-auto" style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: 'clamp(200px, 30vh, 260px)', maxHeight: '260px' }}>
           <div className="p-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Interessenten ({investors.length})</h3>
           </div>
@@ -84,7 +84,7 @@ export default function OwnerChat() {
         </div>
 
         {/* Chat */}
-        <div className="md:col-span-2 rounded-[20px] border flex flex-col overflow-hidden h-[420px] md:h-auto" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="md:col-span-2 rounded-[20px] border flex flex-col overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: 'clamp(360px, 52vh, 480px)' }}>
           {!selected ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">

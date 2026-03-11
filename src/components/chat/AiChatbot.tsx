@@ -67,18 +67,20 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full text-white flex items-center justify-center shadow-lg2 hover:opacity-90 transition-transform hover:scale-105"
-        style={{ background: '#063D3E' }}
+        className="fixed z-50 w-14 h-14 rounded-full text-white flex items-center justify-center shadow-lg2 hover:opacity-90 transition-transform hover:scale-105"
+        style={{ background: '#063D3E', bottom: 'var(--fab-bottom)', right: '16px' }}
       >
         <MessageCircle size={24} />
       </button>
 
       {open && (
         <div
-          className="fixed bottom-24 right-6 z-50 rounded-[20px] flex flex-col overflow-hidden border"
+          className="fixed z-50 rounded-[20px] flex flex-col overflow-hidden border"
           style={{
-            width: 'min(380px, calc(100vw - 32px))',
-            height: '500px',
+            width: 'min(380px, calc(100vw - 24px))',
+            height: 'min(500px, calc(100dvh - var(--bottom-nav-height) - 100px))',
+            bottom: 'calc(var(--fab-bottom) + 64px)',
+            right: '16px',
             background: 'var(--surface)',
             boxShadow: 'var(--shadow-lg)',
             borderColor: 'var(--border)',

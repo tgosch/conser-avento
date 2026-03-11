@@ -5,6 +5,12 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
+// Admin client – bypasses RLS, only used in owner portal operations
+export const supabaseAdmin = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_SERVICE_KEY
+)
+
 export interface Investor {
   id: string
   first_name: string

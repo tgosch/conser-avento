@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import InvestorSidebar from './InvestorSidebar'
+import InvestorBottomNav from './InvestorBottomNav'
 import Topbar from './Topbar'
 import AiChatbot from '../chat/AiChatbot'
 
@@ -11,13 +12,17 @@ export default function InvestorLayout() {
       <InvestorSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <Topbar onMenuClick={() => setSidebarOpen(true)} />
       <main
-        className="pt-[64px] min-h-screen"
-        style={{ paddingLeft: 'var(--content-offset)' }}
+        className="pt-[var(--topbar-height)] min-h-screen"
+        style={{
+          paddingLeft: 'var(--content-offset)',
+          paddingBottom: 'var(--bottom-nav-total)',
+        }}
       >
-        <div className="p-6 md:p-8">
+        <div className="p-4 lg:p-8">
           <Outlet />
         </div>
       </main>
+      <InvestorBottomNav onMoreClick={() => setSidebarOpen(true)} />
       <AiChatbot />
     </div>
   )

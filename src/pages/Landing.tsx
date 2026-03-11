@@ -96,7 +96,12 @@ export default function Landing() {
       const isAdmin = loginEmail === adminEmail && loginPassword === adminPwd && adminEmail !== ''
       if (isAdmin) {
         loginAttemptsRef.current = 0
+        // Set admin session FIRST (before Supabase auth fires onAuthStateChange)
         loginAdmin({ isAdmin: true, email: loginEmail })
+        // Also authenticate with Supabase so storage & DB operations work
+        // (runs in background – admin portal opens immediately)
+        supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword })
+          .catch(() => {}) // If no Supabase account exists yet, storage/DB will fail with RLS error
         navigate('/owner/dashboard')
         return
       }
@@ -180,46 +185,49 @@ export default function Landing() {
     authCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
-  const inputStyle = {
-    background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)',
+  const inp = {
+    background: 'var(--surface2)',
+    borderColor: 'var(--border)',
+    color: 'var(--text-primary)',
   }
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      {/* Background blobs */}
-      <div className="fixed top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none opacity-20"
+      {/* Background blobs – hidden on mobile for perf */}
+      <div className="hidden md:block fixed top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none opacity-20"
         style={{ background: 'radial-gradient(circle, #063D3E 0%, transparent 65%)', transform: 'translate(40%,-40%)' }} />
-      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none opacity-15"
+      <div className="hidden md:block fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-15"
         style={{ background: 'radial-gradient(circle, #D4662A 0%, transparent 65%)', transform: 'translate(-35%,35%)' }} />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pb-20" style={{ paddingTop: '60px' }}>
+      <div className="relative z-10 max-w-5xl mx-auto px-4 pb-16" style={{ paddingTop: '32px' }}>
 
         {/* ── HERO ── */}
-        <div className="flex flex-col items-center text-center mb-10">
-          <div className="flex gap-4 mb-7">
-            <img src={aventoLogo} alt="Avento" className="object-cover hover:-translate-y-1 transition-transform duration-200"
-              style={{ height: '80px', width: 'auto', borderRadius: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }} />
-            <img src={conserLogo} alt="Conser" className="object-cover hover:-translate-y-1 transition-transform duration-200"
-              style={{ height: '80px', width: 'auto', borderRadius: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }} />
+        <div className="flex flex-col items-center text-center mb-7">
+          <div className="flex gap-3 mb-4">
+            <img src={aventoLogo} alt="Avento"
+              style={{ height: '56px', width: 'auto', borderRadius: '13px', boxShadow: '0 4px 14px rgba(0,0,0,0.14)' }} />
+            <img src={conserLogo} alt="Conser"
+              style={{ height: '56px', width: 'auto', borderRadius: '13px', boxShadow: '0 4px 14px rgba(0,0,0,0.14)' }} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1.5" style={{ color: 'var(--text-primary)' }}>
             Avento &amp; Conser
           </h1>
-          <p className="text-base" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Exklusives Investoren-Portal · Vertraulich &amp; Sicher
           </p>
         </div>
 
         {/* ── AUTH CARD ── */}
-        <div ref={authCardRef} className="mx-auto mb-16 rounded-[24px] border overflow-hidden"
-          style={{ maxWidth: '440px', background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.10)' }}>
+        <div ref={authCardRef} className="mx-auto mb-10 rounded-[20px] border overflow-hidden"
+          style={{ maxWidth: '460px', background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: '0 8px 40px rgba(0,0,0,0.10)' }}>
 
           {/* Tabs */}
           <div className="grid grid-cols-2 border-b" style={{ borderColor: 'var(--border)' }}>
             {(['login', 'register'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
-                className="py-3.5 text-sm font-semibold transition-all"
+                className="py-4 font-semibold transition-all"
                 style={{
+                  fontSize: '15px',
                   color: tab === t ? '#063D3E' : 'var(--text-secondary)',
                   borderBottom: tab === t ? '2px solid #063D3E' : '2px solid transparent',
                   background: 'transparent',
@@ -229,36 +237,40 @@ export default function Landing() {
             ))}
           </div>
 
-          {/* ── LOGIN FORM ── */}
+          {/* ── LOGIN ── */}
           {tab === 'login' && (
-            <form onSubmit={handleLogin} className="p-6 flex flex-col gap-3">
-              <input type="email" placeholder="E-Mail Adresse" required value={loginEmail}
-                onChange={e => setLoginEmail(e.target.value)}
-                className="px-4 py-2.5 rounded-xl text-sm outline-none border"
-                style={inputStyle} />
+            <form onSubmit={handleLogin} className="p-5 flex flex-col gap-3">
+              <input
+                type="email" placeholder="E-Mail Adresse" required
+                value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
               <div className="relative">
-                <input type={showLoginPwd ? 'text' : 'password'} placeholder="Passwort" required value={loginPassword}
-                  onChange={e => setLoginPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border pr-11"
-                  style={inputStyle} />
+                <input
+                  type={showLoginPwd ? 'text' : 'password'} placeholder="Passwort" required
+                  value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl outline-none border pr-12"
+                  style={inp}
+                />
                 <button type="button" onClick={() => setShowLoginPwd(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
                   style={{ color: 'var(--text-secondary)' }}>
-                  {showLoginPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showLoginPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               <button type="button" onClick={handleForgotPassword}
-                className="text-xs text-right hover:underline" style={{ color: 'var(--text-secondary)' }}>
+                className="text-sm text-right" style={{ color: 'var(--text-secondary)' }}>
                 Passwort vergessen?
               </button>
               <button type="submit" disabled={loginLoading}
-                className="py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 disabled:opacity-50 transition mt-1"
-                style={{ background: '#063D3E' }}>
+                className="w-full py-3.5 rounded-xl text-white font-semibold hover:opacity-90 disabled:opacity-50 transition"
+                style={{ background: '#063D3E', fontSize: '15px' }}>
                 {loginLoading ? 'Anmelden…' : 'Anmelden →'}
               </button>
-              <p className="text-center text-xs" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
                 Noch kein Konto?{' '}
-                <button type="button" onClick={() => setTab('register')} className="font-semibold hover:underline text-accent1">
+                <button type="button" onClick={() => setTab('register')} className="font-semibold text-accent1">
                   Registrieren →
                 </button>
               </p>
@@ -270,78 +282,93 @@ export default function Landing() {
             </form>
           )}
 
-          {/* ── REGISTER FORM ── */}
+          {/* ── REGISTER ── */}
           {tab === 'register' && (
-            <form onSubmit={handleRegister} className="p-6 flex flex-col gap-3">
+            <form onSubmit={handleRegister} className="p-5 flex flex-col gap-3">
               {selectedTier && (
-                <div className="px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2"
-                  style={{ background: 'rgba(6,61,62,0.08)', color: '#063D3E' }}>
-                  <Check size={13} /> Tier gewählt: {selectedTier}
+                <div className="px-3 py-2.5 rounded-xl font-semibold flex items-center gap-2"
+                  style={{ background: 'rgba(6,61,62,0.08)', color: '#063D3E', fontSize: '14px' }}>
+                  <Check size={14} /> Tier gewählt: {selectedTier}
                 </div>
               )}
-              <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder="Vorname" required value={reg.first_name}
-                  onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
-                  className="px-4 py-2.5 rounded-xl text-sm outline-none border" style={inputStyle} />
-                <input type="text" placeholder="Nachname" required value={reg.last_name}
-                  onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))}
-                  className="px-4 py-2.5 rounded-xl text-sm outline-none border" style={inputStyle} />
-              </div>
-              <input type="email" placeholder="E-Mail Adresse" required value={reg.email}
-                onChange={e => setReg(p => ({ ...p, email: e.target.value }))}
-                className="px-4 py-2.5 rounded-xl text-sm outline-none border" style={inputStyle} />
-              <input type="tel" placeholder="Telefonnummer" required value={reg.phone}
-                onChange={e => setReg(p => ({ ...p, phone: e.target.value }))}
-                className="px-4 py-2.5 rounded-xl text-sm outline-none border" style={inputStyle} />
+              {/* Name fields – each full width on mobile */}
+              <input
+                type="text" placeholder="Vorname" required
+                value={reg.first_name} onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
+              <input
+                type="text" placeholder="Nachname" required
+                value={reg.last_name} onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
+              <input
+                type="email" placeholder="E-Mail Adresse" required
+                value={reg.email} onChange={e => setReg(p => ({ ...p, email: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
+              <input
+                type="tel" placeholder="Telefonnummer" required
+                value={reg.phone} onChange={e => setReg(p => ({ ...p, phone: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
               <div>
                 <div className="relative">
-                  <input type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required value={reg.password}
-                    onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border pr-11" style={inputStyle} />
+                  <input
+                    type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
+                    value={reg.password} onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl outline-none border pr-12"
+                    style={inp}
+                  />
                   <button type="button" onClick={() => setShowRegPwd(p => !p)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
                     style={{ color: 'var(--text-secondary)' }}>
-                    {showRegPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showRegPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
                 <PasswordStrength password={reg.password} />
               </div>
-              <input type="password" placeholder="Passwort wiederholen" required value={reg.password2}
-                onChange={e => setReg(p => ({ ...p, password2: e.target.value }))}
-                className="px-4 py-2.5 rounded-xl text-sm outline-none border" style={inputStyle} />
+              <input
+                type="password" placeholder="Passwort wiederholen" required
+                value={reg.password2} onChange={e => setReg(p => ({ ...p, password2: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl outline-none border"
+                style={inp}
+              />
 
-              {/* Checkboxen */}
               <label className="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                <span className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                  className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
                   Ich akzeptiere die{' '}
                   <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent1 underline font-medium">
                     Datenschutzerklärung
                   </button>{' '}
-                  und stimme der Verarbeitung meiner Daten gemäß DSGVO zu.
+                  (DSGVO).
                 </span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" checked={consentNda} onChange={e => setConsentNda(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                <span className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                  className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
                   Ich akzeptiere die{' '}
                   <button type="button" onClick={() => setShowNda(true)} className="text-accent1 underline font-medium">
                     Geheimhaltungsvereinbarung (NDA)
-                  </button>{' '}
-                  und verpflichte mich zur vertraulichen Behandlung aller erhaltenen Informationen.
+                  </button>.
                 </span>
               </label>
 
               <button type="submit" disabled={regLoading || !consentPrivacy || !consentNda}
-                className="py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 disabled:opacity-50 transition mt-1"
-                style={{ background: '#063D3E' }}>
+                className="w-full py-3.5 rounded-xl text-white font-semibold hover:opacity-90 disabled:opacity-50 transition mt-1"
+                style={{ background: '#063D3E', fontSize: '15px' }}>
                 {regLoading ? 'Wird registriert…' : 'Registrieren & Zugang erhalten →'}
               </button>
-              <p className="text-center text-xs" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
                 Bereits registriert?{' '}
-                <button type="button" onClick={() => setTab('login')} className="font-semibold hover:underline text-accent1">
+                <button type="button" onClick={() => setTab('login')} className="font-semibold text-accent1">
                   Anmelden →
                 </button>
               </p>
@@ -350,23 +377,23 @@ export default function Landing() {
         </div>
 
         {/* ── INVESTMENT TIERS ── */}
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+        <div className="text-center mb-6">
+          <h2 className="text-xl sm:text-3xl font-bold mb-1.5" style={{ color: 'var(--text-primary)' }}>
             Investitionsmöglichkeiten
           </h2>
-          <p className="text-base" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Wir suchen <strong>€ 1.500.000</strong> für <strong>10%</strong> Unternehmensanteile
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+        {/* Tiers: 1 col mobile, 2 col sm, 4 col lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {TIERS.map(tier => (
-            <div key={tier.pct} className="relative rounded-[20px] flex flex-col p-6 transition-all duration-200"
+            <div key={tier.pct} className="relative rounded-[18px] flex flex-col p-5 transition-all duration-200"
               style={{
                 background: 'var(--surface)',
                 border: tier.highlight ? '2px solid #063D3E' : '1px solid var(--border)',
-                boxShadow: tier.highlight ? '6px 6px 18px rgba(6,61,62,0.12)' : '6px 6px 18px rgba(0,0,0,0.08)',
-                transform: tier.highlight ? 'scale(1.03)' : 'scale(1)',
+                boxShadow: tier.highlight ? '0 8px 32px rgba(6,61,62,0.15)' : 'var(--shadow-sm)',
               }}>
               {tier.popularBadge && (
                 <span className="absolute -top-3 right-4 text-xs font-bold px-3 py-1 rounded-full text-white"
@@ -374,27 +401,29 @@ export default function Landing() {
                   {tier.popularBadge}
                 </span>
               )}
-              <div className="mb-1" style={{ fontSize: '48px', fontWeight: '700', color: '#063D3E', lineHeight: 1.1 }}>
-                {tier.pct}
+              <div className="flex items-end gap-3 mb-2">
+                <span style={{ fontSize: '36px', fontWeight: '700', color: '#063D3E', lineHeight: 1 }}>
+                  {tier.pct}
+                </span>
+                <span className="font-bold mb-0.5" style={{ fontSize: '15px', color: 'var(--text-primary)' }}>
+                  {tier.amount}
+                </span>
               </div>
-              <div className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-                {tier.amount}
-              </div>
-              <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
+              <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4 self-start"
                 style={{ background: 'rgba(6,61,62,0.10)', color: '#063D3E' }}>
                 {tier.badge}
               </span>
-              <ul className="flex flex-col gap-2 mb-6 flex-1">
+              <ul className="flex flex-col gap-2 mb-5 flex-1">
                 {tier.features.map(f => (
-                  <li key={f} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                  <li key={f} className="flex items-start gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
                     <Check size={13} className="text-accent1 shrink-0 mt-0.5" />
                     {f}
                   </li>
                 ))}
               </ul>
               <button onClick={() => openRegisterTab(tier.badge)}
-                className="w-full py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition"
-                style={{ background: '#063D3E' }}>
+                className="w-full py-3 rounded-xl text-white font-semibold hover:opacity-90 transition"
+                style={{ background: '#063D3E', fontSize: '14px' }}>
                 Zugang beantragen →
               </button>
             </div>
@@ -402,14 +431,14 @@ export default function Landing() {
         </div>
 
         {/* ── FOOTER ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t text-xs"
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t text-sm"
           style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
           <div className="flex gap-4">
-            <button onClick={() => setShowPrivacy(true)} className="hover:underline hover:text-accent1 transition">Datenschutz</button>
-            <span>|</span>
-            <button onClick={() => setShowNda(true)} className="hover:underline hover:text-accent1 transition">NDA</button>
-            <span>|</span>
-            <a href="mailto:torben@avento-conser.de" className="hover:underline hover:text-accent1 transition">Impressum</a>
+            <button onClick={() => setShowPrivacy(true)} className="hover:text-accent1 transition">Datenschutz</button>
+            <span>·</span>
+            <button onClick={() => setShowNda(true)} className="hover:text-accent1 transition">NDA</button>
+            <span>·</span>
+            <a href="mailto:torben@avento-conser.de" className="hover:text-accent1 transition">Impressum</a>
           </div>
           <span>© 2025 Avento &amp; Conser</span>
         </div>

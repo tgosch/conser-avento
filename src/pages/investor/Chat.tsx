@@ -58,9 +58,9 @@ export default function InvestorChat() {
       <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Chat & Invest</h1>
       <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Direkter Kontakt zum Gründerteam und Investitionsabsicht einreichen</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6">
         {/* Chat */}
-        <div className="md:col-span-2 rounded-[20px] flex flex-col border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: '520px' }}>
+        <div className="md:col-span-2 rounded-[20px] flex flex-col border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: 'clamp(360px, 55vh, 520px)' }}>
           <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: '#063D3E' }}>TG</div>
             <div>
@@ -112,18 +112,18 @@ export default function InvestorChat() {
         </div>
 
         {/* Invest Panel */}
-        <div className="rounded-[20px] p-5 border flex flex-col gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="rounded-[20px] p-4 md:p-5 border flex flex-col gap-3 md:gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <div>
             <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Investitionsabsicht</h3>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>Betrag auswählen und einreichen</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Betrag auswählen und einreichen</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
             {amountOptions.map(a => (
               <button
                 key={a}
                 onClick={() => { setAmount(a); setCustomAmount('') }}
-                className="py-2.5 rounded-xl text-sm font-semibold transition border"
+                className="py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold transition border"
                 style={{
                   background: amount === a ? '#063D3E' : 'var(--surface2)',
                   color: amount === a ? 'white' : 'var(--text-primary)',

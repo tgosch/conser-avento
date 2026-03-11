@@ -25,9 +25,9 @@ export default function InvestorStatus() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center gap-3 flex-wrap mb-2">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Aktueller Stand</h1>
-        <span className="px-3 py-1.5 rounded-full text-xs font-semibold text-white" style={{ background: '#063D3E' }}>Phase 1</span>
+        <span className="px-3 py-1.5 rounded-full text-xs font-semibold text-white shrink-0" style={{ background: '#063D3E' }}>Phase 1</span>
       </div>
       <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Status-Updates und Meilensteine vom Gründerteam</p>
 

@@ -66,17 +66,14 @@ export default function InvestorPlanDetail() {
         <span style={{ color: 'var(--text-primary)' }} className="font-medium">{meta.label}</span>
       </nav>
 
-      <div className="flex items-start justify-between mb-6 gap-4">
-        <div className="flex items-center gap-4 min-w-0">
-          <div className="w-14 h-14 rounded-[16px] flex items-center justify-center text-3xl shrink-0" style={{ background: 'rgba(6,61,62,0.10)' }}>
-            {meta.icon}
-          </div>
-          <div className="min-w-0">
-            <h1 className="text-2xl font-bold truncate" style={{ color: 'var(--text-primary)' }}>{meta.label}</h1>
-            <p className="text-sm mt-0.5 truncate" style={{ color: 'var(--text-secondary)' }}>{meta.desc}</p>
-          </div>
+      <div className="flex items-center gap-3 mb-5 min-w-0">
+        <div className="w-10 h-10 md:w-14 md:h-14 rounded-[12px] md:rounded-[16px] flex items-center justify-center text-2xl md:text-3xl shrink-0" style={{ background: 'rgba(6,61,62,0.10)' }}>
+          {meta.icon}
         </div>
-
+        <div className="min-w-0">
+          <h1 className="text-xl md:text-2xl font-bold truncate" style={{ color: 'var(--text-primary)' }}>{meta.label}</h1>
+          <p className="text-xs md:text-sm mt-0.5 truncate" style={{ color: 'var(--text-secondary)' }}>{meta.desc}</p>
+        </div>
       </div>
 
       <div

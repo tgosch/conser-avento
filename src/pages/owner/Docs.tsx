@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabase, supabaseAdmin } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 import { Upload, Trash2, Eye, EyeOff, FileText, Image, Presentation } from 'lucide-react'
 import { toast } from 'react-toastify'
@@ -54,6 +54,7 @@ export default function OwnerDocs() {
   const [docs, setDocs] = useState<Document[]>([])
   const [tab, setTab] = useState('Alle')
   const [uploading, setUploading] = useState(false)
+  const [diagLog, setDiagLog] = useState<string[]>([])
   const [form, setForm] = useState({
     section: 'pitch-deck',
     category: 'pitch-deck',
@@ -67,28 +68,61 @@ export default function OwnerDocs() {
 
   useEffect(() => { fetchDocs() }, [])
 
+  const runDiag = async () => {
+    const log: string[] = []
+    const add = (msg: string) => { log.push(msg); setDiagLog([...log]) }
+
+    add('🔍 Starte Diagnose...')
+
+    // 1. Check service key
+    const svcKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY
+    add(svcKey ? `✅ Service Key geladen (${svcKey.slice(0,20)}...)` : '❌ Service Key FEHLT in .env!')
+
+    // 2. List buckets
+    const { data: buckets, error: bErr } = await supabaseAdmin.storage.listBuckets()
+    if (bErr) { add(`❌ Buckets abrufen: ${bErr.message}`) }
+    else {
+      add(`✅ Buckets: ${buckets.map(b => b.name).join(', ') || '(keine)'}`)
+      if (!buckets.find(b => b.name === 'documents')) {
+        add('⚠️ Bucket "documents" fehlt – erstelle...')
+        const { error: cErr } = await supabaseAdmin.storage.createBucket('documents', { public: true, fileSizeLimit: 52428800 })
+        add(cErr ? `❌ Bucket erstellen: ${cErr.message}` : '✅ Bucket "documents" erstellt!')
+      }
+    }
+
+    // 3. Test DB access
+    const { error: dbErr } = await supabaseAdmin.from('documents').select('id').limit(1)
+    add(dbErr ? `❌ DB Zugriff: ${dbErr.message}` : '✅ DB Zugriff OK')
+
+    add('✅ Diagnose abgeschlossen')
+  }
+
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     setUploading(true)
     try {
       const ext = file.name.split('.').pop() ?? 'pdf'
-      const fileName = `${form.section}.${ext}`
-      const storageName = `${form.category}/${fileName}`
+      const storageName = `${form.category}/${form.section}.${ext}`
 
-      const { error: upErr } = await supabase.storage
+      // Ensure bucket exists
+      const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+      if (!buckets?.find(b => b.name === 'documents')) {
+        await supabaseAdmin.storage.createBucket('documents', { public: true, fileSizeLimit: 52428800 })
+      }
+
+      const { error: upErr } = await supabaseAdmin.storage
         .from('documents')
         .upload(storageName, file, { upsert: true })
-      if (upErr) throw upErr
+      if (upErr) throw new Error(`Storage: ${upErr.message}`)
 
-      const { data: urlData } = supabase.storage
+      const { data: urlData } = supabaseAdmin.storage
         .from('documents')
         .getPublicUrl(storageName)
 
-      // Remove existing record for this section, then insert fresh
-      await supabase.from('documents').delete().eq('section', form.section)
+      await supabaseAdmin.from('documents').delete().eq('section', form.section)
 
-      const { error: dbErr } = await supabase.from('documents').insert({
+      const { error: dbErr } = await supabaseAdmin.from('documents').insert({
         section: form.section,
         category: form.category,
         file_name: file.name,
@@ -96,13 +130,16 @@ export default function OwnerDocs() {
         visible_to_investors: form.visible,
         updated_at: new Date().toISOString(),
       })
-      if (dbErr) throw dbErr
+      if (dbErr) throw new Error(`DB: ${dbErr.message}`)
 
       toast.success('Dokument erfolgreich hochgeladen')
+      setDiagLog([])
       fetchDocs()
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Unbekannter Fehler'
-      toast.error(`Upload fehlgeschlagen: ${msg}`)
+      const msg = err instanceof Error ? err.message
+        : typeof err === 'object' ? JSON.stringify(err) : String(err)
+      toast.error(msg)
+      console.error('[Upload]', err)
     } finally {
       setUploading(false)
       e.target.value = ''
@@ -110,7 +147,7 @@ export default function OwnerDocs() {
   }
 
   const toggleVisibility = async (doc: Document) => {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('documents')
       .update({ visible_to_investors: !doc.visible_to_investors })
       .eq('id', doc.id)
@@ -122,9 +159,9 @@ export default function OwnerDocs() {
     if (!confirm(`"${doc.file_name || doc.section}" wirklich löschen?`)) return
     if (doc.file_url) {
       const path = storagePath(doc.file_url)
-      await supabase.storage.from('documents').remove([path])
+      await supabaseAdmin.storage.from('documents').remove([path])
     }
-    const { error } = await supabase.from('documents').delete().eq('id', doc.id)
+    const { error } = await supabaseAdmin.from('documents').delete().eq('id', doc.id)
     if (error) toast.error('Fehler beim Löschen')
     else { toast.success('Dokument gelöscht'); fetchDocs() }
   }
@@ -136,9 +173,25 @@ export default function OwnerDocs() {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>
-        Dokumente verwalten
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
+          Dokumente verwalten
+        </h1>
+        <button
+          onClick={runDiag}
+          className="text-xs px-3 py-1.5 rounded-lg border"
+          style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+        >
+          🔍 Diagnose
+        </button>
+      </div>
+
+      {diagLog.length > 0 && (
+        <div className="rounded-xl p-4 mb-4 font-mono text-xs space-y-1 border"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
+          {diagLog.map((l, i) => <div key={i}>{l}</div>)}
+        </div>
+      )}
 
       {/* Upload Card */}
       <div className="rounded-[20px] p-6 border mb-8" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
