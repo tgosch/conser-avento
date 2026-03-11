@@ -15,7 +15,7 @@ export default function Topbar({ onMenuClick }: Props) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const initials = user?.investor
-    ? `${user.investor.first_name[0]}${user.investor.last_name[0]}`
+    ? `${user.investor.first_name?.[0] ?? ''}${user.investor.last_name?.[0] ?? ''}`.toUpperCase() || 'IN'
     : 'TG'
 
   const settingsPath = user?.isAdmin ? '/owner/settings' : '/investor/settings'

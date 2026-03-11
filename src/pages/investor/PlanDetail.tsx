@@ -40,9 +40,17 @@ export default function InvestorPlanDetail() {
   useEffect(() => {
     if (!section) return
     setLoading(true)
-    supabase.from('documents').select('*').eq('section', section).single()
-      .then(({ data }) => { setDoc(data); setLoading(false) })
-      .then(undefined, () => setLoading(false))
+    supabase
+      .from('documents')
+      .select('id, section, file_name, file_url, visible_to_investors, updated_at')
+      .eq('section', section)
+      .eq('visible_to_investors', true)   // enforce visibility server-side
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) console.error('[PlanDetail]', error.message)
+        setDoc(data ?? null)
+        setLoading(false)
+      })
   }, [section])
 
   const toggleFullscreen = () => {

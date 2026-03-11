@@ -6,12 +6,15 @@ interface ChatMessage {
   content: string
 }
 
+const SESSION_LIMIT = 30 // max messages per browser session
+
 export default function AiChatbot() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const msgCount = useRef(0)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -19,7 +22,12 @@ export default function AiChatbot() {
 
   const send = async () => {
     if (!input.trim() || loading) return
-    const userMsg: ChatMessage = { role: 'user', content: input.trim() }
+    if (msgCount.current >= SESSION_LIMIT) {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Sitzungslimit erreicht. Bitte Seite neu laden.' }])
+      return
+    }
+    msgCount.current += 1
+    const userMsg: ChatMessage = { role: 'user', content: input.trim().slice(0, 2000) } // cap input length
     setMessages(prev => [...prev, userMsg])
     setInput('')
     setLoading(true)

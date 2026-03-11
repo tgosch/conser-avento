@@ -332,7 +332,7 @@ export default function OwnerDocs() {
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) uploadFile(file)
+    if (file && !uploading) uploadFile(file)
   }
 
   /* Drag & drop */
@@ -347,7 +347,7 @@ export default function OwnerDocs() {
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault(); dragCounter.current = 0; setIsDragging(false)
     const file = e.dataTransfer.files[0]
-    if (file) uploadFile(file)
+    if (file && !uploading) uploadFile(file)
   }
 
   const toggleVisibility = async (doc: Document) => {
