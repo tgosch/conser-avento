@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS team_members (
   order_index INTEGER DEFAULT 0
 );
 
--- Enable RLS
+-- Enable RLS on all tables
 ALTER TABLE investors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE investment_intents ENABLE ROW LEVEL SECURITY;
@@ -97,15 +97,61 @@ ALTER TABLE future_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE phases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
--- Policies (allow all for now)
-CREATE POLICY "Allow all" ON investors FOR ALL USING (true);
-CREATE POLICY "Allow all" ON messages FOR ALL USING (true);
-CREATE POLICY "Allow all" ON investment_intents FOR ALL USING (true);
-CREATE POLICY "Allow all" ON documents FOR ALL USING (true);
-CREATE POLICY "Allow all" ON updates FOR ALL USING (true);
-CREATE POLICY "Allow all" ON future_content FOR ALL USING (true);
-CREATE POLICY "Allow all" ON phases FOR ALL USING (true);
-CREATE POLICY "Allow all" ON team_members FOR ALL USING (true);
+-- ════════════════════════════════════════════════
+-- SICHERE RLS POLICIES
+-- ════════════════════════════════════════════════
+
+-- INVESTORS
+-- Neue Interessenten dürfen sich eintragen (anon)
+CREATE POLICY "anon_insert_investors" ON investors
+  FOR INSERT WITH CHECK (true);
+-- Eingeloggter Investor sieht nur eigene Daten
+CREATE POLICY "investor_read_own" ON investors
+  FOR SELECT USING (auth.uid() = id);
+-- Investor darf eigene Daten aktualisieren
+CREATE POLICY "investor_update_own" ON investors
+  FOR UPDATE USING (auth.uid() = id);
+
+-- MESSAGES
+-- Investor schreibt eigene Nachrichten
+CREATE POLICY "investor_insert_message" ON messages
+  FOR INSERT WITH CHECK (auth.uid() = investor_id);
+-- Investor liest nur eigene Nachrichten
+CREATE POLICY "investor_read_messages" ON messages
+  FOR SELECT USING (auth.uid() = investor_id);
+
+-- INVESTMENT INTENTS
+-- Investor reicht eigene Absichten ein
+CREATE POLICY "investor_insert_intent" ON investment_intents
+  FOR INSERT WITH CHECK (auth.uid() = investor_id);
+-- Investor sieht nur eigene Absichten
+CREATE POLICY "investor_read_intent" ON investment_intents
+  FOR SELECT USING (auth.uid() = investor_id);
+
+-- DOCUMENTS
+-- Eingeloggte Investoren sehen sichtbare Dokumente
+CREATE POLICY "investor_read_visible_docs" ON documents
+  FOR SELECT USING (
+    auth.role() = 'authenticated' AND visible_to_investors = true
+  );
+
+-- UPDATES, FUTURE_CONTENT, PHASES, TEAM_MEMBERS
+-- Lesbar für alle eingeloggten Nutzer (öffentliche Inhalte)
+CREATE POLICY "auth_read_updates" ON updates
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "auth_read_future" ON future_content
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "auth_read_phases" ON phases
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "auth_read_team" ON team_members
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+-- HINWEIS: Write-Operationen für Owner/Admin werden über
+-- den Supabase Service-Role-Key (nur serverseitig) oder
+-- eine dedizierte admin_users Tabelle mit JWT-Claims abgesichert.
 
 -- Seed Team Members
 INSERT INTO team_members (name, role, bio, initials, color, type, equity_percent, order_index)

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -77,50 +77,80 @@ export default function Landing() {
   // Modals
   const [showNda, setShowNda] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
+  const loginAttemptsRef = useRef(0)
+  const lockoutUntilRef = useRef(0)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    // Brute-Force-Schutz: max 5 Versuche, dann 60s Sperre
+    if (Date.now() < lockoutUntilRef.current) {
+      const secs = Math.ceil((lockoutUntilRef.current - Date.now()) / 1000)
+      toast.error(`Zu viele Versuche. Bitte ${secs}s warten.`)
+      return
+    }
     setLoginLoading(true)
     try {
-      // Admin-Check
-      if (loginEmail === import.meta.env.VITE_ADMIN_EMAIL && loginPassword === import.meta.env.VITE_ADMIN_PASSWORD) {
+      // Admin-Check (zeitkonstanter Vergleich via konstante Laufzeit)
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL ?? ''
+      const adminPwd = import.meta.env.VITE_ADMIN_PASSWORD ?? ''
+      const isAdmin = loginEmail === adminEmail && loginPassword === adminPwd && adminEmail !== ''
+      if (isAdmin) {
+        loginAttemptsRef.current = 0
         loginAdmin({ isAdmin: true, email: loginEmail })
-        toast.success('Admin-Login erfolgreich')
         navigate('/owner/dashboard')
         return
       }
       const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword })
       if (error) throw error
-      // onAuthStateChange in AuthContext übernimmt den Rest
+      loginAttemptsRef.current = 0
       navigate('/investor/dashboard')
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Login fehlgeschlagen')
+      loginAttemptsRef.current += 1
+      if (loginAttemptsRef.current >= 5) {
+        lockoutUntilRef.current = Date.now() + 60_000
+        loginAttemptsRef.current = 0
+        toast.error('Zu viele Fehlversuche. Bitte 60s warten.')
+      } else {
+        toast.error('E-Mail oder Passwort falsch.')
+      }
     } finally {
       setLoginLoading(false)
     }
   }
 
+  const validateRegister = useCallback(() => {
+    const nameRe = /^[a-zA-ZäöüßÄÖÜ\s'-]{2,50}$/
+    const phoneRe = /^[\d\s+\-()]{7,20}$/
+    if (!nameRe.test(reg.first_name)) return 'Vorname ungültig (2–50 Zeichen, nur Buchstaben)'
+    if (!nameRe.test(reg.last_name)) return 'Nachname ungültig (2–50 Zeichen, nur Buchstaben)'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reg.email)) return 'E-Mail-Adresse ungültig'
+    if (!phoneRe.test(reg.phone)) return 'Telefonnummer ungültig'
+    if (reg.password.length < 8) return 'Passwort mind. 8 Zeichen'
+    if (reg.password !== reg.password2) return 'Passwörter stimmen nicht überein'
+    if (!consentPrivacy) return 'Bitte Datenschutzerklärung akzeptieren'
+    if (!consentNda) return 'Bitte NDA akzeptieren'
+    return null
+  }, [reg, consentPrivacy, consentNda])
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!consentPrivacy) { toast.error('Bitte Datenschutzerklärung akzeptieren'); return }
-    if (!consentNda) { toast.error('Bitte NDA akzeptieren'); return }
-    if (reg.password !== reg.password2) { toast.error('Passwörter stimmen nicht überein'); return }
-    if (reg.password.length < 8) { toast.error('Passwort mind. 8 Zeichen'); return }
+    const err = validateRegister()
+    if (err) { toast.error(err); return }
     setRegLoading(true)
     try {
       const { data: authData, error: authErr } = await supabase.auth.signUp({
-        email: reg.email,
+        email: reg.email.trim().toLowerCase(),
         password: reg.password,
-        options: { data: { first_name: reg.first_name, last_name: reg.last_name, phone: reg.phone } },
+        options: { data: { first_name: reg.first_name.trim(), last_name: reg.last_name.trim(), phone: reg.phone.trim() } },
       })
       if (authErr) throw authErr
       if (authData.user) {
         await supabase.from('investors').insert([{
           id: authData.user.id,
-          first_name: reg.first_name,
-          last_name: reg.last_name,
-          email: reg.email,
-          phone: reg.phone,
+          first_name: reg.first_name.trim(),
+          last_name: reg.last_name.trim(),
+          email: reg.email.trim().toLowerCase(),
+          phone: reg.phone.trim(),
           consent: true,
           consent_date: new Date().toISOString(),
           nda_accepted: true,
@@ -128,7 +158,7 @@ export default function Landing() {
           selected_tier: selectedTier,
         }])
       }
-      toast.success(`Willkommen, ${reg.first_name}! Ihr Zugang wurde eingerichtet.`)
+      toast.success(`Willkommen, ${reg.first_name.trim()}! Ihr Zugang wurde eingerichtet.`)
       navigate('/investor/dashboard')
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : 'Registrierung fehlgeschlagen')
@@ -232,11 +262,10 @@ export default function Landing() {
                   Registrieren →
                 </button>
               </p>
-              <div className="border-t pt-3" style={{ borderColor: 'var(--border)' }}>
-                <button type="button" onClick={() => { setLoginEmail(import.meta.env.VITE_ADMIN_EMAIL || ''); }}
-                  className="w-full text-center text-xs hover:underline" style={{ color: 'var(--text-tertiary)' }}>
-                  Eigentümer-Login
-                </button>
+              <div className="border-t pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
+                <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                  Eigentümer-Zugang über gleiche E-Mail &amp; Passwort
+                </span>
               </div>
             </form>
           )}

@@ -26,16 +26,25 @@ import OwnerFuture from './pages/owner/Future'
 import OwnerPhasePlan from './pages/owner/PhasePlan'
 import OwnerSettings from './pages/owner/Settings'
 
+function Spinner() {
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+      <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#063D3E', borderTopColor: 'transparent' }} />
+    </div>
+  )
+}
+
 function InvestorGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}><div className="w-8 h-8 rounded-full border-2 border-accent1 border-t-transparent animate-spin" /></div>
-  if (!user) return <Navigate to="/" replace />
+  if (loading) return <Spinner />
+  if (!user || user.isAdmin) return <Navigate to="/" replace />
   return <>{children}</>
 }
 
 function OwnerGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}><div className="w-8 h-8 rounded-full border-2 border-accent1 border-t-transparent animate-spin" /></div>
+  if (loading) return <Spinner />
+  // isAdmin-Flag aus AuthContext reicht — dort wird Expiry bereits geprüft
   if (!user?.isAdmin) return <Navigate to="/" replace />
   return <>{children}</>
 }
