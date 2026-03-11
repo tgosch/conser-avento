@@ -117,3 +117,66 @@ select {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
 [data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+/* ── Blue accent (Apple blue) for new UI components ── */
+:root {
+  --blue: #0066FF;
+  --blue-hover: #0052CC;
+  --blue-light: rgba(0,102,255,0.08);
+  --green: #34C759;
+  --orange: #FF9500;
+  --red: #FF3B30;
+}
+
+/* ── New animations ── */
+@keyframes upload-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.14); opacity: 0.65; }
+}
+@keyframes progress-stripe {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)  scale(1); }
+}
+@keyframes card-exit {
+  from { opacity: 1; transform: translateX(0)   scale(1); }
+  to   { opacity: 0; transform: translateX(-24px) scale(0.96); }
+}
+@keyframes modal-enter {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes check-bounce {
+  0%   { transform: scale(0) rotate(-10deg); }
+  60%  { transform: scale(1.25) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+@keyframes tooltip-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes timeline-line {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+.card-enter  { animation: card-enter  0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+.card-exit   { animation: card-exit   0.25s ease-out forwards; }
+.modal-enter { animation: modal-enter 0.35s cubic-bezier(0.16,1,0.3,1) forwards; }
+.check-bounce{ animation: check-bounce 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
+.shake       { animation: shake 0.4s ease-out; }
+.hover-lift  { transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; }
+.hover-lift:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+}
