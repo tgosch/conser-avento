@@ -15,12 +15,10 @@ export default function RegisterModal({ onClose, onSwitchToLogin }: Props) {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const [form, setForm] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-  })
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '' })
+
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm(f => ({ ...f, [k]: e.target.value }))
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -39,14 +37,14 @@ export default function RegisterModal({ onClose, onSwitchToLogin }: Props) {
 
       if (error) {
         if (error.code === '23505') {
-          toast.error('Diese E-Mail-Adresse ist bereits registriert.')
+          toast.error('Diese E-Mail ist bereits registriert. Bitte einloggen.')
         } else {
           toast.error('Registrierung fehlgeschlagen: ' + error.message)
         }
         return
       }
 
-      toast.success('Willkommen im Portal!')
+      toast.success('Willkommen im Investoren-Portal!')
       login(data, false)
       navigate('/dashboard')
       onClose()
@@ -58,74 +56,81 @@ export default function RegisterModal({ onClose, onSwitchToLogin }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backdropFilter: 'blur(5px)', backgroundColor: 'rgba(0,0,0,0.4)' }}>
-      <div className="bg-white rounded-card shadow-card w-full max-w-md p-8 relative">
-        <button onClick={onClose} className="absolute top-5 right-5 text-gray-400 hover:text-text transition">
-          <X size={20} />
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backdropFilter: 'blur(12px)', background: 'rgba(6,61,62,0.25)' }}
+    >
+      <div className="slide-up bg-surface rounded-card shadow-card w-full max-w-md p-8 relative border border-black/5">
+        <button onClick={onClose} className="absolute top-5 right-5 text-secondary hover:text-text transition">
+          <X size={18} />
         </button>
 
-        <h2 className="text-2xl font-bold text-text mb-1">Registrieren</h2>
-        <p className="text-sm text-gray-500 mb-6">Erhalte exklusiven Zugang zum Investoren-Portal</p>
+        <div className="mb-6">
+          <p className="label-tag text-accent1 mb-2">Investor-Portal</p>
+          <h2 className="text-2xl font-bold text-text">Zugang beantragen</h2>
+          <p className="text-secondary text-sm mt-1">Erhalten Sie exklusiven Zugang zu allen Dokumenten</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="block text-xs font-medium text-text mb-1">Vorname</label>
+              <label className="block text-xs font-semibold text-text mb-1.5">Vorname</label>
               <input
                 type="text"
                 required
                 value={form.first_name}
-                onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-accent1 transition font-sans"
+                onChange={set('first_name')}
                 placeholder="Max"
+                className="w-full bg-surface2 border border-black/8 rounded-btn px-4 py-2.5 text-sm outline-none focus:border-accent1 focus:bg-white transition font-sans text-text"
               />
             </div>
             <div className="flex-1">
-              <label className="block text-xs font-medium text-text mb-1">Nachname</label>
+              <label className="block text-xs font-semibold text-text mb-1.5">Nachname</label>
               <input
                 type="text"
                 required
                 value={form.last_name}
-                onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-accent1 transition font-sans"
+                onChange={set('last_name')}
                 placeholder="Mustermann"
+                className="w-full bg-surface2 border border-black/8 rounded-btn px-4 py-2.5 text-sm outline-none focus:border-accent1 focus:bg-white transition font-sans text-text"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-text mb-1">E-Mail</label>
+            <label className="block text-xs font-semibold text-text mb-1.5">E-Mail</label>
             <input
               type="email"
               required
               value={form.email}
-              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-accent1 transition font-sans"
+              onChange={set('email')}
               placeholder="max@beispiel.de"
+              className="w-full bg-surface2 border border-black/8 rounded-btn px-4 py-2.5 text-sm outline-none focus:border-accent1 focus:bg-white transition font-sans text-text"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-text mb-1">Telefon (optional)</label>
+            <label className="block text-xs font-semibold text-text mb-1.5">Telefon <span className="text-secondary/60 font-normal">(optional)</span></label>
             <input
               type="tel"
               value={form.phone}
-              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-accent1 transition font-sans"
+              onChange={set('phone')}
               placeholder="+49 123 456789"
+              className="w-full bg-surface2 border border-black/8 rounded-btn px-4 py-2.5 text-sm outline-none focus:border-accent1 focus:bg-white transition font-sans text-text"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full bg-accent1 text-white rounded-full py-3 font-semibold text-sm hover:opacity-90 transition disabled:opacity-60"
+            className="mt-1 w-full text-white rounded-btn py-3 font-semibold text-sm hover:opacity-90 transition disabled:opacity-50"
+            style={{ background: '#063D3E' }}
           >
-            {loading ? 'Wird registriert...' : 'Jetzt registrieren'}
+            {loading ? 'Wird registriert…' : 'Zugang beantragen'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-secondary mt-5">
           Bereits registriert?{' '}
           <button onClick={onSwitchToLogin} className="text-accent1 font-semibold hover:underline">
             Einloggen

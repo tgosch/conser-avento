@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
+import AiChatbot from './AiChatbot'
+import { useAuth } from '../context/AuthContext'
 
 export default function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { user } = useAuth()
 
   return (
     <div className="min-h-screen bg-bg">
@@ -15,6 +18,8 @@ export default function AppShell() {
           <Outlet />
         </main>
       </div>
+      {/* Floating AI Chatbot – only shown when logged in as investor */}
+      {user && !user.isAdmin && <AiChatbot />}
     </div>
   )
 }

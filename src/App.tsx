@@ -11,6 +11,7 @@ import PlanDetail from './pages/PlanDetail'
 import Chat from './pages/Chat'
 import Links from './pages/Links'
 import Team from './pages/Team'
+import Updates from './pages/Updates'
 import Admin from './pages/Admin'
 
 export default function App() {
@@ -33,26 +34,29 @@ export default function App() {
             <Route path="chat" element={<Chat />} />
             <Route path="links" element={<Links />} />
             <Route path="team" element={<Team />} />
+            <Route path="updates" element={<Updates />} />
           </Route>
           <Route
             path="/admin"
             element={
               <ProtectedRoute adminOnly>
-                <Admin />
+                <AppShell />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Admin />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer
         position="bottom-right"
-        autoClose={3000}
+        autoClose={3500}
         hideProgressBar={false}
         newestOnTop
         closeOnClick
         pauseOnHover
         theme="light"
-        toastStyle={{ fontFamily: 'DM Sans, sans-serif', borderRadius: '16px' }}
+        toastStyle={{ fontFamily: 'DM Sans, sans-serif', borderRadius: '14px', fontSize: '14px' }}
       />
     </AuthProvider>
   )

@@ -37,3 +37,11 @@ export interface Document {
   file_url: string | null
   uploaded_at: string
 }
+
+export interface Update {
+  id: string
+  title: string
+  content: string
+  category: 'general' | 'milestone' | 'important'
+  created_at: string
+}
