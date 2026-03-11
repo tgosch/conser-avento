@@ -1,10 +1,8 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
-import { Upload, ChevronRight, ChevronLeft, Maximize2, Minimize2 } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Maximize2, Minimize2 } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
-import { useAuth } from '../../context/AuthContext'
-import { toast } from 'react-toastify'
 
 const planOrder = [
   'pitch-deck', 'business-plan', 'sales-funnel-endkunden', 'sales-funnel-business',
@@ -28,12 +26,10 @@ const planMeta: Record<string, { label: string; desc: string; icon: string }> = 
 
 export default function InvestorPlanDetail() {
   const { section } = useParams<{ section: string }>()
-  const { user } = useAuth()
   const navigate = useNavigate()
   const viewerRef = useRef<HTMLDivElement>(null)
   const [doc, setDoc] = useState<Document | null>(null)
   const [loading, setLoading] = useState(true)
-  const [uploading, setUploading] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
 
   const meta = section ? planMeta[section] : null
@@ -48,24 +44,6 @@ export default function InvestorPlanDetail() {
       .then(({ data }) => { setDoc(data); setLoading(false) })
       .then(undefined, () => setLoading(false))
   }, [section])
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file || !section) return
-    setUploading(true)
-    try {
-      const fileName = `${section}.pdf`
-      const { error: upErr } = await supabase.storage.from('documents').upload(fileName, file, { upsert: true })
-      if (upErr) throw upErr
-      const { data: urlData } = supabase.storage.from('documents').getPublicUrl(fileName)
-      const { data: docData, error: dbErr } = await supabase
-        .from('documents').upsert({ section, file_name: file.name, file_url: urlData.publicUrl }).select().single()
-      if (dbErr) throw dbErr
-      setDoc(docData)
-      toast.success('PDF erfolgreich hochgeladen')
-    } catch { toast.error('Upload fehlgeschlagen') }
-    finally { setUploading(false); e.target.value = '' }
-  }
 
   const toggleFullscreen = () => {
     if (!viewerRef.current) return
@@ -99,15 +77,6 @@ export default function InvestorPlanDetail() {
           </div>
         </div>
 
-        {user?.isAdmin && (
-          <label className="shrink-0 cursor-pointer">
-            <input type="file" accept=".pdf" className="hidden" onChange={handleUpload} disabled={uploading} />
-            <span className={`flex items-center gap-2 text-white rounded-[12px] px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition ${uploading ? 'opacity-60' : ''}`}
-              style={{ background: '#063D3E' }}>
-              <Upload size={14} /> {uploading ? 'Lädt…' : 'PDF hochladen'}
-            </span>
-          </label>
-        )}
       </div>
 
       <div
@@ -124,6 +93,8 @@ export default function InvestorPlanDetail() {
           <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>
             <div className="w-16 h-16 rounded-2xl animate-pulse bg-gray-200" />
           </div>
+        ) : doc?.file_url && /\.(png|jpe?g)(\?|$)/i.test(doc.file_url) ? (
+          <img src={doc.file_url} alt={meta.label} className="w-full h-full object-contain" />
         ) : doc?.file_url ? (
           <iframe src={doc.file_url} title={meta.label} className="w-full h-full border-0" />
         ) : (
@@ -131,7 +102,6 @@ export default function InvestorPlanDetail() {
             <div className="text-6xl mb-4">{meta.icon}</div>
             <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Inhalt wird bald hinzugefügt</h3>
             <p className="text-sm max-w-sm" style={{ color: 'var(--text-secondary)' }}>Dieses Dokument wird in Kürze für Sie bereitgestellt.</p>
-            {user?.isAdmin && <p className="mt-3 text-sm font-medium text-accent1">Als Admin können Sie oben rechts eine PDF hochladen.</p>}
           </div>
         )}
       </div>
