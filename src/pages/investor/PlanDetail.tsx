@@ -24,6 +24,21 @@ const planMeta: Record<string, { label: string; desc: string; icon: string }> = 
   'sicherheiten':            { label: 'Sicherheiten & Treuhänder', desc: 'Rechtliche Absicherung für Investoren',   icon: '🔐' },
 }
 
+// Maps URL section param → DB category value
+const SECTION_TO_CATEGORY: Record<string, string> = {
+  'pitch-deck':              'pitch-deck',
+  'business-plan':           'business',
+  'finanzplan':              'finanzen',
+  'sales-funnel-endkunden':  'sales',
+  'sales-funnel-business':   'sales',
+  'persona-endkunde':        'persona',
+  'persona-businesspartner': 'persona',
+  'finanzanalyse':           'finanzen',
+  'invest-moeglichkeiten':   'business',
+  'roadmap-kapital':         'business',
+  'sicherheiten':            'business',
+}
+
 export default function InvestorPlanDetail() {
   const { section } = useParams<{ section: string }>()
   const navigate = useNavigate()
@@ -39,12 +54,15 @@ export default function InvestorPlanDetail() {
 
   useEffect(() => {
     if (!section) return
+    const category = SECTION_TO_CATEGORY[section]
+    if (!category) { setLoading(false); return }
     setLoading(true)
     supabase
       .from('documents')
-      .select('id, section, file_name, file_url, visible_to_investors, updated_at')
-      .eq('section', section)
-      .eq('visible_to_investors', true)   // enforce visibility server-side
+      .select('id, name, file_path, category')
+      .eq('category', category)
+      .order('id', { ascending: false })
+      .limit(1)
       .maybeSingle()
       .then(({ data, error }) => {
         if (error) console.error('[PlanDetail]', error.message)
@@ -95,11 +113,9 @@ export default function InvestorPlanDetail() {
         </button>
 
         {(() => {
-          // Resolve URL: prefer file_url (legacy), fall back to file_path via storage
-          const url = doc?.file_url
-            ?? (doc?.file_path
-              ? supabaseAdmin.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
-              : null)
+          const url = doc?.file_path
+            ? supabaseAdmin.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
+            : null
           return loading ? (
             <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>
               <div className="w-16 h-16 rounded-2xl animate-pulse bg-gray-200" />
