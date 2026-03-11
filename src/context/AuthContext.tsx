@@ -1,40 +1,35 @@
-import { createContext, useContext, useState, useEffect } from 'react'
-import type { ReactNode } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { Investor } from '../lib/supabase'
 
-interface AuthUser {
-  investor: Investor | null
+interface User {
+  investor?: Investor
   isAdmin: boolean
 }
 
 interface AuthContextType {
-  user: AuthUser | null
-  login: (investor: Investor | null, isAdmin: boolean) => void
+  user: User | null
+  login: (user: User) => void
   logout: () => void
 }
 
-const AuthContext = createContext<AuthContextType | null>(null)
+const AuthContext = createContext<AuthContextType>({ user: null, login: () => {}, logout: () => {} })
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(() => {
-    const stored = localStorage.getItem('auth_user')
-    return stored ? JSON.parse(stored) : null
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const stored = localStorage.getItem('auth_user')
+      return stored ? JSON.parse(stored) : null
+    } catch { return null }
   })
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('auth_user', JSON.stringify(user))
-    } else {
-      localStorage.removeItem('auth_user')
-    }
-  }, [user])
-
-  const login = (investor: Investor | null, isAdmin: boolean) => {
-    setUser({ investor, isAdmin })
+  const login = (u: User) => {
+    setUser(u)
+    localStorage.setItem('auth_user', JSON.stringify(u))
   }
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem('auth_user')
   }
 
   return (
@@ -44,8 +39,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useAuth() {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
-}
+export const useAuth = () => useContext(AuthContext)

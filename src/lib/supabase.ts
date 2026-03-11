@@ -10,7 +10,10 @@ export interface Investor {
   first_name: string
   last_name: string
   email: string
-  phone: string | null
+  phone?: string
+  consent: boolean
+  consent_date?: string
+  status: string
   created_at: string
 }
 
@@ -33,15 +36,52 @@ export interface InvestmentIntent {
 export interface Document {
   id: string
   section: string
-  file_name: string | null
-  file_url: string | null
-  uploaded_at: string
+  category: string
+  file_name?: string
+  file_url?: string
+  visible_to_investors: boolean
+  updated_at: string
 }
 
 export interface Update {
   id: string
   title: string
   content: string
-  category: 'general' | 'milestone' | 'important'
+  category: string
   created_at: string
+}
+
+export interface FutureContent {
+  id: string
+  type: string
+  title: string
+  description?: string
+  status: string
+  timeframe?: string
+  priority: number
+  created_at: string
+}
+
+export interface Phase {
+  id: string
+  name: string
+  description?: string
+  start_date?: string
+  end_date?: string
+  status: string
+  order_index: number
+  created_at: string
+}
+
+export interface TeamMember {
+  id: string
+  name: string
+  role: string
+  bio?: string
+  initials: string
+  color: string
+  type: string
+  equity_percent: number
+  visible: boolean
+  order_index: number
 }

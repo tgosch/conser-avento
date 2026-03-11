@@ -1,63 +1,97 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { AuthProvider } from './context/AuthContext'
-import ProtectedRoute from './components/ProtectedRoute'
-import AppShell from './components/AppShell'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import { ThemeProvider } from './context/ThemeContext'
+
 import Landing from './pages/Landing'
-import Dashboard from './pages/Dashboard'
-import Plans from './pages/Plans'
-import PlanDetail from './pages/PlanDetail'
-import Chat from './pages/Chat'
-import Links from './pages/Links'
-import Team from './pages/Team'
-import Updates from './pages/Updates'
-import Admin from './pages/Admin'
+import InvestorLayout from './components/layout/InvestorLayout'
+import OwnerLayout from './components/layout/OwnerLayout'
+
+import InvestorDashboard from './pages/investor/Dashboard'
+import InvestorPlans from './pages/investor/Plans'
+import InvestorPlanDetail from './pages/investor/PlanDetail'
+import InvestorChat from './pages/investor/Chat'
+import InvestorTeam from './pages/investor/Team'
+import InvestorFuture from './pages/investor/Future'
+import InvestorStatus from './pages/investor/Status'
+import InvestorStructure from './pages/investor/Structure'
+import InvestorSettings from './pages/investor/Settings'
+
+import OwnerDashboard from './pages/owner/Dashboard'
+import OwnerDocs from './pages/owner/Docs'
+import OwnerChat from './pages/owner/Chat'
+import OwnerUpdates from './pages/owner/Updates'
+import OwnerFuture from './pages/owner/Future'
+import OwnerPhasePlan from './pages/owner/PhasePlan'
+import OwnerSettings from './pages/owner/Settings'
+
+function InvestorGuard({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
+function OwnerGuard({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  if (!user?.isAdmin) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+
+      <Route path="/investor" element={<InvestorGuard><InvestorLayout /></InvestorGuard>}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<InvestorDashboard />} />
+        <Route path="plans" element={<InvestorPlans />} />
+        <Route path="plans/:section" element={<InvestorPlanDetail />} />
+        <Route path="chat" element={<InvestorChat />} />
+        <Route path="team" element={<InvestorTeam />} />
+        <Route path="future" element={<InvestorFuture />} />
+        <Route path="status" element={<InvestorStatus />} />
+        <Route path="structure" element={<InvestorStructure />} />
+        <Route path="settings" element={<InvestorSettings />} />
+      </Route>
+
+      <Route path="/owner" element={<OwnerGuard><OwnerLayout /></OwnerGuard>}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<OwnerDashboard />} />
+        <Route path="docs" element={<OwnerDocs />} />
+        <Route path="chat" element={<OwnerChat />} />
+        <Route path="updates" element={<OwnerUpdates />} />
+        <Route path="future" element={<OwnerFuture />} />
+        <Route path="phases" element={<OwnerPhasePlan />} />
+        <Route path="settings" element={<OwnerSettings />} />
+      </Route>
+
+      {/* Legacy redirects */}
+      <Route path="/dashboard/*" element={<Navigate to="/investor/dashboard" replace />} />
+      <Route path="/admin/*" element={<Navigate to="/owner/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <AppShell />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="plans" element={<Plans />} />
-            <Route path="plans/:section" element={<PlanDetail />} />
-            <Route path="chat" element={<Chat />} />
-            <Route path="links" element={<Links />} />
-            <Route path="team" element={<Team />} />
-            <Route path="updates" element={<Updates />} />
-          </Route>
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute adminOnly>
-                <AppShell />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Admin />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3500}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        theme="light"
-        toastStyle={{ fontFamily: 'DM Sans, sans-serif', borderRadius: '14px', fontSize: '14px' }}
-      />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppRoutes />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            toastStyle={{ background: 'var(--surface)', color: 'var(--text-primary)', borderRadius: '12px', boxShadow: 'var(--shadow-md)' }}
+          />
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
