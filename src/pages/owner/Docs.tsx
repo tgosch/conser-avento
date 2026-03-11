@@ -226,8 +226,9 @@ function FileCard({
   )
 }
 
-/* Explicit columns avoids schema-cache issues with optional columns */
-const DOC_COLUMNS = 'id, section, category, file_name, file_url, visible_to_investors, updated_at'
+/* category intentionally omitted – derived client-side from SECTION_TO_CATEGORY.
+   PostgREST schema cache may lag behind DDL changes; omitting avoids cache errors. */
+const DOC_COLUMNS = 'id, section, file_name, file_url, visible_to_investors, updated_at'
 
 /* ─── Main Component ────────────────────────────────────────────── */
 export default function OwnerDocs() {
@@ -308,7 +309,6 @@ export default function OwnerDocs() {
 
       const { error: dbErr } = await supabaseAdmin.from('documents').insert({
         section: form.section,
-        category,                          // column now exists (nullable)
         file_name: file.name,
         file_url: urlData.publicUrl,
         visible_to_investors: form.visible,
