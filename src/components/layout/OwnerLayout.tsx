@@ -12,7 +12,7 @@ export default function OwnerLayout() {
       <Topbar onMenuClick={() => setSidebarOpen(true)} />
       <main
         className="pt-[64px] min-h-screen"
-        style={{ paddingLeft: 'var(--sidebar-width)' }}
+        style={{ paddingLeft: 'var(--content-offset)' }}
       >
         <div className="p-6 md:p-8">
           <Outlet />

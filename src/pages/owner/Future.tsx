@@ -39,7 +39,7 @@ export default function OwnerFuture() {
       <form onSubmit={handleSubmit} className="rounded-[20px] p-6 border mb-8" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <h2 className="font-bold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Neuen Eintrag hinzufügen</h2>
         <div className="flex flex-col gap-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <select value={form.type} onChange={e => setForm(p => ({ ...p, type: e.target.value }))}
               className="px-4 py-2.5 rounded-xl text-sm outline-none border"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>

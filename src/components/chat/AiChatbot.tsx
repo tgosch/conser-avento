@@ -77,7 +77,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
         <div
           className="fixed bottom-24 right-6 z-50 rounded-[20px] flex flex-col overflow-hidden border"
           style={{
-            width: '380px',
+            width: 'min(380px, calc(100vw - 32px))',
             height: '500px',
             background: 'var(--surface)',
             boxShadow: 'var(--shadow-lg)',

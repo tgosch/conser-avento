@@ -89,3 +89,20 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
 [data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+/* ── Prevent horizontal overflow ── */
+html, body { overflow-x: hidden; }
+
+/* ── Responsive layout offsets ── */
+:root {
+  --content-offset: var(--sidebar-width);
+  --topbar-pl: calc(var(--sidebar-width) + 24px);
+}
+
+/* ── UNTER 1024px: Sidebar als Overlay, kein Content-Offset ── */
+@media (max-width: 1023px) {
+  :root {
+    --content-offset: 0px;
+    --topbar-pl: 52px;
+  }
+}

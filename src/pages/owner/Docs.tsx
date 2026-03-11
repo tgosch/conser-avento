@@ -248,6 +248,7 @@ export default function OwnerDocs() {
         </div>
       ) : (
         <div className="rounded-[20px] border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b" style={{ borderColor: 'var(--border)' }}>
@@ -328,6 +329,7 @@ export default function OwnerDocs() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

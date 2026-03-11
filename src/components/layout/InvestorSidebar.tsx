@@ -28,13 +28,13 @@ export default function InvestorSidebar({ open, onClose }: Props) {
 
   return (
     <>
-      {open && <div className="fixed inset-0 bg-black/40 z-20 md:hidden" onClick={onClose} />}
+      {open && <div className="fixed inset-0 bg-black/40 z-20 lg:hidden" onClick={onClose} />}
       <aside
         className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300
-          ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+          ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         style={{ width: 'var(--sidebar-width)', background: '#063D3E' }}
       >
-        <button className="absolute top-4 right-4 text-white/50 hover:text-white md:hidden" onClick={onClose}>
+        <button className="absolute top-4 right-4 text-white/50 hover:text-white lg:hidden" onClick={onClose}>
           <X size={18} />
         </button>
 

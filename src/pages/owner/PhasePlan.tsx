@@ -52,7 +52,7 @@ export default function OwnerPhasePlan() {
       <form onSubmit={handleSubmit} className="rounded-[20px] p-6 border mb-8" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <h2 className="font-bold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Neue Phase</h2>
         <div className="flex flex-col gap-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="text" placeholder="Phasenname" required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
               className="px-4 py-2.5 rounded-xl text-sm outline-none border"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
@@ -64,7 +64,7 @@ export default function OwnerPhasePlan() {
               <option value="completed">Abgeschlossen</option>
             </select>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="date" placeholder="Startdatum" value={form.start_date} onChange={e => setForm(p => ({ ...p, start_date: e.target.value }))}
               className="px-4 py-2.5 rounded-xl text-sm outline-none border"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />

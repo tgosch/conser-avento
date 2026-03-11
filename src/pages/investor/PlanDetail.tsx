@@ -58,7 +58,7 @@ export default function InvestorPlanDetail() {
 
   return (
     <div className="max-w-5xl">
-      <nav className="flex items-center gap-1.5 text-xs mb-6" style={{ color: 'var(--text-secondary)' }}>
+      <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-6" style={{ color: 'var(--text-secondary)' }}>
         <Link to="/investor/dashboard" className="hover:text-accent1 transition">Dashboard</Link>
         <ChevronRight size={12} />
         <Link to="/investor/plans" className="hover:text-accent1 transition">Pläne</Link>
@@ -67,13 +67,13 @@ export default function InvestorPlanDetail() {
       </nav>
 
       <div className="flex items-start justify-between mb-6 gap-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
           <div className="w-14 h-14 rounded-[16px] flex items-center justify-center text-3xl shrink-0" style={{ background: 'rgba(6,61,62,0.10)' }}>
             {meta.icon}
           </div>
-          <div>
-            <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{meta.label}</h1>
-            <p className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>{meta.desc}</p>
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold truncate" style={{ color: 'var(--text-primary)' }}>{meta.label}</h1>
+            <p className="text-sm mt-0.5 truncate" style={{ color: 'var(--text-secondary)' }}>{meta.desc}</p>
           </div>
         </div>
 
@@ -106,18 +106,18 @@ export default function InvestorPlanDetail() {
         )}
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         {prevSection ? (
           <button onClick={() => navigate(`/investor/plans/${prevSection}`)}
-            className="flex items-center gap-2 text-sm font-semibold hover:text-accent1 transition" style={{ color: 'var(--text-secondary)' }}>
-            <ChevronLeft size={16} /> {planMeta[prevSection]?.label}
+            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent1 transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
+            <ChevronLeft size={16} className="shrink-0" /> <span className="truncate">{planMeta[prevSection]?.label}</span>
           </button>
         ) : <div />}
-        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{currentIndex + 1} / {planOrder.length}</span>
+        <span className="text-xs shrink-0" style={{ color: 'var(--text-tertiary)' }}>{currentIndex + 1} / {planOrder.length}</span>
         {nextSection ? (
           <button onClick={() => navigate(`/investor/plans/${nextSection}`)}
-            className="flex items-center gap-2 text-sm font-semibold hover:text-accent1 transition" style={{ color: 'var(--text-secondary)' }}>
-            {planMeta[nextSection]?.label} <ChevronRight size={16} />
+            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent1 transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
+            <span className="truncate">{planMeta[nextSection]?.label}</span> <ChevronRight size={16} className="shrink-0" />
           </button>
         ) : <div />}
       </div>

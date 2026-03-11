@@ -29,15 +29,15 @@ export default function Topbar({ onMenuClick }: Props) {
         left: 0,
         height: 'var(--topbar-height)',
         boxShadow: '0 1px 0 var(--border), 0 2px 12px rgba(6,61,62,0.05)',
-        paddingLeft: 'calc(var(--sidebar-width) + 24px)',
+        paddingLeft: 'var(--topbar-pl)',
         paddingRight: '24px',
       }}
     >
-      <button className="md:hidden text-accent1 hover:opacity-70 absolute left-4" onClick={onMenuClick}>
+      <button className="lg:hidden text-accent1 hover:opacity-70 absolute left-4" onClick={onMenuClick}>
         <Menu size={22} />
       </button>
 
-      <div className="hidden md:flex items-center gap-2.5">
+      <div className="hidden lg:flex items-center gap-2.5">
         <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
         <div className="w-px h-5 bg-black/10" />
         <img src={conserLogo} alt="Conser" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
