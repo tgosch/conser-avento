@@ -7,9 +7,12 @@ export default function InvestorStatus() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('updates').select('*').order('created_at', { ascending: false })
-      .then(({ data }) => { if (data) setUpdates(data as Update[]); setLoading(false) })
-      .then(undefined, () => setLoading(false))
+    supabase.from('updates').select('id, title, content, category, created_at').order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) console.error('[Status]', error.message)
+        if (data) setUpdates(data as Update[])
+        setLoading(false)
+      })
   }, [])
 
   const categoryColor: Record<string, string> = {

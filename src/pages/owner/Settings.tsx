@@ -13,7 +13,7 @@ export default function OwnerSettings() {
 
   useEffect(() => {
     if (activeTab === 'investors') {
-      supabase.from('investors').select('*').order('created_at', { ascending: false })
+      supabase.from('investors').select('id, first_name, last_name, email, phone, status, created_at').order('created_at', { ascending: false })
         .then(({ data }) => { if (data) setInvestors(data as Investor[]) })
     }
     if (activeTab === 'investments') {
@@ -23,11 +23,12 @@ export default function OwnerSettings() {
   }, [activeTab])
 
   const exportCSV = () => {
+    const esc = (v: string) => `"${String(v ?? '').replace(/"/g, '""')}"`
     const rows = [
-      ['Vorname', 'Nachname', 'E-Mail', 'Telefon', 'Status', 'Registriert'],
-      ...investors.map(i => [i.first_name, i.last_name, i.email, i.phone || '', i.status, new Date(i.created_at).toLocaleDateString('de-DE')]),
+      ['Vorname', 'Nachname', 'E-Mail', 'Telefon', 'Status', 'Registriert'].map(esc),
+      ...investors.map(i => [i.first_name, i.last_name, i.email, i.phone || '', i.status, new Date(i.created_at).toLocaleDateString('de-DE')].map(esc)),
     ]
-    const csv = rows.map(r => r.join(',')).join('\n')
+    const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\r\n') // BOM for Excel UTF-8
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')

@@ -66,24 +66,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (session?.user) {
         const { data: inv } = await supabase
           .from('investors')
-          .select('*')
+          .select('id, first_name, last_name, email, phone, status, consent, created_at')
           .eq('id', session.user.id)
-          .single()
+          .maybeSingle()
         setUser({ investor: inv ?? undefined, isAdmin: false, email: session.user.email })
       }
       setLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      // Don't overwrite an active admin session
       if (readAdminSession()) return
 
       if (event === 'SIGNED_IN' && session?.user) {
         const { data: inv } = await supabase
           .from('investors')
-          .select('*')
+          .select('id, first_name, last_name, email, phone, status, consent, created_at')
           .eq('id', session.user.id)
-          .single()
+          .maybeSingle()
         setUser({ investor: inv ?? undefined, isAdmin: false, email: session.user.email })
       } else if (event === 'SIGNED_OUT') {
         setUser(null)

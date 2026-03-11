@@ -13,9 +13,9 @@ export default function InvestorDashboard() {
   const today = new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
 
   useEffect(() => {
-    supabase.from('updates').select('*').order('created_at', { ascending: false }).limit(3)
+    supabase.from('updates').select('id, title, content, category, created_at').order('created_at', { ascending: false }).limit(3)
       .then(({ data }) => { if (data) setUpdates(data) })
-    supabase.from('investors').select('*', { count: 'exact', head: true })
+    supabase.from('investors').select('id', { count: 'exact', head: true })
       .then(({ count }) => { if (count !== null) setInvestorCount(count) })
   }, [])
 
