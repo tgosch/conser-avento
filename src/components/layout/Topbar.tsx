@@ -20,7 +20,7 @@ export default function Topbar({ onMenuClick }: Props) {
 
   const settingsPath = user?.isAdmin ? '/owner/settings' : '/investor/settings'
 
-  const handleLogout = () => { logout(); navigate('/') }
+  const handleLogout = async () => { await logout(); navigate('/') }
 
   return (
     <header

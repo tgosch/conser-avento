@@ -24,7 +24,7 @@ export default function InvestorSidebar({ open, onClose }: Props) {
   const name = user?.investor ? `${user.investor.first_name} ${user.investor.last_name}` : 'Investor'
   const initials = user?.investor ? `${user.investor.first_name[0]}${user.investor.last_name[0]}` : 'IN'
 
-  const handleLogout = () => { logout(); navigate('/') }
+  const handleLogout = async () => { await logout(); navigate('/') }
 
   return (
     <>

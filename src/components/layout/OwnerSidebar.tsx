@@ -20,7 +20,7 @@ export default function OwnerSidebar({ open, onClose }: Props) {
   const { logout } = useAuth()
   const navigate = useNavigate()
 
-  const handleLogout = () => { logout(); navigate('/') }
+  const handleLogout = async () => { await logout(); navigate('/') }
 
   return (
     <>
