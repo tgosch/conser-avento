@@ -188,20 +188,9 @@ export default function OwnerDocs() {
     startProgress()
 
     try {
-      // 1 — Get owner_id from current auth session
+      // 1 — Get owner_id (optional – upload works without it)
       const { data: { session } } = await supabase.auth.getSession()
-      let ownerId = session?.user?.id
-
-      // Fallback: try admin API lookup by email
-      if (!ownerId) {
-        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL as string | undefined
-        if (adminEmail) {
-          const { data: users } = await supabaseAdmin.auth.admin.listUsers()
-          const found = users?.users?.find(u => u.email === adminEmail)
-          ownerId = found?.id
-        }
-      }
-      if (!ownerId) throw new Error('Auth: Keine Benutzer-ID. Bitte neu einloggen.')
+      const ownerId: string | null = session?.user?.id ?? null
 
       // 2 — Ensure bucket exists
       const { data: buckets } = await supabaseAdmin.storage.listBuckets()
@@ -222,14 +211,16 @@ export default function OwnerDocs() {
       if (storageErr) throw new Error(`Storage: ${storageErr.message}`)
 
       // 4 — Insert DB record with confirmed columns
+      const insertRow: Record<string, unknown> = {
+        name: file.name,
+        file_path: filePath,
+        category: section.category,
+      }
+      if (ownerId) insertRow.owner_id = ownerId
+
       const { error: dbErr } = await supabaseAdmin
         .from('documents')
-        .insert({
-          name: file.name,
-          file_path: filePath,
-          category: section.category,
-          owner_id: ownerId,
-        })
+        .insert(insertRow)
       if (dbErr) {
         // Storage-Upload rückgängig machen
         await supabaseAdmin.storage.from('documents').remove([filePath])
