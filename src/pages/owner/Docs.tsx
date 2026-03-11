@@ -32,6 +32,21 @@ const CATEGORIES = [
 ]
 const TABS = ['Alle', ...CATEGORIES.map(c => c.label)]
 
+// Derive category from section (no DB column needed)
+const SECTION_TO_CATEGORY: Record<string, string> = {
+  'pitch-deck':              'pitch-deck',
+  'business-plan':           'business',
+  'finanzplan':              'finanzen',
+  'sales-funnel-endkunden':  'sales',
+  'sales-funnel-business':   'sales',
+  'persona-endkunde':        'persona',
+  'persona-businesspartner': 'persona',
+  'finanzanalyse':           'finanzen',
+  'invest-moeglichkeiten':   'other',
+  'roadmap-kapital':         'other',
+  'sicherheiten':            'other',
+}
+
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function fileType(name?: string) {
   const ext = name?.split('.').pop()?.toLowerCase() ?? ''
@@ -221,7 +236,7 @@ export default function OwnerDocs() {
   const [isDragging, setIsDragging] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [diagLog, setDiagLog] = useState<string[]>([])
-  const [form, setForm] = useState({ section: 'pitch-deck', category: 'pitch-deck', visible: true })
+  const [form, setForm] = useState({ section: 'pitch-deck', visible: true })
 
   const dragCounter = useRef(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -260,7 +275,8 @@ export default function OwnerDocs() {
     startProgress()
     try {
       const ext = file.name.split('.').pop() ?? 'pdf'
-      const storageName = `${form.category}/${form.section}.${ext}`
+      const category = SECTION_TO_CATEGORY[form.section] ?? 'other'
+      const storageName = `${category}/${form.section}.${ext}`
 
       const { data: buckets } = await supabaseAdmin.storage.listBuckets()
       if (!buckets?.find(b => b.name === 'documents'))
@@ -275,7 +291,6 @@ export default function OwnerDocs() {
 
       const { error: dbErr } = await supabaseAdmin.from('documents').insert({
         section: form.section,
-        category: form.category,
         file_name: file.name,
         file_url: urlData.publicUrl,
         visible_to_investors: form.visible,
@@ -357,7 +372,9 @@ export default function OwnerDocs() {
   }
 
   const catValueByLabel: Record<string, string> = Object.fromEntries(CATEGORIES.map(c => [c.label, c.value]))
-  const filtered = tab === 'Alle' ? docs : docs.filter(d => d.category === catValueByLabel[tab])
+  const filtered = tab === 'Alle'
+    ? docs
+    : docs.filter(d => SECTION_TO_CATEGORY[d.section] === catValueByLabel[tab])
 
   /* ─── Render ─────────────────────────────────────────────────── */
   return (
@@ -392,7 +409,7 @@ export default function OwnerDocs() {
         style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
       >
         {/* Form controls row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           {/* Section */}
           <div>
             <label className="block text-xs font-semibold mb-1.5" style={{ color: '#000000' }}>
@@ -401,29 +418,12 @@ export default function OwnerDocs() {
             <select
               value={form.section}
               onChange={e => setForm(p => ({ ...p, section: e.target.value }))}
-              className="w-full px-3 py-2.5 rounded-xl text-sm outline-none border transition-colors focus:border-blue-500"
-              style={{ background: '#F9FAFB', borderColor: '#E5E7EB', color: '#333333' }}
-              onFocus={e => { e.target.style.borderColor = '#0066FF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,102,255,0.10)' }}
-              onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
-            >
-              {SECTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-            </select>
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="block text-xs font-semibold mb-1.5" style={{ color: '#000000' }}>
-              Kategorie
-            </label>
-            <select
-              value={form.category}
-              onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
               className="w-full px-3 py-2.5 rounded-xl text-sm outline-none border transition-colors"
               style={{ background: '#F9FAFB', borderColor: '#E5E7EB', color: '#333333' }}
               onFocus={e => { e.target.style.borderColor = '#0066FF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,102,255,0.10)' }}
               onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
             >
-              {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+              {SECTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
 

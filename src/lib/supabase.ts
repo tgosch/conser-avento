@@ -42,7 +42,7 @@ export interface InvestmentIntent {
 export interface Document {
   id: string
   section: string
-  category: string
+  category?: string   // optional – column may not exist in DB, derived client-side
   file_name?: string
   file_url?: string
   visible_to_investors: boolean

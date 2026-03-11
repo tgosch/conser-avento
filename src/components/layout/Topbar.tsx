@@ -98,18 +98,19 @@ export default function Topbar({ onMenuClick }: Props) {
 
       {/* ── Desktop Layout ── */}
       <div
-        className="hidden lg:flex items-center gap-4 h-full"
+        className="hidden lg:flex items-center h-full relative"
         style={{ paddingLeft: 'var(--topbar-pl)', paddingRight: '24px' }}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
           <div className="w-px h-5 bg-black/10" />
           <img src={conserLogo} alt="Conser" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
         </div>
 
-        <div className="flex-1 max-w-sm ml-2">
+        {/* Centered search */}
+        <div className="absolute left-1/2 -translate-x-1/2 w-full max-w-xs pointer-events-auto">
           <div className="flex items-center gap-2 rounded-full px-4 py-2 w-full" style={{ background: 'var(--surface2)' }}>
-            <Search size={14} className="text-secondary shrink-0" />
+            <Search size={14} className="shrink-0" style={{ color: 'var(--text-tertiary)' }} />
             <input
               type="text"
               placeholder="Suchen..."
@@ -119,7 +120,7 @@ export default function Topbar({ onMenuClick }: Props) {
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2 shrink-0">
           <button
             onClick={toggleTheme}
             className="w-9 h-9 rounded-full flex items-center justify-center transition hover:bg-surface2"
