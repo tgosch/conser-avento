@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, GitBranch, Settings, X, LogOut, ShieldCheck, Handshake } from 'lucide-react'
+import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, GitBranch, Settings, X, LogOut, ShieldCheck, Handshake, Users } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.png'
 import conserLogo from '../../assets/conser_kachel.png'
@@ -10,6 +10,7 @@ const nav = [
   { to: '/owner/chat', icon: MessageSquare, label: 'Chat' },
   { to: '/owner/updates', icon: Bell, label: 'Updates' },
   { to: '/owner/partners', icon: Handshake, label: 'Partner' },
+  { to: '/owner/team', icon: Users, label: 'Team' },
   { to: '/owner/future', icon: Rocket, label: 'Zukunft' },
   { to: '/owner/phases', icon: GitBranch, label: 'PhasenPlan' },
   { to: '/owner/settings', icon: Settings, label: 'Einstellungen' },

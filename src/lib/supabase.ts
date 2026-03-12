@@ -95,6 +95,7 @@ export interface TeamMember {
   equity_percent: number
   visible: boolean
   order_index: number
+  photo_path?: string | null
 }
 
 export interface Partner {

@@ -2,6 +2,32 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { TeamMember } from '../../lib/supabase'
 
+function MemberAvatar({ member }: { member: TeamMember }) {
+  const [imgError, setImgError] = useState(false)
+  const photoUrl = member.photo_path
+    ? supabase.storage.from('team-photos').getPublicUrl(member.photo_path).data.publicUrl
+    : null
+
+  if (photoUrl && !imgError) {
+    return (
+      <div className="w-14 h-14 rounded-full overflow-hidden shrink-0">
+        <img
+          src={photoUrl}
+          alt={member.name}
+          className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    )
+  }
+  return (
+    <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shrink-0"
+      style={{ background: member.color }}>
+      {member.initials}
+    </div>
+  )
+}
+
 export default function InvestorTeam() {
   const [members, setMembers] = useState<TeamMember[]>([])
 
@@ -11,10 +37,10 @@ export default function InvestorTeam() {
         if (data) setMembers(data as TeamMember[])
         else {
           setMembers([
-            { id: '1', name: 'Torben Gosch', role: 'CEO · Chief Executive Officer', bio: 'Gründer und Geschäftsführer. Verantwortet Strategie, Partnerschaften und Investorenbeziehungen.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 0, visible: true, order_index: 1 },
-            { id: '2', name: 'Martin Groote', role: 'CTO · Chief Technology Officer', bio: 'Technologieleiter und Mitgründer. Verantwortet Produktentwicklung und technische Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 0, visible: true, order_index: 2 },
-            { id: '4', name: 'Paul Bockting', role: 'CDO · Chief Design Officer', bio: 'UI/UX-Verantwortlicher und Mitgründer. Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3 },
-            { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4 },
+            { id: '1', name: 'Torben Gosch', role: 'CEO · Chief Executive Officer', bio: 'Gründer und Geschäftsführer. Verantwortet Strategie, Partnerschaften und Investorenbeziehungen.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 0, visible: true, order_index: 1, photo_path: null },
+            { id: '2', name: 'Martin Groote', role: 'CTO · Chief Technology Officer', bio: 'Technologieleiter und Mitgründer. Verantwortet Produktentwicklung und technische Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 0, visible: true, order_index: 2, photo_path: null },
+            { id: '4', name: 'Paul Bockting', role: 'CDO · Chief Design Officer', bio: 'UI/UX-Verantwortlicher und Mitgründer. Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3, photo_path: null },
+            { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4, photo_path: null },
           ])
         }
       })
@@ -31,10 +57,7 @@ export default function InvestorTeam() {
         {members.map(m => (
           <div key={m.id} className="rounded-[20px] p-6 border flex flex-col gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shrink-0"
-                style={{ background: m.color }}>
-                {m.initials}
-              </div>
+              <MemberAvatar member={m} />
               <div>
                 <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{m.role}</p>

@@ -432,6 +432,135 @@ export default function Landing() {
           ))}
         </div>
 
+        {/* ── VISION & STRATEGIE ── */}
+        <div className="mb-10">
+          <div className="text-center mb-8">
+            <span className="inline-block text-xs font-bold px-3 py-1.5 rounded-full mb-3"
+              style={{ background: 'rgba(6,61,62,0.10)', color: '#063D3E' }}>
+              VISION & STRATEGIE
+            </span>
+            <h2 className="text-xl sm:text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+              Die erste vollständig integrierte<br className="hidden sm:block" /> digitale Infrastruktur für den Bau
+            </h2>
+            <p className="text-sm max-w-xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Bau der ersten vollständig integrierten digitalen Infrastruktur für die europäische Bauindustrie
+            </p>
+          </div>
+
+          {/* Mission cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            {[
+              { icon: '🏗️', title: 'Avento · ERP', desc: 'Angebote, Kalkulation, GPS-Zeiterfassung, KI-Aufmaß, DATEV/GAEB-Integration. Das Betriebssystem für Handwerksbetriebe.' },
+              { icon: '🔗', title: 'Der AHA-Moment', desc: 'Digitales Aufmaß → automatischer Warenkorb → 1-Klick-Bestellung. Avento und Conser greifen nahtlos ineinander.' },
+              { icon: '🛒', title: 'Conser · Marketplace', desc: '2,3 Mio. Produkte, 7 Großhändler, Echtzeit-Preisvergleich. Der B2B-Marktplatz für Baumaterial in DACH.' },
+            ].map(c => (
+              <div key={c.title} className="rounded-[18px] p-5 border"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+                <div className="text-3xl mb-3">{c.icon}</div>
+                <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>{c.title}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{c.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Markt strip */}
+          <div className="rounded-[18px] p-5 border mb-6"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+            <p className="text-xs font-bold uppercase tracking-wide mb-4" style={{ color: 'var(--text-tertiary)' }}>Markt-Fokus DACH</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { value: '1,7 Mio.', label: 'Bauunternehmen & Handwerksbetriebe' },
+                { value: '147 Mrd. €', label: 'Materialeinkauf pro Jahr' },
+                { value: '< 3%', label: 'Digitalisierungsgrad heute' },
+                { value: '€ 15 Mrd.+', label: 'Adressierbarer Markt (SaaS + GMV)' },
+              ].map(s => (
+                <div key={s.label}>
+                  <p className="text-2xl font-bold" style={{ color: '#063D3E' }}>{s.value}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Produkt-Spezifikationen */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="rounded-[18px] p-5 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm"
+                  style={{ background: 'rgba(6,61,62,0.10)' }}>🏗️</div>
+                <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Avento · Features</p>
+              </div>
+              <ul className="flex flex-col gap-1.5">
+                {['Angebots- & Kalkulationssoftware', 'GPS-Zeiterfassung für Mitarbeiter', 'KI-gestütztes Aufmaß', 'DATEV & GAEB Integration', 'Automatische Warenkorb-Erzeugung', 'Projekt- & Ressourcenplanung'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                    <span style={{ color: '#063D3E' }}>✓</span> {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-[18px] p-5 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm"
+                  style={{ background: 'rgba(212,102,42,0.10)' }}>🛒</div>
+                <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Conser · Features</p>
+              </div>
+              <ul className="flex flex-col gap-1.5">
+                {['2,3 Mio. Produkte im Katalog', '7 Großhändler angebunden', 'Echtzeit-Preisvergleich', 'Digitale Bestellabwicklung', 'Lieferstatus-Tracking', 'B2B-Kundenverwaltung'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                    <span style={{ color: '#D4662A' }}>✓</span> {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Markt & Wettbewerb + Profitabilität */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="rounded-[18px] p-5 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Markt & Wettbewerb</p>
+              <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
+                Bestehende Lösungen (Soranus, Tapio, Würth) lösen entweder ERP <em>oder</em> Beschaffung — nie beides. Avento + Conser ist die einzige vollständig integrierte Plattform.
+              </p>
+              <div className="flex flex-col gap-2">
+                {[
+                  { name: 'Soranus / Streit', note: 'Nur ERP, kein Marketplace' },
+                  { name: 'Tapio (Homag)', note: 'Holz-Nische, kein SHK/Bau' },
+                  { name: 'Würth Orsy', note: 'Nur Eigenprodukte, kein Vergleich' },
+                  { name: 'Avento + Conser', note: 'Full-Stack · Einzige Lösung', highlight: true },
+                ].map(c => (
+                  <div key={c.name} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg"
+                    style={{ background: c.highlight ? 'rgba(6,61,62,0.08)' : 'var(--surface2)' }}>
+                    <span className="font-semibold" style={{ color: c.highlight ? '#063D3E' : 'var(--text-primary)' }}>{c.name}</span>
+                    <span style={{ color: c.highlight ? '#063D3E' : 'var(--text-secondary)' }}>{c.note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[18px] p-5 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Profitabilität & Exit</p>
+              <div className="flex flex-col gap-3">
+                {[
+                  { label: 'Avento SaaS (Ø)', value: '€ 299 / Monat' },
+                  { label: 'Conser Take-Rate', value: '2–4% GMV' },
+                  { label: 'Break-Even (Proj.)', value: 'Q3 2026' },
+                  { label: 'Ziel-Bewertung Exit', value: '€ 50–150 Mio.' },
+                  { label: 'Exit-Strategie', value: 'Trade Sale / IPO' },
+                ].map(r => (
+                  <div key={r.label} className="flex items-center justify-between text-xs border-b pb-2"
+                    style={{ borderColor: 'var(--border)' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>{r.label}</span>
+                    <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{r.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ── FOOTER ── */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t text-sm"
           style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
