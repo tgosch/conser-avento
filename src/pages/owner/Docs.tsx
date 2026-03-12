@@ -248,10 +248,22 @@ export default function OwnerDocs() {
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
       const filePath = `${section.category}/${Date.now()}-${safeName}`
 
-      const { error: storageErr } = await supabaseAdmin.storage
+      // Versuche Upload mit korrektem Content-Type
+      let storageErr = (await supabaseAdmin.storage
         .from('documents')
-        .upload(filePath, file, { upsert: false, contentType: getContentType(file) })
-      if (storageErr) throw new Error(`Storage: ${storageErr.message}`)
+        .upload(filePath, file, { upsert: true, contentType: getContentType(file) })).error
+
+      // Fallback: Upload als Blob ohne deklarierten MIME-Type (umgeht Bucket-Restrictions)
+      if (storageErr) {
+        const buf = await file.arrayBuffer()
+        const blob = new Blob([buf])
+        const result2 = await supabaseAdmin.storage
+          .from('documents')
+          .upload(filePath, blob, { upsert: true, contentType: getContentType(file) })
+        storageErr = result2.error
+      }
+
+      if (storageErr) throw new Error(`Storage-Fehler: ${storageErr.message} — Bitte führe fix_documents_bucket.sql im Supabase SQL-Editor aus.`)
 
       // 4 — Insert DB record with confirmed columns
       const insertRow: Record<string, unknown> = {
