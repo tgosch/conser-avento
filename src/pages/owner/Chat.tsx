@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Investor, Message } from '../../lib/supabase'
 import { Send } from 'lucide-react'
 import { toast } from 'react-toastify'

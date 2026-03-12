@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import type { DragEvent, ChangeEvent } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 import {
   Upload, Trash2, FileText, Image, Presentation,

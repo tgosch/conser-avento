@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { FutureContent } from '../../lib/supabase'
 import { toast } from 'react-toastify'
 import { Trash2 } from 'lucide-react'

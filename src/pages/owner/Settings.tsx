@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Investor } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
 import { Moon, Sun, Download } from 'lucide-react'

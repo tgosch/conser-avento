@@ -71,27 +71,32 @@ export default function Landing() {
       return
     }
     setLoginLoading(true)
+
+    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase()
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD
+
+    // ── Admin-Login: lokale Prüfung gegen .env — unabhängig von Supabase Auth ──
+    if (
+      adminEmail &&
+      adminPassword &&
+      loginEmail.trim().toLowerCase() === adminEmail &&
+      loginPassword === adminPassword
+    ) {
+      loginAdmin({ isAdmin: true, email: loginEmail.trim() })
+      navigate('/owner/dashboard')
+      setLoginLoading(false)
+      return
+    }
+
+    // ── Investor-Login: via Supabase Auth ──
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       })
       if (error) throw error
       loginAttemptsRef.current = 0
-
-      // Admin-Erkennung: Primär via app_metadata.is_admin (Supabase JWT),
-      // Fallback via VITE_ADMIN_EMAIL (immer zuverlässig, Passwort wird trotzdem von Supabase geprüft)
-      const isAdminByMeta = data.user?.app_metadata?.is_admin === true
-      const isAdminByEnv = !!import.meta.env.VITE_ADMIN_EMAIL &&
-        loginEmail.trim().toLowerCase() === import.meta.env.VITE_ADMIN_EMAIL.trim().toLowerCase()
-      const isAdmin = isAdminByMeta || isAdminByEnv
-
-      if (isAdmin) {
-        loginAdmin({ isAdmin: true, email: loginEmail })
-        navigate('/owner/dashboard')
-      } else {
-        navigate('/investor/dashboard')
-      }
+      navigate('/investor/dashboard')
     } catch (err: unknown) {
       loginAttemptsRef.current += 1
       if (loginAttemptsRef.current >= 5) {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Phase } from '../../lib/supabase'
 import { toast } from 'react-toastify'
 import {
