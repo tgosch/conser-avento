@@ -79,8 +79,13 @@ export default function Landing() {
       if (error) throw error
       loginAttemptsRef.current = 0
 
-      // Admin-Erkennung über app_metadata (gesetzt via Supabase Dashboard/SQL — nie im Bundle)
-      const isAdmin = data.user?.app_metadata?.is_admin === true
+      // Admin-Erkennung: Primär via app_metadata.is_admin (Supabase JWT),
+      // Fallback via VITE_ADMIN_EMAIL (immer zuverlässig, Passwort wird trotzdem von Supabase geprüft)
+      const isAdminByMeta = data.user?.app_metadata?.is_admin === true
+      const isAdminByEnv = !!import.meta.env.VITE_ADMIN_EMAIL &&
+        loginEmail.trim().toLowerCase() === import.meta.env.VITE_ADMIN_EMAIL.trim().toLowerCase()
+      const isAdmin = isAdminByMeta || isAdminByEnv
+
       if (isAdmin) {
         loginAdmin({ isAdmin: true, email: loginEmail })
         navigate('/owner/dashboard')
