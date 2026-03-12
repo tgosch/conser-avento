@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Check } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
@@ -10,24 +10,6 @@ import ImpressumModal from '../components/auth/ImpressumModal'
 import aventoLogo from '../assets/avento_kachel.png'
 import conserLogo from '../assets/conser_kachel.png'
 
-const TIERS = [
-  {
-    pct: '2,5%', amount: '€ 375.000', badge: 'Einsteiger', highlight: false,
-    features: ['2,5% Unternehmensanteile', 'Beiratszugang', 'Quartalsreports', 'Investoren-Portal Zugang'],
-  },
-  {
-    pct: '5%', amount: '€ 750.000', badge: 'Standard', highlight: true, popularBadge: 'Beliebt',
-    features: ['5% Unternehmensanteile', 'Sitzrecht im Beirat', 'Monatliche Updates', 'Exit-Rechte', 'Direkte Kommunikation'],
-  },
-  {
-    pct: '7,5%', amount: '€ 1.125.000', badge: 'Premium', highlight: false,
-    features: ['7,5% Unternehmensanteile', 'Veto-Recht bei Kernentscheidungen', 'Direkter Gründerzugang', 'Quartalsmeetings'],
-  },
-  {
-    pct: '10%', amount: '€ 1.500.000', badge: 'Lead Investor', highlight: false,
-    features: ['10% Unternehmensanteile', 'Vollständige Investorenrechte', 'Board-Sitz', 'Co-Founder Status', 'Liquidationspräferenz'],
-  },
-]
 
 function PasswordStrength({ password }: { password: string }) {
   const checks = [
@@ -73,8 +55,6 @@ export default function Landing() {
   const [consentNda, setConsentNda] = useState(false)
   const [regLoading, setRegLoading] = useState(false)
   const [showRegPwd, setShowRegPwd] = useState(false)
-  const [selectedTier, setSelectedTier] = useState<string | null>(null)
-
   // Modals
   const [showNda, setShowNda] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
@@ -158,7 +138,6 @@ export default function Landing() {
           consent_date: new Date().toISOString(),
           nda_accepted: true,
           nda_date: new Date().toISOString(),
-          selected_tier: selectedTier,
         }])
       }
       toast.success(`Willkommen, ${reg.first_name.trim()}! Ihr Zugang wurde eingerichtet.`)
@@ -177,8 +156,7 @@ export default function Landing() {
     else toast.success('Passwort-Reset E-Mail gesendet')
   }
 
-  const openRegisterTab = (tier: string) => {
-    setSelectedTier(tier)
+  const openRegisterTab = () => {
     setTab('register')
     authCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
@@ -283,13 +261,7 @@ export default function Landing() {
           {/* ── REGISTER ── */}
           {tab === 'register' && (
             <form onSubmit={handleRegister} className="p-5 flex flex-col gap-3">
-              {selectedTier && (
-                <div className="px-3 py-2.5 rounded-xl font-semibold flex items-center gap-2"
-                  style={{ background: 'rgba(6,61,62,0.08)', color: '#063D3E', fontSize: '14px' }}>
-                  <Check size={14} /> Tier gewählt: {selectedTier}
-                </div>
-              )}
-              {/* Name fields – each full width on mobile */}
+                  {/* Name fields – each full width on mobile */}
               <input
                 type="text" placeholder="Vorname" required
                 value={reg.first_name} onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
@@ -372,60 +344,6 @@ export default function Landing() {
               </p>
             </form>
           )}
-        </div>
-
-        {/* ── INVESTMENT TIERS ── */}
-        <div className="text-center mb-6">
-          <h2 className="text-xl sm:text-3xl font-bold mb-1.5" style={{ color: 'var(--text-primary)' }}>
-            Investitionsmöglichkeiten
-          </h2>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Wir suchen <strong>€ 1.500.000</strong> für <strong>10%</strong> Unternehmensanteile
-          </p>
-        </div>
-
-        {/* Tiers: 1 col mobile, 2 col sm, 4 col lg */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {TIERS.map(tier => (
-            <div key={tier.pct} className="relative rounded-[18px] flex flex-col p-5 transition-all duration-200"
-              style={{
-                background: 'var(--surface)',
-                border: tier.highlight ? '2px solid #063D3E' : '1px solid var(--border)',
-                boxShadow: tier.highlight ? '0 8px 32px rgba(6,61,62,0.15)' : 'var(--shadow-sm)',
-              }}>
-              {tier.popularBadge && (
-                <span className="absolute -top-3 right-4 text-xs font-bold px-3 py-1 rounded-full text-white"
-                  style={{ background: '#D4662A' }}>
-                  {tier.popularBadge}
-                </span>
-              )}
-              <div className="flex items-end gap-3 mb-2">
-                <span style={{ fontSize: '36px', fontWeight: '700', color: '#063D3E', lineHeight: 1 }}>
-                  {tier.pct}
-                </span>
-                <span className="font-bold mb-0.5" style={{ fontSize: '15px', color: 'var(--text-primary)' }}>
-                  {tier.amount}
-                </span>
-              </div>
-              <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4 self-start"
-                style={{ background: 'rgba(6,61,62,0.10)', color: '#063D3E' }}>
-                {tier.badge}
-              </span>
-              <ul className="flex flex-col gap-2 mb-5 flex-1">
-                {tier.features.map(f => (
-                  <li key={f} className="flex items-start gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
-                    <Check size={13} className="text-accent1 shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => openRegisterTab(tier.badge)}
-                className="w-full py-3 rounded-xl text-white font-semibold hover:opacity-90 transition"
-                style={{ background: '#063D3E', fontSize: '14px' }}>
-                Zugang beantragen →
-              </button>
-            </div>
-          ))}
         </div>
 
         {/* ── VISION & STRATEGIE ── */}
@@ -512,48 +430,45 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Markt & Wettbewerb + Profitabilität */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-[18px] p-5 border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Markt & Wettbewerb</p>
-              <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
-                Bestehende Lösungen (Soranus, Tapio, Würth) lösen entweder ERP <em>oder</em> Beschaffung — nie beides. Avento + Conser ist die einzige vollständig integrierte Plattform.
+          {/* Markt & Wettbewerb */}
+          <div className="rounded-[18px] p-5 border"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+            <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Markt & Wettbewerb</p>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
+              Bestehende Lösungen (Soranus, Tapio, Würth) lösen entweder ERP <em>oder</em> Beschaffung — nie beides. Avento + Conser ist die einzige vollständig integrierte Plattform.
+            </p>
+            <div className="flex flex-col gap-2">
+              {[
+                { name: 'Soranus / Streit', note: 'Nur ERP, kein Marketplace' },
+                { name: 'Tapio (Homag)', note: 'Holz-Nische, kein SHK/Bau' },
+                { name: 'Würth Orsy', note: 'Nur Eigenprodukte, kein Vergleich' },
+                { name: 'Avento + Conser', note: 'Full-Stack · Einzige Lösung', highlight: true },
+              ].map(c => (
+                <div key={c.name} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg"
+                  style={{ background: c.highlight ? 'rgba(6,61,62,0.08)' : 'var(--surface2)' }}>
+                  <span className="font-semibold" style={{ color: c.highlight ? '#063D3E' : 'var(--text-primary)' }}>{c.name}</span>
+                  <span style={{ color: c.highlight ? '#063D3E' : 'var(--text-secondary)' }}>{c.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA: Zugang beantragen */}
+          <div className="rounded-[18px] p-5 border flex flex-col justify-between"
+            style={{ background: 'linear-gradient(135deg, rgba(6,61,62,0.05) 0%, rgba(6,61,62,0.10) 100%)', borderColor: 'rgba(6,61,62,0.15)' }}>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: '#063D3E' }}>Investoren-Zugang</p>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
+                Sie interessieren sich für eine Beteiligung? Registrieren Sie sich für Zugang zum vertraulichen Investoren-Portal und nehmen Sie Kontakt auf.
               </p>
-              <div className="flex flex-col gap-2">
-                {[
-                  { name: 'Soranus / Streit', note: 'Nur ERP, kein Marketplace' },
-                  { name: 'Tapio (Homag)', note: 'Holz-Nische, kein SHK/Bau' },
-                  { name: 'Würth Orsy', note: 'Nur Eigenprodukte, kein Vergleich' },
-                  { name: 'Avento + Conser', note: 'Full-Stack · Einzige Lösung', highlight: true },
-                ].map(c => (
-                  <div key={c.name} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg"
-                    style={{ background: c.highlight ? 'rgba(6,61,62,0.08)' : 'var(--surface2)' }}>
-                    <span className="font-semibold" style={{ color: c.highlight ? '#063D3E' : 'var(--text-primary)' }}>{c.name}</span>
-                    <span style={{ color: c.highlight ? '#063D3E' : 'var(--text-secondary)' }}>{c.note}</span>
-                  </div>
-                ))}
-              </div>
             </div>
-            <div className="rounded-[18px] p-5 border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Profitabilität & Exit</p>
-              <div className="flex flex-col gap-3">
-                {[
-                  { label: 'Avento SaaS (Ø)', value: '€ 299 / Monat' },
-                  { label: 'Conser Take-Rate', value: '2–4% GMV' },
-                  { label: 'Break-Even (Proj.)', value: 'Q3 2026' },
-                  { label: 'Ziel-Bewertung Exit', value: '€ 50–150 Mio.' },
-                  { label: 'Exit-Strategie', value: 'Trade Sale / IPO' },
-                ].map(r => (
-                  <div key={r.label} className="flex items-center justify-between text-xs border-b pb-2"
-                    style={{ borderColor: 'var(--border)' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>{r.label}</span>
-                    <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{r.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <button
+              onClick={openRegisterTab}
+              className="w-full py-3 rounded-xl text-white font-semibold hover:opacity-90 transition"
+              style={{ background: '#063D3E', fontSize: '14px' }}
+            >
+              Zugang beantragen →
+            </button>
           </div>
         </div>
 

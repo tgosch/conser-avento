@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { TeamMember } from '../../lib/supabase'
 
+const FALLBACK_MEMBERS: TeamMember[] = [
+  { id: '1', name: 'Torben Gosch', role: 'CEO · Chief Executive Officer', bio: 'Gründer und Geschäftsführer. Verantwortet Strategie, Partnerschaften und Investorenbeziehungen.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 0, visible: true, order_index: 1, photo_path: null },
+  { id: '2', name: 'Martin Groote', role: 'CTO · Chief Technology Officer', bio: 'Technologieleiter und Mitgründer. Verantwortet Produktentwicklung und technische Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 0, visible: true, order_index: 2, photo_path: null },
+  { id: '4', name: 'Paul Bockting', role: 'CDO · Chief Design Officer', bio: 'UI/UX-Verantwortlicher und Mitgründer. Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3, photo_path: null },
+  { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4, photo_path: null },
+]
+
 function MemberAvatar({ member }: { member: TeamMember }) {
   const [imgError, setImgError] = useState(false)
   const photoUrl = member.photo_path
@@ -15,6 +22,7 @@ function MemberAvatar({ member }: { member: TeamMember }) {
           src={photoUrl}
           alt={member.name}
           className="w-full h-full object-cover"
+          loading="lazy"
           onError={() => setImgError(true)}
         />
       </div>
@@ -34,14 +42,18 @@ export default function InvestorTeam() {
   useEffect(() => {
     supabase.from('team_members').select('*').eq('visible', true).order('order_index')
       .then(({ data }) => {
-        if (data) setMembers(data as TeamMember[])
-        else {
-          setMembers([
-            { id: '1', name: 'Torben Gosch', role: 'CEO · Chief Executive Officer', bio: 'Gründer und Geschäftsführer. Verantwortet Strategie, Partnerschaften und Investorenbeziehungen.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 0, visible: true, order_index: 1, photo_path: null },
-            { id: '2', name: 'Martin Groote', role: 'CTO · Chief Technology Officer', bio: 'Technologieleiter und Mitgründer. Verantwortet Produktentwicklung und technische Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 0, visible: true, order_index: 2, photo_path: null },
-            { id: '4', name: 'Paul Bockting', role: 'CDO · Chief Design Officer', bio: 'UI/UX-Verantwortlicher und Mitgründer. Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3, photo_path: null },
-            { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4, photo_path: null },
-          ])
+        if (data && data.length > 0) {
+          // Duplikate per E-Mail oder Name deduplizieren
+          const seen = new Set<string>()
+          const deduped = (data as TeamMember[]).filter(m => {
+            const key = m.name.trim().toLowerCase()
+            if (seen.has(key)) return false
+            seen.add(key)
+            return true
+          })
+          setMembers(deduped)
+        } else {
+          setMembers(FALLBACK_MEMBERS)
         }
       })
   }, [])
@@ -55,7 +67,8 @@ export default function InvestorTeam() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {members.map(m => (
-          <div key={m.id} className="rounded-[20px] p-6 border flex flex-col gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div key={m.id} className="rounded-[20px] p-6 border flex flex-col gap-4"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <div className="flex items-center gap-4">
               <MemberAvatar member={m} />
               <div>
@@ -69,12 +82,6 @@ export default function InvestorTeam() {
                 style={{ background: `${m.color}20`, color: m.color }}>
                 {typeLabel[m.type] || m.type}
               </span>
-              {m.equity_percent > 0 && (
-                <span className="text-xs px-2.5 py-1 rounded-full font-medium"
-                  style={{ background: 'rgba(110,110,115,0.12)', color: 'var(--text-secondary)' }}>
-                  {m.equity_percent}% Anteile
-                </span>
-              )}
             </div>
           </div>
         ))}

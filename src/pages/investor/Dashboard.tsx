@@ -9,14 +9,31 @@ export default function InvestorDashboard() {
   const [updates, setUpdates] = useState<Update[]>([])
   const [investorCount, setInvestorCount] = useState<number>(0)
 
-  const firstName = user?.investor?.first_name || 'Investor'
+  // Personalisierte Begrüßung
+  const firstName = user?.investor?.first_name
+  const greeting = firstName ? `Guten Tag, ${firstName}` : 'Willkommen'
   const today = new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
 
-  useEffect(() => {
-    supabase.from('updates').select('id, title, content, category, created_at').order('created_at', { ascending: false }).limit(3)
+  const fetchUpdates = () => {
+    supabase.from('updates').select('id, title, content, category, created_at')
+      .order('created_at', { ascending: false }).limit(3)
       .then(({ data }) => { if (data) setUpdates(data) })
+  }
+
+  useEffect(() => {
+    fetchUpdates()
     supabase.from('investors').select('id', { count: 'exact', head: true })
       .then(({ count }) => { if (count !== null) setInvestorCount(20 + count) })
+
+    // Realtime: Updates automatisch aktualisieren wenn Owner etwas postet
+    const channel = supabase
+      .channel('investor-updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'updates' }, () => {
+        fetchUpdates()
+      })
+      .subscribe()
+
+    return () => { supabase.removeChannel(channel) }
   }, [])
 
   const categoryColor: Record<string, string> = {
@@ -45,7 +62,7 @@ export default function InvestorDashboard() {
       {/* ── Greeting ── */}
       <div className="mb-5">
         <h1 className="text-xl md:text-3xl font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>
-          Guten Tag, {firstName} 👋
+          {greeting} 👋
         </h1>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{today}</p>
       </div>
@@ -75,7 +92,7 @@ export default function InvestorDashboard() {
       <div className="grid grid-cols-3 gap-3 mb-5">
         {[
           { label: 'Interessenten', value: investorCount, icon: '👥' },
-          { label: 'Investitionsabsichten', value: '–', icon: '💼' },
+          { label: 'Investitionsvorschläge', value: '–', icon: '💼' },
           { label: 'Phase', value: '1', icon: '🚀' },
         ].map(s => (
           <div key={s.label} className="rounded-[16px] p-3.5 border flex flex-col items-center text-center"
@@ -159,7 +176,9 @@ export default function InvestorDashboard() {
             ))}
           </div>
           <div className="px-4 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
-            <Link to="/investor/plans" className="text-sm font-semibold hover:underline" style={{ color: '#D4662A' }}>Alle anzeigen →</Link>
+            <Link to="/investor/plans" className="text-sm font-semibold hover:underline" style={{ color: '#D4662A' }}>
+              Alle anzeigen →
+            </Link>
           </div>
         </div>
       </div>

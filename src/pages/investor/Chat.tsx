@@ -5,14 +5,11 @@ import type { Message } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 import { toast } from 'react-toastify'
 
-const amountOptions = [5000, 10000, 25000, 50000]
-
 export default function InvestorChat() {
   const { user } = useAuth()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
-  const [amount, setAmount] = useState<number | null>(null)
-  const [customAmount, setCustomAmount] = useState('')
+  const [proposal, setProposal] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -34,35 +31,49 @@ export default function InvestorChat() {
 
   const sendMessage = async () => {
     if (!input.trim() || !investorId) return
-    const { error } = await supabase.from('messages').insert([{ investor_id: investorId, content: input.trim(), from_admin: false }])
+    const { error } = await supabase.from('messages').insert([{
+      investor_id: investorId,
+      content: input.trim(),
+      from_admin: false,
+    }])
     if (error) toast.error('Nachricht konnte nicht gesendet werden')
     else setInput('')
   }
 
-  const submitIntent = async () => {
-    const finalAmount = amount || Number(customAmount)
-    if (!finalAmount || !investorId) return
+  const sendProposal = async () => {
+    if (!proposal.trim() || !investorId) return
     setSubmitting(true)
     try {
-      const { error } = await supabase.from('investment_intents').insert([{ investor_id: investorId, amount: finalAmount }])
+      const content = `[Investitionsvorschlag] ${proposal.trim()}`
+      const { error } = await supabase.from('messages').insert([{
+        investor_id: investorId,
+        content,
+        from_admin: false,
+      }])
       if (error) throw error
-      toast.success(`Investitionsabsicht über €${finalAmount.toLocaleString('de-DE')} eingereicht!`)
-      setAmount(null)
-      setCustomAmount('')
-    } catch { toast.error('Einreichung fehlgeschlagen') }
-    finally { setSubmitting(false) }
+      toast.success('Ihr Vorschlag wurde übermittelt. Wir melden uns persönlich bei Ihnen.')
+      setProposal('')
+    } catch {
+      toast.error('Übermittlung fehlgeschlagen. Bitte versuchen Sie es erneut.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
     <div className="max-w-5xl">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Chat & Invest</h1>
-      <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Direkter Kontakt zum Gründerteam und Investitionsabsicht einreichen</p>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Chat & Kontakt</h1>
+      <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+        Direkter Kontakt zum Gründerteam und Investitionsvorschlag mitteilen
+      </p>
 
       <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6">
         {/* Chat */}
-        <div className="md:col-span-2 rounded-[20px] flex flex-col border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: 'clamp(360px, 55vh, 520px)' }}>
+        <div className="md:col-span-2 rounded-[20px] flex flex-col border overflow-hidden"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border)', height: 'clamp(360px, 55vh, 520px)' }}>
           <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: '#063D3E' }}>TG</div>
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
+              style={{ background: '#063D3E' }}>TG</div>
             <div>
               <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Torben Gosch – CEO</p>
               <div className="flex items-center gap-1.5">
@@ -90,7 +101,10 @@ export default function InvestorChat() {
                     color: m.from_admin ? 'var(--text-primary)' : 'white',
                   }}
                 >
-                  {m.content}
+                  {m.content.startsWith('[Investitionsvorschlag]')
+                    ? <><span className="font-semibold block text-xs mb-1 opacity-80">Ihr Vorschlag</span>{m.content.replace('[Investitionsvorschlag] ', '')}</>
+                    : m.content
+                  }
                 </div>
               </div>
             ))}
@@ -98,7 +112,8 @@ export default function InvestorChat() {
           </div>
 
           <div className="p-3 border-t" style={{ borderColor: 'var(--border)' }}>
-            <div className="flex gap-2 items-center rounded-xl px-3 py-2 border" style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}>
+            <div className="flex gap-2 items-center rounded-xl px-3 py-2 border"
+              style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}>
               <input
                 type="text" value={input} onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendMessage()}
@@ -106,55 +121,64 @@ export default function InvestorChat() {
                 className="flex-1 bg-transparent text-sm outline-none"
                 style={{ color: 'var(--text-primary)' }}
               />
-              <button onClick={sendMessage} className="text-accent1 hover:opacity-70 transition"><Send size={16} /></button>
+              <button onClick={sendMessage} className="text-accent1 hover:opacity-70 transition">
+                <Send size={16} />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Invest Panel */}
-        <div className="rounded-[20px] p-4 md:p-5 border flex flex-col gap-3 md:gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-          <div>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Investitionsabsicht</h3>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Betrag auswählen und einreichen</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
-            {amountOptions.map(a => (
-              <button
-                key={a}
-                onClick={() => { setAmount(a); setCustomAmount('') }}
-                className="py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-semibold transition border"
-                style={{
-                  background: amount === a ? '#063D3E' : 'var(--surface2)',
-                  color: amount === a ? 'white' : 'var(--text-primary)',
-                  borderColor: amount === a ? '#063D3E' : 'var(--border)',
-                }}
-              >
-                € {a.toLocaleString('de-DE')}
-              </button>
-            ))}
-          </div>
+        {/* Investitionsvorschlag Panel */}
+        <div className="rounded-[20px] p-4 md:p-5 border flex flex-col gap-4"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
 
           <div>
-            <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Eigener Betrag</p>
-            <input
-              type="number" placeholder="z.B. 75000" value={customAmount}
-              onChange={e => { setCustomAmount(e.target.value); setAmount(null) }}
-              className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border"
+            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Investitionsmöglichkeiten</h3>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Beteiligungsoptionen</p>
+          </div>
+
+          {/* Info-Chips: nur informativ, nicht wählbar */}
+          <div className="flex gap-2">
+            <div className="flex-1 py-2.5 rounded-xl text-center border font-semibold text-sm"
+              style={{ background: 'rgba(6,61,62,0.06)', borderColor: 'rgba(6,61,62,0.15)', color: '#063D3E' }}>
+              5% Beteiligung
+            </div>
+            <div className="flex-1 py-2.5 rounded-xl text-center border font-semibold text-sm"
+              style={{ background: 'rgba(6,61,62,0.06)', borderColor: 'rgba(6,61,62,0.15)', color: '#063D3E' }}>
+              10% Beteiligung
+            </div>
+          </div>
+
+          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            Sie können uns Ihren Investitionsvorschlag mitteilen. Wir melden uns dann persönlich bei Ihnen.
+          </p>
+
+          <div className="flex flex-col gap-2 mt-auto">
+            <label className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>
+              Ihr Vorschlag / Ihre Idee
+            </label>
+            <textarea
+              value={proposal}
+              onChange={e => setProposal(e.target.value)}
+              placeholder="Beschreiben Sie Ihren Investitionsvorschlag oder stellen Sie Fragen…"
+              rows={4}
+              className="w-full px-4 py-3 rounded-xl text-sm outline-none border resize-none"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
             />
           </div>
 
           <button
-            onClick={submitIntent}
-            disabled={(!amount && !customAmount) || submitting}
-            className="py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 disabled:opacity-40 transition mt-auto"
+            onClick={sendProposal}
+            disabled={!proposal.trim() || submitting}
+            className="py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 disabled:opacity-40 transition"
             style={{ background: '#D4662A' }}
           >
-            {submitting ? 'Wird eingereicht…' : 'Absicht einreichen →'}
+            {submitting ? 'Wird übermittelt…' : 'Vorschlag senden →'}
           </button>
 
-          <p className="text-xs text-center" style={{ color: 'var(--text-tertiary)' }}>Unverbindliche Interessensbekundung</p>
+          <p className="text-xs text-center" style={{ color: 'var(--text-tertiary)' }}>
+            Unverbindliche Interessensbekundung
+          </p>
         </div>
       </div>
     </div>
