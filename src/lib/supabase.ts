@@ -94,6 +94,15 @@ export interface TeamMember {
   photo_path?: string | null
 }
 
+export interface PhaseEntry {
+  id: string
+  phase_id: string | null
+  title: string
+  description?: string
+  date?: string
+  created_at: string
+}
+
 export interface Partner {
   id: string
   name: string

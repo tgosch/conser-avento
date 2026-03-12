@@ -1,17 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
-import type { Update, Document, Phase } from '../../lib/supabase'
+import type { Update, Document, Phase, PhaseEntry } from '../../lib/supabase'
 import { Plus, CheckCircle, Clock, AlertCircle, Circle, Trash2 } from 'lucide-react'
 import { toast } from 'react-toastify'
-
-interface PhaseEntry {
-  id: string
-  phase_id: string | null
-  title: string
-  description?: string
-  date?: string
-  created_at: string
-}
 
 const STATUS_COLORS: Record<string, string> = {
   planned: '#8E8E93',

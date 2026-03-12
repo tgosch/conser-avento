@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
-import type { Investor, InvestmentIntent } from '../../lib/supabase'
+import type { Investor } from '../../lib/supabase'
 import { useTheme } from '../../context/ThemeContext'
 import { Moon, Sun, Download } from 'lucide-react'
 import { toast } from 'react-toastify'
+
+interface Proposal {
+  id: string
+  content: string
+  created_at: string
+  investor_id: string
+  investor?: { first_name: string; last_name: string; email: string }
+}
 
 export default function OwnerSettings() {
   const { theme, toggleTheme } = useTheme()
   const [activeTab, setActiveTab] = useState('design')
   const [investors, setInvestors] = useState<Investor[]>([])
-  const [intents, setIntents] = useState<(InvestmentIntent & { investor?: Investor })[]>([])
+  const [proposals, setProposals] = useState<Proposal[]>([])
 
   useEffect(() => {
     if (activeTab === 'investors') {
@@ -17,8 +25,13 @@ export default function OwnerSettings() {
         .then(({ data }) => { if (data) setInvestors(data as Investor[]) })
     }
     if (activeTab === 'investments') {
-      supabase.from('investment_intents').select('*, investors(*)').order('created_at', { ascending: false })
-        .then(({ data }) => { if (data) setIntents(data as (InvestmentIntent & { investor?: Investor })[]) })
+      // Vorschläge aus Chat-Nachrichten laden (markiert mit [Investitionsvorschlag])
+      supabase
+        .from('messages')
+        .select('id, content, created_at, investor_id, investors(first_name, last_name, email)')
+        .ilike('content', '[Investitionsvorschlag]%')
+        .order('created_at', { ascending: false })
+        .then(({ data }) => { if (data) setProposals(data as unknown as Proposal[]) })
     }
   }, [activeTab])
 
@@ -39,7 +52,7 @@ export default function OwnerSettings() {
   const tabs = [
     { id: 'design', label: 'Design' },
     { id: 'investors', label: 'Interessenten' },
-    { id: 'investments', label: 'Investitionen' },
+    { id: 'investments', label: 'Vorschläge' },
   ]
 
   const statusColor: Record<string, string> = { new: '#063D3E', contacted: '#D4662A', negotiating: '#7c3aed' }
@@ -124,38 +137,47 @@ export default function OwnerSettings() {
       {activeTab === 'investments' && (
         <div className="rounded-[20px] border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
-            <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Investitionsabsichten ({intents.length})</h2>
+            <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
+              Investitionsvorschläge ({proposals.length})
+            </h2>
           </div>
-          {intents.length === 0 ? (
-            <p className="text-xs p-6 text-secondary">Noch keine Investitionsabsichten eingegangen</p>
+          {proposals.length === 0 ? (
+            <div className="p-8 text-center">
+              <p className="text-2xl mb-2">📬</p>
+              <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+                Noch keine Vorschläge eingegangen
+              </p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                Vorschläge werden über den Investor-Chat eingereicht
+              </p>
+            </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr style={{ borderBottom: `1px solid var(--border)` }}>
-                    {['Investor', 'Betrag', 'Status', 'Eingegangen'].map(h => (
-                      <th key={h} className="px-5 py-3 text-left text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {intents.map(intent => (
-                    <tr key={intent.id} className="hover:bg-surface2 transition" style={{ borderBottom: `1px solid var(--border)` }}>
-                      <td className="px-5 py-3 font-medium" style={{ color: 'var(--text-primary)' }}>
-                        {/* @ts-ignore */}
-                        {intent.investors?.first_name} {intent.investors?.last_name}
-                      </td>
-                      <td className="px-5 py-3 font-semibold" style={{ color: '#063D3E' }}>€ {intent.amount.toLocaleString('de-DE')}</td>
-                      <td className="px-5 py-3">
-                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-surface2" style={{ color: 'var(--text-secondary)' }}>
-                          {statusLabel[intent.status] || intent.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3" style={{ color: 'var(--text-secondary)' }}>{new Date(intent.created_at).toLocaleDateString('de-DE')}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="flex flex-col divide-y" style={{ borderColor: 'var(--border)' }}>
+              {proposals.map(p => (
+                <div key={p.id} className="p-5">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                        style={{ background: '#063D3E' }}>
+                        {p.investor?.first_name?.[0]}{p.investor?.last_name?.[0]}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                          {p.investor?.first_name} {p.investor?.last_name}
+                        </p>
+                        <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{p.investor?.email}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs shrink-0" style={{ color: 'var(--text-tertiary)' }}>
+                      {new Date(p.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="ml-10 px-4 py-3 rounded-xl text-sm leading-relaxed"
+                    style={{ background: 'var(--surface2)', color: 'var(--text-primary)' }}>
+                    {p.content.replace('[Investitionsvorschlag] ', '')}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

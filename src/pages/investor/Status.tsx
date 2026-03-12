@@ -6,33 +6,47 @@ export default function InvestorStatus() {
   const [updates, setUpdates] = useState<Update[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    supabase.from('updates').select('id, title, content, category, created_at').order('created_at', { ascending: false })
+  const fetchUpdates = () => {
+    supabase.from('updates').select('id, title, content, category, created_at')
+      .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (error) console.error('[Status]', error.message)
         if (data) setUpdates(data as Update[])
         setLoading(false)
       })
+  }
+
+  useEffect(() => {
+    fetchUpdates()
+
+    // Realtime: neue Updates sofort anzeigen
+    const channel = supabase
+      .channel('investor-status-updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'updates' }, () => {
+        fetchUpdates()
+      })
+      .subscribe()
+
+    return () => { supabase.removeChannel(channel) }
   }, [])
 
   const categoryColor: Record<string, string> = {
-    general: '#6E6E73',
-    milestone: '#063D3E',
-    important: '#D4662A',
+    general: '#6E6E73', milestone: '#063D3E', important: '#D4662A',
   }
   const categoryLabel: Record<string, string> = {
-    general: 'Allgemein',
-    milestone: 'Meilenstein',
-    important: 'Wichtig',
+    general: 'Allgemein', milestone: 'Meilenstein', important: 'Wichtig',
   }
 
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3 flex-wrap mb-2">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Aktueller Stand</h1>
-        <span className="px-3 py-1.5 rounded-full text-xs font-semibold text-white shrink-0" style={{ background: '#063D3E' }}>Phase 1</span>
+        <span className="px-3 py-1.5 rounded-full text-xs font-semibold text-white shrink-0"
+          style={{ background: '#063D3E' }}>Phase 1</span>
       </div>
-      <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Status-Updates und Meilensteine vom Gründerteam</p>
+      <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>
+        Status-Updates und Meilensteine vom Gründerteam
+      </p>
 
       {loading ? (
         <div className="space-y-3">
@@ -41,7 +55,8 @@ export default function InvestorStatus() {
           ))}
         </div>
       ) : updates.length === 0 ? (
-        <div className="rounded-[20px] p-12 text-center border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="rounded-[20px] p-12 text-center border"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <p className="text-5xl mb-4">📊</p>
           <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--text-primary)' }}>Noch keine Updates</h3>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Das Team wird bald Status-Updates teilen.</p>
@@ -49,7 +64,8 @@ export default function InvestorStatus() {
       ) : (
         <div className="flex flex-col gap-4">
           {updates.map(u => (
-            <div key={u.id} className="rounded-[20px] p-5 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+            <div key={u.id} className="rounded-[20px] p-5 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs px-2.5 py-1 rounded-full font-semibold"
                   style={{ background: `${categoryColor[u.category]}20`, color: categoryColor[u.category] }}>
