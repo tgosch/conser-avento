@@ -183,7 +183,7 @@ export default function OwnerDocs() {
 
   /* ── Upload Validation ──────────────────────────────────────────── */
   const ALLOWED_EXTENSIONS = ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'pptx', 'ppt', 'docx', 'xlsx']
-  const MAX_FILE_SIZE_MB = 50
+  const MAX_FILE_SIZE_MB = 1024 // 1 GB
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
   const validateFile = (file: File): string | null => {
@@ -239,7 +239,7 @@ export default function OwnerDocs() {
       const { data: buckets } = await supabaseAdmin.storage.listBuckets()
       if (!buckets?.find(b => b.name === 'documents')) {
         const { error: bucketErr } = await supabaseAdmin.storage
-          .createBucket('documents', { public: true, fileSizeLimit: 52428800 })
+          .createBucket('documents', { public: true, fileSizeLimit: 1073741824 }) // 1 GB
         if (bucketErr) throw new Error(`Storage: Bucket konnte nicht erstellt werden – ${bucketErr.message}`)
       }
 
