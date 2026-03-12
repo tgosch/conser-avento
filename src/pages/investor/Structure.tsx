@@ -1,63 +1,200 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { TeamMember } from '../../lib/supabase'
+import { Building2, CheckCircle, Clock, Code2, ChevronDown } from 'lucide-react'
+
+const HOLDING = {
+  name: 'Bautech Holding',
+  description: 'Muttergesellschaft · Strategische Steuerung',
+  color: '#1C1C1E',
+}
+
+const COMPANIES = [
+  {
+    name: 'Conser GmbH',
+    description: 'Digitaler Marktplatz für Baustoffe & Handwerk',
+    status: 'Gegründet',
+    statusColor: '#34C759',
+    statusBg: 'rgba(52,199,89,0.12)',
+    accent: '#063D3E',
+    icon: '🏗️',
+  },
+  {
+    name: 'Avento GmbH',
+    description: 'B2B Software-Plattform für die Baubranche',
+    status: 'In Gründung',
+    statusColor: '#FF9500',
+    statusBg: 'rgba(255,149,0,0.12)',
+    accent: '#D4662A',
+    icon: '💻',
+  },
+]
 
 export default function InvestorStructure() {
   const [members, setMembers] = useState<TeamMember[]>([])
+  const [expanded, setExpanded] = useState<string | null>(null)
 
   useEffect(() => {
     supabase.from('team_members').select('*').eq('visible', true).order('order_index')
       .then(({ data }) => {
         if (data && data.length > 0) setMembers(data as TeamMember[])
         else setMembers([
-          { id: '1', name: 'Torben Gosch', role: 'CEO', bio: '', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 45, visible: true, order_index: 1 },
-          { id: '2', name: 'Martin Groote', role: 'CTO', bio: '', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 45, visible: true, order_index: 2 },
-          { id: '3', name: 'Code Ara GmbH', role: 'Technologiepartner', bio: '', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 3 },
+          { id: '1', name: 'Torben Gosch', role: 'CEO', bio: 'Gründer und Geschäftsführer. Strategie, Partnerschaften & Investoren.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 45, visible: true, order_index: 1 },
+          { id: '2', name: 'Martin Groote', role: 'CTO', bio: 'Technologieleiter & Mitgründer. Produktentwicklung & Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 45, visible: true, order_index: 2 },
+          { id: '4', name: 'Paul Bockting', role: 'CDO', bio: 'UI/UX-Leiter & Mitgründer. Design, Nutzererfahrung & visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3 },
+          { id: '3', name: 'Code Ara GmbH', role: 'Entwicklungspartner', bio: 'Strategischer Technologiepartner. Externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4 },
         ])
       })
   }, [])
 
+  const founders = members.filter(m => m.type === 'founder')
+  const external = members.filter(m => m.type === 'external')
+
   return (
     <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Unternehmenskonstrukt</h1>
-      <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Struktur, Gesellschaftsform und Organigramm</p>
+      <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Unternehmenskonstrukt</h1>
+      <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Struktur, Hierarchie & Gesellschaftsform</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* ── Stats ── */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
         {[
-          { label: 'Gesellschaftsform', value: 'GmbH (in Gründung)' },
+          { label: 'Gesellschaftsform', value: 'GmbH' },
           { label: 'Sitz', value: 'Deutschland' },
           { label: 'Gründungsjahr', value: '2025' },
         ].map(s => (
-          <div key={s.label} className="rounded-[20px] p-5 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div key={s.label} className="rounded-[18px] p-4 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <p className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{s.label}</p>
             <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{s.value}</p>
           </div>
         ))}
       </div>
 
-      <h2 className="font-bold text-base mb-4" style={{ color: 'var(--text-primary)' }}>Organigramm</h2>
-      <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-        <div className="flex flex-col items-center gap-6">
-          <div className="text-sm font-semibold px-6 py-2 rounded-xl border" style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)', background: 'var(--surface2)' }}>
-            Avento & Conser GmbH
+      {/* ── Hierarchy Tree ── */}
+      <h2 className="font-bold text-base mb-5" style={{ color: 'var(--text-primary)' }}>Holding-Struktur</h2>
+
+      <div className="flex flex-col items-center">
+
+        {/* Bautech Holding */}
+        <div
+          className="w-full max-w-xs rounded-[18px] p-5 border-2 text-center relative"
+          style={{ background: '#1C1C1E', borderColor: '#363636' }}
+        >
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
+            style={{ background: 'rgba(255,255,255,0.12)' }}>
+            <Building2 size={20} color="white" />
           </div>
-          <div className="w-px h-6" style={{ background: 'var(--border)' }} />
-          <div className="flex gap-8 flex-wrap justify-center">
-            {members.map(m => (
-              <div key={m.id} className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold" style={{ background: m.color }}>
-                  {m.initials}
+          <p className="font-bold text-sm text-white">{HOLDING.name}</p>
+          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{HOLDING.description}</p>
+        </div>
+
+        {/* Connector line */}
+        <div className="flex flex-col items-center" style={{ height: '40px', position: 'relative' }}>
+          <div className="w-px flex-1" style={{ background: 'var(--border)' }} />
+          <div className="flex gap-32 md:gap-48">
+            <div className="w-px h-4" style={{ background: 'var(--border)' }} />
+            <div className="w-px h-4" style={{ background: 'var(--border)' }} />
+          </div>
+        </div>
+
+        {/* Horizontal bridge */}
+        <div className="relative w-full max-w-sm">
+          <div className="absolute top-0 left-1/4 right-1/4 h-px" style={{ background: 'var(--border)' }} />
+        </div>
+
+        {/* Companies */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
+          {COMPANIES.map(c => (
+            <div
+              key={c.name}
+              className="rounded-[18px] p-5 border cursor-pointer transition-all duration-200 hover:shadow-md"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
+              onClick={() => setExpanded(expanded === c.name ? null : c.name)}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                    style={{ background: `${c.accent}14` }}>
+                    {c.icon}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{c.name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{c.description}</p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
-                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{m.role}</p>
-                  {m.equity_percent > 0 && (
-                    <p className="text-xs font-medium mt-0.5 text-accent1">{m.equity_percent}%</p>
-                  )}
-                </div>
+                <ChevronDown
+                  size={16}
+                  style={{
+                    color: 'var(--text-secondary)',
+                    transform: expanded === c.name ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.2s',
+                    flexShrink: 0,
+                  }}
+                />
               </div>
-            ))}
+
+              <div className="flex items-center gap-2">
+                {c.status === 'Gegründet' ? (
+                  <CheckCircle size={13} style={{ color: c.statusColor }} />
+                ) : (
+                  <Clock size={13} style={{ color: c.statusColor }} />
+                )}
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                  style={{ background: c.statusBg, color: c.statusColor }}>
+                  {c.status}
+                </span>
+              </div>
+
+              {expanded === c.name && (
+                <div className="mt-3 pt-3 border-t text-xs" style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}>
+                  <p>Sitz: Deutschland · Rechtsform: GmbH · Gründungsjahr: 2025</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Code Ara GmbH — Entwickler */}
+        <div className="w-full rounded-[18px] p-5 border mb-8"
+          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: 'rgba(45,106,79,0.12)' }}>
+              <Code2 size={18} style={{ color: '#2d6a4f' }} />
+            </div>
+            <div>
+              <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Code Ara GmbH</p>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Strategischer Entwicklungspartner · 10% Anteile</p>
+            </div>
+            <span className="ml-auto text-xs font-semibold px-2.5 py-1 rounded-full"
+              style={{ background: 'rgba(45,106,79,0.12)', color: '#2d6a4f' }}>
+              Entwickler
+            </span>
           </div>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+            Code Ara GmbH ist der externe Software-Entwicklungspartner der Bautech Holding. Das Unternehmen verantwortet die technische Umsetzung der Plattform und hält 10% Unternehmensanteile als strategische Beteiligung.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Organigramm ── */}
+      <h2 className="font-bold text-base mb-5" style={{ color: 'var(--text-primary)' }}>Gründerteam & Beteiligung</h2>
+      <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[...founders, ...external].map(m => (
+            <div key={m.id} className="flex flex-col items-center text-center gap-2">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0"
+                style={{ background: m.color }}>
+                {m.initials}
+              </div>
+              <div>
+                <p className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
+                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{m.role}</p>
+                {m.equity_percent > 0 && (
+                  <p className="text-xs font-semibold mt-1" style={{ color: '#063D3E' }}>{m.equity_percent}%</p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

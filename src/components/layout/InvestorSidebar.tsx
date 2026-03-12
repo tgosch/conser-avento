@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FileText, MessageSquare, Users, Rocket, Activity, Building2, Settings, X, LogOut } from 'lucide-react'
+import { LayoutDashboard, FileText, MessageSquare, Users, Rocket, Building2, Settings, X, LogOut, Handshake } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.png'
 import conserLogo from '../../assets/conser_kachel.png'
@@ -9,8 +9,8 @@ const nav = [
   { to: '/investor/plans', icon: FileText, label: 'Pläne' },
   { to: '/investor/chat', icon: MessageSquare, label: 'Chat' },
   { to: '/investor/team', icon: Users, label: 'Gründer' },
-  { to: '/investor/future', icon: Rocket, label: 'Zukunft' },
-  { to: '/investor/status', icon: Activity, label: 'Stand' },
+  { to: '/investor/future', icon: Rocket, label: 'Zukunft & Stand' },
+  { to: '/investor/partners', icon: Handshake, label: 'Partner' },
   { to: '/investor/structure', icon: Building2, label: 'Konstrukt' },
   { to: '/investor/settings', icon: Settings, label: 'Einstellungen' },
 ]

@@ -181,9 +181,51 @@ export default function OwnerDocs() {
     }
   }
 
+  /* ── Upload Validation ──────────────────────────────────────────── */
+  const ALLOWED_TYPES = [
+    'application/pdf',
+    'image/png', 'image/jpeg', 'image/gif', 'image/webp',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ]
+  const ALLOWED_EXTENSIONS = ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'pptx', 'ppt', 'docx', 'xlsx']
+  const MAX_FILE_SIZE_MB = 50
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+  const validateFile = (file: File): string | null => {
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+      return `Dateityp ".${ext}" ist nicht erlaubt. Erlaubt: ${ALLOWED_EXTENSIONS.join(', ')}`
+    }
+    if (!ALLOWED_TYPES.includes(file.type) && file.type !== '') {
+      return `MIME-Typ "${file.type}" wird nicht akzeptiert.`
+    }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      return `Datei ist zu groß (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum: ${MAX_FILE_SIZE_MB} MB`
+    }
+    if (file.size === 0) {
+      return 'Datei ist leer und kann nicht hochgeladen werden.'
+    }
+    // Einfacher Magic-Bytes-Check für PDFs
+    if (ext === 'pdf' && file.type && !file.type.includes('pdf')) {
+      return 'Datei hat die Endung .pdf, aber keinen gültigen PDF-Typ.'
+    }
+    return null
+  }
+
   /* ── Upload ─────────────────────────────────────────────────────── */
   const uploadFile = async (file: File) => {
     if (uploading) return
+
+    // Validierung vor Upload
+    const validationError = validateFile(file)
+    if (validationError) {
+      toast.error(`Upload abgelehnt: ${validationError}`)
+      return
+    }
+
     setUploading(true)
     startProgress()
 

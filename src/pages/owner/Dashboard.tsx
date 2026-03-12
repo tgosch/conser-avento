@@ -9,7 +9,7 @@ export default function OwnerDashboard() {
   const [intentCount, setIntentCount] = useState(0)
 
   useEffect(() => {
-    supabase.from('investors').select('*', { count: 'exact', head: true }).then(({ count }) => { if (count) setInvestorCount(count) })
+    supabase.from('investors').select('*', { count: 'exact', head: true }).then(({ count }) => { if (count !== null) setInvestorCount(20 + count) })
     supabase.from('updates').select('*').order('created_at', { ascending: false }).limit(5).then(({ data }) => { if (data) setUpdates(data) })
     supabase.from('documents').select('id, name, file_path, category').order('id', { ascending: false }).limit(5).then(({ data }) => { if (data) setDocs(data) })
     supabase.from('investment_intents').select('*', { count: 'exact', head: true }).then(({ count }) => { if (count) setIntentCount(count) })

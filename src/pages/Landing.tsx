@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 import NdaModal from '../components/auth/NdaModal'
 import PrivacyModal from '../components/auth/PrivacyModal'
+import ImpressumModal from '../components/auth/ImpressumModal'
 import aventoLogo from '../assets/avento_kachel.png'
 import conserLogo from '../assets/conser_kachel.png'
 
@@ -77,6 +78,7 @@ export default function Landing() {
   // Modals
   const [showNda, setShowNda] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
+  const [showImpressum, setShowImpressum] = useState(false)
   const loginAttemptsRef = useRef(0)
   const lockoutUntilRef = useRef(0)
 
@@ -433,19 +435,20 @@ export default function Landing() {
         {/* ── FOOTER ── */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t text-sm"
           style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
             <button onClick={() => setShowPrivacy(true)} className="hover:text-accent1 transition">Datenschutz</button>
             <span>·</span>
             <button onClick={() => setShowNda(true)} className="hover:text-accent1 transition">NDA</button>
             <span>·</span>
-            <a href="mailto:torben@avento-conser.de" className="hover:text-accent1 transition">Impressum</a>
+            <button onClick={() => setShowImpressum(true)} className="hover:text-accent1 transition">Impressum</button>
           </div>
-          <span>© 2025 Avento &amp; Conser</span>
+          <span>© 2025 Bautech Holding · Avento &amp; Conser</span>
         </div>
       </div>
 
       {showNda && <NdaModal onClose={() => setShowNda(false)} />}
       {showPrivacy && <PrivacyModal onClose={() => setShowPrivacy(false)} />}
+      {showImpressum && <ImpressumModal onClose={() => setShowImpressum(false)} />}
     </div>
   )
 }

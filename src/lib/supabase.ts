@@ -96,3 +96,18 @@ export interface TeamMember {
   visible: boolean
   order_index: number
 }
+
+export interface Partner {
+  id: string
+  name: string
+  type: 'production' | 'customer'
+  category: string
+  description: string
+  status: 'negotiating' | 'active' | 'beta' | 'partner'
+  logo_path: string | null
+  initials: string
+  color: string
+  visible: boolean
+  order_index: number
+  created_at: string
+}

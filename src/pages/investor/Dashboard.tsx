@@ -16,7 +16,7 @@ export default function InvestorDashboard() {
     supabase.from('updates').select('id, title, content, category, created_at').order('created_at', { ascending: false }).limit(3)
       .then(({ data }) => { if (data) setUpdates(data) })
     supabase.from('investors').select('id', { count: 'exact', head: true })
-      .then(({ count }) => { if (count !== null) setInvestorCount(count) })
+      .then(({ count }) => { if (count !== null) setInvestorCount(20 + count) })
   }, [])
 
   const categoryColor: Record<string, string> = {

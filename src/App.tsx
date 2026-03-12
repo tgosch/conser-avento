@@ -17,11 +17,13 @@ import InvestorFuture from './pages/investor/Future'
 import InvestorStatus from './pages/investor/Status'
 import InvestorStructure from './pages/investor/Structure'
 import InvestorSettings from './pages/investor/Settings'
+import InvestorPartners from './pages/investor/Partners'
 
 import OwnerDashboard from './pages/owner/Dashboard'
 import OwnerDocs from './pages/owner/Docs'
 import OwnerChat from './pages/owner/Chat'
 import OwnerUpdates from './pages/owner/Updates'
+import OwnerPartners from './pages/owner/Partners'
 import OwnerFuture from './pages/owner/Future'
 import OwnerPhasePlan from './pages/owner/PhasePlan'
 import OwnerSettings from './pages/owner/Settings'
@@ -64,6 +66,7 @@ function AppRoutes() {
         <Route path="future" element={<InvestorFuture />} />
         <Route path="status" element={<InvestorStatus />} />
         <Route path="structure" element={<InvestorStructure />} />
+        <Route path="partners" element={<InvestorPartners />} />
         <Route path="settings" element={<InvestorSettings />} />
       </Route>
 
@@ -73,6 +76,7 @@ function AppRoutes() {
         <Route path="docs" element={<OwnerDocs />} />
         <Route path="chat" element={<OwnerChat />} />
         <Route path="updates" element={<OwnerUpdates />} />
+        <Route path="partners" element={<OwnerPartners />} />
         <Route path="future" element={<OwnerFuture />} />
         <Route path="phases" element={<OwnerPhasePlan />} />
         <Route path="settings" element={<OwnerSettings />} />

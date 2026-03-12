@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronRight, ChevronLeft, Maximize2, Minimize2 } from 'lucide-react'
-import { supabase, supabaseAdmin } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 
 const planOrder = [
@@ -114,7 +114,7 @@ export default function InvestorPlanDetail() {
 
         {(() => {
           const url = doc?.file_path
-            ? supabaseAdmin.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
+            ? supabase.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
             : null
           return loading ? (
             <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>

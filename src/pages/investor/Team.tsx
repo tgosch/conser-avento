@@ -13,7 +13,8 @@ export default function InvestorTeam() {
           setMembers([
             { id: '1', name: 'Torben Gosch', role: 'CEO · Chief Executive Officer', bio: 'Gründer und Geschäftsführer. Verantwortet Strategie, Partnerschaften und Investorenbeziehungen.', initials: 'TG', color: '#063D3E', type: 'founder', equity_percent: 0, visible: true, order_index: 1 },
             { id: '2', name: 'Martin Groote', role: 'CTO · Chief Technology Officer', bio: 'Technologieleiter und Mitgründer. Verantwortet Produktentwicklung und technische Innovation.', initials: 'MG', color: '#D4662A', type: 'founder', equity_percent: 0, visible: true, order_index: 2 },
-            { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 3 },
+            { id: '4', name: 'Paul Bockting', role: 'CDO · Chief Design Officer', bio: 'UI/UX-Verantwortlicher und Mitgründer. Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder', equity_percent: 0, visible: true, order_index: 3 },
+            { id: '3', name: 'Code Ara GmbH', role: 'Externer Entwicklungspartner', bio: 'Strategischer Technologiepartner. Verantwortet externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4 },
           ])
         }
       })
