@@ -92,25 +92,21 @@ export default function Landing() {
     }
     setLoginLoading(true)
     try {
-      // Admin-Check (zeitkonstanter Vergleich via konstante Laufzeit)
-      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL ?? ''
-      const adminPwd = import.meta.env.VITE_ADMIN_PASSWORD ?? ''
-      const isAdmin = loginEmail === adminEmail && loginPassword === adminPwd && adminEmail !== ''
-      if (isAdmin) {
-        loginAttemptsRef.current = 0
-        // Set admin session FIRST (before Supabase auth fires onAuthStateChange)
-        loginAdmin({ isAdmin: true, email: loginEmail })
-        // Also authenticate with Supabase so storage & DB operations work
-        // (runs in background – admin portal opens immediately)
-        supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword })
-          .catch(() => {}) // If no Supabase account exists yet, storage/DB will fail with RLS error
-        navigate('/owner/dashboard')
-        return
-      }
-      const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password: loginPassword,
+      })
       if (error) throw error
       loginAttemptsRef.current = 0
-      navigate('/investor/dashboard')
+
+      // Admin-Erkennung über app_metadata (gesetzt via Supabase Dashboard/SQL — nie im Bundle)
+      const isAdmin = data.user?.app_metadata?.is_admin === true
+      if (isAdmin) {
+        loginAdmin({ isAdmin: true, email: loginEmail })
+        navigate('/owner/dashboard')
+      } else {
+        navigate('/investor/dashboard')
+      }
     } catch (err: unknown) {
       loginAttemptsRef.current += 1
       if (loginAttemptsRef.current >= 5) {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { supabase, supabaseAdmin } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { TeamMember } from '../../lib/supabase'
 import { Upload, Trash2, X } from 'lucide-react'
 import { toast } from 'react-toastify'
@@ -31,11 +31,11 @@ function MemberPhoto({ member, onUploaded }: { member: TeamMember; onUploaded: (
     setUploading(true)
     try {
       const path = `${member.id}.${ext}`
-      const { error: upErr } = await supabaseAdmin.storage
+      const { error: upErr } = await supabase.storage
         .from('team-photos')
         .upload(path, file, { upsert: true, contentType: file.type })
       if (upErr) throw upErr
-      const { error: dbErr } = await supabaseAdmin
+      const { error: dbErr } = await supabase
         .from('team_members')
         .update({ photo_path: path })
         .eq('id', member.id)
@@ -53,8 +53,8 @@ function MemberPhoto({ member, onUploaded }: { member: TeamMember; onUploaded: (
     if (!member.photo_path) return
     setUploading(true)
     try {
-      await supabaseAdmin.storage.from('team-photos').remove([member.photo_path])
-      const { error } = await supabaseAdmin
+      await supabase.storage.from('team-photos').remove([member.photo_path])
+      const { error } = await supabase
         .from('team_members')
         .update({ photo_path: null })
         .eq('id', member.id)
@@ -126,7 +126,7 @@ export default function OwnerTeam() {
 
   const load = () => {
     setLoading(true)
-    supabaseAdmin.from('team_members').select('*').order('order_index')
+    supabase.from('team_members').select('*').order('order_index')
       .then(({ data }) => {
         setMembers((data as TeamMember[]) ?? [])
         setLoading(false)
@@ -142,7 +142,7 @@ export default function OwnerTeam() {
       return
     }
     try {
-      const { error } = await supabaseAdmin.from('team_members').insert([{
+      const { error } = await supabase.from('team_members').insert([{
         name: form.name.trim(),
         role: form.role.trim(),
         bio: form.bio.trim() || null,
@@ -164,7 +164,7 @@ export default function OwnerTeam() {
   }
 
   const toggleVisible = async (member: TeamMember) => {
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from('team_members')
       .update({ visible: !member.visible })
       .eq('id', member.id)
@@ -174,7 +174,7 @@ export default function OwnerTeam() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Teammitglied wirklich löschen?')) return
-    const { error } = await supabaseAdmin.from('team_members').delete().eq('id', id)
+    const { error } = await supabase.from('team_members').delete().eq('id', id)
     if (error) toast.error(error.message)
     else { toast.success('Gelöscht'); load() }
   }

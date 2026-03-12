@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, type ChangeEvent } from 'react'
-import { supabaseAdmin } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { Partner } from '../../lib/supabase'
 import { toast } from 'react-toastify'
 import {
@@ -41,7 +41,7 @@ function validateLogo(file: File): string | null {
 
 function getLogoUrl(logoPath: string | null): string | null {
   if (!logoPath) return null
-  const { data } = supabaseAdmin.storage.from('partner-logos').getPublicUrl(logoPath)
+  const { data } = supabase.storage.from('partner-logos').getPublicUrl(logoPath)
   return data.publicUrl
 }
 
@@ -58,7 +58,7 @@ export default function OwnerPartners() {
 
   const fetchPartners = async () => {
     setLoading(true)
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from('partners')
       .select('*')
       .order('type')
@@ -84,15 +84,15 @@ export default function OwnerPartners() {
     setSaving(true)
     try {
       // Ensure bucket exists
-      const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+      const { data: buckets } = await supabase.storage.listBuckets()
       if (!buckets?.find(b => b.name === 'partner-logos')) {
-        await supabaseAdmin.storage.createBucket('partner-logos', {
+        await supabase.storage.createBucket('partner-logos', {
           public: true,
           fileSizeLimit: MAX_LOGO_SIZE_BYTES,
           allowedMimeTypes: ALLOWED_LOGO_TYPES,
         })
       }
-      const { error } = await supabaseAdmin.from('partners').insert([{
+      const { error } = await supabase.from('partners').insert([{
         name: form.name.trim(),
         type: form.type,
         category: form.category.trim(),
@@ -125,9 +125,9 @@ export default function OwnerPartners() {
     setUploadingLogoFor(partnerId)
     try {
       // Ensure bucket
-      const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+      const { data: buckets } = await supabase.storage.listBuckets()
       if (!buckets?.find(b => b.name === 'partner-logos')) {
-        await supabaseAdmin.storage.createBucket('partner-logos', {
+        await supabase.storage.createBucket('partner-logos', {
           public: true,
           fileSizeLimit: MAX_LOGO_SIZE_BYTES,
           allowedMimeTypes: ALLOWED_LOGO_TYPES,
@@ -140,20 +140,20 @@ export default function OwnerPartners() {
       // Delete old logo if exists
       const existing = partners.find(p => p.id === partnerId)
       if (existing?.logo_path) {
-        await supabaseAdmin.storage.from('partner-logos').remove([existing.logo_path])
+        await supabase.storage.from('partner-logos').remove([existing.logo_path])
       }
 
-      const { error: storageErr } = await supabaseAdmin.storage
+      const { error: storageErr } = await supabase.storage
         .from('partner-logos')
         .upload(filePath, file, { upsert: true, contentType: file.type || `image/${ext}` })
       if (storageErr) throw new Error(`Storage: ${storageErr.message}`)
 
-      const { error: dbErr } = await supabaseAdmin
+      const { error: dbErr } = await supabase
         .from('partners')
         .update({ logo_path: filePath })
         .eq('id', partnerId)
       if (dbErr) {
-        await supabaseAdmin.storage.from('partner-logos').remove([filePath])
+        await supabase.storage.from('partner-logos').remove([filePath])
         throw new Error(`DB: ${dbErr.message}`)
       }
 
@@ -171,15 +171,15 @@ export default function OwnerPartners() {
   const handleDelete = async (partner: Partner) => {
     if (!confirm(`"${partner.name}" wirklich löschen?`)) return
     if (partner.logo_path) {
-      await supabaseAdmin.storage.from('partner-logos').remove([partner.logo_path])
+      await supabase.storage.from('partner-logos').remove([partner.logo_path])
     }
-    const { error } = await supabaseAdmin.from('partners').delete().eq('id', partner.id)
+    const { error } = await supabase.from('partners').delete().eq('id', partner.id)
     if (error) toast.error(error.message)
     else { toast.success('Partner gelöscht'); fetchPartners() }
   }
 
   const handleToggleVisible = async (partner: Partner) => {
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from('partners')
       .update({ visible: !partner.visible })
       .eq('id', partner.id)

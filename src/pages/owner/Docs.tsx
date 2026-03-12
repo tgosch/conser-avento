@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import type { DragEvent, ChangeEvent } from 'react'
-import { supabase, supabaseAdmin } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 import {
   Upload, Trash2, FileText, Image, Presentation,
@@ -45,7 +45,7 @@ function getFileStyle(name?: string) {
 }
 
 function getPublicUrl(filePath: string) {
-  const { data } = supabaseAdmin.storage.from('documents').getPublicUrl(filePath)
+  const { data } = supabase.storage.from('documents').getPublicUrl(filePath)
   return data.publicUrl
 }
 
@@ -145,7 +145,7 @@ export default function OwnerDocs() {
   const fetchDocs = async () => {
     setLoading(true)
     setFetchError(null)
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from('documents')
       .select('id, name, file_path, category, owner_id')
       .order('id', { ascending: false })
@@ -236,9 +236,9 @@ export default function OwnerDocs() {
       const ownerId: string | null = session?.user?.id ?? null
 
       // 2 — Ensure bucket exists
-      const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+      const { data: buckets } = await supabase.storage.listBuckets()
       if (!buckets?.find(b => b.name === 'documents')) {
-        const { error: bucketErr } = await supabaseAdmin.storage
+        const { error: bucketErr } = await supabase.storage
           .createBucket('documents', { public: true, fileSizeLimit: 1073741824 }) // 1 GB
         if (bucketErr) throw new Error(`Storage: Bucket konnte nicht erstellt werden – ${bucketErr.message}`)
       }
@@ -249,7 +249,7 @@ export default function OwnerDocs() {
       const filePath = `${section.category}/${Date.now()}-${safeName}`
 
       // Versuche Upload mit korrektem Content-Type
-      let storageErr = (await supabaseAdmin.storage
+      let storageErr = (await supabase.storage
         .from('documents')
         .upload(filePath, file, { upsert: true, contentType: getContentType(file) })).error
 
@@ -257,7 +257,7 @@ export default function OwnerDocs() {
       if (storageErr) {
         const buf = await file.arrayBuffer()
         const blob = new Blob([buf])
-        const result2 = await supabaseAdmin.storage
+        const result2 = await supabase.storage
           .from('documents')
           .upload(filePath, blob, { upsert: true, contentType: getContentType(file) })
         storageErr = result2.error
@@ -273,12 +273,12 @@ export default function OwnerDocs() {
       }
       if (ownerId) insertRow.owner_id = ownerId
 
-      const { error: dbErr } = await supabaseAdmin
+      const { error: dbErr } = await supabase
         .from('documents')
         .insert(insertRow)
       if (dbErr) {
         // Storage-Upload rückgängig machen
-        await supabaseAdmin.storage.from('documents').remove([filePath])
+        await supabase.storage.from('documents').remove([filePath])
         throw new Error(`Datenbank: ${dbErr.message}`)
       }
 
@@ -302,10 +302,10 @@ export default function OwnerDocs() {
   const handleDelete = async (doc: Document) => {
     if (!confirm(`"${doc.name ?? 'Dokument'}" wirklich löschen?`)) return
     if (doc.file_path) {
-      const { error: sErr } = await supabaseAdmin.storage.from('documents').remove([doc.file_path])
+      const { error: sErr } = await supabase.storage.from('documents').remove([doc.file_path])
       if (sErr) { toast.error(`Storage: ${sErr.message}`); return }
     }
-    const { error: dErr } = await supabaseAdmin.from('documents').delete().eq('id', doc.id)
+    const { error: dErr } = await supabase.from('documents').delete().eq('id', doc.id)
     if (dErr) toast.error(`Datenbank: ${dErr.message}`)
     else { toast.success('Gelöscht'); fetchDocs() }
   }
