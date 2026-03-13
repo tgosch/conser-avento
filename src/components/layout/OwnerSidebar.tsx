@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, GitBranch, Settings, X, LogOut, ShieldCheck, Handshake, Users } from 'lucide-react'
+import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, GitBranch, Settings, X, LogOut, ShieldCheck, Handshake, Users, LayoutGrid } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.png'
 import conserLogo from '../../assets/conser_kachel.png'
@@ -14,6 +14,7 @@ const nav = [
   { to: '/owner/future', icon: Rocket, label: 'Zukunft' },
   { to: '/owner/phases', icon: GitBranch, label: 'PhasenPlan' },
   { to: '/owner/settings', icon: Settings, label: 'Einstellungen' },
+  { to: '/owner/product',  icon: LayoutGrid, label: 'Produkt-Übersicht' },
 ]
 
 interface Props { open: boolean; onClose: () => void }

@@ -28,6 +28,7 @@ import OwnerFuture from './pages/owner/Future'
 import OwnerPhasePlan from './pages/owner/PhasePlan'
 import OwnerSettings from './pages/owner/Settings'
 import OwnerTeam from './pages/owner/Team'
+import OwnerProductOverview from './pages/owner/ProductOverview'
 
 function Spinner() {
   return (
@@ -82,6 +83,7 @@ function AppRoutes() {
         <Route path="phases" element={<OwnerPhasePlan />} />
         <Route path="team" element={<OwnerTeam />} />
         <Route path="settings" element={<OwnerSettings />} />
+        <Route path="product" element={<OwnerProductOverview />} />
       </Route>
 
       {/* Legacy redirects */}
