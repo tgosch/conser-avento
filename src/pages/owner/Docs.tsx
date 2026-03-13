@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import type { DragEvent, ChangeEvent } from 'react'
-import { supabaseAdmin as supabase } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { Document } from '../../lib/supabase'
 import {
   Upload, Trash2, FileText, Image, Presentation,
@@ -235,15 +235,7 @@ export default function OwnerDocs() {
       const { data: { session } } = await supabase.auth.getSession()
       const ownerId: string | null = session?.user?.id ?? null
 
-      // 2 — Ensure bucket exists
-      const { data: buckets } = await supabase.storage.listBuckets()
-      if (!buckets?.find(b => b.name === 'documents')) {
-        const { error: bucketErr } = await supabase.storage
-          .createBucket('documents', { public: true, fileSizeLimit: 1073741824 }) // 1 GB
-        if (bucketErr) throw new Error(`Storage: Bucket konnte nicht erstellt werden – ${bucketErr.message}`)
-      }
-
-      // 3 — Upload file with unique name (timestamp-originalname)
+      // 2 — Upload file with unique name (timestamp-originalname)
       const section = SECTIONS.find(s => s.value === selectedSection)!
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
       const filePath = `${section.category}/${Date.now()}-${safeName}`
@@ -265,7 +257,7 @@ export default function OwnerDocs() {
 
       if (storageErr) throw new Error(`Storage-Fehler: ${storageErr.message} — Bitte führe fix_documents_bucket.sql im Supabase SQL-Editor aus.`)
 
-      // 4 — Insert DB record with confirmed columns
+      // 3 — Insert DB record with confirmed columns
       const insertRow: Record<string, unknown> = {
         name: file.name,
         file_path: filePath,
@@ -282,7 +274,7 @@ export default function OwnerDocs() {
         throw new Error(`Datenbank: ${dbErr.message}`)
       }
 
-      // 5 — Done
+      // 4 — Done
       finishProgress(true)
       toast.success('✅ Dokument erfolgreich hochgeladen')
       fetchDocs()

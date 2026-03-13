@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, type ChangeEvent } from 'react'
-import { supabaseAdmin as supabase } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import type { Partner } from '../../lib/supabase'
 import { toast } from 'react-toastify'
 import {
@@ -83,15 +83,6 @@ export default function OwnerPartners() {
     if (!form.initials.trim()) { toast.error('Kürzel ist Pflichtfeld'); return }
     setSaving(true)
     try {
-      // Ensure bucket exists
-      const { data: buckets } = await supabase.storage.listBuckets()
-      if (!buckets?.find(b => b.name === 'partner-logos')) {
-        await supabase.storage.createBucket('partner-logos', {
-          public: true,
-          fileSizeLimit: MAX_LOGO_SIZE_BYTES,
-          allowedMimeTypes: ALLOWED_LOGO_TYPES,
-        })
-      }
       const { error } = await supabase.from('partners').insert([{
         name: form.name.trim(),
         type: form.type,
@@ -124,15 +115,6 @@ export default function OwnerPartners() {
 
     setUploadingLogoFor(partnerId)
     try {
-      // Ensure bucket
-      const { data: buckets } = await supabase.storage.listBuckets()
-      if (!buckets?.find(b => b.name === 'partner-logos')) {
-        await supabase.storage.createBucket('partner-logos', {
-          public: true,
-          fileSizeLimit: MAX_LOGO_SIZE_BYTES,
-          allowedMimeTypes: ALLOWED_LOGO_TYPES,
-        })
-      }
       const ext = file.name.split('.').pop()?.toLowerCase() ?? 'png'
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
       const filePath = `${partnerId}/${Date.now()}-${safeName}`

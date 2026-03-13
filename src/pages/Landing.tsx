@@ -75,13 +75,15 @@ export default function Landing() {
     const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase()
     const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD
 
-    // ── Admin-Login: lokale Prüfung gegen .env — unabhängig von Supabase Auth ──
+    // ── Admin-Login: lokale Prüfung gegen .env ──
     if (
       adminEmail &&
       adminPassword &&
       loginEmail.trim().toLowerCase() === adminEmail &&
       loginPassword === adminPassword
     ) {
+      // Supabase-Session erstellen damit auth.is_admin() = true für Storage/DB-RLS
+      await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword }).catch(() => {})
       loginAdmin({ isAdmin: true, email: loginEmail.trim() })
       navigate('/owner/dashboard')
       setLoginLoading(false)
