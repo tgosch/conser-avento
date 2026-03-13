@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom'
 import { LayoutDashboard, FileText, MessageSquare, Activity, MoreHorizontal } from 'lucide-react'
 
 const mainNav = [
-  { to: '/investor/dashboard', icon: LayoutDashboard, label: 'Home', exact: true },
+  { to: '/investor/dashboard', icon: LayoutDashboard, label: 'Home',   exact: true },
   { to: '/investor/plans',     icon: FileText,         label: 'Pläne' },
   { to: '/investor/chat',      icon: MessageSquare,    label: 'Chat' },
-  { to: '/investor/status',    icon: Activity,         label: 'Stand' },
+  { to: '/investor/status',    icon: Activity,         label: 'Status' },
 ]
 
 interface Props { onMoreClick: () => void }
@@ -17,26 +17,30 @@ function NavItem({ to, icon: Icon, label, exact }: {
     <NavLink
       to={to}
       end={exact}
-      className="flex-1 flex flex-col items-center justify-center gap-1 min-w-0 py-2"
+      className="flex-1 flex flex-col items-center justify-center gap-[3px] min-w-0 py-2"
     >
       {({ isActive }) => (
         <>
+          <Icon
+            size={22}
+            strokeWidth={isActive ? 2.4 : 1.7}
+            style={{ color: isActive ? '#063D3E' : 'var(--text-tertiary)' }}
+          />
           <span
-            className="flex items-center justify-center w-12 h-7 rounded-full transition-all duration-200"
-            style={{ background: isActive ? 'rgba(6,61,62,0.12)' : 'transparent' }}
-          >
-            <Icon
-              size={20}
-              strokeWidth={isActive ? 2.5 : 1.8}
-              style={{ color: isActive ? '#063D3E' : 'var(--text-secondary)' }}
-            />
-          </span>
-          <span
-            className="text-[10px] font-semibold leading-none"
-            style={{ color: isActive ? '#063D3E' : 'var(--text-secondary)' }}
+            className="text-[10px] leading-none"
+            style={{
+              color: isActive ? '#063D3E' : 'var(--text-tertiary)',
+              fontWeight: isActive ? 700 : 500,
+            }}
           >
             {label}
           </span>
+          {isActive && (
+            <span
+              className="absolute bottom-[env(safe-area-inset-bottom,0px)] h-[2.5px] w-8 rounded-full"
+              style={{ background: '#063D3E' }}
+            />
+          )}
         </>
       )}
     </NavLink>
@@ -46,11 +50,11 @@ function NavItem({ to, icon: Icon, label, exact }: {
 export default function InvestorBottomNav({ onMoreClick }: Props) {
   return (
     <nav
-      className="fixed left-0 right-0 bottom-0 z-30 lg:hidden flex items-stretch border-t"
+      className="fixed left-0 right-0 bottom-0 z-30 lg:hidden flex items-stretch border-t relative"
       style={{
         background: 'var(--surface)',
         borderColor: 'var(--border)',
-        boxShadow: '0 -1px 0 var(--border), 0 -4px 20px rgba(0,0,0,0.06)',
+        boxShadow: '0 -1px 0 var(--border), 0 -8px 24px rgba(0,0,0,0.06)',
         height: 'calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
@@ -58,12 +62,10 @@ export default function InvestorBottomNav({ onMoreClick }: Props) {
       {mainNav.map(item => <NavItem key={item.to} {...item} />)}
       <button
         onClick={onMoreClick}
-        className="flex-1 flex flex-col items-center justify-center gap-1 min-w-0 py-2"
+        className="flex-1 flex flex-col items-center justify-center gap-[3px] min-w-0 py-2"
       >
-        <span className="flex items-center justify-center w-12 h-7 rounded-full">
-          <MoreHorizontal size={20} strokeWidth={1.8} style={{ color: 'var(--text-secondary)' }} />
-        </span>
-        <span className="text-[10px] font-semibold leading-none" style={{ color: 'var(--text-secondary)' }}>
+        <MoreHorizontal size={22} strokeWidth={1.7} style={{ color: 'var(--text-tertiary)' }} />
+        <span className="text-[10px] font-medium leading-none" style={{ color: 'var(--text-tertiary)' }}>
           Mehr
         </span>
       </button>
