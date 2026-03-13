@@ -105,7 +105,7 @@ export default function Landing() {
         loginAttemptsRef.current = 0
         toast.error('Zu viele Fehlversuche. Bitte 60s warten.')
       } else {
-        toast.error('E-Mail oder Passwort falsch.')
+        toast.error('Zugangsdaten ungültig.')
       }
     } finally {
       setLoginLoading(false)

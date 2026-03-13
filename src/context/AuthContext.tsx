@@ -35,17 +35,16 @@ const AuthContext = createContext<AuthContextType>({
 
 function readAdminSession(): User | null {
   try {
-    const raw = localStorage.getItem(ADMIN_SESSION_KEY)
+    const raw = sessionStorage.getItem(ADMIN_SESSION_KEY)
     if (!raw) return null
     const parsed: StoredAdminSession = JSON.parse(raw)
-    // Session abgelaufen?
     if (!parsed.isAdmin || !parsed.expiresAt || Date.now() > parsed.expiresAt) {
-      localStorage.removeItem(ADMIN_SESSION_KEY)
+      sessionStorage.removeItem(ADMIN_SESSION_KEY)
       return null
     }
     return { isAdmin: true, email: parsed.email }
   } catch {
-    localStorage.removeItem(ADMIN_SESSION_KEY)
+    sessionStorage.removeItem(ADMIN_SESSION_KEY)
     return null
   }
 }
@@ -109,12 +108,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email: u.email ?? '',
       expiresAt: Date.now() + ADMIN_SESSION_DURATION_MS,
     }
-    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session))
+    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session))
     setUser(u)
   }
 
   const logout = async () => {
-    localStorage.removeItem(ADMIN_SESSION_KEY)
+    sessionStorage.removeItem(ADMIN_SESSION_KEY)
     await supabase.auth.signOut()
     setUser(null)
   }
