@@ -72,32 +72,23 @@ export default function Landing() {
     }
     setLoginLoading(true)
 
-    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase()
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD
-
-    // ── Admin-Login: lokale Prüfung gegen .env ──
-    if (
-      adminEmail &&
-      adminPassword &&
-      loginEmail.trim().toLowerCase() === adminEmail &&
-      loginPassword === adminPassword
-    ) {
-      loginAdmin({ isAdmin: true, email: loginEmail.trim() })
-      navigate('/owner/dashboard')
-      setLoginLoading(false)
-      return
-    }
-
-    // ── Investor-Login: via Supabase Auth ──
+    // ── Login via Supabase — Admin-Flag kommt aus app_metadata.is_admin ──
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
+        email: loginEmail.trim(),
         password: loginPassword,
       })
       if (error) throw error
       loginAttemptsRef.current = 0
-      await loginInvestor(data.user.id, data.user.email ?? loginEmail)
-      navigate('/investor/dashboard')
+
+      const isAdmin = data.user.app_metadata?.is_admin === true
+      if (isAdmin) {
+        loginAdmin({ isAdmin: true, email: data.user.email ?? loginEmail.trim() })
+        navigate('/owner/dashboard')
+      } else {
+        await loginInvestor(data.user.id, data.user.email ?? loginEmail.trim())
+        navigate('/investor/dashboard')
+      }
     } catch (err: unknown) {
       loginAttemptsRef.current += 1
       if (loginAttemptsRef.current >= 5) {

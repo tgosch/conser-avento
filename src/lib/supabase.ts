@@ -5,14 +5,9 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
-// Owner-Portal Client: nutzt Service-Key wenn gesetzt (bypassed RLS),
-// sonst Anon-Key mit geteilter Auth-Session (funktioniert via open storage policies).
-const serviceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY
-export const supabaseAdmin = serviceKey
-  ? createClient(import.meta.env.VITE_SUPABASE_URL, serviceKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    })
-  : supabase
+// supabaseAdmin: Alias für supabase — kein Service-Key im Frontend.
+// Admin-Rechte kommen vom Supabase JWT (app_metadata.is_admin).
+export const supabaseAdmin = supabase
 
 export interface Investor {
   id: string

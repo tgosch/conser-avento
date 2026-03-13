@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import type { Session } from '@supabase/supabase-js'
 import type { Investor } from '../lib/supabase'
 
 interface User {
@@ -8,22 +9,13 @@ interface User {
   email?: string
 }
 
-interface StoredAdminSession {
-  isAdmin: true
-  email: string
-  expiresAt: number  // Unix ms
-}
-
 interface AuthContextType {
   user: User | null
   loading: boolean
-  loginAdmin: (user: User) => void
+  loginAdmin: (u: User) => void
   loginInvestor: (userId: string, email: string) => Promise<void>
   logout: () => Promise<void>
 }
-
-const ADMIN_SESSION_DURATION_MS = 8 * 60 * 60 * 1000 // 8 Stunden
-const ADMIN_SESSION_KEY = 'ac_admin_s'
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -33,20 +25,17 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 })
 
-function readAdminSession(): User | null {
-  try {
-    const raw = sessionStorage.getItem(ADMIN_SESSION_KEY)
-    if (!raw) return null
-    const parsed: StoredAdminSession = JSON.parse(raw)
-    if (!parsed.isAdmin || !parsed.expiresAt || Date.now() > parsed.expiresAt) {
-      sessionStorage.removeItem(ADMIN_SESSION_KEY)
-      return null
-    }
-    return { isAdmin: true, email: parsed.email }
-  } catch {
-    sessionStorage.removeItem(ADMIN_SESSION_KEY)
-    return null
+async function resolveUser(session: Session): Promise<User> {
+  const isAdmin = session.user.app_metadata?.is_admin === true
+  if (isAdmin) {
+    return { isAdmin: true, email: session.user.email }
   }
+  const { data: inv } = await supabase
+    .from('investors')
+    .select('id, first_name, last_name, email, phone, status, consent, created_at')
+    .eq('id', session.user.id)
+    .maybeSingle()
+  return { investor: inv ?? undefined, isAdmin: false, email: session.user.email }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -54,37 +43,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Admin-Session (mit Expiry-Check)
-    const adminSession = readAdminSession()
-    if (adminSession) {
-      setUser(adminSession)
-      setLoading(false)
-      return
-    }
-
-    // Supabase Auth Session prüfen
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        const { data: inv } = await supabase
-          .from('investors')
-          .select('id, first_name, last_name, email, phone, status, consent, created_at')
-          .eq('id', session.user.id)
-          .maybeSingle()
-        setUser({ investor: inv ?? undefined, isAdmin: false, email: session.user.email })
+        const resolved = await resolveUser(session)
+        setUser(resolved)
       }
       setLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (readAdminSession()) return
-
-      if (event === 'SIGNED_IN' && session?.user) {
-        const { data: inv } = await supabase
-          .from('investors')
-          .select('id, first_name, last_name, email, phone, status, consent, created_at')
-          .eq('id', session.user.id)
-          .maybeSingle()
-        setUser({ investor: inv ?? undefined, isAdmin: false, email: session.user.email })
+      if (event === 'SIGNED_IN' && session) {
+        const resolved = await resolveUser(session)
+        setUser(resolved)
       } else if (event === 'SIGNED_OUT') {
         setUser(null)
       }
@@ -92,6 +62,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => subscription.unsubscribe()
   }, [])
+
+  // Setzt User direkt nach Login (verhindert Race Condition mit Navigate)
+  const loginAdmin = (u: User) => setUser(u)
 
   const loginInvestor = async (userId: string, email: string) => {
     const { data: inv } = await supabase
@@ -102,18 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser({ investor: inv ?? undefined, isAdmin: false, email })
   }
 
-  const loginAdmin = (u: User) => {
-    const session: StoredAdminSession = {
-      isAdmin: true,
-      email: u.email ?? '',
-      expiresAt: Date.now() + ADMIN_SESSION_DURATION_MS,
-    }
-    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session))
-    setUser(u)
-  }
-
   const logout = async () => {
-    sessionStorage.removeItem(ADMIN_SESSION_KEY)
     await supabase.auth.signOut()
     setUser(null)
   }
