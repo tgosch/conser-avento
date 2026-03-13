@@ -38,7 +38,7 @@ function PasswordStrength({ password }: { password: string }) {
 }
 
 export default function Landing() {
-  const { loginAdmin } = useAuth()
+  const { loginAdmin, loginInvestor } = useAuth()
   const navigate = useNavigate()
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const authCardRef = useRef<HTMLDivElement>(null)
@@ -90,12 +90,13 @@ export default function Landing() {
 
     // ── Investor-Login: via Supabase Auth ──
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       })
       if (error) throw error
       loginAttemptsRef.current = 0
+      await loginInvestor(data.user.id, data.user.email ?? loginEmail)
       navigate('/investor/dashboard')
     } catch (err: unknown) {
       loginAttemptsRef.current += 1

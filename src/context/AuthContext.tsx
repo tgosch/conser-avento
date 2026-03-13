@@ -18,6 +18,7 @@ interface AuthContextType {
   user: User | null
   loading: boolean
   loginAdmin: (user: User) => void
+  loginInvestor: (userId: string, email: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   loginAdmin: () => {},
+  loginInvestor: async () => {},
   logout: async () => {},
 })
 
@@ -92,6 +94,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
+  const loginInvestor = async (userId: string, email: string) => {
+    const { data: inv } = await supabase
+      .from('investors')
+      .select('id, first_name, last_name, email, phone, status, consent, created_at')
+      .eq('id', userId)
+      .maybeSingle()
+    setUser({ investor: inv ?? undefined, isAdmin: false, email })
+  }
+
   const loginAdmin = (u: User) => {
     const session: StoredAdminSession = {
       isAdmin: true,
@@ -109,7 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginAdmin, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginAdmin, loginInvestor, logout }}>
       {children}
     </AuthContext.Provider>
   )
