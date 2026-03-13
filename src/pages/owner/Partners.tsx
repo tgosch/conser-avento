@@ -127,7 +127,7 @@ export default function OwnerPartners() {
 
       const { error: storageErr } = await supabase.storage
         .from('partner-logos')
-        .upload(filePath, file, { upsert: true, contentType: file.type || `image/${ext}` })
+        .upload(filePath, file, { contentType: file.type || `image/${ext}` })
       if (storageErr) throw new Error(`Storage: ${storageErr.message}`)
 
       const { error: dbErr } = await supabase

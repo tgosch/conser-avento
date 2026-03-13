@@ -31,9 +31,13 @@ function MemberPhoto({ member, onUploaded }: { member: TeamMember; onUploaded: (
     setUploading(true)
     try {
       const path = `${member.id}.${ext}`
+      // Altes Foto löschen (falls vorhanden) — dann frisch hochladen ohne upsert
+      if (member.photo_path) {
+        await supabase.storage.from('team-photos').remove([member.photo_path])
+      }
       const { error: upErr } = await supabase.storage
         .from('team-photos')
-        .upload(path, file, { upsert: true, contentType: file.type })
+        .upload(path, file, { contentType: file.type })
       if (upErr) throw upErr
       const { error: dbErr } = await supabase
         .from('team_members')
