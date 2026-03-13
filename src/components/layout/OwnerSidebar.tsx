@@ -6,15 +6,17 @@ import conserLogo from '../../assets/conser_kachel.png'
 
 const nav = [
   { to: '/owner/dashboard', icon: LayoutDashboard, label: 'Dashboard', exact: true },
-  { to: '/owner/docs', icon: FolderOpen, label: 'Pläne' },
-  { to: '/owner/chat', icon: MessageSquare, label: 'Chat' },
-  { to: '/owner/updates', icon: Bell, label: 'Updates' },
-  { to: '/owner/partners', icon: Handshake, label: 'Partner' },
-  { to: '/owner/team', icon: Users, label: 'Team' },
-  { to: '/owner/future', icon: Rocket, label: 'Zukunft' },
-  { to: '/owner/phases', icon: GitBranch, label: 'PhasenPlan' },
-  { to: '/owner/settings', icon: Settings, label: 'Einstellungen' },
-  { to: '/owner/product',  icon: LayoutGrid, label: 'Produkt-Übersicht' },
+  { to: '/owner/product',   icon: LayoutGrid,      label: 'Produkt-Übersicht' },
+  { divider: true, label: 'Investor-Portal' },
+  { to: '/owner/docs',      icon: FolderOpen,      label: 'Pläne' },
+  { to: '/owner/chat',      icon: MessageSquare,   label: 'Chat' },
+  { to: '/owner/updates',   icon: Bell,            label: 'Updates' },
+  { to: '/owner/partners',  icon: Handshake,       label: 'Partner' },
+  { to: '/owner/team',      icon: Users,           label: 'Team' },
+  { to: '/owner/future',    icon: Rocket,          label: 'Zukunft' },
+  { to: '/owner/phases',    icon: GitBranch,       label: 'PhasenPlan' },
+  { divider: true, label: 'System' },
+  { to: '/owner/settings',  icon: Settings,        label: 'Einstellungen' },
 ]
 
 interface Props { open: boolean; onClose: () => void }
@@ -48,20 +50,32 @@ export default function OwnerSidebar({ open, onClose }: Props) {
         </div>
 
         <nav className="flex-1 p-3 flex flex-col gap-0.5 mt-2 overflow-y-auto">
-          {nav.map(({ to, icon: Icon, label, exact }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={exact}
-              onClick={onClose}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-sm font-medium transition-all duration-150
-                ${isActive ? 'bg-white/16 text-white font-semibold' : 'text-white/65 hover:bg-white/10 hover:text-white'}`
-              }
-            >
-              <Icon size={17} /> {label}
-            </NavLink>
-          ))}
+          {nav.map((item, i) => {
+            if ('divider' in item && item.divider) {
+              return (
+                <div key={`divider-${i}`} className="pt-3 pb-1 px-1">
+                  <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                    {item.label}
+                  </p>
+                </div>
+              )
+            }
+            const { to, icon: Icon, label, exact } = item as { to: string; icon: React.ElementType; label: string; exact?: boolean }
+            return (
+              <NavLink
+                key={to}
+                to={to}
+                end={exact}
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-sm font-medium transition-all duration-150
+                  ${isActive ? 'bg-white/16 text-white font-semibold' : 'text-white/65 hover:bg-white/10 hover:text-white'}`
+                }
+              >
+                <Icon size={17} /> {label}
+              </NavLink>
+            )
+          })}
         </nav>
 
         <div className="p-4 border-t border-white/10">
