@@ -29,6 +29,7 @@ import OwnerPhasePlan from './pages/owner/PhasePlan'
 import OwnerSettings from './pages/owner/Settings'
 import OwnerTeam from './pages/owner/Team'
 import OwnerProductOverview from './pages/owner/ProductOverview'
+import InvestorRoadmap from './pages/investor/Roadmap'
 
 function Spinner() {
   return (
@@ -69,6 +70,7 @@ function AppRoutes() {
         <Route path="status" element={<InvestorStatus />} />
         <Route path="structure" element={<InvestorStructure />} />
         <Route path="partners" element={<InvestorPartners />} />
+        <Route path="roadmap" element={<InvestorRoadmap />} />
         <Route path="settings" element={<InvestorSettings />} />
       </Route>
 
