@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { Update } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
+import { ArrowRight } from 'lucide-react'
 
 export default function InvestorDashboard() {
   const { user } = useAuth()
@@ -10,25 +11,23 @@ export default function InvestorDashboard() {
   const [investorCount, setInvestorCount] = useState<number>(0)
 
   const firstName = user?.investor?.first_name
-  const greeting = firstName ? `Guten Tag, ${firstName}` : 'Willkommen'
-  const today = new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
+  const today = new Date().toLocaleDateString('de-DE', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  })
 
-  const fetchUpdates = () => {
+  const fetchUpdates = () =>
     supabase.from('updates').select('id, title, content, category, created_at')
-      .order('created_at', { ascending: false }).limit(4)
+      .order('created_at', { ascending: false }).limit(2)
       .then(({ data }) => { if (data) setUpdates(data) })
-  }
 
   useEffect(() => {
     fetchUpdates()
     supabase.from('investors').select('id', { count: 'exact', head: true })
       .then(({ count }) => { if (count !== null) setInvestorCount(20 + count) })
 
-    const channel = supabase
-      .channel('investor-updates')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'updates' }, () => fetchUpdates())
+    const channel = supabase.channel('inv-dash-updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'updates' }, fetchUpdates)
       .subscribe()
-
     return () => { supabase.removeChannel(channel) }
   }, [])
 
@@ -39,199 +38,197 @@ export default function InvestorDashboard() {
     general: 'Allgemein', milestone: 'Meilenstein', important: 'Wichtig',
   }
 
-  const quickLinks = [
-    { icon: '📊', label: 'Pitch-Deck',   to: '/investor/plans/pitch-deck',   accent: '#063D3E' },
-    { icon: '📋', label: 'Business-Plan', to: '/investor/plans/business-plan', accent: '#063D3E' },
-    { icon: '👥', label: 'Team',          to: '/investor/team',                accent: '#D4662A' },
-    { icon: '🔭', label: 'Roadmap',       to: '/investor/future',              accent: '#D4662A' },
-    { icon: '🤝', label: 'Partner',       to: '/investor/partners',            accent: '#063D3E' },
-    { icon: '📁', label: 'Alle Pläne',    to: '/investor/plans',               accent: '#063D3E' },
-  ]
-
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-5xl mx-auto fade-up">
 
       {/* ── Greeting ── */}
-      <div className="mb-5">
-        <h1 className="text-xl md:text-3xl font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>
-          {greeting} 👋
+      <div className="mb-8 fade-up fade-up-1">
+        <p className="label-tag mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{today}</p>
+        <h1 className="text-3xl md:text-4xl font-bold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>
+          {firstName ? `Willkommen, ${firstName}` : 'Willkommen'} 👋
         </h1>
-        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{today}</p>
       </div>
 
-      {/* ── Pitch Deck Hero ── */}
-      <div className="rounded-[20px] p-5 md:p-8 mb-5 relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%)' }}>
-        <div className="absolute -right-8 -top-8 w-48 h-48 rounded-full opacity-10" style={{ background: 'white' }} />
-        <div className="relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold mb-3"
-            style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>
-            📊 Pitch-Deck · Aktuell
-          </span>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Avento &amp; Conser</h2>
-          <p className="text-white/70 text-sm mb-4">Investorenpräsentation · Vision &amp; Wachstumsstrategie</p>
-          <Link
-            to="/investor/plans/pitch-deck"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] font-semibold hover:opacity-90 transition"
-            style={{ background: 'white', color: '#063D3E', fontSize: '14px' }}
-          >
-            Präsentation öffnen →
-          </Link>
-        </div>
-      </div>
-
-      {/* ── Stats (mobile: 2 cols, desktop: 3 cols) ── */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-5">
+      {/* ── Floating Stat Strip ── */}
+      <div className="flex items-stretch mb-10 overflow-x-auto fade-up fade-up-2" style={{ gap: 0 }}>
         {[
-          { label: 'Interessenten', value: investorCount, icon: '👥', sub: 'Registriert' },
-          { label: 'Phase', value: '1', icon: '🚀', sub: 'Aktuell' },
-          { label: 'Investitionsrunde', value: 'Seed', icon: '💼', sub: 'Status', hidden: true },
-        ].filter(s => !s.hidden).map(s => (
-          <div key={s.label}
-            className="rounded-[16px] p-4 border flex flex-col"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <span className="text-2xl mb-2">{s.icon}</span>
-            <span className="text-2xl font-bold leading-none mb-1" style={{ color: 'var(--text-primary)' }}>{s.value}</span>
-            <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</span>
-            <span className="text-[11px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{s.sub}</span>
+          { label: 'Interessenten', value: String(investorCount) },
+          { label: 'Investitionsphase', value: 'Phase 1' },
+          { label: 'Finanzierungsrunde', value: 'Seed' },
+        ].map((stat, i) => (
+          <div key={stat.label} className="flex items-center shrink-0">
+            <div className={`flex flex-col ${i === 0 ? 'pr-6' : i === 2 ? 'px-6' : 'px-6'}`}>
+              <span className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>
+                {stat.value}
+              </span>
+              <span className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{stat.label}</span>
+            </div>
+            {i < 2 && <div className="w-px self-stretch" style={{ background: 'var(--border)' }} />}
           </div>
         ))}
-        {/* Third stat — visible only md+ */}
-        <div className="hidden md:flex rounded-[16px] p-4 border flex-col"
-          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-          <span className="text-2xl mb-2">💼</span>
-          <span className="text-2xl font-bold leading-none mb-1" style={{ color: 'var(--text-primary)' }}>Seed</span>
-          <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Investitionsrunde</span>
-          <span className="text-[11px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Status</span>
+      </div>
+
+      {/* ── Was wir bauen ── */}
+      <div className="mb-10 fade-up fade-up-2">
+        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>WAS WIR BAUEN</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {/* Avento */}
+          <div className="rounded-[20px] p-6 md:p-8 relative overflow-hidden hover-lift"
+            style={{ background: 'linear-gradient(145deg, #063D3E 0%, #0A5C5E 100%)', minHeight: '220px' }}>
+            <div className="absolute -right-12 -bottom-12 w-48 h-48 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+            <div className="absolute -left-6 -top-6 w-32 h-32 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }} />
+            <div className="relative z-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-4"
+                style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>
+                ⚡ ERP & Bausoftware
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ letterSpacing: '-0.4px' }}>Avento</h2>
+              <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.72)' }}>
+                Das vollständige Betriebssystem für Handwerker. Von der Kalkulation bis zur Rechnung — alles integriert, mobil, KI-gestützt.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Kalkulation', 'Zeiterfassung', 'Fakturierung', 'KI-Aufmaß'].map(f => (
+                  <span key={f} className="px-2.5 py-1 rounded-lg text-xs font-medium"
+                    style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Conser */}
+          <div className="rounded-[20px] p-6 md:p-8 relative overflow-hidden hover-lift"
+            style={{ background: 'linear-gradient(145deg, #C05A22 0%, #D4662A 100%)', minHeight: '220px' }}>
+            <div className="absolute -right-12 -bottom-12 w-48 h-48 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+            <div className="absolute -left-6 -top-6 w-32 h-32 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }} />
+            <div className="relative z-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-4"
+                style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>
+                🏗️ B2B Marktplatz
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ letterSpacing: '-0.4px' }}>Conser</h2>
+              <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.72)' }}>
+                Der führende digitale Marktplatz für Baumaterialien. 2,3 Millionen Produkte, 7 Top-Lieferanten — direkt in Avento integriert.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['2,3M Produkte', '7 Partner', 'B2B-Checkout', '1-Click Order'].map(f => (
+                  <span key={f} className="px-2.5 py-1 rounded-lg text-xs font-medium"
+                    style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)' }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ── Quick Links — 2×3 Grid auf Mobile ── */}
-      <div className="mb-5">
-        <h2 className="text-sm font-bold mb-3" style={{ color: 'var(--text-secondary)' }}>SCHNELLZUGRIFF</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-          {quickLinks.map(item => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="rounded-[16px] p-3 border flex flex-col items-center gap-2 text-center transition active:scale-95"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-            >
-              <span className="text-2xl">{item.icon}</span>
-              <span className="text-[11px] font-semibold leading-tight" style={{ color: 'var(--text-primary)' }}>
-                {item.label}
+      {/* ── Vision — Wo wir hinwollen ── */}
+      <div className="mb-10 rounded-[20px] p-6 md:p-8 border fade-up fade-up-3"
+        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <p className="label-tag mb-6" style={{ color: 'var(--text-tertiary)' }}>WO WIR HINWOLLEN</p>
+        <div className="grid grid-cols-3 gap-4 md:gap-8 mb-6">
+          {[
+            { number: '75.000', label: 'Kunden', sub: 'bis 2031, DACH-Fokus' },
+            { number: '€181M', label: 'Jahresumsatz', sub: 'bei Reife (2032)' },
+            { number: '49%', label: 'EBITDA', sub: 'Zielmarge' },
+          ].map((v, i) => (
+            <div key={v.label} className={`flex flex-col ${i > 0 ? 'border-l pl-4 md:pl-8' : ''}`}
+              style={{ borderColor: 'var(--border)' }}>
+              <span className="text-xl md:text-3xl font-bold mb-1" style={{ color: '#063D3E', letterSpacing: '-0.5px' }}>
+                {v.number}
               </span>
-            </Link>
+              <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{v.label}</span>
+              <span className="text-xs mt-0.5 hidden md:block" style={{ color: 'var(--text-tertiary)' }}>{v.sub}</span>
+            </div>
+          ))}
+        </div>
+        <div className="pt-5 border-t" style={{ borderColor: 'var(--border)' }}>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)', lineHeight: '1.75' }}>
+            Unser Ziel ist die vollständige Digitalisierung der Baubranche in der DACH-Region.
+            Avento wird das zentrale ERP für Handwerksbetriebe — Conser der führende Marktplatz für Baumaterialien.
+            Gemeinsam bilden sie ein integriertes Ökosystem, das es so noch nicht gibt.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Warum wir gewinnen (USP) ── */}
+      <div className="mb-10 fade-up fade-up-3">
+        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>WARUM WIR GEWINNEN</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {[
+            {
+              icon: '🔗',
+              title: 'Integriertes Ökosystem',
+              desc: 'Avento und Conser sind tief miteinander verknüpft. Material direkt aus dem ERP bestellen — 1 Klick, kein Medienbruch, kein Zeitverlust.',
+            },
+            {
+              icon: '🤖',
+              title: 'KI-First von Beginn an',
+              desc: 'KI-Aufmaß per Foto, intelligente Kalkulation, automatisierte Dokumentenerstellung — nicht als Add-on, sondern als Kern der Plattform.',
+            },
+            {
+              icon: '🏗️',
+              title: 'Tiefe Branchenkenntnis',
+              desc: 'Gegründet von Brancheninsidern mit direktem Zugang zu 7 Produktionspartnern. Wir kennen die Schmerzen — wir haben die Lösung gebaut.',
+            },
+          ].map(usp => (
+            <div key={usp.title} className="rounded-[16px] p-5 border hover-lift"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <span className="text-2xl block mb-3">{usp.icon}</span>
+              <h3 className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>{usp.title}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)', lineHeight: '1.7' }}>{usp.desc}</p>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* ── Updates ── */}
-      <div className="mb-5">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold" style={{ color: 'var(--text-secondary)' }}>NEUIGKEITEN</h2>
-          <Link to="/investor/status" className="text-xs font-semibold" style={{ color: '#063D3E' }}>
-            Alle →
-          </Link>
-        </div>
-
-        {updates.length === 0 ? (
-          <div className="rounded-[16px] p-6 text-center border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <p className="text-3xl mb-2">📭</p>
-            <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Noch keine Updates</p>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>Das Team teilt bald Neuigkeiten</p>
+      {/* ── Neuigkeiten ── */}
+      {updates.length > 0 && (
+        <div className="mb-6 fade-up fade-up-4">
+          <div className="flex items-center justify-between mb-4">
+            <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>NEUIGKEITEN</p>
+            <Link to="/investor/status" className="flex items-center gap-1 text-xs font-semibold" style={{ color: '#063D3E' }}>
+              Alle <ArrowRight size={12} />
+            </Link>
           </div>
-        ) : (
-          /* Mobile: horizontal scroll — Desktop: grid */
-          <>
-            <div className="flex gap-3 overflow-x-auto pb-1 md:hidden" style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
-              {updates.map(u => (
-                <div key={u.id}
-                  className="rounded-[16px] p-4 border shrink-0"
-                  style={{ background: 'var(--surface)', borderColor: 'var(--border)', width: '75vw', maxWidth: '280px', scrollSnapAlign: 'start' }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                      style={{ background: `${categoryColor[u.category]}18`, color: categoryColor[u.category] }}>
-                      {categoryLabel[u.category]}
-                    </span>
-                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                      {new Date(u.created_at).toLocaleDateString('de-DE')}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{u.title}</h3>
-                  <p className="text-xs line-clamp-3" style={{ color: 'var(--text-secondary)' }}>{u.content}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {updates.map(u => (
+              <div key={u.id} className="rounded-[16px] p-5 border"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
+                    style={{ background: `${categoryColor[u.category]}15`, color: categoryColor[u.category] }}>
+                    {categoryLabel[u.category]}
+                  </span>
+                  <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                    {new Date(u.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'short' })}
+                  </span>
                 </div>
-              ))}
-            </div>
-            <div className="hidden md:grid md:grid-cols-3 gap-3">
-              {updates.slice(0, 3).map(u => (
-                <div key={u.id} className="rounded-[16px] p-4 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                      style={{ background: `${categoryColor[u.category]}18`, color: categoryColor[u.category] }}>
-                      {categoryLabel[u.category]}
-                    </span>
-                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                      {new Date(u.created_at).toLocaleDateString('de-DE')}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{u.title}</h3>
-                  <p className="text-xs line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{u.content}</p>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* ── Unterlagen (Desktop only) ── */}
-      <div className="hidden md:grid md:grid-cols-2 gap-4">
-        <div className="rounded-[18px] overflow-hidden border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-          <div className="px-4 py-3.5 flex items-center gap-2.5" style={{ borderBottom: '3px solid #063D3E' }}>
-            <span className="text-lg">📁</span>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Vision & Markt</h3>
-          </div>
-          <div className="p-1.5">
-            {[
-              { icon: '📊', label: 'Pitch-Deck', to: '/investor/plans/pitch-deck' },
-              { icon: '📋', label: 'Business-Plan', to: '/investor/plans/business-plan' },
-              { icon: '👤', label: 'Persona Endkunde', to: '/investor/plans/persona-endkunde' },
-              { icon: '🤝', label: 'Persona Businesspartner', to: '/investor/plans/persona-businesspartner' },
-            ].map(item => (
-              <Link key={item.to} to={item.to}
-                className="flex items-center gap-3 px-3 py-3 rounded-xl transition hover:bg-surface2"
-                style={{ color: 'var(--text-primary)', minHeight: '48px' }}>
-                <span className="text-base">{item.icon}</span>
-                <span className="text-sm">{item.label}</span>
-              </Link>
-            ))}
-          </div>
-          <div className="px-4 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
-            <Link to="/investor/plans" className="text-sm font-semibold" style={{ color: '#063D3E' }}>Alle Unterlagen →</Link>
-          </div>
-        </div>
-
-        <div className="rounded-[18px] overflow-hidden border flex flex-col" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-          <div className="px-4 py-3.5 flex items-center gap-2.5" style={{ borderBottom: '3px solid #D4662A' }}>
-            <span className="text-lg">👥</span>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Team & Einblicke</h3>
-          </div>
-          <div className="p-1.5 flex-1">
-            {[
-              { icon: '👥', label: 'Das Gründerteam', to: '/investor/team' },
-              { icon: '📣', label: 'Aktuelle Updates', to: '/investor/status' },
-              { icon: '💬', label: 'Kontakt & Chat', to: '/investor/chat' },
-              { icon: '🔭', label: 'Zukunft & Roadmap', to: '/investor/future' },
-            ].map(item => (
-              <Link key={item.to} to={item.to}
-                className="flex items-center gap-3 px-3 py-3 rounded-xl transition hover:bg-surface2"
-                style={{ color: 'var(--text-primary)', minHeight: '48px' }}>
-                <span className="text-base">{item.icon}</span>
-                <span className="text-sm">{item.label}</span>
-              </Link>
+                <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{u.title}</h3>
+                <p className="text-xs line-clamp-2" style={{ color: 'var(--text-secondary)', lineHeight: '1.65' }}>
+                  {u.content}
+                </p>
+              </div>
             ))}
           </div>
         </div>
+      )}
+
+      {/* ── CTA Footer ── */}
+      <div className="rounded-[16px] p-5 flex items-center justify-between border"
+        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div>
+          <p className="font-semibold text-sm mb-0.5" style={{ color: 'var(--text-primary)' }}>Fragen oder Interesse?</p>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Sprechen Sie direkt mit dem Gründerteam.</p>
+        </div>
+        <Link to="/investor/chat"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] text-sm font-semibold text-white transition hover:opacity-90 shrink-0 ml-4"
+          style={{ background: '#063D3E' }}>
+          Chat öffnen <ArrowRight size={14} />
+        </Link>
       </div>
 
     </div>
