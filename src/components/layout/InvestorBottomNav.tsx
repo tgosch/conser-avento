@@ -17,7 +17,7 @@ function NavItem({ to, icon: Icon, label, exact }: {
     <NavLink
       to={to}
       end={exact}
-      className="flex-1 flex flex-col items-center justify-center gap-[3px] min-w-0 py-2"
+      className="flex-1 flex flex-col items-center justify-center gap-[3px] min-w-0 py-2 relative"
     >
       {({ isActive }) => (
         <>
@@ -37,7 +37,7 @@ function NavItem({ to, icon: Icon, label, exact }: {
           </span>
           {isActive && (
             <span
-              className="absolute bottom-[env(safe-area-inset-bottom,0px)] h-[2.5px] w-8 rounded-full"
+              className="absolute top-0 left-1/2 -translate-x-1/2 h-[2.5px] w-8 rounded-full"
               style={{ background: '#063D3E' }}
             />
           )}
@@ -50,11 +50,11 @@ function NavItem({ to, icon: Icon, label, exact }: {
 export default function InvestorBottomNav({ onMoreClick }: Props) {
   return (
     <nav
-      className="fixed left-0 right-0 bottom-0 z-30 lg:hidden flex items-stretch border-t relative"
+      className="fixed left-0 right-0 bottom-0 z-40 lg:hidden flex items-stretch border-t"
       style={{
         background: 'var(--surface)',
         borderColor: 'var(--border)',
-        boxShadow: '0 -1px 0 var(--border), 0 -8px 24px rgba(0,0,0,0.06)',
+        boxShadow: '0 -1px 0 var(--border), 0 -8px 24px rgba(0,0,0,0.08)',
         height: 'calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
