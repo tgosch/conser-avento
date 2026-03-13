@@ -128,7 +128,9 @@ export default function OwnerTeam() {
     setLoading(true)
     supabase.from('team_members').select('*').order('order_index')
       .then(({ data }) => {
-        setMembers((data as TeamMember[]) ?? [])
+        const raw = (data as TeamMember[]) ?? []
+        const unique = raw.filter((m, i, arr) => arr.findIndex(x => x.id === m.id) === i)
+        setMembers(unique)
         setLoading(false)
       })
   }

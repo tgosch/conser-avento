@@ -5,7 +5,10 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
-// Service-Role-Client für Owner-Portal — bypassed RLS, nur in owner/ Pages verwenden
+// ⚠️  SICHERHEITSWARNUNG: VITE_SUPABASE_SERVICE_KEY ist im Browser-Bundle sichtbar!
+//     Der Service-Role-Key umgeht RLS vollständig. Diesen Client nur in owner/ Pages
+//     verwenden und den Key mittelfristig in eine serverseitige API-Route (Edge Function)
+//     auslagern, um ihn aus dem Client-Bundle zu entfernen.
 export const supabaseAdmin = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_SERVICE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY

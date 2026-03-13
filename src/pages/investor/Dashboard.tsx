@@ -44,16 +44,10 @@ export default function InvestorDashboard() {
   }
 
   const businessItems = [
+    { icon: '📊', label: 'Pitch-Deck', to: '/investor/plans/pitch-deck' },
     { icon: '📋', label: 'Business-Plan', to: '/investor/plans/business-plan' },
-    { icon: '📈', label: 'Sales Funnel Endkunden', to: '/investor/plans/sales-funnel-endkunden' },
-    { icon: '🏢', label: 'Sales Funnel Business', to: '/investor/plans/sales-funnel-business' },
     { icon: '👤', label: 'Persona Endkunde', to: '/investor/plans/persona-endkunde' },
-  ]
-  const finanzItems = [
-    { icon: '💰', label: 'Finanzplan', to: '/investor/plans/finanzplan' },
-    { icon: '💵', label: 'Invest & Möglichkeiten', to: '/investor/plans/invest-moeglichkeiten' },
-    { icon: '🗓️', label: 'Roadmap Kapital', to: '/investor/plans/roadmap-kapital' },
-    { icon: '🔐', label: 'Sicherheiten & Treuhänder', to: '/investor/plans/sicherheiten' },
+    { icon: '🤝', label: 'Persona Businesspartner', to: '/investor/plans/persona-businesspartner' },
   ]
 
   return (
@@ -139,8 +133,8 @@ export default function InvestorDashboard() {
         {/* Business-Plan */}
         <div className="rounded-[18px] overflow-hidden border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <div className="px-4 py-3.5 flex items-center gap-2.5" style={{ borderBottom: '3px solid #063D3E' }}>
-            <span className="text-lg">📋</span>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Business-Plan</h3>
+            <span className="text-lg">📁</span>
+            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Vision & Markt</h3>
           </div>
           <div className="p-1.5">
             {businessItems.map(item => (
@@ -154,18 +148,23 @@ export default function InvestorDashboard() {
             ))}
           </div>
           <div className="px-4 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
-            <Link to="/investor/plans" className="text-sm font-semibold text-accent1">Alle anzeigen →</Link>
+            <Link to="/investor/plans" className="text-sm font-semibold text-accent1">Alle Unterlagen →</Link>
           </div>
         </div>
 
-        {/* Finanzplan */}
-        <div className="rounded-[18px] overflow-hidden border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        {/* Team & Updates */}
+        <div className="rounded-[18px] overflow-hidden border flex flex-col" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <div className="px-4 py-3.5 flex items-center gap-2.5" style={{ borderBottom: '3px solid #D4662A' }}>
-            <span className="text-lg">💹</span>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Finanzplan</h3>
+            <span className="text-lg">👥</span>
+            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Team & Updates</h3>
           </div>
-          <div className="p-1.5">
-            {finanzItems.map(item => (
+          <div className="p-1.5 flex-1">
+            {[
+              { icon: '👥', label: 'Das Gründerteam', to: '/investor/team' },
+              { icon: '📣', label: 'Aktuelle Updates', to: '/investor/status' },
+              { icon: '💬', label: 'Kontakt & Chat', to: '/investor/chat' },
+              { icon: '🔭', label: 'Zukunft & Roadmap', to: '/investor/future' },
+            ].map(item => (
               <Link key={item.to} to={item.to}
                 className="flex items-center gap-3 px-3 py-3 rounded-xl transition active:bg-surface2"
                 style={{ color: 'var(--text-primary)', minHeight: '48px' }}
@@ -174,11 +173,6 @@ export default function InvestorDashboard() {
                 <span className="text-sm">{item.label}</span>
               </Link>
             ))}
-          </div>
-          <div className="px-4 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
-            <Link to="/investor/plans" className="text-sm font-semibold hover:underline" style={{ color: '#D4662A' }}>
-              Alle anzeigen →
-            </Link>
           </div>
         </div>
       </div>

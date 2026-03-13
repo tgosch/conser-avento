@@ -43,14 +43,7 @@ export default function InvestorTeam() {
     supabase.from('team_members').select('*').eq('visible', true).order('order_index')
       .then(({ data }) => {
         if (data && data.length > 0) {
-          // Duplikate per E-Mail oder Name deduplizieren
-          const seen = new Set<string>()
-          const deduped = (data as TeamMember[]).filter(m => {
-            const key = m.name.trim().toLowerCase()
-            if (seen.has(key)) return false
-            seen.add(key)
-            return true
-          })
+          const deduped = (data as TeamMember[]).filter((m, i, arr) => arr.findIndex(x => x.id === m.id) === i)
           setMembers(deduped)
         } else {
           setMembers(FALLBACK_MEMBERS)
