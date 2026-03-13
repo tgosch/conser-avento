@@ -5,14 +5,14 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
-// ⚠️  SICHERHEITSWARNUNG: VITE_SUPABASE_SERVICE_KEY ist im Browser-Bundle sichtbar!
-//     Der Service-Role-Key umgeht RLS vollständig. Diesen Client nur in owner/ Pages
-//     verwenden und den Key mittelfristig in eine serverseitige API-Route (Edge Function)
-//     auslagern, um ihn aus dem Client-Bundle zu entfernen.
-export const supabaseAdmin = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_SERVICE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+// Owner-Portal Client: nutzt Service-Key wenn gesetzt (bypassed RLS),
+// sonst Anon-Key mit geteilter Auth-Session (funktioniert via open storage policies).
+const serviceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY
+export const supabaseAdmin = serviceKey
+  ? createClient(import.meta.env.VITE_SUPABASE_URL, serviceKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    })
+  : supabase
 
 export interface Investor {
   id: string
