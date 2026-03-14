@@ -23,6 +23,9 @@ CREATE INDEX IF NOT EXISTS idx_milestones_status ON milestones(status);
 ALTER TABLE milestones ENABLE ROW LEVEL SECURITY;
 
 -- Admin: Full Access
+DROP POLICY IF EXISTS "admin_milestones_all"     ON milestones;
+DROP POLICY IF EXISTS "investor_milestones_read" ON milestones;
+
 CREATE POLICY "admin_milestones_all" ON milestones
   FOR ALL
   USING      ((auth.jwt() -> 'app_metadata' ->> 'is_admin')::boolean = true)
