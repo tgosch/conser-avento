@@ -1,20 +1,21 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, GitBranch, Settings, X, LogOut, ShieldCheck, Handshake, Users, LayoutGrid } from 'lucide-react'
+import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, Settings, X, LogOut, ShieldCheck, Handshake, Users, Presentation, Building2, Target } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.png'
 import conserLogo from '../../assets/conser_kachel.png'
 
 const nav = [
-  { to: '/owner/dashboard', icon: LayoutDashboard, label: 'Dashboard', exact: true },
-  { to: '/owner/product',   icon: LayoutGrid,      label: 'Produkt-Übersicht' },
+  { to: '/owner/dashboard',      icon: LayoutDashboard, label: 'Dashboard',       exact: true },
+  { to: '/owner/presentations',  icon: Presentation,    label: 'Präsentationen' },
   { divider: true, label: 'Investor-Portal' },
   { to: '/owner/docs',      icon: FolderOpen,      label: 'Pläne' },
   { to: '/owner/chat',      icon: MessageSquare,   label: 'Chat' },
   { to: '/owner/updates',   icon: Bell,            label: 'Updates' },
   { to: '/owner/partners',  icon: Handshake,       label: 'Partner' },
   { to: '/owner/team',      icon: Users,           label: 'Team' },
-  { to: '/owner/future',    icon: Rocket,          label: 'Zukunft' },
-  { to: '/owner/phases',    icon: GitBranch,       label: 'PhasenPlan' },
+  { to: '/owner/future',      icon: Rocket,       label: 'Zukunft' },
+  { to: '/owner/milestones',  icon: Target,       label: 'Phasen & Meilensteine' },
+  { to: '/owner/structure',   icon: Building2,    label: 'Unternehmensstruktur' },
   { divider: true, label: 'System' },
   { to: '/owner/settings',  icon: Settings,        label: 'Einstellungen' },
 ]

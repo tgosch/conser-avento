@@ -180,3 +180,12 @@ select {
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
 }
+
+/* Accordion animation */
+@keyframes accordion-open {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.accordion-content {
+  animation: accordion-open 0.25s ease-out forwards;
+}

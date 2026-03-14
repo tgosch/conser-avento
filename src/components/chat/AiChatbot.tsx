@@ -34,17 +34,11 @@ export default function AiChatbot() {
 
     try {
       const history = [...messages, userMsg]
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      // API-Key wird NIEMALS im Browser verwendet — Proxy via /api/chat (Vercel Edge Function)
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-allow-browser': 'true',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
           system: `Du bist ein professioneller KI-Assistent für das Investor-Portal von Avento & Conser.
 
 Avento Software: B2B Software-Unternehmen, gegründet von Torben Gosch (CEO), Martin Groote (CTO) und Paul Bockting (UI/UX).

@@ -26,9 +26,11 @@ import OwnerUpdates from './pages/owner/Updates'
 import OwnerPartners from './pages/owner/Partners'
 import OwnerFuture from './pages/owner/Future'
 import OwnerPhasePlan from './pages/owner/PhasePlan'
+import OwnerPhasesAndMilestones from './pages/owner/PhasesAndMilestones'
+import OwnerStructure from './pages/owner/Structure'
 import OwnerSettings from './pages/owner/Settings'
 import OwnerTeam from './pages/owner/Team'
-import OwnerProductOverview from './pages/owner/ProductOverview'
+import OwnerPresentationsHub from './pages/owner/PresentationsHub'
 import InvestorRoadmap from './pages/investor/Roadmap'
 
 function Spinner() {
@@ -83,9 +85,11 @@ function AppRoutes() {
         <Route path="partners" element={<OwnerPartners />} />
         <Route path="future" element={<OwnerFuture />} />
         <Route path="phases" element={<OwnerPhasePlan />} />
+        <Route path="milestones" element={<OwnerPhasesAndMilestones />} />
+        <Route path="structure" element={<OwnerStructure />} />
         <Route path="team" element={<OwnerTeam />} />
+        <Route path="presentations" element={<OwnerPresentationsHub />} />
         <Route path="settings" element={<OwnerSettings />} />
-        <Route path="product" element={<OwnerProductOverview />} />
       </Route>
 
       {/* Legacy redirects */}
