@@ -22,7 +22,7 @@ export default function InvestorLayout() {
           <Outlet />
         </div>
       </main>
-      <InvestorBottomNav onMoreClick={() => setSidebarOpen(true)} />
+      {!sidebarOpen && <InvestorBottomNav onMoreClick={() => setSidebarOpen(true)} />}
       <AiChatbot />
     </div>
   )

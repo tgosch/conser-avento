@@ -457,7 +457,7 @@ export default function PresentationsHub() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".pdf,.pptx,.ppt,.png,.jpg,.jpeg"
+                accept=".pdf,.pptx,.ppt,.key,.png,.jpg,.jpeg,.gif,.docx,.doc,.xlsx,.xls,.csv,.mp4,.mov,.zip"
                 className="hidden"
                 onChange={handleFileInput}
                 disabled={uploading}
@@ -488,7 +488,7 @@ export default function PresentationsHub() {
                       <p className="font-semibold text-sm" style={{ color: '#000' }}>
                         {isDragging ? 'Loslassen zum Hochladen' : 'Datei hierher ziehen'}
                       </p>
-                      <p className="text-xs mt-0.5" style={{ color: '#999' }}>PDF, PPT, PNG · Max 500 MB</p>
+                      <p className="text-xs mt-0.5" style={{ color: '#999' }}>PDF, PPT, DOCX, XLSX, IMG, MP4, KEY, ZIP · Max 500 MB</p>
                     </div>
                     <button
                       onClick={e => { e.stopPropagation(); fileInputRef.current?.click() }}

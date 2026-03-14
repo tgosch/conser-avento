@@ -26,7 +26,7 @@ export const PRES_CATEGORIES = [
   { value: 'partner',          label: 'Partner',         color: '#FF9500', bg: 'rgba(255,149,0,0.10)'  },
 ] as const
 
-export const ALLOWED_EXTENSIONS = ['pdf', 'pptx', 'ppt', 'png', 'jpg', 'jpeg']
+export const ALLOWED_EXTENSIONS = ['pdf', 'pptx', 'ppt', 'key', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'doc', 'xlsx', 'xls', 'csv', 'mp4', 'mov', 'zip']
 export const MAX_FILE_SIZE_MB   = 500
 export const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
@@ -47,9 +47,19 @@ export function getContentType(file: File): string {
     pdf:  'application/pdf',
     pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     ppt:  'application/vnd.ms-powerpoint',
+    key:  'application/x-iwork-keynote-sffkey',
     png:  'image/png',
     jpg:  'image/jpeg',
     jpeg: 'image/jpeg',
+    gif:  'image/gif',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    doc:  'application/msword',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    xls:  'application/vnd.ms-excel',
+    csv:  'text/csv',
+    mp4:  'video/mp4',
+    mov:  'video/quicktime',
+    zip:  'application/zip',
   }
   return map[ext] ?? 'application/octet-stream'
 }
@@ -62,7 +72,12 @@ export function getFileTypeBadge(filePath: string): { label: string; color: stri
   const ext = filePath.split('.').pop()?.toLowerCase() ?? ''
   if (ext === 'pdf')              return { label: 'PDF',  color: '#FF3B30' }
   if (['pptx','ppt'].includes(ext)) return { label: 'PPT',  color: '#FF9500' }
-  if (['png','jpg','jpeg'].includes(ext)) return { label: 'IMG', color: '#007AFF' }
+  if (['png','jpg','jpeg','gif'].includes(ext)) return { label: 'IMG',  color: '#007AFF' }
+  if (['docx','doc'].includes(ext))           return { label: 'DOC',  color: '#2563EB' }
+  if (['xlsx','xls','csv'].includes(ext))     return { label: 'XLS',  color: '#16A34A' }
+  if (['mp4','mov'].includes(ext))            return { label: 'VID',  color: '#8B5CF6' }
+  if (ext === 'key')                          return { label: 'KEY',  color: '#FF9500' }
+  if (ext === 'zip')                          return { label: 'ZIP',  color: '#8E8E93' }
   return { label: 'FILE', color: '#8E8E93' }
 }
 

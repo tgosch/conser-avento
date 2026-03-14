@@ -22,7 +22,7 @@ export default function OwnerLayout() {
           <Outlet />
         </div>
       </main>
-      <OwnerBottomNav onMoreClick={() => setSidebarOpen(true)} />
+      {!sidebarOpen && <OwnerBottomNav onMoreClick={() => setSidebarOpen(true)} />}
       <AiChatbot />
     </div>
   )
