@@ -128,8 +128,8 @@ function MobileAccordionFolder({ title, subtitle, accentColor, docs, isOpen, onT
 export default function InvestorPlans() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   const [openFolders, setOpenFolders] = useState<Record<string, boolean>>({
-    business: false,
-    finanzen: false,
+    business: true,
+    finanzen: true,
   })
 
   useEffect(() => {

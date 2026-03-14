@@ -127,8 +127,13 @@ export default function InvestorPlanDetail() {
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
               <div className="text-6xl mb-4">{meta.icon}</div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Inhalt wird bald hinzugefügt</h3>
-              <p className="text-sm max-w-sm" style={{ color: 'var(--text-secondary)' }}>Dieses Dokument wird in Kürze für Sie bereitgestellt.</p>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>{meta.label}</h3>
+              <p className="text-sm max-w-sm mb-2" style={{ color: 'var(--text-secondary)' }}>
+                Dieses Dokument wird in Kürze bereitgestellt.
+              </p>
+              <p className="text-xs max-w-xs" style={{ color: 'var(--text-tertiary)' }}>
+                Bei Fragen wenden Sie sich direkt an das Team über den Chat.
+              </p>
             </div>
           )
         })()}
