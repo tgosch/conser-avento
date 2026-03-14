@@ -2,7 +2,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronRight, ChevronLeft, Maximize2, Minimize2 } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
-import type { Document } from '../../lib/supabase'
 
 const planOrder = [
   'pitch-deck', 'business-plan', 'sales-funnel-endkunden', 'sales-funnel-business',
@@ -43,7 +42,7 @@ export default function InvestorPlanDetail() {
   const { section } = useParams<{ section: string }>()
   const navigate = useNavigate()
   const viewerRef = useRef<HTMLDivElement>(null)
-  const [doc, setDoc] = useState<Document | null>(null)
+  const [docUrl, setDocUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [fullscreen, setFullscreen] = useState(false)
 
@@ -57,6 +56,7 @@ export default function InvestorPlanDetail() {
     const category = SECTION_TO_CATEGORY[section]
     if (!category) { setLoading(false); return }
     setLoading(true)
+    setDocUrl(null)
     supabase
       .from('documents')
       .select('id, name, file_path, category')
@@ -64,9 +64,22 @@ export default function InvestorPlanDetail() {
       .order('id', { ascending: false })
       .limit(1)
       .maybeSingle()
-      .then(({ data, error }) => {
-        if (error) console.error('[PlanDetail]', error.message)
-        setDoc(data ?? null)
+      .then(async ({ data, error }) => {
+        if (error) console.error('[PlanDetail] DB error:', error.message)
+        if (data?.file_path) {
+          // Try signed URL first (works for private + public buckets)
+          const { data: signed, error: signErr } = await supabase.storage
+            .from('documents')
+            .createSignedUrl(data.file_path, 3600)
+          if (signed?.signedUrl) {
+            setDocUrl(signed.signedUrl)
+          } else {
+            // Fallback: public URL (works if bucket is set to public)
+            console.warn('[PlanDetail] Signed URL failed, trying public URL:', signErr?.message)
+            const { data: pub } = supabase.storage.from('documents').getPublicUrl(data.file_path)
+            setDocUrl(pub?.publicUrl ?? null)
+          }
+        }
         setLoading(false)
       })
   }, [section])
@@ -113,17 +126,14 @@ export default function InvestorPlanDetail() {
         </button>
 
         {(() => {
-          const url = doc?.file_path
-            ? supabase.storage.from('documents').getPublicUrl(doc.file_path).data.publicUrl
-            : null
           return loading ? (
             <div className="w-full h-full animate-pulse flex items-center justify-center" style={{ background: 'var(--surface2)' }}>
               <div className="w-16 h-16 rounded-2xl animate-pulse bg-gray-200" />
             </div>
-          ) : url && /\.(png|jpe?g|gif|webp)(\?|$)/i.test(url) ? (
-            <img src={url} alt={meta.label} className="w-full h-full object-contain" />
-          ) : url ? (
-            <iframe src={url} title={meta.label} className="w-full h-full border-0" />
+          ) : docUrl && /\.(png|jpe?g|gif|webp)(\?|$)/i.test(docUrl) ? (
+            <img src={docUrl} alt={meta.label} className="w-full h-full object-contain" />
+          ) : docUrl ? (
+            <iframe src={docUrl} title={meta.label} className="w-full h-full border-0" />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
               <div className="text-6xl mb-4">{meta.icon}</div>
