@@ -22,67 +22,44 @@ export default function Topbar({ onMenuClick: _onMenuClick }: Props) {
   const handleLogout = async () => { await logout(); navigate('/') }
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-10"
-      style={{
-        height: 'var(--topbar-height)',
-        background: 'var(--surface)',
-        boxShadow: '0 1px 0 var(--border)',
-      }}
-    >
-      {/* ── Mobile Layout ── */}
-      <div className="flex lg:hidden items-center h-full px-4">
-        {/* Left spacer (same width as right controls for centering) */}
-        <div className="w-[76px] shrink-0" />
+    <header className="topbar" style={{ boxShadow: 'none' }}>
 
-        {/* Center: logos */}
-        <div className="flex-1 flex items-center justify-center gap-2">
-          <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover" style={{ height: '26px', width: 'auto' }} />
+      {/* ── Mobile ── */}
+      <div className="flex lg:hidden items-center justify-between w-full">
+        <div className="flex items-center gap-2">
+          <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover h-7 w-auto" />
           <div className="w-px h-4" style={{ background: 'var(--border)' }} />
-          <img src={conserLogo} alt="Conser" className="rounded-lg object-cover" style={{ height: '26px', width: 'auto' }} />
+          <img src={conserLogo} alt="Conser" className="rounded-lg object-cover h-7 w-auto" />
         </div>
-
-        {/* Right: theme + avatar */}
-        <div className="flex items-center gap-1 shrink-0 w-[76px] justify-end">
-          <button
-            onClick={toggleTheme}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+        <div className="flex items-center gap-1">
+          <button onClick={toggleTheme} className="btn btn-icon btn-ghost btn-icon-sm focus-ring">
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="w-9 h-9 rounded-full text-white text-xs font-bold flex items-center justify-center transition"
-              style={{ background: '#063D3E' }}
+              className="w-8 h-8 rounded-full text-white text-xs font-bold flex items-center justify-center transition hover:opacity-85"
+              style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}
             >
               {initials}
             </button>
-
             {dropdownOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
-                <div
-                  className="absolute right-0 top-11 z-20 rounded-[16px] p-1.5 w-44 border"
-                  style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-md)', borderColor: 'var(--border)' }}
-                >
-                  <button
-                    onClick={() => { setDropdownOpen(false); navigate(settingsPath) }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    <Settings size={15} style={{ color: '#063D3E' }} /> Einstellungen
-                  </button>
-                  <div className="my-1 border-t" style={{ borderColor: 'var(--border)' }} />
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition"
-                    style={{ color: '#FF3B30' }}
-                  >
-                    <LogOut size={15} /> Abmelden
-                  </button>
+                <div className="absolute right-0 top-10 z-20 w-48 card animate-scale-in"
+                     style={{ boxShadow: 'var(--shadow-xl)' }}>
+                  <div className="p-1.5">
+                    <button onClick={() => { setDropdownOpen(false); navigate(settingsPath) }}
+                      className="btn btn-ghost w-full justify-start gap-3 text-left">
+                      <Settings size={14} /> Einstellungen
+                    </button>
+                    <div className="divider my-1" />
+                    <button onClick={handleLogout}
+                      className="btn btn-ghost w-full justify-start gap-3 text-left"
+                      style={{ color: 'var(--danger)' }}>
+                      <LogOut size={14} /> Abmelden
+                    </button>
+                  </div>
                 </div>
               </>
             )}
@@ -90,56 +67,54 @@ export default function Topbar({ onMenuClick: _onMenuClick }: Props) {
         </div>
       </div>
 
-      {/* ── Desktop Layout ── */}
-      <div
-        className="hidden lg:flex items-center h-full relative"
-        style={{ paddingLeft: 'var(--topbar-pl)', paddingRight: '24px' }}
-      >
-        <div className="flex items-center gap-2.5 shrink-0">
-          <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
-          <div className="w-px h-5 bg-black/10" />
-          <img src={conserLogo} alt="Conser" className="rounded-lg object-cover" style={{ height: '28px', width: 'auto' }} />
+      {/* ── Desktop ── */}
+      <div className="hidden lg:flex items-center justify-between w-full">
+        <div className="flex items-center gap-2" style={{ color: 'var(--text-tertiary)', fontSize: 13 }}>
+          <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Conser-Avento</span>
+          <span style={{ color: 'var(--border-strong)' }}>/</span>
+          <span>Investor Portal</span>
         </div>
-
-        <div className="ml-auto flex items-center gap-2 shrink-0">
-          <button
-            onClick={toggleTheme}
-            className="w-9 h-9 rounded-full flex items-center justify-center transition hover:bg-surface2"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+               style={{ background: 'var(--accent-dim)', border: '1px solid rgba(200,97,26,0.2)' }}>
+            <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
+            <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
+              Seed Round · Q2 2026
+            </span>
+          </div>
+          <button onClick={toggleTheme} className="btn btn-icon btn-ghost focus-ring">
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="w-9 h-9 rounded-full text-white text-sm font-bold flex items-center justify-center hover:opacity-80 transition"
-              style={{ background: '#063D3E' }}
+              className="w-9 h-9 rounded-full text-white text-sm font-semibold flex items-center justify-center transition hover:opacity-85"
+              style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}
             >
               {initials}
             </button>
-
             {dropdownOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
-                <div
-                  className="absolute right-0 top-11 z-20 rounded-[16px] p-1.5 w-44 border"
-                  style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-md)', borderColor: 'var(--border)' }}
-                >
-                  <button
-                    onClick={() => { setDropdownOpen(false); navigate(settingsPath) }}
-                    className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-xl transition hover:bg-surface2"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    <Settings size={15} style={{ color: '#063D3E' }} /> Einstellungen
+                <div className="absolute right-0 top-11 z-20 w-52 card animate-scale-in"
+                     style={{ boxShadow: 'var(--shadow-xl)', padding: '6px' }}>
+                  <div className="px-3 py-2 mb-1">
+                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                      {user?.investor ? `${user.investor.first_name} ${user.investor.last_name}` : 'Investor'}
+                    </p>
+                    <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                      {user?.investor?.email || user?.email}
+                    </p>
+                  </div>
+                  <div className="divider mb-1" />
+                  <button onClick={() => { setDropdownOpen(false); navigate(settingsPath) }}
+                    className="btn btn-ghost btn-sm w-full justify-start gap-2.5">
+                    <Settings size={14} /> Einstellungen
                   </button>
-                  <div className="my-1 border-t" style={{ borderColor: 'var(--border)' }} />
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-xl transition hover:bg-red-50"
-                    style={{ color: '#FF3B30' }}
-                  >
-                    <LogOut size={15} /> Abmelden
+                  <button onClick={handleLogout}
+                    className="btn btn-ghost btn-sm w-full justify-start gap-2.5"
+                    style={{ color: 'var(--danger)' }}>
+                    <LogOut size={14} /> Abmelden
                   </button>
                 </div>
               </>

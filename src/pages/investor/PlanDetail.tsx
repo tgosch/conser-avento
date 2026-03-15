@@ -96,7 +96,7 @@ export default function InvestorPlanDetail() {
   if (!meta) return <div className="p-8 text-center text-secondary">Bereich nicht gefunden.</div>
 
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl fade-up">
       <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-6" style={{ color: 'var(--text-secondary)' }}>
         <Link to="/investor/dashboard" className="hover:text-accent1 transition">Dashboard</Link>
         <ChevronRight size={12} />

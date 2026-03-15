@@ -317,7 +317,7 @@ export default function OwnerDocs() {
 
   /* ── Render ─────────────────────────────────────────────────────── */
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl animate-fade-up">
 
       {/* Header */}
       <div className="flex items-start justify-between mb-6">

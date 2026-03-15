@@ -1,3 +1,4 @@
+import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -32,6 +33,33 @@ import OwnerSettings from './pages/owner/Settings'
 import OwnerTeam from './pages/owner/Team'
 import OwnerPresentationsHub from './pages/owner/PresentationsHub'
 import InvestorRoadmap from './pages/investor/Roadmap'
+
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError() { return { hasError: true } }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16, padding: 32, background: 'var(--bg)', color: 'var(--text-primary)' }}>
+          <p style={{ fontSize: 32 }}>⚠️</p>
+          <h2 style={{ fontWeight: 700, fontSize: 18 }}>Etwas ist schiefgelaufen</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Bitte Seite neu laden.</p>
+          <button onClick={() => window.location.reload()}
+            style={{ marginTop: 8, padding: '10px 24px', background: 'var(--brand)', color: 'white', border: 'none', borderRadius: 12, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
+            Neu laden
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 function Spinner() {
   return (
@@ -102,21 +130,23 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <AppRoutes />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            pauseOnHover
-            toastStyle={{ background: 'var(--surface)', color: 'var(--text-primary)', borderRadius: '12px', boxShadow: 'var(--shadow-md)' }}
-          />
-        </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppRoutes />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              pauseOnHover
+              toastStyle={{ background: 'var(--surface)', color: 'var(--text-primary)', borderRadius: '12px', boxShadow: 'var(--shadow-md)' }}
+            />
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }

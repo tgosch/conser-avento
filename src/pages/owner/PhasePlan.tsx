@@ -282,6 +282,56 @@ export default function OwnerPhasePlan() {
         </button>
       </div>
 
+      {/* ── Visual Timeline Header ── */}
+      {phases.length > 0 && (
+        <div className="rounded-[20px] p-5 border mb-6 overflow-x-auto"
+          style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+          <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: '#999999' }}>
+            PHASENÜBERSICHT
+          </p>
+          <div className="flex items-start gap-0 min-w-max">
+            {phases.map((phase, i) => {
+              const s = STATUS[phase.status as StatusKey] ?? STATUS.planned
+              const isLast = i === phases.length - 1
+              return (
+                <div key={phase.id} className="flex items-start">
+                  <div className="flex flex-col items-center gap-2 w-28">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
+                      style={{
+                        background: phase.status === 'planned' ? '#F9FAFB' : s.circleBg,
+                        border: `2.5px solid ${s.circleColor}`,
+                        color: phase.status === 'planned' ? '#D1D5DB' : '#FFFFFF',
+                        boxShadow: phase.status !== 'planned' ? `0 0 0 3px ${s.color}18` : 'none',
+                      }}>
+                      {phase.status === 'completed' ? '✓' : i + 1}
+                    </div>
+                    <div className="text-center px-1">
+                      <p className="text-[11px] font-bold leading-tight" style={{ color: '#000000' }}>{phase.name}</p>
+                      {phase.start_date && (
+                        <p className="text-[10px] mt-0.5" style={{ color: '#999999' }}>
+                          {new Date(phase.start_date).toLocaleDateString('de-DE', { month: 'short', year: '2-digit' })}
+                        </p>
+                      )}
+                      <span className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                        style={{ background: s.bg, color: s.color }}>{s.label}</span>
+                    </div>
+                  </div>
+                  {!isLast && (
+                    <div className="flex items-center mt-4 mx-1">
+                      <div className="w-8 h-0.5" style={{
+                        background: phase.status === 'completed'
+                          ? '#34C759'
+                          : `repeating-linear-gradient(to right, #D1D5DB 0 4px, transparent 4px 8px)`,
+                      }} />
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Empty state */}
       {phases.length === 0 && (
         <div

@@ -42,6 +42,37 @@ export default async function handler(req: Request): Promise<Response> {
     })
   }
 
+  // ── JWT-Authentifizierung (Supabase) ──────────────────────────────
+  const authHeader = req.headers.get('Authorization')
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'Nicht authentifiziert' }), {
+      status: 401,
+      headers: corsHeaders,
+    })
+  }
+  // Token gegen Supabase verifizieren
+  const supabaseUrl = process.env.VITE_SUPABASE_URL
+  const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const authRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'apikey': supabaseKey },
+      })
+      if (!authRes.ok) {
+        return new Response(JSON.stringify({ error: 'Ungültige Sitzung' }), {
+          status: 401,
+          headers: corsHeaders,
+        })
+      }
+    } catch {
+      return new Response(JSON.stringify({ error: 'Authentifizierung fehlgeschlagen' }), {
+        status: 401,
+        headers: corsHeaders,
+      })
+    }
+  }
+
   // API-Key prüfen (server-side, nie im Browser sichtbar)
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
@@ -86,7 +117,7 @@ export default async function handler(req: Request): Promise<Response> {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1000,
         system: body.system ? String(body.system).slice(0, 2000) : undefined,
         messages,

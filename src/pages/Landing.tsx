@@ -163,331 +163,224 @@ export default function Landing() {
     authCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
-  const inp = {
-    background: 'var(--surface2)',
-    borderColor: 'var(--border)',
-    color: 'var(--text-primary)',
-  }
-
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      {/* Background blobs – hidden on mobile for perf */}
-      <div className="hidden md:block fixed top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none opacity-20"
-        style={{ background: 'radial-gradient(circle, #063D3E 0%, transparent 65%)', transform: 'translate(40%,-40%)' }} />
-      <div className="hidden md:block fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-15"
-        style={{ background: 'radial-gradient(circle, #D4662A 0%, transparent 65%)', transform: 'translate(-35%,35%)' }} />
+    <div className="min-h-screen gradient-mesh flex flex-col">
+      {/* Background orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-[0.07]"
+          style={{ background: 'radial-gradient(circle, var(--brand) 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full opacity-[0.05]"
+          style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
+      </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 pb-16" style={{ paddingTop: '32px' }}>
-
-        {/* ── HERO ── */}
-        <div className="flex flex-col items-center text-center mb-7">
-          <div className="flex gap-3 mb-4">
-            <img src={aventoLogo} alt="Avento"
-              style={{ height: '56px', width: 'auto', borderRadius: '13px', boxShadow: '0 4px 14px rgba(0,0,0,0.14)' }} />
-            <img src={conserLogo} alt="Conser"
-              style={{ height: '56px', width: 'auto', borderRadius: '13px', boxShadow: '0 4px 14px rgba(0,0,0,0.14)' }} />
+      <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
+        {/* LEFT: Brand (desktop only) */}
+        <div className="hidden lg:flex lg:w-[52%] gradient-brand noise-overlay flex-col justify-between p-12">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <img src={aventoLogo} alt="Avento" className="h-10 rounded-xl" />
+            <div className="w-px h-7" style={{ background: 'rgba(255,255,255,0.2)' }} />
+            <img src={conserLogo} alt="Conser" className="h-10 rounded-xl" />
           </div>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1.5" style={{ color: 'var(--text-primary)' }}>
-            Avento &amp; Conser
-          </h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Exklusives Investoren-Portal · Vertraulich &amp; Sicher
-          </p>
-        </div>
-
-        {/* ── AUTH CARD ── */}
-        <div ref={authCardRef} className="mx-auto mb-10 rounded-[20px] border overflow-hidden"
-          style={{ maxWidth: '460px', background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: '0 8px 40px rgba(0,0,0,0.10)' }}>
-
-          {/* Tabs */}
-          <div className="grid grid-cols-2 border-b" style={{ borderColor: 'var(--border)' }}>
-            {(['login', 'register'] as const).map(t => (
-              <button key={t} onClick={() => setTab(t)}
-                className="py-4 font-semibold transition-all"
-                style={{
-                  fontSize: '15px',
-                  color: tab === t ? '#063D3E' : 'var(--text-secondary)',
-                  borderBottom: tab === t ? '2px solid #063D3E' : '2px solid transparent',
-                  background: 'transparent',
-                }}>
-                {t === 'login' ? 'Anmelden' : 'Registrieren'}
-              </button>
-            ))}
-          </div>
-
-          {/* ── LOGIN ── */}
-          {tab === 'login' && (
-            <form onSubmit={handleLogin} className="p-5 flex flex-col gap-3">
-              <input
-                type="email" placeholder="E-Mail Adresse" required
-                value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-              <div className="relative">
-                <input
-                  type={showLoginPwd ? 'text' : 'password'} placeholder="Passwort" required
-                  value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl outline-none border pr-12"
-                  style={inp}
-                />
-                <button type="button" onClick={() => setShowLoginPwd(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
-                  style={{ color: 'var(--text-secondary)' }}>
-                  {showLoginPwd ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              <button type="button" onClick={handleForgotPassword}
-                className="text-sm text-right" style={{ color: 'var(--text-secondary)' }}>
-                Passwort vergessen?
-              </button>
-              <button type="submit" disabled={loginLoading}
-                className="w-full py-3.5 rounded-xl text-white font-semibold hover:opacity-90 disabled:opacity-50 transition"
-                style={{ background: '#063D3E', fontSize: '15px' }}>
-                {loginLoading ? 'Anmelden…' : 'Anmelden →'}
-              </button>
-              <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
-                Noch kein Konto?{' '}
-                <button type="button" onClick={() => setTab('register')} className="font-semibold text-accent1">
-                  Registrieren →
-                </button>
-              </p>
-              <div className="border-t pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
-                <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                  Eigentümer-Zugang über gleiche E-Mail &amp; Passwort
-                </span>
-              </div>
-            </form>
-          )}
-
-          {/* ── REGISTER ── */}
-          {tab === 'register' && (
-            <form onSubmit={handleRegister} className="p-5 flex flex-col gap-3">
-                  {/* Name fields – each full width on mobile */}
-              <input
-                type="text" placeholder="Vorname" required
-                value={reg.first_name} onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-              <input
-                type="text" placeholder="Nachname" required
-                value={reg.last_name} onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-              <input
-                type="email" placeholder="E-Mail Adresse" required
-                value={reg.email} onChange={e => setReg(p => ({ ...p, email: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-              <input
-                type="tel" placeholder="Telefonnummer" required
-                value={reg.phone} onChange={e => setReg(p => ({ ...p, phone: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-              <div>
-                <div className="relative">
-                  <input
-                    type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
-                    value={reg.password} onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
-                    className="w-full px-4 py-3 rounded-xl outline-none border pr-12"
-                    style={inp}
-                  />
-                  <button type="button" onClick={() => setShowRegPwd(p => !p)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
-                    style={{ color: 'var(--text-secondary)' }}>
-                    {showRegPwd ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-                <PasswordStrength password={reg.password} />
-              </div>
-              <input
-                type="password" placeholder="Passwort wiederholen" required
-                value={reg.password2} onChange={e => setReg(p => ({ ...p, password2: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl outline-none border"
-                style={inp}
-              />
-
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
-                  className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
-                  Ich akzeptiere die{' '}
-                  <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent1 underline font-medium">
-                    Datenschutzerklärung
-                  </button>{' '}
-                  (DSGVO).
-                </span>
-              </label>
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={consentNda} onChange={e => setConsentNda(e.target.checked)}
-                  className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
-                  Ich akzeptiere die{' '}
-                  <button type="button" onClick={() => setShowNda(true)} className="text-accent1 underline font-medium">
-                    Geheimhaltungsvereinbarung (NDA)
-                  </button>.
-                </span>
-              </label>
-
-              <button type="submit" disabled={regLoading || !consentPrivacy || !consentNda}
-                className="w-full py-3.5 rounded-xl text-white font-semibold hover:opacity-90 disabled:opacity-50 transition mt-1"
-                style={{ background: '#063D3E', fontSize: '15px' }}>
-                {regLoading ? 'Wird registriert…' : 'Registrieren & Zugang erhalten →'}
-              </button>
-              <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
-                Bereits registriert?{' '}
-                <button type="button" onClick={() => setTab('login')} className="font-semibold text-accent1">
-                  Anmelden →
-                </button>
-              </p>
-            </form>
-          )}
-        </div>
-
-        {/* ── VISION & STRATEGIE ── */}
-        <div className="mb-10">
-          <div className="text-center mb-8">
-            <span className="inline-block text-xs font-bold px-3 py-1.5 rounded-full mb-3"
-              style={{ background: 'rgba(6,61,62,0.10)', color: '#063D3E' }}>
-              VISION & STRATEGIE
-            </span>
-            <h2 className="text-xl sm:text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-              Die erste vollständig integrierte<br className="hidden sm:block" /> digitale Infrastruktur für den Bau
-            </h2>
-            <p className="text-sm max-w-xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-              Bau der ersten vollständig integrierten digitalen Infrastruktur für die europäische Bauindustrie
+          {/* Message */}
+          <div>
+            <p className="label-overline mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>Investor Portal</p>
+            <h1 className="text-display-2xl text-white mb-6" style={{ maxWidth: 440 }}>
+              Die Infrastruktur für die Baubranche
+            </h1>
+            <p className="text-base leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 380 }}>
+              Avento ERP + Conser Marktplatz. Das erste vollständig integrierte Ökosystem
+              für Handwerksbetriebe in der DACH-Region.
             </p>
-          </div>
-
-          {/* Mission cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            {[
-              { icon: '🏗️', title: 'Avento · ERP', desc: 'Angebote, Kalkulation, GPS-Zeiterfassung, KI-Aufmaß, DATEV/GAEB-Integration. Das Betriebssystem für Handwerksbetriebe.' },
-              { icon: '🔗', title: 'Der AHA-Moment', desc: 'Digitales Aufmaß → automatischer Warenkorb → 1-Klick-Bestellung. Avento und Conser greifen nahtlos ineinander.' },
-              { icon: '🛒', title: 'Conser · Marketplace', desc: '2,3 Mio. Produkte, 7 Großhändler, Echtzeit-Preisvergleich. Der B2B-Marktplatz für Baumaterial in DACH.' },
-            ].map(c => (
-              <div key={c.title} className="rounded-[18px] p-5 border"
-                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-                <div className="text-3xl mb-3">{c.icon}</div>
-                <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>{c.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{c.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Markt strip */}
-          <div className="rounded-[18px] p-5 border mb-6"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <p className="text-xs font-bold uppercase tracking-wide mb-4" style={{ color: 'var(--text-tertiary)' }}>Markt-Fokus DACH</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-6">
               {[
-                { value: '1,7 Mio.', label: 'Bauunternehmen & Handwerksbetriebe' },
-                { value: '147 Mrd. €', label: 'Materialeinkauf pro Jahr' },
-                { value: '< 3%', label: 'Digitalisierungsgrad heute' },
-                { value: '€ 15 Mrd.+', label: 'Adressierbarer Markt (SaaS + GMV)' },
+                { n: '75.000', l: 'Kunden-Ziel' },
+                { n: '€181M',  l: 'Revenue-Ziel' },
+                { n: '7',      l: 'Top-Partner' },
               ].map(s => (
-                <div key={s.label}>
-                  <p className="text-2xl font-bold" style={{ color: '#063D3E' }}>{s.value}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{s.label}</p>
+                <div key={s.l}>
+                  <p className="text-metric-lg text-white mb-0.5">{s.n}</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.l}</p>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Produkt-Spezifikationen */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="rounded-[18px] p-5 border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm"
-                  style={{ background: 'rgba(6,61,62,0.10)' }}>🏗️</div>
-                <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Avento · Features</p>
-              </div>
-              <ul className="flex flex-col gap-1.5">
-                {['Angebots- & Kalkulationssoftware', 'GPS-Zeiterfassung für Mitarbeiter', 'KI-gestütztes Aufmaß', 'DATEV & GAEB Integration', 'Automatische Warenkorb-Erzeugung', 'Projekt- & Ressourcenplanung'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                    <span style={{ color: '#063D3E' }}>✓</span> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-[18px] p-5 border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm"
-                  style={{ background: 'rgba(212,102,42,0.10)' }}>🛒</div>
-                <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Conser · Features</p>
-              </div>
-              <ul className="flex flex-col gap-1.5">
-                {['2,3 Mio. Produkte im Katalog', '7 Großhändler angebunden', 'Echtzeit-Preisvergleich', 'Digitale Bestellabwicklung', 'Lieferstatus-Tracking', 'B2B-Kundenverwaltung'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                    <span style={{ color: '#D4662A' }}>✓</span> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Markt & Wettbewerb */}
-          <div className="rounded-[18px] p-5 border"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--text-tertiary)' }}>Markt & Wettbewerb</p>
-            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
-              Bestehende Lösungen (Soranus, Tapio, Würth) lösen entweder ERP <em>oder</em> Beschaffung — nie beides. Avento + Conser ist die einzige vollständig integrierte Plattform.
-            </p>
-            <div className="flex flex-col gap-2">
-              {[
-                { name: 'Soranus / Streit', note: 'Nur ERP, kein Marketplace' },
-                { name: 'Tapio (Homag)', note: 'Holz-Nische, kein SHK/Bau' },
-                { name: 'Würth Orsy', note: 'Nur Eigenprodukte, kein Vergleich' },
-                { name: 'Avento + Conser', note: 'Full-Stack · Einzige Lösung', highlight: true },
-              ].map(c => (
-                <div key={c.name} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg"
-                  style={{ background: c.highlight ? 'rgba(6,61,62,0.08)' : 'var(--surface2)' }}>
-                  <span className="font-semibold" style={{ color: c.highlight ? '#063D3E' : 'var(--text-primary)' }}>{c.name}</span>
-                  <span style={{ color: c.highlight ? '#063D3E' : 'var(--text-secondary)' }}>{c.note}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA: Zugang beantragen */}
-          <div className="rounded-[18px] p-5 border flex flex-col justify-between"
-            style={{ background: 'linear-gradient(135deg, rgba(6,61,62,0.05) 0%, rgba(6,61,62,0.10) 100%)', borderColor: 'rgba(6,61,62,0.15)' }}>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: '#063D3E' }}>Investoren-Zugang</p>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
-                Sie interessieren sich für eine Beteiligung? Registrieren Sie sich für Zugang zum vertraulichen Investoren-Portal und nehmen Sie Kontakt auf.
-              </p>
-            </div>
-            <button
-              onClick={openRegisterTab}
-              className="w-full py-3 rounded-xl text-white font-semibold hover:opacity-90 transition"
-              style={{ background: '#063D3E', fontSize: '14px' }}
-            >
-              Zugang beantragen →
-            </button>
+          {/* Badges */}
+          <div className="flex items-center gap-3 flex-wrap">
+            {['DSGVO-konform', 'Made in Germany', 'Seed 2026'].map(b => (
+              <span key={b} className="tag tag-sm"
+                style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.65)' }}>{b}</span>
+            ))}
           </div>
         </div>
 
-        {/* ── FOOTER ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t text-sm"
-          style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
-          <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
-            <button onClick={() => setShowPrivacy(true)} className="hover:text-accent1 transition">Datenschutz</button>
-            <span>·</span>
-            <button onClick={() => setShowNda(true)} className="hover:text-accent1 transition">NDA</button>
-            <span>·</span>
-            <button onClick={() => setShowImpressum(true)} className="hover:text-accent1 transition">Impressum</button>
+        {/* RIGHT: Auth Form */}
+        <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
+          <div className="w-full max-w-sm animate-fade-up" ref={authCardRef}>
+            {/* Mobile Logo */}
+            <div className="lg:hidden flex items-center gap-2 justify-center mb-8">
+              <img src={aventoLogo} alt="Avento" className="h-8 rounded-lg" />
+              <div className="w-px h-5" style={{ background: 'var(--border)' }} />
+              <img src={conserLogo} alt="Conser" className="h-8 rounded-lg" />
+            </div>
+
+            {/* Auth Card */}
+            <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
+              <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>
+                {tab === 'login' ? 'Anmelden' : 'Registrieren'}
+              </h2>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+                {tab === 'login' ? 'Zugang zum Investor Portal' : 'Kostenlosen Investor-Zugang beantragen'}
+              </p>
+
+              {/* Tabs */}
+              <div className="flex gap-1 p-1 rounded-[12px] mb-6" style={{ background: 'var(--surface2)' }}>
+                {(['login', 'register'] as const).map(t => (
+                  <button key={t} onClick={() => setTab(t)}
+                    className="flex-1 py-2 rounded-[10px] text-sm font-semibold transition"
+                    style={{
+                      background: tab === t ? 'var(--surface)' : 'transparent',
+                      color: tab === t ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      boxShadow: tab === t ? 'var(--shadow-sm)' : 'none',
+                    }}>
+                    {t === 'login' ? 'Anmelden' : 'Registrieren'}
+                  </button>
+                ))}
+              </div>
+
+              {/* LOGIN FORM */}
+              {tab === 'login' && (
+                <form onSubmit={handleLogin} className="flex flex-col gap-3">
+                  <input type="email" placeholder="E-Mail" required
+                    value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
+                    className="input-base" disabled={Date.now() < lockoutUntilRef.current} />
+                  <div className="relative">
+                    <input type={showLoginPwd ? 'text' : 'password'} placeholder="Passwort" required
+                      value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
+                      className="input-base pr-10" disabled={Date.now() < lockoutUntilRef.current} />
+                    <button type="button" onClick={() => setShowLoginPwd(v => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                      style={{ color: 'var(--text-tertiary)' }}>
+                      {showLoginPwd ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                  </div>
+                  <button type="submit" disabled={loginLoading || Date.now() < lockoutUntilRef.current}
+                    className="btn btn-primary btn-lg w-full mt-2">
+                    {loginLoading ? 'Wird angemeldet…' : 'Anmelden →'}
+                  </button>
+                  <button type="button" onClick={handleForgotPassword}
+                    className="text-xs text-center hover-press" style={{ color: 'var(--text-tertiary)' }}>
+                    Passwort vergessen?
+                  </button>
+                  <div className="border-t pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
+                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                      Eigentümer-Zugang über gleiche E-Mail &amp; Passwort
+                    </span>
+                  </div>
+                </form>
+              )}
+
+              {/* REGISTER FORM */}
+              {tab === 'register' && (
+                <form onSubmit={handleRegister} className="flex flex-col gap-3">
+                  <input
+                    type="text" placeholder="Vorname" required
+                    value={reg.first_name} onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
+                    className="input-base"
+                  />
+                  <input
+                    type="text" placeholder="Nachname" required
+                    value={reg.last_name} onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))}
+                    className="input-base"
+                  />
+                  <input
+                    type="email" placeholder="E-Mail Adresse" required
+                    value={reg.email} onChange={e => setReg(p => ({ ...p, email: e.target.value }))}
+                    className="input-base"
+                  />
+                  <input
+                    type="tel" placeholder="Telefonnummer" required
+                    value={reg.phone} onChange={e => setReg(p => ({ ...p, phone: e.target.value }))}
+                    className="input-base"
+                  />
+                  <div>
+                    <div className="relative">
+                      <input
+                        type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
+                        value={reg.password} onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
+                        className="input-base pr-10"
+                      />
+                      <button type="button" onClick={() => setShowRegPwd(p => !p)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        style={{ color: 'var(--text-secondary)' }}>
+                        {showRegPwd ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </button>
+                    </div>
+                    <PasswordStrength password={reg.password} />
+                  </div>
+                  <input
+                    type="password" placeholder="Passwort wiederholen" required
+                    value={reg.password2} onChange={e => setReg(p => ({ ...p, password2: e.target.value }))}
+                    className="input-base"
+                  />
+
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
+                      className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                    <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                      Ich akzeptiere die{' '}
+                      <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent1 underline font-medium">
+                        Datenschutzerklärung
+                      </button>{' '}
+                      (DSGVO).
+                    </span>
+                  </label>
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" checked={consentNda} onChange={e => setConsentNda(e.target.checked)}
+                      className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                    <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                      Ich akzeptiere die{' '}
+                      <button type="button" onClick={() => setShowNda(true)} className="text-accent1 underline font-medium">
+                        Geheimhaltungsvereinbarung (NDA)
+                      </button>.
+                    </span>
+                  </label>
+
+                  <button type="submit" disabled={regLoading || !consentPrivacy || !consentNda}
+                    className="btn btn-primary btn-lg w-full mt-2">
+                    {regLoading ? 'Wird registriert…' : 'Zugang beantragen →'}
+                  </button>
+                  <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+                    Bereits registriert?{' '}
+                    <button type="button" onClick={() => setTab('login')} className="font-semibold text-accent1">
+                      Anmelden →
+                    </button>
+                  </p>
+                </form>
+              )}
+            </div>
+
+            {/* Legal Links */}
+            <div className="flex justify-center gap-4 mt-5">
+              <button onClick={() => setShowImpressum(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Impressum</button>
+              <button onClick={() => setShowPrivacy(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Datenschutz</button>
+              <button onClick={() => setShowNda(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>NDA</button>
+            </div>
+
+            {/* CTA for register */}
+            <div className="mt-6 text-center">
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                Interesse an einer Beteiligung?{' '}
+                <button type="button" onClick={openRegisterTab} className="font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                  Zugang beantragen →
+                </button>
+              </p>
+            </div>
           </div>
-          <span>© 2025 Bautech Holding · Avento &amp; Conser</span>
         </div>
       </div>
 
+      {/* Modals */}
       {showNda && <NdaModal onClose={() => setShowNda(false)} />}
       {showPrivacy && <PrivacyModal onClose={() => setShowPrivacy(false)} />}
       {showImpressum && <ImpressumModal onClose={() => setShowImpressum(false)} />}

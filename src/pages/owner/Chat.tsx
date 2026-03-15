@@ -290,13 +290,11 @@ export default function OwnerChat() {
   )
 
   return (
-    <div className="max-w-5xl mx-auto fade-up" style={{ height: 'calc(100dvh - var(--topbar-height) - var(--bottom-nav-total) - 2rem)' }}>
+    <div className="max-w-5xl mx-auto animate-fade-up" style={{ height: 'calc(100dvh - var(--topbar-height) - var(--bottom-nav-total) - 2rem)' }}>
       <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Investor-Chat</h1>
 
       {/* Desktop: side-by-side; Mobile: single view */}
-      <div className="rounded-[20px] border overflow-hidden" style={{
-        background: 'var(--surface)',
-        borderColor: 'var(--border)',
+      <div className="card overflow-hidden" style={{
         height: 'calc(100% - 52px)',
       }}>
         {/* Mobile */}

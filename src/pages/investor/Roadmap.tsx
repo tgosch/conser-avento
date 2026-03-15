@@ -164,7 +164,7 @@ export default function InvestorRoadmap() {
   const [expanded, setExpanded] = useState<number | null>(null)
 
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl fade-up">
       {/* ── Header ── */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>

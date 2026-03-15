@@ -3,7 +3,6 @@ import { supabase } from '../../lib/supabase'
 import type { Partner } from '../../lib/supabase'
 import { Factory, Users2, Clock, Handshake, Star, CheckCircle } from 'lucide-react'
 
-// Statische Fallback-Daten (werden überschrieben wenn DB vorhanden)
 const FALLBACK_PRODUCTION: Partner[] = [
   { id: 'p1', name: 'Richter+Frenzel', type: 'production', category: 'Sanitär · Heizung · Installation', description: 'Führender Großhändler für Haustechnik in Deutschland. Starkes SHK-Netzwerk mit über 180 Standorten bundesweit.', status: 'negotiating', logo_path: null, initials: 'RF', color: '#B71C1C', visible: true, order_index: 1, created_at: '' },
   { id: 'p2', name: 'Gebhardt Bauzentrum', type: 'production', category: 'Baustoffhandel', description: 'Regionaler Baustoffhändler mit breitem Produktportfolio für den professionellen Tief- und Hochbau.', status: 'negotiating', logo_path: null, initials: 'GB', color: '#1A5C1A', visible: true, order_index: 2, created_at: '' },
@@ -26,7 +25,6 @@ const FALLBACK_CUSTOMERS: Partner[] = [
 
 function getLogoUrl(logoPath: string | null): string | null {
   if (!logoPath) return null
-  // Anon-Key reicht für öffentliche Bucket-URLs — kein Service Key nötig
   const { data } = supabase.storage.from('partner-logos').getPublicUrl(logoPath)
   return data.publicUrl
 }
@@ -36,8 +34,7 @@ function StatusBadge({ status }: { status: Partner['status'] }) {
     return (
       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full"
         style={{ background: 'rgba(255,149,0,0.12)', color: '#FF9500', border: '1px solid rgba(255,149,0,0.25)' }}>
-        <Clock size={10} strokeWidth={2.5} />
-        In Verhandlungen
+        <Clock size={10} strokeWidth={2.5} /> In Verhandlungen
       </span>
     )
   }
@@ -45,16 +42,14 @@ function StatusBadge({ status }: { status: Partner['status'] }) {
     return (
       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full"
         style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759', border: '1px solid rgba(52,199,89,0.25)' }}>
-        <CheckCircle size={10} strokeWidth={2.5} />
-        Aktiver Partner
+        <CheckCircle size={10} strokeWidth={2.5} /> Aktiver Partner
       </span>
     )
   }
   return (
     <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full"
       style={{ background: 'rgba(88,86,214,0.12)', color: '#5856D6', border: '1px solid rgba(88,86,214,0.25)' }}>
-      <Star size={10} strokeWidth={2.5} />
-      Beta-Nutzer
+      <Star size={10} strokeWidth={2.5} /> Beta-Nutzer
     </span>
   )
 }
@@ -62,17 +57,12 @@ function StatusBadge({ status }: { status: Partner['status'] }) {
 function PartnerLogo({ partner }: { partner: Partner }) {
   const [imgError, setImgError] = useState(false)
   const logoUrl = getLogoUrl(partner.logo_path)
-
   if (logoUrl && !imgError) {
     return (
       <div className="w-14 h-14 rounded-[14px] overflow-hidden shrink-0 flex items-center justify-center"
         style={{ background: `${partner.color}12`, border: `1px solid ${partner.color}25` }}>
-        <img
-          src={logoUrl}
-          alt={partner.name}
-          className="w-full h-full object-contain p-1.5"
-          onError={() => setImgError(true)}
-        />
+        <img src={logoUrl} alt={partner.name} className="w-full h-full object-contain p-1.5"
+          onError={() => setImgError(true)} />
       </div>
     )
   }
@@ -87,6 +77,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
 export default function InvestorPartners() {
   const [production, setProduction] = useState<Partner[]>(FALLBACK_PRODUCTION)
   const [customers, setCustomers] = useState<Partner[]>(FALLBACK_CUSTOMERS)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     supabase.from('partners').select('*').eq('visible', true).order('order_index')
@@ -97,15 +88,51 @@ export default function InvestorPartners() {
           if (p.length > 0) setProduction(p)
           if (c.length > 0) setCustomers(c)
         }
+        setLoading(false)
       })
   }, [])
 
-  return (
+  if (loading) return (
     <div className="max-w-5xl">
-      <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Partner</h1>
-      <p className="text-sm mb-8" style={{ color: 'var(--text-secondary)' }}>Produktionspartner & Endkunden</p>
+      <div className="skeleton h-8 w-32 rounded-xl mb-3" />
+      <div className="skeleton h-4 w-56 rounded-lg mb-8" />
+      <div className="skeleton h-28 rounded-[20px] mb-8" />
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+        {[1,2,3,4,5,6].map(i => <div key={i} className="skeleton h-24 rounded-[20px]" />)}
+      </div>
+      <div className="skeleton h-20 rounded-[20px]" />
+    </div>
+  )
 
-      {/* ── Stats Strip ── */}
+  return (
+    <div className="max-w-5xl animate-fade-up">
+      <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Partner</h1>
+      <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>Produktionspartner & Endkunden</p>
+
+      {/* ERGÄNZUNG 1 — Strategischer Kontext-Banner */}
+      <div className="card p-5 mb-8 animate-fade-up"
+           style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%)' }}>
+        <div className="flex items-start gap-3">
+          <span className="text-2xl shrink-0">🏗️</span>
+          <div>
+            <p className="font-bold text-white text-sm mb-2">
+              Warum BayWa, Richter+Frenzel und FEGA keine Zufälle sind
+            </p>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              Diese drei Unternehmen haben zusammen Zugang zu über 50.000 professionellen
+              Handwerksbetrieben in DACH. Wir nutzen ihre bestehenden Vertriebskanäle —
+              das bedeutet Warm-Referrals durch vertrauenswürdige Industrie-Namen statt Cold-Outreach.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {['BayWa · Bayern + AT', 'Richter+Frenzel · SHK-Netzwerk', 'FEGA · Elektrotechnik'].map(t => (
+                <span key={t} className="tag" style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
         {[
           { icon: <Factory size={20} style={{ color: '#063D3E' }} />, value: production.length, label: 'Produktionspartner', accent: '#063D3E' },
@@ -113,10 +140,8 @@ export default function InvestorPartners() {
           { icon: <Clock size={20} style={{ color: '#FF9500' }} />, value: production.filter(p => p.status === 'negotiating').length, label: 'In Verhandlungen', accent: '#FF9500' },
           { icon: <Handshake size={20} style={{ color: '#34C759' }} />, value: production.filter(p => p.status === 'active' || p.status === 'partner').length + customers.filter(c => c.status === 'beta').length, label: 'Aktiv / Beta', accent: '#34C759' },
         ].map(s => (
-          <div key={s.label} className="rounded-[18px] p-4 border flex flex-col gap-2"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background: `${s.accent}14` }}>
+          <div key={s.label} className="card p-4 flex flex-col gap-2">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${s.accent}14` }}>
               {s.icon}
             </div>
             <div>
@@ -127,11 +152,10 @@ export default function InvestorPartners() {
         ))}
       </div>
 
-      {/* ── Produktionspartner ── */}
+      {/* Produktionspartner */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(6,61,62,0.10)' }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(6,61,62,0.10)' }}>
             <Factory size={18} style={{ color: '#063D3E' }} />
           </div>
           <div>
@@ -143,13 +167,9 @@ export default function InvestorPartners() {
             {production.filter(p => p.status === 'negotiating').length} in Verhandlungen
           </span>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {production.map(p => (
-            <div key={p.id}
-              className="rounded-[20px] p-5 border hover-lift transition-all duration-200"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              {/* Header */}
+            <div key={p.id} className="card card-interactive p-5 hover-lift">
               <div className="flex items-start gap-3.5 mb-3">
                 <PartnerLogo partner={p} />
                 <div className="flex-1 min-w-0">
@@ -157,20 +177,17 @@ export default function InvestorPartners() {
                   <p className="text-xs leading-tight" style={{ color: 'var(--text-secondary)' }}>{p.category}</p>
                 </div>
               </div>
-              {/* Description */}
               <p className="text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{p.description}</p>
-              {/* Status */}
               <StatusBadge status={p.status} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Endkunden ── */}
+      {/* Endkunden */}
       <div>
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(212,102,42,0.10)' }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(212,102,42,0.10)' }}>
             <Users2 size={18} style={{ color: '#D4662A' }} />
           </div>
           <div>
@@ -182,13 +199,9 @@ export default function InvestorPartners() {
             Phase 1 · Exklusiv
           </span>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {customers.map(c => (
-            <div key={c.id}
-              className="rounded-[20px] overflow-hidden border hover-lift transition-all duration-200"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-              {/* Color accent top bar */}
+            <div key={c.id} className="card overflow-hidden hover-lift">
               <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${c.color}, ${c.color}88)` }} />
               <div className="p-5">
                 <div className="flex items-center gap-3 mb-3">

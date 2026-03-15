@@ -3,6 +3,8 @@ import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { TeamMember } from '../../lib/supabase'
 import { Upload, Trash2, X } from 'lucide-react'
 import { toast } from 'react-toastify'
+import { SectionHeader } from '../../components/ui/SectionHeader'
+import { Badge } from '../../components/ui/Badge'
 
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'webp']
 const MAX_MB = 5
@@ -292,9 +294,43 @@ export default function OwnerTeam() {
         </div>
       )}
 
-      <p className="text-xs mt-6" style={{ color: 'var(--text-tertiary)' }}>
+      <p className="text-xs mt-6 mb-10" style={{ color: 'var(--text-tertiary)' }}>
         Hover über das Profilbild um ein Foto hochzuladen (JPG/PNG/WEBP, max. 5 MB).
       </p>
+
+      {/* ── Post-Seed Hire Planner ── */}
+      <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <SectionHeader label="Planung" title="Post-Seed Hire Planner" sub="Geplante Einstellungen nach erfolgreicher Seed-Runde (€1,5M)" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          {[
+            { role: 'Backend Developer', when: 'Q3 2026', priority: 'Hoch', icon: '⚙️', color: '#063D3E', note: 'Node.js / Supabase Edge Functions' },
+            { role: 'Sales Lead',        when: 'Q3 2026', priority: 'Hoch', icon: '📈', color: '#D4662A', note: 'DACH B2B Vertrieb, Baubranche' },
+            { role: 'Customer Success',  when: 'Q4 2026', priority: 'Mittel', icon: '🤝', color: '#5856D6', note: 'Onboarding & Retention' },
+            { role: 'Marketing Manager', when: 'Q4 2026', priority: 'Mittel', icon: '🎯', color: '#FF9500', note: 'Content & Performance Marketing' },
+          ].map(h => (
+            <div key={h.role} className="rounded-[16px] p-4 border"
+              style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-xl shrink-0"
+                  style={{ background: `${h.color}14` }}>{h.icon}</div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm truncate" style={{ color: 'var(--text-primary)' }}>{h.role}</p>
+                  <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>{h.when}</p>
+                </div>
+                <Badge
+                  label={h.priority}
+                  color={h.priority === 'Hoch' ? '#D4662A' : '#6E6E73'}
+                  bg={h.priority === 'Hoch' ? 'rgba(212,102,42,0.12)' : 'rgba(110,110,115,0.12)'}
+                />
+              </div>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{h.note}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs mt-4" style={{ color: 'var(--text-tertiary)' }}>
+          Einstellungsplan basierend auf Seed-Runde €1,5M · Finaler Plan im Gespräch mit Torben.
+        </p>
+      </div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ export default function InvestorSettings() {
   ]
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl animate-fade-up">
       <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Einstellungen</h1>
 
       <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background: 'var(--surface2)' }}>
@@ -34,7 +34,7 @@ export default function InvestorSettings() {
       </div>
 
       {activeTab === 'profile' && (
-        <div className="rounded-[20px] p-6 border flex flex-col gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card p-6 flex flex-col gap-4">
           <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Profil-Informationen</h2>
           {user?.investor ? (
             <div className="flex flex-col gap-3">
@@ -58,7 +58,7 @@ export default function InvestorSettings() {
       )}
 
       {activeTab === 'appearance' && (
-        <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card p-6">
           <h2 className="font-bold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Erscheinungsbild</h2>
           <div className="flex items-center justify-between">
             <div>
@@ -67,8 +67,7 @@ export default function InvestorSettings() {
             </div>
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition"
-              style={{ background: 'var(--surface2)', color: 'var(--text-primary)' }}
+              className="btn btn-secondary"
             >
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -78,7 +77,7 @@ export default function InvestorSettings() {
       )}
 
       {activeTab === 'privacy' && (
-        <div className="rounded-[20px] p-6 border flex flex-col gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card p-6 flex flex-col gap-4">
           <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Datenschutz</h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Ihre Daten werden gemäß DSGVO verarbeitet. Einwilligung erteilt:{' '}

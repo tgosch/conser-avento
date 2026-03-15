@@ -1,23 +1,32 @@
+import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FolderOpen, MessageSquare, Bell, Rocket, Settings, X, LogOut, ShieldCheck, Handshake, Users, Presentation, Building2, Target } from 'lucide-react'
+import {
+  LayoutDashboard, MessageSquare, Bell, Settings, X, LogOut,
+  Handshake, Users, Rocket, GitBranch, FileText, Package,
+} from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
-import aventoLogo from '../../assets/avento_kachel.png'
-import conserLogo from '../../assets/conser_kachel.png'
+import { supabase } from '../../lib/supabase'
 
-const nav = [
-  { to: '/owner/dashboard',      icon: LayoutDashboard, label: 'Dashboard',       exact: true },
-  { to: '/owner/presentations',  icon: Presentation,    label: 'Präsentationen' },
-  { divider: true, label: 'Investor-Portal' },
-  { to: '/owner/docs',      icon: FolderOpen,      label: 'Pläne' },
-  { to: '/owner/chat',      icon: MessageSquare,   label: 'Chat' },
-  { to: '/owner/updates',   icon: Bell,            label: 'Updates' },
-  { to: '/owner/partners',  icon: Handshake,       label: 'Partner' },
-  { to: '/owner/team',      icon: Users,           label: 'Team' },
-  { to: '/owner/future',      icon: Rocket,       label: 'Zukunft' },
-  { to: '/owner/milestones',  icon: Target,       label: 'Phasen & Meilensteine' },
-  { to: '/owner/structure',   icon: Building2,    label: 'Unternehmensstruktur' },
-  { divider: true, label: 'System' },
-  { to: '/owner/settings',  icon: Settings,        label: 'Einstellungen' },
+// NAV groups with unreadCount param
+const makeGroups = (unreadCount: number) => [
+  { group: 'COCKPIT', items: [
+      { to: '/owner/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { to: '/owner/chat',      icon: MessageSquare,   label: 'Investor-Chat', badge: unreadCount > 0 ? unreadCount : undefined },
+      { to: '/owner/updates',   icon: Bell,            label: 'Updates' },
+  ]},
+  { group: 'INHALTE', items: [
+      { to: '/owner/docs',     icon: FileText,  label: 'Dokumente' },
+      { to: '/owner/partners', icon: Handshake, label: 'Partner' },
+      { to: '/owner/team',     icon: Users,     label: 'Team' },
+      { to: '/owner/product',  icon: Package,   label: 'Produkt' },
+  ]},
+  { group: 'PLANUNG', items: [
+      { to: '/owner/phases', icon: GitBranch, label: 'Phasenpläne' },
+      { to: '/owner/future', icon: Rocket,    label: 'Zukunft' },
+  ]},
+  { group: 'SYSTEM', items: [
+      { to: '/owner/settings', icon: Settings, label: 'Einstellungen' },
+  ]},
 ]
 
 interface Props { open: boolean; onClose: () => void }
@@ -25,75 +34,87 @@ interface Props { open: boolean; onClose: () => void }
 export default function OwnerSidebar({ open, onClose }: Props) {
   const { logout } = useAuth()
   const navigate = useNavigate()
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    supabase.from('messages').select('id', { count: 'exact', head: true }).eq('from_admin', false)
+      .then(({ count }) => { if (count !== null) setUnreadCount(count) })
+    const ch = supabase.channel('owner-sidebar-badge')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'from_admin=eq.false' },
+        () => setUnreadCount(p => p + 1))
+      .subscribe()
+    return () => { supabase.removeChannel(ch) }
+  }, [])
 
   const handleLogout = async () => { await logout(); navigate('/') }
+  const NAV = makeGroups(unreadCount)
 
   return (
     <>
-      {open && <div className="fixed inset-0 bg-black/40 z-20 lg:hidden" onClick={onClose} />}
+      {open && <div className="fixed inset-0 z-20 lg:hidden sheet-overlay" onClick={onClose} />}
       <aside
-        className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300
-          ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-        style={{ width: 'var(--sidebar-width)', background: '#1C1C1E' }}
+        className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        style={{ width: 'var(--sidebar-width)', background: '#0A0A0A', borderRight: '1px solid rgba(255,255,255,0.07)' }}
       >
-        <button className="absolute top-4 right-4 text-white/50 hover:text-white lg:hidden" onClick={onClose}>
-          <X size={18} />
+        <button className="absolute top-4 right-4 btn btn-icon lg:hidden" style={{ color: 'rgba(255,255,255,0.3)' }} onClick={onClose}>
+          <X size={15} />
         </button>
 
-        <div className="p-4 pt-6 flex flex-col gap-2 border-b border-white/10">
-          <img src={aventoLogo} alt="Avento" className="w-full rounded-xl object-cover" style={{ height: '54px' }} />
-          <img src={conserLogo} alt="Conser" className="w-full rounded-xl object-cover" style={{ height: '54px' }} />
-        </div>
-
-        <div className="mx-4 mt-3 px-3 py-1.5 rounded-xl flex items-center gap-2" style={{ background: 'rgba(212,102,42,0.25)' }}>
-          <ShieldCheck size={13} style={{ color: '#F4956A' }} />
-          <p className="text-xs font-semibold" style={{ color: '#F4956A' }}>Owner-Modus aktiv</p>
-        </div>
-
-        <nav className="flex-1 p-3 flex flex-col gap-0.5 mt-2 overflow-y-auto">
-          {nav.map((item, i) => {
-            if ('divider' in item && item.divider) {
-              return (
-                <div key={`divider-${i}`} className="pt-3 pb-1 px-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.25)' }}>
-                    {item.label}
-                  </p>
-                </div>
-              )
-            }
-            const { to, icon: Icon, label, exact } = item as { to: string; icon: React.ElementType; label: string; exact?: boolean }
-            return (
-              <NavLink
-                key={to}
-                to={to}
-                end={exact}
-                onClick={onClose}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-sm font-medium transition-all duration-150
-                  ${isActive ? 'bg-white/16 text-white font-semibold' : 'text-white/65 hover:bg-white/10 hover:text-white'}`
-                }
-              >
-                <Icon size={17} /> {label}
-              </NavLink>
-            )
-          })}
-        </nav>
-
-        <div className="p-4 border-t border-white/10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
-              TG
+        {/* Brand Header */}
+        <div className="px-4 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--brand)' }}>
+              <span className="text-white text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>CA</span>
             </div>
-            <div className="min-w-0">
-              <p className="text-white text-xs font-semibold truncate">Torben Gosch</p>
-              <p className="text-white/40 text-xs">Owner / Admin</p>
+            <div>
+              <p className="text-xs font-bold text-white">Conser-Avento</p>
+              <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.28)' }}>Owner Console</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/10 transition text-xs font-medium"
-          >
-            <LogOut size={14} /> Abmelden
+        </div>
+
+        {/* NAV */}
+        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5">
+          {NAV.map(({ group, items }) => (
+            <div key={group}>
+              <p className="sidebar-group-label mb-2">{group}</p>
+              <div className="flex flex-col gap-0.5">
+                {items.map(({ to, icon: Icon, label, badge }) => (
+                  <NavLink key={to} to={to} end={to.endsWith('dashboard')} onClick={onClose}
+                    className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}>
+                    {({ isActive }) => (
+                      <>
+                        <Icon size={15} className="shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
+                        <span className="flex-1 truncate">{label}</span>
+                        {badge && badge > 0 ? (
+                          <span className="badge-bounce w-5 h-5 rounded-full flex items-center justify-center text-white shrink-0"
+                            style={{ background: '#E04B3E', fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                            {badge > 9 ? '9+' : badge}
+                          </span>
+                        ) : isActive ? (
+                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'rgba(255,255,255,0.4)' }} />
+                        ) : null}
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        {/* Bottom: User */}
+        <div className="p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl mb-2" style={{ cursor: 'default' }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+              style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>TG</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-white">Torben Gosch</p>
+              <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>CEO · Owner</p>
+            </div>
+          </div>
+          <button onClick={handleLogout} className="sidebar-nav-item w-full text-[12px]" style={{ color: 'rgba(255,255,255,0.28)' }}>
+            <LogOut size={13} /> Abmelden
           </button>
         </div>
       </aside>

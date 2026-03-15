@@ -59,7 +59,7 @@ export default function OwnerSettings() {
   const statusLabel: Record<string, string> = { new: 'Neu', contacted: 'In Kontakt', negotiating: 'Verhandelt', pending: 'Offen' }
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-4xl animate-fade-up">
       <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Einstellungen</h1>
 
       <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background: 'var(--surface2)' }}>
@@ -77,7 +77,7 @@ export default function OwnerSettings() {
       </div>
 
       {activeTab === 'design' && (
-        <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card p-6">
           <h2 className="font-bold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Design & Erscheinungsbild</h2>
           <div className="flex items-center justify-between">
             <div>
@@ -85,8 +85,7 @@ export default function OwnerSettings() {
               <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Dunkles Erscheinungsbild für alle Nutzer</p>
             </div>
             <button onClick={toggleTheme}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition"
-              style={{ background: 'var(--surface2)', color: 'var(--text-primary)' }}>
+              className="btn btn-secondary btn-sm">
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </button>
@@ -95,12 +94,11 @@ export default function OwnerSettings() {
       )}
 
       {activeTab === 'investors' && (
-        <div className="rounded-[20px] border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Alle Interessenten ({investors.length})</h2>
             <button onClick={exportCSV}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white hover:opacity-90 transition"
-              style={{ background: '#063D3E' }}>
+              className="btn btn-primary btn-sm">
               <Download size={13} /> CSV Export
             </button>
           </div>
@@ -135,7 +133,7 @@ export default function OwnerSettings() {
       )}
 
       {activeTab === 'investments' && (
-        <div className="rounded-[20px] border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+        <div className="card overflow-hidden">
           <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
               Investitionsvorschläge ({proposals.length})

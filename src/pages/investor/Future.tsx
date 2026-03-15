@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Clock } from 'lucide-react'
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -238,6 +239,15 @@ function CustomTooltip({ active, payload, label, metric }: {
   )
 }
 
+// ── Phase Status (specific per phase) ────────────────────────────
+const phaseStatus: Record<number, { label: string; color: string; bg: string }> = {
+  1: { label: '🚧 In Planung',   color: '#0066FF',  bg: 'rgba(0,102,255,0.10)' },
+  2: { label: '📅 Geplant',      color: '#FF9500',  bg: 'rgba(255,149,0,0.10)' },
+  3: { label: '📅 Geplant',      color: '#FF9500',  bg: 'rgba(255,149,0,0.10)' },
+  4: { label: '🔭 Langfristig',  color: '#8E8E93',  bg: 'rgba(142,142,147,0.10)' },
+  5: { label: '🔭 Langfristig',  color: '#8E8E93',  bg: 'rgba(142,142,147,0.10)' },
+}
+
 // ── Main Component ────────────────────────────────────────────────
 export default function InvestorFuture() {
   const [selectedPhase, setSelectedPhase] = useState(1)
@@ -246,7 +256,7 @@ export default function InvestorFuture() {
   const phase = PHASES.find(p => p.id === selectedPhase) ?? PHASES[0]
 
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl fade-up">
 
       {/* ── Header ── */}
       <div className="mb-6">
@@ -256,6 +266,38 @@ export default function InvestorFuture() {
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
           Product Roadmap 2026–2032 · 5 Phasen · Vollständige Digitalisierung der Baubranche
         </p>
+      </div>
+
+      {/* ── Warum Jetzt? — 3-card grid ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 fade-up fade-up-1">
+        {[
+          {
+            icon: '🏗️',
+            title: 'Die Baubranche digitalisiert sich jetzt',
+            body: '96% der deutschen Bauunternehmen sind KMUs — fast alle noch ohne digitales Bestellsystem. Das Fenster für Marktführerschaft öffnet sich genau jetzt.',
+            color: '#063D3E',
+          },
+          {
+            icon: '🤝',
+            title: 'Partner-Netzwerk bereits gesichert',
+            body: '7 Produktionspartner (BayWa, R+F, FEGA u.a.) mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
+            color: '#D4662A',
+          },
+          {
+            icon: '💡',
+            title: 'KI-Aufmaß als Alleinstellungsmerkmal',
+            body: 'Kein Wettbewerber bietet automatisierte Aufmaßerstellung. Avento besetzt diesen Slot — mit einer Technologie die 2025 erst durch LLM-Reife möglich wurde.',
+            color: '#0066FF',
+          },
+        ].map(card => (
+          <div key={card.title} className="rounded-[20px] p-5 border hover-card"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+            <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-xl mb-3"
+              style={{ background: `${card.color}12` }}>{card.icon}</div>
+            <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>{card.title}</p>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{card.body}</p>
+          </div>
+        ))}
       </div>
 
       {/* ── Vision Stats — 2×2 mobile, 4×1 desktop ── */}
@@ -275,6 +317,23 @@ export default function InvestorFuture() {
             <span className="text-[11px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{stat.sub}</span>
           </div>
         ))}
+      </div>
+
+      {/* ── Seed-Round Banner ── */}
+      <div className="rounded-[20px] p-5 mb-6 flex items-center gap-4 flex-wrap fade-up fade-up-3"
+        style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%)' }}>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">SEED-RUNDE LÄUFT</p>
+          <p className="text-white font-bold text-base leading-tight">Jetzt einsteigen: €1,5M Seed-Runde · ab €25.000</p>
+          <p className="text-white/70 text-xs mt-1">
+            Finanziert Phase 1 & 2 — Conser Webshop Launch + Marketing. Investor-Anteile entstehen durch diese Runde.
+          </p>
+        </div>
+        <Link to="/investor/chat"
+          className="shrink-0 px-5 py-2.5 rounded-[12px] text-sm font-bold transition hover:opacity-90"
+          style={{ background: '#D4662A', color: 'white' }}>
+          Gespräch starten →
+        </Link>
       </div>
 
       {/* ── Desktop Timeline Stepper ── */}
@@ -365,8 +424,8 @@ export default function InvestorFuture() {
                   Phase {phase.id}
                 </span>
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: 'rgba(212,102,42,0.12)', color: '#D4662A' }}>
-                  🕐 Geplant
+                  style={{ background: phaseStatus[phase.id]?.bg, color: phaseStatus[phase.id]?.color }}>
+                  {phaseStatus[phase.id]?.label}
                 </span>
                 <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                   {phase.duration}

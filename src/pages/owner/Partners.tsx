@@ -4,7 +4,7 @@ import type { Partner } from '../../lib/supabase'
 import { toast } from 'react-toastify'
 import {
   Plus, Trash2, Upload, X, Save,
-  AlertCircle,
+  AlertCircle, Download,
 } from 'lucide-react'
 
 // Erlaubte Bildformate für Logos (DSGVO-neutral: nur Firmendaten)
@@ -37,6 +37,26 @@ function validateLogo(file: File): string | null {
   if (file.size === 0)
     return 'Datei ist leer'
   return null
+}
+
+function exportPartnersCSV(partners: Partner[]) {
+  const header = ['Name', 'Typ', 'Kategorie', 'Status', 'Sichtbar', 'Erstellt']
+  const rows = partners.map(p => [
+    p.name,
+    p.type === 'production' ? 'Produktionspartner' : 'Endkunde',
+    p.category ?? '',
+    p.status,
+    p.visible ? 'Ja' : 'Nein',
+    p.created_at ? new Date(p.created_at).toLocaleDateString('de-DE') : '',
+  ])
+  const csv = [header, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `partner_export_${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 function getLogoUrl(logoPath: string | null): string | null {
@@ -197,14 +217,25 @@ export default function OwnerPartners() {
           <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Partner verwalten</h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>Logos hochladen, Partner hinzufügen & verwalten</p>
         </div>
-        <button
-          onClick={() => setShowForm(p => !p)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition"
-          style={{ background: '#063D3E' }}
-        >
-          {showForm ? <X size={15} /> : <Plus size={15} />}
-          {showForm ? 'Abbrechen' : 'Partner hinzufügen'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => exportPartnersCSV(partners)}
+            title="CSV exportieren"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-80 transition border"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+          >
+            <Download size={14} />
+            <span className="hidden sm:inline">CSV</span>
+          </button>
+          <button
+            onClick={() => setShowForm(p => !p)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition"
+            style={{ background: '#063D3E' }}
+          >
+            {showForm ? <X size={15} /> : <Plus size={15} />}
+            {showForm ? 'Abbrechen' : 'Partner hinzufügen'}
+          </button>
+        </div>
       </div>
 
       {/* ── Hinzufügen-Formular ── */}
@@ -320,6 +351,29 @@ export default function OwnerPartners() {
         ))}
       </div>
 
+      {/* ── DACH-Ziel Progress ── */}
+      {!loading && (() => {
+        const goal = 30
+        const pct = Math.min(100, Math.round((partners.length / goal) * 100))
+        return (
+          <div className="rounded-[16px] p-4 border mb-5"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>
+                DACH-Ziel: {goal} Partner
+              </span>
+              <span className="text-xs font-bold" style={{ color: '#063D3E' }}>
+                {partners.length} / {goal} ({pct}%)
+              </span>
+            </div>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--surface2)' }}>
+              <div className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${pct}%`, background: pct >= 100 ? '#34C759' : '#063D3E' }} />
+            </div>
+          </div>
+        )
+      })()}
+
       {/* ── Partner-Liste ── */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
@@ -377,6 +431,11 @@ export default function OwnerPartners() {
                     </span>
                   </div>
                   <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--text-secondary)' }}>{p.category}</p>
+                  {p.created_at && (
+                    <p className="text-[10px] mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                      seit {new Date(p.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </p>
+                  )}
                 </div>
 
                 {/* Actions */}

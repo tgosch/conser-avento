@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -35,9 +36,13 @@ export default function AiChatbot() {
     try {
       const history = [...messages, userMsg]
       // API-Key wird NIEMALS im Browser verwendet — Proxy via /api/chat (Vercel Edge Function)
+      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({
           system: `Du bist ein professioneller KI-Assistent für das Investor-Portal von Avento & Conser.
 
@@ -72,7 +77,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
       <button
         onClick={() => setOpen(true)}
         className="fixed z-50 w-14 h-14 rounded-full text-white flex items-center justify-center shadow-lg2 hover:opacity-90 transition-transform hover:scale-105"
-        style={{ background: '#063D3E', bottom: 'var(--fab-bottom)', right: '16px' }}
+        style={{ background: 'var(--brand)', bottom: 'var(--fab-bottom)', right: '16px' }}
       >
         <MessageCircle size={24} />
       </button>
@@ -90,7 +95,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
             borderColor: 'var(--border)',
           }}
         >
-          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--border)', background: '#063D3E' }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--border)', background: 'var(--brand)' }}>
             <div>
               <p className="text-white text-sm font-semibold">KI-Assistent</p>
               <p className="text-white/60 text-xs">Avento & Conser</p>
@@ -114,7 +119,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
                   className="max-w-[80%] px-3 py-2 text-sm leading-relaxed"
                   style={{
                     borderRadius: m.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    background: m.role === 'user' ? '#063D3E' : 'var(--surface2)',
+                    background: m.role === 'user' ? 'var(--brand)' : 'var(--surface2)',
                     color: m.role === 'user' ? 'white' : 'var(--text-primary)',
                   }}
                 >
