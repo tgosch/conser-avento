@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 interface Options {
   duration?: number    // ms, default 1400
@@ -21,7 +21,7 @@ export function useCountUp(target: number, options: Options = {}) {
   const [running, setRunning] = useState(false)
   const ref = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const start = () => {
+  const start = useCallback(() => {
     if (running) return
     setRunning(true)
     let current = 0
@@ -37,12 +37,19 @@ export function useCountUp(target: number, options: Options = {}) {
         setDisplay(parseFloat(current.toFixed(decimals + 1)))
       }
     }, 16)
-  }
+  }, [target, duration, decimals, running])
 
   useEffect(() => {
-    if (startOnMount) start()
+    if (startOnMount) {
+      // Defer to next tick to avoid sync setState in effect
+      const id = requestAnimationFrame(() => start())
+      return () => {
+        cancelAnimationFrame(id)
+        if (ref.current) clearInterval(ref.current)
+      }
+    }
     return () => { if (ref.current) clearInterval(ref.current) }
-  }, [target])
+  }, [target, startOnMount, start])
 
   const formatted = `${prefix}${
     decimals > 0

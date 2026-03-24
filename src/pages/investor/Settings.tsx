@@ -84,8 +84,8 @@ export default function InvestorSettings() {
             {user?.investor?.consent_date ? new Date(user.investor.consent_date).toLocaleDateString('de-DE') : '–'}
           </p>
           <div className="flex flex-col gap-2">
-            <a href="#" className="text-sm text-accent1 hover:underline">Datenschutzerklärung lesen</a>
-            <a href="#" className="text-sm text-accent1 hover:underline">Impressum</a>
+            <a href="#" className="text-sm text-accent hover:underline">Datenschutzerklärung lesen</a>
+            <a href="#" className="text-sm text-accent hover:underline">Impressum</a>
             <a href="#" className="text-sm text-red-500 hover:underline">Daten exportieren</a>
             <a href="#" className="text-sm text-red-500 hover:underline">Account löschen</a>
           </div>

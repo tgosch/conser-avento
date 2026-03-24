@@ -89,7 +89,7 @@ export default function Landing() {
         await loginInvestor(data.user.id, data.user.email ?? loginEmail.trim())
         navigate('/investor/dashboard')
       }
-    } catch (err: unknown) {
+    } catch {
       loginAttemptsRef.current += 1
       if (loginAttemptsRef.current >= 5) {
         lockoutUntilRef.current = Date.now() + 60_000
@@ -144,8 +144,8 @@ export default function Landing() {
       }
       toast.success(`Willkommen, ${reg.first_name.trim()}! Ihr Zugang wurde eingerichtet.`)
       navigate('/investor/dashboard')
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'Registrierung fehlgeschlagen')
+    } catch {
+      toast.error('Registrierung fehlgeschlagen')
     } finally {
       setRegLoading(false)
     }
@@ -329,7 +329,7 @@ export default function Landing() {
                       className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
                     <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
                       Ich akzeptiere die{' '}
-                      <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent1 underline font-medium">
+                      <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent underline font-medium">
                         Datenschutzerklärung
                       </button>{' '}
                       (DSGVO).
@@ -340,7 +340,7 @@ export default function Landing() {
                       className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
                     <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
                       Ich akzeptiere die{' '}
-                      <button type="button" onClick={() => setShowNda(true)} className="text-accent1 underline font-medium">
+                      <button type="button" onClick={() => setShowNda(true)} className="text-accent underline font-medium">
                         Geheimhaltungsvereinbarung (NDA)
                       </button>.
                     </span>
@@ -352,7 +352,7 @@ export default function Landing() {
                   </button>
                   <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
                     Bereits registriert?{' '}
-                    <button type="button" onClick={() => setTab('login')} className="font-semibold text-accent1">
+                    <button type="button" onClick={() => setTab('login')} className="font-semibold text-accent">
                       Anmelden →
                     </button>
                   </p>

@@ -45,7 +45,7 @@ export default function OwnerUpdates() {
             if (result.success) {
               toast.success(`Newsletter an ${emails.length} Interessenten gesendet`)
             } else {
-              toast.warn('Newsletter: API-Key nicht konfiguriert (VITE_RESEND_API_KEY in .env setzen)')
+              toast.warn(`Newsletter fehlgeschlagen: ${result.error}`)
             }
           } else {
             toast.info('Keine Interessenten mit Einwilligung für Newsletter gefunden')

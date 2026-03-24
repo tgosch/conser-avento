@@ -152,7 +152,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
                 className="flex-1 bg-transparent text-sm outline-none"
                 style={{ color: 'var(--text-primary)' }}
               />
-              <button onClick={send} disabled={!input.trim() || loading} className="text-accent1 hover:opacity-70 disabled:opacity-30 transition">
+              <button onClick={send} disabled={!input.trim() || loading} className="text-accent hover:opacity-70 disabled:opacity-30 transition">
                 <Send size={16} />
               </button>
             </div>

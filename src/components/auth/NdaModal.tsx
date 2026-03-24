@@ -11,7 +11,7 @@ export default function NdaModal({ onClose }: { onClose: () => void }) {
         <div className="overflow-y-auto p-6 text-sm leading-relaxed space-y-4" style={{ color: 'var(--text-secondary)' }}>
           <p className="font-semibold text-center" style={{ color: 'var(--text-primary)' }}>
             zwischen<br />
-            <span className="text-accent1">Avento Software &amp; Conser Market</span> (nachfolgend „Unternehmen")<br />
+            <span className="text-accent">Avento Software &amp; Conser Market</span> (nachfolgend „Unternehmen")<br />
             und dem registrierten Interessenten (nachfolgend „Empfänger")
           </p>
           <div>

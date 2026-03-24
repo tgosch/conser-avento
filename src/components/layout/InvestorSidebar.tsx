@@ -87,7 +87,7 @@ export default function InvestorSidebar({ open, onClose }: Props) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5">
+        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5" aria-label="Investor Navigation">
           {NAV.map(({ group, items }) => (
             <div key={group}>
               <p className="sidebar-group-label mb-2">{group}</p>

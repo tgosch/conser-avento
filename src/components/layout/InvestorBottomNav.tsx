@@ -38,7 +38,7 @@ function NavItem({ to, icon: Icon, label, exact }: {
 
 export default function InvestorBottomNav({ onMoreClick }: { onMoreClick: () => void }) {
   return (
-    <nav className="bottom-nav lg:hidden" style={{ background: 'var(--surface)' }}>
+    <nav className="bottom-nav lg:hidden" style={{ background: 'var(--surface)' }} aria-label="Investor Mobile Navigation">
       {mainNav.map(item => <NavItem key={item.to} {...item} />)}
       <button className="bottom-nav-item" onClick={onMoreClick}>
         <span className="flex items-center justify-center rounded-full w-12 h-7">

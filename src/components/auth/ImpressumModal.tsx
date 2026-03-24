@@ -34,8 +34,8 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
 
           <div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Kontakt</p>
-            <p>E-Mail: <a href="mailto:torben@conser-avento.de" className="text-accent1 underline">torben@conser-avento.de</a></p>
-            <p>Web: <a href="https://www.conser-avento.de" target="_blank" rel="noopener noreferrer" className="text-accent1 underline">www.conser-avento.de</a></p>
+            <p>E-Mail: <a href="mailto:torben@conser-avento.de" className="text-accent underline">torben@conser-avento.de</a></p>
+            <p>Web: <a href="https://www.conser-avento.de" target="_blank" rel="noopener noreferrer" className="text-accent underline">www.conser-avento.de</a></p>
           </div>
 
           <div>
@@ -55,7 +55,7 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
           <div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Entwicklung</p>
             <p>Technische Umsetzung: Code Ara GmbH</p>
-            <p>Web: <a href="https://codeara.de" target="_blank" rel="noopener noreferrer" className="text-accent1 underline">codeara.de</a></p>
+            <p>Web: <a href="https://codeara.de" target="_blank" rel="noopener noreferrer" className="text-accent underline">codeara.de</a></p>
           </div>
 
           <div>

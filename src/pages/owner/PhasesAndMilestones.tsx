@@ -527,7 +527,10 @@ export default function PhasesAndMilestones() {
     if (mData) setMilestones(mData as Milestone[])
   }
 
-  useEffect(() => { fetchAll() }, [])
+  useEffect(() => {
+    const init = () => { fetchAll() }
+    init()
+  }, [])
 
   const milestonesForPhase = (phaseId: string) =>
     milestones.filter(m => m.phase_id === phaseId)

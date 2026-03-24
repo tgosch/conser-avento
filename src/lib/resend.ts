@@ -1,12 +1,9 @@
 /**
- * Resend Email Integration
- * API-Key muss in .env gesetzt sein: VITE_RESEND_API_KEY
- *
- * TODO: Resend sollte idealerweise server-seitig (Edge Function / Supabase Function)
- * aufgerufen werden, um den API-Key nicht im Frontend zu exponieren.
- * Für MVP wird der Key via VITE_ Prefix geladen — für Production eine
- * Supabase Edge Function einsetzen.
+ * Resend Email Integration — via Edge Function /api/email
+ * API-Key liegt server-seitig (RESEND_API_KEY in Vercel Env Vars).
  */
+
+import { supabase } from './supabase'
 
 export interface EmailPayload {
   to: string | string[]
@@ -15,52 +12,40 @@ export interface EmailPayload {
   from?: string
 }
 
-const RESEND_API_URL = 'https://api.resend.com/emails'
-const FROM_EMAIL = 'noreply@conser-avento.de' // TODO: Domain verifizieren bei Resend
-
 /**
- * Sendet eine E-Mail via Resend API.
- * SICHERHEIT: API-Key MUSS in .env als VITE_RESEND_API_KEY gesetzt sein.
+ * Sendet eine E-Mail via /api/email Edge Function.
+ * JWT wird automatisch aus der Supabase Session geholt.
  */
 export async function sendEmail(payload: EmailPayload): Promise<{ success: boolean; error?: string }> {
-  const apiKey = import.meta.env.VITE_RESEND_API_KEY
-  if (!apiKey) {
-    console.warn('[Resend] VITE_RESEND_API_KEY nicht gesetzt. E-Mail wird nicht gesendet.')
-    return { success: false, error: 'API-Key nicht konfiguriert' }
-  }
-
   try {
-    const res = await fetch(RESEND_API_URL, {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.access_token) {
+      return { success: false, error: 'Nicht eingeloggt' }
+    }
+
+    const res = await fetch('/api/email', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
       },
-      body: JSON.stringify({
-        from: payload.from ?? FROM_EMAIL,
-        to: Array.isArray(payload.to) ? payload.to : [payload.to],
-        subject: payload.subject,
-        html: payload.html,
-      }),
+      body: JSON.stringify(payload),
     })
 
     if (!res.ok) {
-      const err = await res.text()
-      console.error('[Resend] Fehler:', err)
-      return { success: false, error: err }
+      const err = await res.json().catch(() => ({ error: 'Unbekannter Fehler' }))
+      return { success: false, error: err.error || `HTTP ${res.status}` }
     }
 
     return { success: true }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('[Resend] Netzwerkfehler:', msg)
     return { success: false, error: msg }
   }
 }
 
 /**
- * Newsletter-Template für neue Updates/Phasen.
- * Wird beim Veröffentlichen eines Updates mit Kategorie 'milestone' ausgelöst.
+ * Newsletter-Template fuer neue Updates/Phasen.
  */
 export function buildNewsletterHtml(params: {
   title: string
@@ -68,9 +53,9 @@ export function buildNewsletterHtml(params: {
   category: string
   phase?: string
 }): string {
-  const categoryLabel = params.category === 'milestone' ? 'Meilenstein erreicht 🎉'
-    : params.category === 'important' ? 'Wichtige Information ⚡'
-    : 'Neuigkeit 📢'
+  const categoryLabel = params.category === 'milestone' ? 'Meilenstein erreicht'
+    : params.category === 'important' ? 'Wichtige Information'
+    : 'Neuigkeit'
 
   return `
 <!DOCTYPE html>
@@ -100,17 +85,17 @@ export function buildNewsletterHtml(params: {
     <div class="header">
       <div class="badge">Investoren-Update</div>
       <h1>Avento &amp; Conser</h1>
-      <p>Neuigkeiten vom Gründerteam</p>
+      <p>Neuigkeiten vom Gruenderteam</p>
     </div>
     <div class="body">
       <div class="tag">${categoryLabel}</div>
       <h2 class="title">${params.title}</h2>
       <p class="content">${params.content.replace(/\n/g, '<br>')}</p>
-      <a href="https://www.conser-avento.de" class="cta">Portal öffnen →</a>
+      <a href="https://www.conser-avento.de" class="cta">Portal oeffnen</a>
     </div>
     <div class="footer">
       <p>Sie erhalten diese E-Mail, weil Sie sich im Investor-Portal registriert haben.<br>
-      © 2025 Avento &amp; Conser · <a href="https://www.conser-avento.de" style="color: #AEAEB2;">www.conser-avento.de</a></p>
+      &copy; 2025 Avento &amp; Conser</p>
     </div>
   </div>
 </body>

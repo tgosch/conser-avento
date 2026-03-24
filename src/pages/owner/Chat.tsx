@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Investor, Message } from '../../lib/supabase'
 import { Send, ArrowLeft, Search, Circle } from 'lucide-react'
@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 export default function OwnerChat() {
   const [investors, setInvestors] = useState<Investor[]>([])
-  const [filtered, setFiltered] = useState<Investor[]>([])
+  // filtered is derived via useMemo below
   const [selected, setSelected] = useState<Investor | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -23,18 +23,16 @@ export default function OwnerChat() {
       .then(({ data }) => {
         if (data) {
           setInvestors(data as Investor[])
-          setFiltered(data as Investor[])
+          // investors state drives filtered via useMemo
         }
       })
   }, [])
 
-  useEffect(() => {
+  const filtered = useMemo(() => {
     const q = search.toLowerCase()
-    setFiltered(
-      q ? investors.filter(inv =>
-        `${inv.first_name} ${inv.last_name} ${inv.email}`.toLowerCase().includes(q)
-      ) : investors
-    )
+    return q ? investors.filter(inv =>
+      `${inv.first_name} ${inv.last_name} ${inv.email}`.toLowerCase().includes(q)
+    ) : investors
   }, [search, investors])
 
   useEffect(() => {

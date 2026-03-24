@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, MessageSquare, Bell, Settings, X, LogOut,
-  Handshake, Users, Rocket, GitBranch, FileText, Package,
+  Handshake, Users, Rocket, GitBranch, FileText,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -18,7 +18,6 @@ const makeGroups = (unreadCount: number) => [
       { to: '/owner/docs',     icon: FileText,  label: 'Dokumente' },
       { to: '/owner/partners', icon: Handshake, label: 'Partner' },
       { to: '/owner/team',     icon: Users,     label: 'Team' },
-      { to: '/owner/product',  icon: Package,   label: 'Produkt' },
   ]},
   { group: 'PLANUNG', items: [
       { to: '/owner/phases', icon: GitBranch, label: 'Phasenpläne' },
@@ -56,7 +55,7 @@ export default function OwnerSidebar({ open, onClose }: Props) {
         className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         style={{ width: 'var(--sidebar-width)', background: '#0A0A0A', borderRight: '1px solid rgba(255,255,255,0.07)' }}
       >
-        <button className="absolute top-4 right-4 btn btn-icon lg:hidden" style={{ color: 'rgba(255,255,255,0.3)' }} onClick={onClose}>
+        <button className="absolute top-4 right-4 btn btn-icon lg:hidden" style={{ color: 'rgba(255,255,255,0.3)' }} onClick={onClose} aria-label="Sidebar schliessen">
           <X size={15} />
         </button>
 
@@ -74,7 +73,7 @@ export default function OwnerSidebar({ open, onClose }: Props) {
         </div>
 
         {/* NAV */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5">
+        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5" aria-label="Owner Navigation">
           {NAV.map(({ group, items }) => (
             <div key={group}>
               <p className="sidebar-group-label mb-2">{group}</p>

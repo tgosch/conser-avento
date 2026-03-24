@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import aventoLogo from '../../assets/avento_kachel.png'
 import conserLogo from '../../assets/conser_kachel.png'
 
-interface Props { onMenuClick: () => void }
+interface Props { onMenuClick?: () => void }
 
-export default function Topbar({ onMenuClick: _onMenuClick }: Props) {
+export default function Topbar({ onMenuClick }: Props) {
+  void onMenuClick
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
@@ -32,12 +33,15 @@ export default function Topbar({ onMenuClick: _onMenuClick }: Props) {
           <img src={conserLogo} alt="Conser" className="rounded-lg object-cover h-7 w-auto" />
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={toggleTheme} className="btn btn-icon btn-ghost btn-icon-sm focus-ring">
+          <button onClick={toggleTheme} className="btn btn-icon btn-ghost btn-icon-sm focus-ring" aria-label={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}>
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
+              aria-label="Benutzermenu"
+              aria-haspopup="menu"
+              aria-expanded={dropdownOpen}
               className="w-8 h-8 rounded-full text-white text-xs font-bold flex items-center justify-center transition hover:opacity-85"
               style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}
             >
@@ -82,12 +86,15 @@ export default function Topbar({ onMenuClick: _onMenuClick }: Props) {
               Seed Round · Q2 2026
             </span>
           </div>
-          <button onClick={toggleTheme} className="btn btn-icon btn-ghost focus-ring">
+          <button onClick={toggleTheme} className="btn btn-icon btn-ghost focus-ring" aria-label={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}>
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
+              aria-label="Benutzermenu"
+              aria-haspopup="menu"
+              aria-expanded={dropdownOpen}
               className="w-9 h-9 rounded-full text-white text-sm font-semibold flex items-center justify-center transition hover:opacity-85"
               style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}
             >

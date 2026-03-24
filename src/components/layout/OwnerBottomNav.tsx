@@ -55,7 +55,7 @@ export default function OwnerBottomNav({ onMoreClick }: Props) {
   }, [])
 
   return (
-    <nav className="bottom-nav lg:hidden" style={{ background: 'var(--surface)' }}>
+    <nav className="bottom-nav lg:hidden" style={{ background: 'var(--surface)' }} aria-label="Owner Mobile Navigation">
       {mainNav.map(item => (
         <NavItem key={item.to} {...item} hasUnread={item.badge ? unreadCount > 0 : false} />
       ))}

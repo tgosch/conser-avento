@@ -1,25 +1,9 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { Update } from '../../lib/supabase'
-import { useAuth } from '../../context/AuthContext'
 import { ArrowRight, ChevronRight } from 'lucide-react'
-
-function useCountUp(target: number, duration = 1600) {
-  const [val, setVal] = useState(0)
-  const ref = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
-  useEffect(() => {
-    let current = 0
-    const step = target / (duration / 16)
-    ref.current = setInterval(() => {
-      current = Math.min(current + step, target)
-      setVal(Math.floor(current))
-      if (current >= target) clearInterval(ref.current)
-    }, 16)
-    return () => clearInterval(ref.current)
-  }, [target, duration])
-  return val
-}
+import { useCountUp } from '../../hooks/useCountUp'
 
 const categoryColor: Record<string, string> = {
   general: '#6E6E73', milestone: '#063D3E', important: '#C8611A',
@@ -29,7 +13,6 @@ const categoryLabel: Record<string, string> = {
 }
 
 export default function InvestorDashboard() {
-  const { user } = useAuth()
   const [updates, setUpdates] = useState<Update[]>([])
 
   useEffect(() => {
@@ -38,11 +21,9 @@ export default function InvestorDashboard() {
       .then(({ data }) => { if (data) setUpdates(data as Update[]) })
   }, [])
 
-  const c75k = useCountUp(75000)
-  const c181 = useCountUp(181)
-  const c49  = useCountUp(49)
-
-  void user
+  const { value: c75k } = useCountUp(75000, { duration: 1600 })
+  const { value: c181 } = useCountUp(181, { duration: 1600 })
+  const { value: c49 }  = useCountUp(49, { duration: 1600 })
 
   return (
     <div className="max-w-5xl mx-auto animate-fade-up">

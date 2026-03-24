@@ -54,34 +54,37 @@ export default function InvestorPlanDetail() {
   useEffect(() => {
     if (!section) return
     const category = SECTION_TO_CATEGORY[section]
-    if (!category) { setLoading(false); return }
-    setLoading(true)
-    setDocUrl(null)
-    supabase
-      .from('documents')
-      .select('id, name, file_path, category')
-      .eq('category', category)
-      .order('id', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-      .then(async ({ data, error }) => {
-        if (error) console.error('[PlanDetail] DB error:', error.message)
-        if (data?.file_path) {
-          // Try signed URL first (works for private + public buckets)
-          const { data: signed, error: signErr } = await supabase.storage
-            .from('documents')
-            .createSignedUrl(data.file_path, 3600)
-          if (signed?.signedUrl) {
-            setDocUrl(signed.signedUrl)
-          } else {
-            // Fallback: public URL (works if bucket is set to public)
-            console.warn('[PlanDetail] Signed URL failed, trying public URL:', signErr?.message)
-            const { data: pub } = supabase.storage.from('documents').getPublicUrl(data.file_path)
-            setDocUrl(pub?.publicUrl ?? null)
-          }
+    if (!category) return
+    let cancelled = false
+    const load = async () => {
+      setLoading(true)
+      setDocUrl(null)
+      const { data, error } = await supabase
+        .from('documents')
+        .select('id, name, file_path, category')
+        .eq('category', category)
+        .order('id', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (cancelled) return
+      if (error) console.error('[PlanDetail] DB error:', error.message)
+      if (data?.file_path) {
+        const { data: signed, error: signErr } = await supabase.storage
+          .from('documents')
+          .createSignedUrl(data.file_path, 3600)
+        if (cancelled) return
+        if (signed?.signedUrl) {
+          setDocUrl(signed.signedUrl)
+        } else {
+          console.warn('[PlanDetail] Signed URL failed, trying public URL:', signErr?.message)
+          const { data: pub } = supabase.storage.from('documents').getPublicUrl(data.file_path)
+          setDocUrl(pub?.publicUrl ?? null)
         }
-        setLoading(false)
-      })
+      }
+      setLoading(false)
+    }
+    load()
+    return () => { cancelled = true }
   }, [section])
 
   const toggleFullscreen = () => {
@@ -98,9 +101,9 @@ export default function InvestorPlanDetail() {
   return (
     <div className="max-w-5xl fade-up">
       <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-6" style={{ color: 'var(--text-secondary)' }}>
-        <Link to="/investor/dashboard" className="hover:text-accent1 transition">Dashboard</Link>
+        <Link to="/investor/dashboard" className="hover:text-accent transition">Dashboard</Link>
         <ChevronRight size={12} />
-        <Link to="/investor/plans" className="hover:text-accent1 transition">Pläne</Link>
+        <Link to="/investor/plans" className="hover:text-accent transition">Pläne</Link>
         <ChevronRight size={12} />
         <span style={{ color: 'var(--text-primary)' }} className="font-medium">{meta.label}</span>
       </nav>
@@ -152,14 +155,14 @@ export default function InvestorPlanDetail() {
       <div className="flex items-center justify-between gap-2">
         {prevSection ? (
           <button onClick={() => navigate(`/investor/plans/${prevSection}`)}
-            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent1 transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
+            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
             <ChevronLeft size={16} className="shrink-0" /> <span className="truncate">{planMeta[prevSection]?.label}</span>
           </button>
         ) : <div />}
         <span className="text-xs shrink-0" style={{ color: 'var(--text-tertiary)' }}>{currentIndex + 1} / {planOrder.length}</span>
         {nextSection ? (
           <button onClick={() => navigate(`/investor/plans/${nextSection}`)}
-            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent1 transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
+            className="flex items-center gap-1.5 text-sm font-semibold hover:text-accent transition min-w-0 max-w-[40%]" style={{ color: 'var(--text-secondary)' }}>
             <span className="truncate">{planMeta[nextSection]?.label}</span> <ChevronRight size={16} className="shrink-0" />
           </button>
         ) : <div />}

@@ -27,6 +27,7 @@ export default function OwnerDashboard() {
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [partnerCount, setPartnerCount] = useState(0)
   const [docCount, setDocCount] = useState(0)
+  const [pageLoading, setPageLoading] = useState(true)
 
   // Intro-Tool State
   const [phases, setPhases] = useState<Phase[]>([])
@@ -36,29 +37,45 @@ export default function OwnerDashboard() {
 
   const fetchPhases = () => {
     supabase.from('phases').select('*').order('order_index')
-      .then(({ data }) => { if (data) setPhases(data as Phase[]) })
+      .then(({ data, error }) => {
+        if (error) { toast.error('Phasen laden fehlgeschlagen'); return }
+        if (data) setPhases(data as Phase[])
+      })
   }
   const fetchEntries = () => {
     supabase.from('phase_entries').select('*').order('date', { ascending: false }).limit(10)
-      .then(({ data }) => { if (data) setEntries(data as PhaseEntry[]) })
+      .then(({ data, error }) => {
+        if (error) { toast.error('Eintraege laden fehlgeschlagen'); return }
+        if (data) setEntries(data as PhaseEntry[])
+      })
   }
 
   useEffect(() => {
-    supabase.from('investors').select('*', { count: 'exact', head: true })
-      .then(({ count }) => { if (count !== null) setInvestorCount(20 + count) })
-    supabase.from('updates').select('*').order('created_at', { ascending: false }).limit(5)
-      .then(({ data }) => { if (data) setUpdates(data) })
-    supabase.from('documents').select('id, name, file_path, category').order('id', { ascending: false }).limit(5)
-      .then(({ data }) => { if (data) setDocs(data) })
-    supabase.from('investment_intents').select('*', { count: 'exact', head: true })
-      .then(({ count }) => { if (count) setIntentCount(count) })
-    supabase.from('messages').select('id', { count: 'exact', head: true })
-      .eq('from_admin', false)
-      .then(({ count }) => { if (count !== null) setUnreadMessages(count) })
-    supabase.from('partners').select('id', { count: 'exact', head: true })
-      .then(({ count }) => { if (count !== null) setPartnerCount(count) })
-    supabase.from('documents').select('id', { count: 'exact', head: true })
-      .then(({ count }) => { if (count !== null) setDocCount(count) })
+    const load = async () => {
+      try {
+        const [inv, upd, doc, intent, msg, partner, docCnt] = await Promise.all([
+          supabase.from('investors').select('*', { count: 'exact', head: true }),
+          supabase.from('updates').select('*').order('created_at', { ascending: false }).limit(5),
+          supabase.from('documents').select('id, name, file_path, category').order('id', { ascending: false }).limit(5),
+          supabase.from('investment_intents').select('*', { count: 'exact', head: true }),
+          supabase.from('messages').select('id', { count: 'exact', head: true }).eq('from_admin', false),
+          supabase.from('partners').select('id', { count: 'exact', head: true }),
+          supabase.from('documents').select('id', { count: 'exact', head: true }),
+        ])
+        if (inv.count !== null) setInvestorCount(20 + (inv.count ?? 0))
+        if (upd.data) setUpdates(upd.data)
+        if (doc.data) setDocs(doc.data)
+        if (intent.count) setIntentCount(intent.count)
+        if (msg.count !== null) setUnreadMessages(msg.count ?? 0)
+        if (partner.count !== null) setPartnerCount(partner.count ?? 0)
+        if (docCnt.count !== null) setDocCount(docCnt.count ?? 0)
+      } catch {
+        toast.error('Dashboard-Daten konnten nicht geladen werden')
+      } finally {
+        setPageLoading(false)
+      }
+    }
+    load()
     fetchPhases()
     fetchEntries()
   }, [])
@@ -110,6 +127,14 @@ export default function OwnerDashboard() {
   const hour = now.getHours()
   const greeting = hour < 12 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend'
   const today = now.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })
+
+  if (pageLoading) {
+    return (
+      <div className="max-w-5xl mx-auto py-20 flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--brand)', borderTopColor: 'transparent' }} />
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-5xl mx-auto animate-fade-up">
