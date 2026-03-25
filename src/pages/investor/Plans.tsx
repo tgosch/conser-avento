@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronDown, ChevronRight, Clock, Check } from 'lucide-react'
-import aventoLogo from '../../assets/avento_kachel.png'
-import conserLogo from '../../assets/conser_kachel.png'
+import aventoLogo from '../../assets/avento_kachel.webp'
+import conserLogo from '../../assets/conser_kachel.webp'
 
 interface Doc {
   icon: string; label: string; slug: string; available: boolean; desc: string

@@ -1,10 +1,5 @@
 import { X } from 'lucide-react'
 
-/**
- * TODO: Impressum-Texte müssen von einem Rechtsanwalt geprüft und freigegeben werden.
- * Stand 2025: Platzhalter-Angaben — vor Go-Live durch rechtsichere Version ersetzen.
- * Pflichtangaben gem. § 5 TMG für Deutschland.
- */
 export default function ImpressumModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)' }}>
@@ -18,18 +13,12 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
 
         <div className="overflow-y-auto p-6 text-sm leading-relaxed space-y-5" style={{ color: 'var(--text-secondary)' }}>
 
-          {/* TODO-Banner */}
-          <div className="px-4 py-3 rounded-xl text-xs font-medium"
-            style={{ background: 'rgba(212,102,42,0.10)', color: '#D4662A', border: '1px solid rgba(212,102,42,0.25)' }}>
-            ⚠️ TODO: Dieses Impressum ist ein Platzhalter und muss vor dem Live-Betrieb von einem Rechtsanwalt geprüft werden. Alle Angaben gem. § 5 TMG vollständig eintragen.
-          </div>
-
           <div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Angaben gem. § 5 TMG</p>
-            <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>Bautech Holding</p>
-            <p>vertreten durch: Torben Gosch (CEO)</p>
-            <p>Anschrift: [TODO: Straße, PLZ, Ort eintragen]</p>
-            <p>Deutschland</p>
+            <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Gosch UG (haftungsbeschränkt)</p>
+            <p>Geschäftsführer: Torben Gosch</p>
+            <p>Amtsgericht Lübeck · HRB 22177</p>
+            <p>USt-IdNr.: DE458507310</p>
           </div>
 
           <div>
@@ -39,23 +28,17 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Gesellschaften</p>
+            <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Projekte</p>
             <div className="space-y-2">
               <div className="px-3 py-2 rounded-xl" style={{ background: 'var(--surface2)' }}>
-                <p className="font-semibold text-xs" style={{ color: 'var(--text-primary)' }}>Conser GmbH</p>
-                <p className="text-xs">Status: Gegründet · Amtsgericht: [TODO] · HRB: [TODO]</p>
+                <p className="font-semibold text-xs" style={{ color: 'var(--text-primary)' }}>Conser – Marktplatz für Handwerker</p>
+                <p className="text-xs">Digitaler B2B-Marktplatz für die Baubranche</p>
               </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: 'var(--surface2)' }}>
-                <p className="font-semibold text-xs" style={{ color: 'var(--text-primary)' }}>Avento GmbH</p>
-                <p className="text-xs">Status: In Gründung · Handelsregisternummer: [TODO nach Gründung]</p>
+                <p className="font-semibold text-xs" style={{ color: 'var(--text-primary)' }}>Avento – ERP für Handwerksbetriebe</p>
+                <p className="text-xs">Integrierte Betriebssoftware für die DACH-Region</p>
               </div>
             </div>
-          </div>
-
-          <div>
-            <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Entwicklung</p>
-            <p>Technische Umsetzung: Code Ara GmbH</p>
-            <p>Web: <a href="https://codeara.de" target="_blank" rel="noopener noreferrer" className="text-accent underline">codeara.de</a></p>
           </div>
 
           <div>
@@ -73,7 +56,7 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <p className="text-xs pt-2 border-t" style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
-            Stand: 2025 · www.conser-avento.de
+            Stand: März 2026 · Conser Gosch UG (haftungsbeschränkt)
           </p>
         </div>
 

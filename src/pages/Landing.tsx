@@ -7,35 +7,9 @@ import { toast } from 'react-toastify'
 import NdaModal from '../components/auth/NdaModal'
 import PrivacyModal from '../components/auth/PrivacyModal'
 import ImpressumModal from '../components/auth/ImpressumModal'
-import aventoLogo from '../assets/avento_kachel.png'
-import conserLogo from '../assets/conser_kachel.png'
-
-
-function PasswordStrength({ password }: { password: string }) {
-  const checks = [
-    password.length >= 8,
-    /[A-Z]/.test(password),
-    /[0-9]/.test(password),
-    /[^A-Za-z0-9]/.test(password),
-  ]
-  const score = checks.filter(Boolean).length
-  const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e']
-  const labels = ['', 'Schwach', 'Mittel', 'Gut', 'Stark']
-  if (!password) return null
-  return (
-    <div className="mt-1">
-      <div className="flex gap-1 mb-1">
-        {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-1 flex-1 rounded-full transition-all duration-300"
-            style={{ background: i <= score ? colors[score] : 'var(--surface3)' }} />
-        ))}
-      </div>
-      <p className="text-xs" style={{ color: score <= 1 ? '#ef4444' : score === 2 ? '#f97316' : score === 3 ? '#eab308' : '#22c55e' }}>
-        {labels[score]}
-      </p>
-    </div>
-  )
-}
+import PasswordStrength from '../components/auth/PasswordStrength'
+import aventoLogo from '../assets/avento_kachel.webp'
+import conserLogo from '../assets/conser_kachel.webp'
 
 export default function Landing() {
   const { loginAdmin, loginInvestor } = useAuth()
@@ -43,19 +17,16 @@ export default function Landing() {
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const authCardRef = useRef<HTMLDivElement>(null)
 
-  // Login state
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   const [loginLoading, setLoginLoading] = useState(false)
   const [showLoginPwd, setShowLoginPwd] = useState(false)
 
-  // Register state
   const [reg, setReg] = useState({ first_name: '', last_name: '', email: '', phone: '', password: '', password2: '' })
   const [consentPrivacy, setConsentPrivacy] = useState(false)
   const [consentNda, setConsentNda] = useState(false)
   const [regLoading, setRegLoading] = useState(false)
   const [showRegPwd, setShowRegPwd] = useState(false)
-  // Modals
   const [showNda, setShowNda] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
   const [showImpressum, setShowImpressum] = useState(false)
@@ -64,15 +35,12 @@ export default function Landing() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Brute-Force-Schutz: max 5 Versuche, dann 60s Sperre
     if (Date.now() < lockoutUntilRef.current) {
       const secs = Math.ceil((lockoutUntilRef.current - Date.now()) / 1000)
       toast.error(`Zu viele Versuche. Bitte ${secs}s warten.`)
       return
     }
     setLoginLoading(true)
-
-    // ── Login via Supabase — Admin-Flag kommt aus app_metadata.is_admin ──
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: loginEmail.trim(),
@@ -80,7 +48,6 @@ export default function Landing() {
       })
       if (error) throw error
       loginAttemptsRef.current = 0
-
       const isAdmin = data.user.app_metadata?.is_admin === true
       if (isAdmin) {
         loginAdmin({ isAdmin: true, email: data.user.email ?? loginEmail.trim() })
@@ -165,7 +132,6 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen gradient-mesh flex flex-col">
-      {/* Background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-[0.07]"
           style={{ background: 'radial-gradient(circle, var(--brand) 0%, transparent 70%)' }} />
@@ -176,13 +142,11 @@ export default function Landing() {
       <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
         {/* LEFT: Brand (desktop only) */}
         <div className="hidden lg:flex lg:w-[52%] gradient-brand noise-overlay flex-col justify-between p-12">
-          {/* Logo */}
           <div className="flex items-center gap-3">
             <img src={aventoLogo} alt="Avento" className="h-10 rounded-xl" />
             <div className="w-px h-7" style={{ background: 'rgba(255,255,255,0.2)' }} />
             <img src={conserLogo} alt="Conser" className="h-10 rounded-xl" />
           </div>
-          {/* Message */}
           <div>
             <p className="label-overline mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>Investor Portal</p>
             <h1 className="text-display-2xl text-white mb-6" style={{ maxWidth: 440 }}>
@@ -205,7 +169,6 @@ export default function Landing() {
               ))}
             </div>
           </div>
-          {/* Badges */}
           <div className="flex items-center gap-3 flex-wrap">
             {['DSGVO-konform', 'Made in Germany', 'Seed 2026'].map(b => (
               <span key={b} className="tag tag-sm"
@@ -217,14 +180,12 @@ export default function Landing() {
         {/* RIGHT: Auth Form */}
         <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-sm animate-fade-up" ref={authCardRef}>
-            {/* Mobile Logo */}
             <div className="lg:hidden flex items-center gap-2 justify-center mb-8">
               <img src={aventoLogo} alt="Avento" className="h-8 rounded-lg" />
               <div className="w-px h-5" style={{ background: 'var(--border)' }} />
               <img src={conserLogo} alt="Conser" className="h-8 rounded-lg" />
             </div>
 
-            {/* Auth Card */}
             <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
               <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>
                 {tab === 'login' ? 'Anmelden' : 'Registrieren'}
@@ -233,7 +194,6 @@ export default function Landing() {
                 {tab === 'login' ? 'Zugang zum Investor Portal' : 'Kostenlosen Investor-Zugang beantragen'}
               </p>
 
-              {/* Tabs */}
               <div className="flex gap-1 p-1 rounded-[12px] mb-6" style={{ background: 'var(--surface2)' }}>
                 {(['login', 'register'] as const).map(t => (
                   <button key={t} onClick={() => setTab(t)}
@@ -248,7 +208,6 @@ export default function Landing() {
                 ))}
               </div>
 
-              {/* LOGIN FORM */}
               {tab === 'login' && (
                 <form onSubmit={handleLogin} className="flex flex-col gap-3">
                   <input type="email" placeholder="E-Mail" required
@@ -280,36 +239,25 @@ export default function Landing() {
                 </form>
               )}
 
-              {/* REGISTER FORM */}
               {tab === 'register' && (
                 <form onSubmit={handleRegister} className="flex flex-col gap-3">
-                  <input
-                    type="text" placeholder="Vorname" required
+                  <input type="text" placeholder="Vorname" required
                     value={reg.first_name} onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))}
-                    className="input-base"
-                  />
-                  <input
-                    type="text" placeholder="Nachname" required
+                    className="input-base" />
+                  <input type="text" placeholder="Nachname" required
                     value={reg.last_name} onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))}
-                    className="input-base"
-                  />
-                  <input
-                    type="email" placeholder="E-Mail Adresse" required
+                    className="input-base" />
+                  <input type="email" placeholder="E-Mail Adresse" required
                     value={reg.email} onChange={e => setReg(p => ({ ...p, email: e.target.value }))}
-                    className="input-base"
-                  />
-                  <input
-                    type="tel" placeholder="Telefonnummer" required
+                    className="input-base" />
+                  <input type="tel" placeholder="Telefonnummer" required
                     value={reg.phone} onChange={e => setReg(p => ({ ...p, phone: e.target.value }))}
-                    className="input-base"
-                  />
+                    className="input-base" />
                   <div>
                     <div className="relative">
-                      <input
-                        type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
+                      <input type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
                         value={reg.password} onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
-                        className="input-base pr-10"
-                      />
+                        className="input-base pr-10" />
                       <button type="button" onClick={() => setShowRegPwd(p => !p)}
                         className="absolute right-3 top-1/2 -translate-y-1/2"
                         style={{ color: 'var(--text-secondary)' }}>
@@ -318,11 +266,9 @@ export default function Landing() {
                     </div>
                     <PasswordStrength password={reg.password} />
                   </div>
-                  <input
-                    type="password" placeholder="Passwort wiederholen" required
+                  <input type="password" placeholder="Passwort wiederholen" required
                     value={reg.password2} onChange={e => setReg(p => ({ ...p, password2: e.target.value }))}
-                    className="input-base"
-                  />
+                    className="input-base" />
 
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
@@ -360,14 +306,12 @@ export default function Landing() {
               )}
             </div>
 
-            {/* Legal Links */}
             <div className="flex justify-center gap-4 mt-5">
               <button onClick={() => setShowImpressum(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Impressum</button>
               <button onClick={() => setShowPrivacy(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Datenschutz</button>
               <button onClick={() => setShowNda(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>NDA</button>
             </div>
 
-            {/* CTA for register */}
             <div className="mt-6 text-center">
               <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                 Interesse an einer Beteiligung?{' '}
@@ -380,7 +324,6 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* Modals */}
       {showNda && <NdaModal onClose={() => setShowNda(false)} />}
       {showPrivacy && <PrivacyModal onClose={() => setShowPrivacy(false)} />}
       {showImpressum && <ImpressumModal onClose={() => setShowImpressum(false)} />}

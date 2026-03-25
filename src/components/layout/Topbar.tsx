@@ -3,8 +3,8 @@ import { LogOut, Settings, Sun, Moon } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
 import { useNavigate } from 'react-router-dom'
-import aventoLogo from '../../assets/avento_kachel.png'
-import conserLogo from '../../assets/conser_kachel.png'
+import aventoLogo from '../../assets/avento_kachel.webp'
+import conserLogo from '../../assets/conser_kachel.webp'
 
 interface Props { onMenuClick?: () => void }
 

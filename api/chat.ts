@@ -17,6 +17,10 @@ export const config = { runtime: 'edge' }
 
 const MAX_MESSAGES = 40
 const MAX_CONTENT_LENGTH = 3000
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX = 10
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
 
 interface AnthropicMessage {
   role: 'user' | 'assistant'
@@ -40,6 +44,28 @@ export default async function handler(req: Request): Promise<Response> {
       status: 405,
       headers: corsHeaders,
     })
+  }
+
+  // ── Rate Limiting (IP-basiert) ────────────────────────────────────
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  const now = Date.now()
+  const rl = rateLimitMap.get(clientIp)
+  if (rl && now < rl.resetAt) {
+    rl.count++
+    if (rl.count > RATE_LIMIT_MAX) {
+      return new Response(JSON.stringify({ error: 'Zu viele Anfragen. Bitte warten.' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Retry-After': String(Math.ceil((rl.resetAt - now) / 1000)) },
+      })
+    }
+  } else {
+    rateLimitMap.set(clientIp, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+  }
+  // Cleanup stale entries periodically
+  if (rateLimitMap.size > 1000) {
+    for (const [key, val] of rateLimitMap) {
+      if (now > val.resetAt) rateLimitMap.delete(key)
+    }
   }
 
   // ── JWT-Authentifizierung (Supabase) ──────────────────────────────
