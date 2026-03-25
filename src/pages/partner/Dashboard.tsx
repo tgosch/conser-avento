@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useCountUp } from '../../hooks/useCountUp'
-import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle } from 'lucide-react'
+import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, TrendingUp, Zap } from 'lucide-react'
+import { LaptopMockup, PhoneMockup } from '../../components/showcase/DeviceMockup'
 
 const STEPS = [
-  { key: 'negotiating', label: 'Verhandlung', desc: 'Konditionen & Katalog' },
-  { key: 'active',      label: 'Integration',  desc: 'Technische Anbindung' },
-  { key: 'beta',        label: 'Beta-Phase',   desc: 'Pilot mit Kunden' },
-  { key: 'partner',     label: 'Live Partner',  desc: 'Voller Zugang' },
+  { key: 'negotiating', label: 'Verhandlung', desc: 'Konditionen & Katalog', icon: '🤝' },
+  { key: 'active',      label: 'Integration',  desc: 'Technische Anbindung', icon: '⚙️' },
+  { key: 'beta',        label: 'Beta-Phase',   desc: 'Pilot mit Kunden', icon: '🧪' },
+  { key: 'partner',     label: 'Live Partner',  desc: 'Voller Zugang', icon: '🚀' },
 ]
 
 function stepIndex(status: string) {
@@ -30,122 +31,213 @@ export default function PartnerDashboard() {
   const greeting = hour < 12 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend'
 
   return (
-    <div className="max-w-5xl mx-auto animate-fade-up">
+    <div className="max-w-5xl mx-auto">
 
-      {/* HERO */}
-      <div className="card overflow-hidden mb-6">
-        <div className="px-6 py-8 md:px-8 md:py-10"
-          style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 50%, #0E7A7D 100%)' }}>
-          <p className="text-xs font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Partner Portal
-          </p>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ letterSpacing: '-0.03em' }}>
-            {greeting}, {partner?.name ?? 'Partner'}
-          </h1>
-          <p className="text-base md:text-lg mb-6" style={{ color: 'rgba(255,255,255,0.7)', maxWidth: 520 }}>
-            Gemeinsam die Baubranche digitalisieren. Zugang zu 75.000 Handwerksbetrieben &mdash; automatisierte Bestellungen über Avento ERP.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/partner/partnership" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition hover:opacity-90"
-              style={{ background: 'white', color: '#063D3E' }}>
-              Partnermodell ansehen <ArrowRight size={14} />
-            </Link>
-            <a href="mailto:torben@conser-avento.de" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition hover:opacity-90"
-              style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
-              Kontakt aufnehmen
-            </a>
+      {/* ── HERO ── */}
+      <div className="card overflow-hidden mb-8 animate-fade-up">
+        <div className="relative px-6 py-10 md:px-10 md:py-14"
+          style={{ background: 'linear-gradient(135deg, #041E1F 0%, #063D3E 30%, #0A5C5E 60%, #0E7A7D 100%)' }}>
+          {/* Decorative orbs */}
+          <div className="absolute top-0 right-0 w-80 h-80 rounded-full opacity-[0.08]"
+            style={{ background: 'radial-gradient(circle, #22D3EE 0%, transparent 70%)', transform: 'translate(30%, -30%)' }} />
+          <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full opacity-[0.05]"
+            style={{ background: 'radial-gradient(circle, #C8611A 0%, transparent 70%)', transform: 'translate(-20%, 30%)' }} />
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide"
+                style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)' }}>
+                PARTNER PORTAL
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: '#22D3EE' }} />
+            </div>
+
+            <h1 className="text-display-lg text-white mb-3">
+              {greeting}, {partner?.name ?? 'Partner'}
+            </h1>
+            <p className="text-base md:text-lg leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 520 }}>
+              Gemeinsam die Baubranche digitalisieren. Zugang zu 75.000 Handwerksbetrieben &mdash; automatisierte Bestellungen direkt aus dem ERP.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              <Link to="/partner/partnership"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:translate-y-[-1px] hover:shadow-lg"
+                style={{ background: 'white', color: '#063D3E' }}>
+                Partnermodell ansehen <ArrowRight size={14} />
+              </Link>
+              <a href="mailto:torben@conser-avento.de"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:translate-y-[-1px]"
+                style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
+                Kontakt aufnehmen
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      {/* ── KPIs ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {[
-          { value: kunden.formatted, label: 'Zielkunden', sub: 'Handwerksbetriebe DACH' },
-          { value: `€${revenue.formatted}M`, label: 'Revenue-Ziel', sub: 'Avento + Conser kombiniert' },
-          { value: `${partners.formatted}+`, label: 'Partner', sub: 'Produktionspartner an Bord' },
+          { value: kunden.formatted, label: 'Zielkunden', sub: 'Handwerksbetriebe DACH', icon: Users, color: 'var(--brand)' },
+          { value: `€${revenue.formatted}M`, label: 'Revenue-Ziel', sub: 'Avento + Conser kombiniert', icon: TrendingUp, color: 'var(--accent)' },
+          { value: `${partners.formatted}+`, label: 'Partner', sub: 'Produktionspartner an Bord', icon: Rocket, color: '#22C55E' },
         ].map((kpi, i) => (
-          <div key={kpi.label} className={`card p-5 animate-fade-up delay-${i + 1}`}>
-            <p className="text-metric-lg mb-1" style={{ color: 'var(--brand)' }}>{kpi.value}</p>
+          <div key={kpi.label} className={`card p-6 group hover:translate-y-[-2px] transition-all duration-300 animate-fade-up delay-${i + 1}`}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: `${kpi.color}12` }}>
+                <kpi.icon size={18} style={{ color: kpi.color }} />
+              </div>
+              <Zap size={12} style={{ color: 'var(--text-tertiary)' }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            <p className="text-metric-lg mb-1" style={{ color: kpi.color }}>{kpi.value}</p>
             <p className="text-sm font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{kpi.label}</p>
             <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{kpi.sub}</p>
           </div>
         ))}
       </div>
 
-      {/* BENEFITS */}
-      <div className="mb-6 animate-fade-up delay-2">
-        <p className="label-tag mb-3" style={{ color: 'var(--text-tertiary)' }}>WAS SIE ERWARTET</p>
+      {/* ── PRODUCT SHOWCASE ── */}
+      <div className="mb-8 animate-fade-up delay-2">
+        <div className="flex items-center gap-2 mb-4">
+          <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>DAS ÖKOSYSTEM</p>
+          <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Desktop View */}
+          <div className="card p-6 md:p-8">
+            <LaptopMockup
+              placeholderIcon="📊"
+              placeholderText="Avento ERP — Dashboard"
+              gradient="linear-gradient(145deg, #041E1F 0%, #063D3E 50%, #0A5C5E 100%)"
+              label="Avento ERP"
+              sublabel="Das Steckenpferd — tägliche Software für Handwerker"
+            />
+          </div>
+          {/* Mobile Views */}
+          <div className="card p-6 md:p-8">
+            <div className="flex justify-center gap-6">
+              <PhoneMockup
+                placeholderIcon="🔨"
+                placeholderText="Avento Mobile"
+                gradient="linear-gradient(145deg, #041E1F 0%, #063D3E 100%)"
+                label="Mobile ERP"
+                sublabel="Von der Baustelle"
+              />
+              <PhoneMockup
+                placeholderIcon="🛒"
+                placeholderText="Conser Shop"
+                gradient="linear-gradient(145deg, #1A0A00 0%, #C8611A 100%)"
+                label="Conser Shop"
+                sublabel="1-Click Bestellung"
+              />
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-xs mt-3" style={{ color: 'var(--text-tertiary)' }}>
+          Screenshots werden durch Live-Aufnahmen ersetzt sobald verfügbar
+        </p>
+      </div>
+
+      {/* ── BENEFITS ── */}
+      <div className="mb-8 animate-fade-up delay-3">
+        <div className="flex items-center gap-2 mb-4">
+          <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>WAS SIE ERWARTET</p>
+          <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { icon: ShoppingCart, title: 'Automatisierte Bestellungen', desc: 'Bestellungen fließen direkt aus dem Avento ERP der Handwerker in Ihr System. Kein manueller Aufwand.' },
-            { icon: Users, title: '75.000 Kunden', desc: 'Zugang zum gesamten DACH-Handwerkermarkt über eine einzige Integration. Ohne eigenen Vertrieb.' },
-            { icon: Eye, title: 'Volle Sichtbarkeit', desc: 'Ihre Produkte prominent auf dem Conser Marktplatz mit intelligenten Empfehlungen und Suchpriorisierung.' },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="card p-5">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                style={{ background: 'var(--brand-dim)' }}>
-                <Icon size={18} style={{ color: 'var(--brand)' }} />
+            { icon: ShoppingCart, title: 'Automatisierte Bestellungen', desc: 'Bestellungen fließen direkt aus dem Avento ERP in Ihr System. Kein manueller Aufwand, keine Medienbrüche.', accent: 'var(--brand)' },
+            { icon: Users, title: '75.000 Zielkunden', desc: 'Zugang zum gesamten DACH-Handwerkermarkt über eine einzige Integration. Ohne eigenen Vertrieb.', accent: 'var(--accent)' },
+            { icon: Eye, title: 'Volle Sichtbarkeit', desc: 'Ihre Produkte prominent auf dem Conser Marktplatz mit KI-gestützten Empfehlungen und Suchpriorisierung.', accent: '#22C55E' },
+          ].map(({ icon: Icon, title, desc, accent }) => (
+            <div key={title} className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
+              style={{ borderBottom: `2px solid ${accent}` }}>
+              <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+                style={{ background: `${accent}15` }}>
+                <Icon size={20} style={{ color: accent }} />
               </div>
-              <h3 className="text-sm font-bold mb-1.5" style={{ color: 'var(--text-primary)' }}>{title}</h3>
+              <h3 className="text-sm font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{title}</h3>
               <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{desc}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* PARTNERSHIP TIMELINE */}
-      <div className="card p-5 md:p-6 mb-6 animate-fade-up delay-3">
-        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>IHRE PARTNERSCHAFT</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {STEPS.map((step, i) => {
-            const done = i < currentStep
-            const active = i === currentStep
-            return (
-              <div key={step.key} className="relative p-3 rounded-xl transition"
-                style={{
-                  background: active ? 'var(--brand-dim)' : done ? 'rgba(34,197,94,0.06)' : 'var(--surface2)',
-                  border: active ? '1px solid var(--brand)' : '1px solid transparent',
-                }}>
-                <div className="flex items-center gap-2 mb-2">
-                  {done ? (
-                    <CheckCircle size={16} style={{ color: '#22C55E' }} />
-                  ) : (
-                    <Circle size={16} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />
+      {/* ── PARTNERSHIP TIMELINE ── */}
+      <div className="card overflow-hidden mb-8 animate-fade-up delay-4">
+        <div className="px-6 py-4 flex items-center justify-between"
+          style={{ borderBottom: '1px solid var(--border)' }}>
+          <div className="flex items-center gap-2">
+            <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>IHRE PARTNERSCHAFT</p>
+          </div>
+          <span className="text-xs px-2.5 py-1 rounded-full font-semibold"
+            style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>
+            Phase {currentStep + 1} von 4
+          </span>
+        </div>
+        <div className="p-6">
+          {/* Progress bar */}
+          <div className="relative mb-6">
+            <div className="h-1.5 rounded-full" style={{ background: 'var(--surface3)' }}>
+              <div className="h-full rounded-full transition-all duration-1000"
+                style={{ width: `${((currentStep + 1) / 4) * 100}%`, background: 'linear-gradient(90deg, var(--brand), #0E7A7D)' }} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {STEPS.map((s, i) => {
+              const done = i < currentStep
+              const active = i === currentStep
+              return (
+                <div key={s.key} className="relative p-4 rounded-xl transition-all duration-300"
+                  style={{
+                    background: active ? 'var(--brand-dim)' : done ? 'rgba(34,197,94,0.04)' : 'var(--surface2)',
+                    border: active ? '1.5px solid var(--brand)' : '1.5px solid transparent',
+                    boxShadow: active ? '0 4px 20px rgba(6,61,62,0.1)' : 'none',
+                  }}>
+                  <span className="text-xl block mb-2">{s.icon}</span>
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    {done ? (
+                      <CheckCircle size={13} style={{ color: '#22C55E' }} />
+                    ) : (
+                      <Circle size={13} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />
+                    )}
+                    <span className="text-[10px] font-bold tracking-wide" style={{ color: active ? 'var(--brand)' : done ? '#22C55E' : 'var(--text-tertiary)' }}>
+                      PHASE {i + 1}
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{s.desc}</p>
+                  {active && (
+                    <span className="absolute top-3 right-3 w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--brand)' }} />
                   )}
-                  <span className="text-xs font-bold" style={{ color: active ? 'var(--brand)' : done ? '#22C55E' : 'var(--text-tertiary)' }}>
-                    Phase {i + 1}
-                  </span>
                 </div>
-                <p className="text-sm font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{step.label}</p>
-                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{step.desc}</p>
-                {active && (
-                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--brand)' }} />
-                )}
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      {/* NEXT STEPS */}
+      {/* ── NEXT STEPS ── */}
       <div className="card overflow-hidden animate-fade-up delay-4">
         <div className="px-6 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
           <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Nächste Schritte</p>
         </div>
         {[
-          { to: '/partner/partnership', label: 'Partnermodell entdecken', sub: 'Prozess, Benefits & Integration' },
-          { to: '/partner/revenue',     label: 'Revenue-Modell verstehen', sub: 'Provisionen, Payment & Projektionen' },
-          { to: '/partner/network',     label: 'Unser Netzwerk ansehen',   sub: 'Partner & Pilotkunden' },
+          { to: '/partner/vision',       label: 'Vision & Mission entdecken',  sub: 'Warum wir Avento & Conser bauen', icon: '🎯' },
+          { to: '/partner/partnership',  label: 'Partnermodell verstehen',     sub: 'Prozess, Benefits & Integration', icon: '🤝' },
+          { to: '/partner/revenue',      label: 'Revenue-Modell ansehen',      sub: 'Provisionen, Payment & Projektionen', icon: '💰' },
+          { to: '/partner/network',      label: 'Netzwerk erkunden',           sub: 'Partner & Pilotkunden', icon: '🌐' },
         ].map((item, i) => (
           <Link key={item.to} to={item.to}
-            className={`flex items-center justify-between gap-4 px-6 py-4 transition hover:bg-[var(--surface2)] group ${i < 2 ? 'border-b' : ''}`}
+            className={`flex items-center gap-4 px-6 py-4 transition-all hover:bg-[var(--surface2)] group ${i < 3 ? 'border-b' : ''}`}
             style={{ borderColor: 'var(--border)' }}>
-            <div>
+            <span className="text-lg shrink-0">{item.icon}</span>
+            <div className="flex-1">
               <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{item.label}</p>
               <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{item.sub}</p>
             </div>
-            <ArrowRight size={14} style={{ color: 'var(--text-tertiary)' }} className="shrink-0 group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight size={14} style={{ color: 'var(--text-tertiary)' }} className="shrink-0 group-hover:translate-x-1 transition-transform" />
           </Link>
         ))}
       </div>
