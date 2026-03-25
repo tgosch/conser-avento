@@ -30,20 +30,20 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 async function resolveUser(session: Session): Promise<User> {
-  const meta = session.user.app_metadata
   const email = session.user.email
 
-  if (meta?.is_admin === true) {
+  if (session.user.app_metadata?.is_admin === true) {
     return { isAdmin: true, isPartner: false, email }
   }
 
-  if (meta?.is_partner === true) {
-    const { data: partner } = await supabase
-      .from('partners')
-      .select('*')
-      .eq('id', session.user.id)
-      .maybeSingle()
-    return { partner: partner ?? undefined, isAdmin: false, isPartner: true, email }
+  // Check partners table — supports self-registration (no JWT claim needed)
+  const { data: partner } = await supabase
+    .from('partners')
+    .select('*')
+    .eq('id', session.user.id)
+    .maybeSingle()
+  if (partner) {
+    return { partner, isAdmin: false, isPartner: true, email }
   }
 
   const { data: inv } = await supabase

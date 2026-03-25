@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 
 import Landing from './pages/Landing'
+import PartnerRegister from './pages/PartnerRegister'
 import InvestorLayout from './components/layout/InvestorLayout'
 import OwnerLayout from './components/layout/OwnerLayout'
 import PartnerLayout from './components/layout/PartnerLayout'
@@ -113,6 +114,7 @@ function AppRoutes() {
     <Suspense fallback={<PageLoader />}>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/partner/registrieren" element={<PartnerRegister />} />
 
         <Route path="/investor" element={<InvestorGuard><InvestorLayout /></InvestorGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />

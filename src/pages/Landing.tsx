@@ -315,12 +315,18 @@ export default function Landing() {
               <button onClick={() => setShowNda(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>NDA</button>
             </div>
 
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center space-y-2">
               <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                 Interesse an einer Beteiligung?{' '}
                 <button type="button" onClick={openRegisterTab} className="font-semibold hover-press" style={{ color: 'var(--brand)' }}>
                   Zugang beantragen →
                 </button>
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                Produktionspartner?{' '}
+                <a href="/partner/registrieren" className="font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                  Partner werden →
+                </a>
               </p>
             </div>
           </div>
