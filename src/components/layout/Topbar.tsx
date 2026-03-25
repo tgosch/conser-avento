@@ -79,13 +79,23 @@ export default function Topbar({ onMenuClick }: Props) {
           <span>{user?.isAdmin ? 'Owner Console' : user?.isPartner ? 'Partner Portal' : 'Investor Portal'}</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-               style={{ background: 'var(--accent-dim)', border: '1px solid rgba(200,97,26,0.2)' }}>
-            <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
-            <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
-              Seed Round · Q2 2026
-            </span>
-          </div>
+          {user?.isPartner ? (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                 style={{ background: 'rgba(6,61,62,0.10)', border: '1px solid rgba(6,61,62,0.2)' }}>
+              <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--brand)' }} />
+              <span className="text-xs font-semibold" style={{ color: 'var(--brand)' }}>
+                {user.partner?.name ?? 'Partner'}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                 style={{ background: 'var(--accent-dim)', border: '1px solid rgba(200,97,26,0.2)' }}>
+              <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
+              <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
+                Seed Round · Q2 2026
+              </span>
+            </div>
+          )}
           <button onClick={toggleTheme} className="btn btn-icon btn-ghost focus-ring" aria-label={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}>
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>

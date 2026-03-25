@@ -234,10 +234,13 @@ export default function Landing() {
                     className="text-xs text-center hover-press" style={{ color: 'var(--text-tertiary)' }}>
                     Passwort vergessen?
                   </button>
-                  <div className="border-t pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                  <div className="border-t pt-3 text-center space-y-1.5" style={{ borderColor: 'var(--border)' }}>
+                    <span className="text-xs block" style={{ color: 'var(--text-tertiary)' }}>
                       Eigentümer-Zugang über gleiche E-Mail &amp; Passwort
                     </span>
+                    <a href="/partner/registrieren" className="text-xs font-semibold block hover-press" style={{ color: 'var(--brand)' }}>
+                      Partner? Per E-Mail-Code anmelden →
+                    </a>
                   </div>
                 </form>
               )}

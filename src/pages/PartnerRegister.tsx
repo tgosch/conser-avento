@@ -1,24 +1,27 @@
 import { useState, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Building2, CheckCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Building2, CheckCircle, Mail } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 import aventoLogo from '../assets/avento_kachel.webp'
 import conserLogo from '../assets/conser_kachel.webp'
 
-type Step = 'form' | 'otp'
+type Step = 'form' | 'quickLogin' | 'otp'
 
 export default function PartnerRegister() {
   const { loginPartner } = useAuth()
   const navigate = useNavigate()
   const [step, setStep] = useState<Step>('form')
+  const [mode, setMode] = useState<'register' | 'login'>('register')
   const [loading, setLoading] = useState(false)
 
   // Form state
   const [form, setForm] = useState({
     first_name: '', last_name: '', email: '', phone: '', company: '',
   })
+  // Quick login state
+  const [quickEmail, setQuickEmail] = useState('')
 
   // OTP state
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -53,9 +56,33 @@ export default function PartnerRegister() {
       })
       if (error) throw error
       toast.success('Verifizierungscode wurde an Ihre E-Mail gesendet.')
+      setMode('register')
       setStep('otp')
     } catch {
       toast.error('Code konnte nicht gesendet werden. Bitte versuchen Sie es erneut.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleQuickLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) {
+      toast.error('E-Mail ungültig')
+      return
+    }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: quickEmail.trim().toLowerCase(),
+      })
+      if (error) throw error
+      toast.success('Verifizierungscode wurde an Ihre E-Mail gesendet.')
+      setForm(p => ({ ...p, email: quickEmail.trim().toLowerCase() }))
+      setMode('login')
+      setStep('otp')
+    } catch {
+      toast.error('Code konnte nicht gesendet werden.')
     } finally {
       setLoading(false)
     }
@@ -86,6 +113,8 @@ export default function PartnerRegister() {
     }
   }
 
+  const activeEmail = mode === 'login' ? quickEmail.trim().toLowerCase() : form.email.trim().toLowerCase()
+
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     const code = otp.join('')
@@ -93,31 +122,33 @@ export default function PartnerRegister() {
     setLoading(true)
     try {
       const { data, error } = await supabase.auth.verifyOtp({
-        email: form.email.trim().toLowerCase(),
+        email: activeEmail,
         token: code,
         type: 'email',
       })
       if (error) throw error
       if (!data.user) throw new Error('Kein Benutzer')
 
-      // Create partner record
-      const initials = `${form.first_name.trim()[0]}${form.last_name.trim()[0]}`.toUpperCase()
-      await supabase.from('partners').upsert([{
-        id: data.user.id,
-        name: form.company.trim(),
-        type: 'production' as const,
-        category: '',
-        description: `Ansprechpartner: ${form.first_name.trim()} ${form.last_name.trim()}`,
-        status: 'negotiating' as const,
-        logo_path: null,
-        initials,
-        color: '#063D3E',
-        visible: false,
-        order_index: 99,
-      }])
+      // Only create partner record for new registrations
+      if (mode === 'register') {
+        const initials = `${form.first_name.trim()[0]}${form.last_name.trim()[0]}`.toUpperCase()
+        await supabase.from('partners').upsert([{
+          id: data.user.id,
+          name: form.company.trim(),
+          type: 'production' as const,
+          category: '',
+          description: `Ansprechpartner: ${form.first_name.trim()} ${form.last_name.trim()}`,
+          status: 'negotiating' as const,
+          logo_path: null,
+          initials,
+          color: '#063D3E',
+          visible: false,
+          order_index: 99,
+        }])
+      }
 
-      await loginPartner(data.user.id, data.user.email ?? form.email.trim())
-      toast.success(`Willkommen, ${form.company.trim()}!`)
+      await loginPartner(data.user.id, data.user.email ?? activeEmail)
+      toast.success(mode === 'register' ? `Willkommen, ${form.company.trim()}!` : 'Willkommen zurück!')
       navigate('/partner/dashboard')
     } catch {
       toast.error('Code ungültig oder abgelaufen. Bitte erneut versuchen.')
@@ -129,9 +160,7 @@ export default function PartnerRegister() {
   const handleResend = async () => {
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: form.email.trim().toLowerCase(),
-      })
+      const { error } = await supabase.auth.signInWithOtp({ email: activeEmail })
       if (error) throw error
       toast.success('Neuer Code wurde gesendet.')
       setOtp(['', '', '', '', '', ''])
@@ -190,7 +219,7 @@ export default function PartnerRegister() {
           </div>
         </div>
 
-        {/* RIGHT: Registration */}
+        {/* RIGHT: Registration / Login */}
         <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-sm animate-fade-up">
             {/* Mobile Logo */}
@@ -202,7 +231,7 @@ export default function PartnerRegister() {
 
             <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
 
-              {/* ── STEP 1: FORM ── */}
+              {/* ── STEP: FORM (Register) ── */}
               {step === 'form' && (
                 <>
                   <div className="flex items-center gap-3 mb-1">
@@ -210,15 +239,12 @@ export default function PartnerRegister() {
                       style={{ background: 'var(--brand-dim)' }}>
                       <Building2 size={18} style={{ color: 'var(--brand)' }} />
                     </div>
-                    <div>
-                      <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Partner werden</h2>
-                    </div>
+                    <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Partner werden</h2>
                   </div>
-                  <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
+                  <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
                     Registrieren Sie sich als Produktionspartner. Kostenlos und unverbindlich.
                   </p>
 
-                  {/* Step indicator */}
                   <div className="flex items-center gap-2 mb-5">
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--surface3)' }} />
@@ -248,16 +274,51 @@ export default function PartnerRegister() {
                     </button>
                   </form>
 
-                  <p className="text-center text-xs mt-4" style={{ color: 'var(--text-tertiary)' }}>
-                    Sie erhalten einen Verifizierungscode per E-Mail.
-                  </p>
+                  <div className="border-t mt-4 pt-4 text-center" style={{ borderColor: 'var(--border)' }}>
+                    <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>Bereits registriert?</p>
+                    <button onClick={() => setStep('quickLogin')}
+                      className="text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                      Per E-Mail-Code anmelden →
+                    </button>
+                  </div>
                 </>
               )}
 
-              {/* ── STEP 2: OTP ── */}
-              {step === 'otp' && (
+              {/* ── STEP: QUICK LOGIN ── */}
+              {step === 'quickLogin' && (
                 <>
                   <button onClick={() => setStep('form')}
+                    className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
+                    style={{ color: 'var(--text-tertiary)' }}>
+                    <ArrowLeft size={12} /> Zurück zur Registrierung
+                  </button>
+
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                      style={{ background: 'var(--brand-dim)' }}>
+                      <Mail size={18} style={{ color: 'var(--brand)' }} />
+                    </div>
+                    <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Partner-Login</h2>
+                  </div>
+                  <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
+                    Geben Sie Ihre E-Mail ein. Sie erhalten einen 6-stelligen Code.
+                  </p>
+
+                  <form onSubmit={handleQuickLogin} className="flex flex-col gap-3">
+                    <input type="email" placeholder="E-Mail Adresse" required autoFocus
+                      value={quickEmail} onChange={e => setQuickEmail(e.target.value)}
+                      className="input-base" />
+                    <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
+                      {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+                    </button>
+                  </form>
+                </>
+              )}
+
+              {/* ── STEP: OTP ── */}
+              {step === 'otp' && (
+                <>
+                  <button onClick={() => setStep(mode === 'login' ? 'quickLogin' : 'form')}
                     className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
                     style={{ color: 'var(--text-tertiary)' }}>
                     <ArrowLeft size={12} /> Zurück
@@ -268,18 +329,15 @@ export default function PartnerRegister() {
                       style={{ background: 'var(--brand-dim)' }}>
                       <CheckCircle size={18} style={{ color: 'var(--brand)' }} />
                     </div>
-                    <div>
-                      <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
-                    </div>
+                    <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
                   </div>
                   <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>
-                    Wir haben einen 6-stelligen Code an
+                    Wir haben einen 6-stelligen Code gesendet an
                   </p>
                   <p className="text-sm font-semibold mb-5" style={{ color: 'var(--text-primary)' }}>
-                    {form.email}
+                    {activeEmail}
                   </p>
 
-                  {/* Step indicator */}
                   <div className="flex items-center gap-2 mb-5">
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
