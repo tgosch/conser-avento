@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Ihr Zugangs-Code</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    body { margin: 0; padding: 0; width: 100% !important; height: 100% !important; }
+
+    .code-digit {
+      display: inline-block;
+      width: 44px;
+      height: 56px;
+      line-height: 56px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      color: #063D3E;
+      background: #F4F3F0;
+      border: 2px solid #E2E1DE;
+      border-radius: 12px;
+      margin: 0 3px;
+      letter-spacing: 0;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container { width: 100% !important; padding: 16px !important; }
+      .card { padding: 28px 20px !important; }
+      .code-digit { width: 38px; height: 48px; line-height: 48px; font-size: 24px; margin: 0 2px; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F7F6F3; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+
+  <!-- Outer wrapper -->
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F7F6F3;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;" class="container">
+
+        <!-- Main card -->
+        <table role="presentation" cellpadding="0" cellspacing="0" width="440" style="max-width: 440px; width: 100%;">
+
+          <!-- Logo header -->
+          <tr>
+            <td align="center" style="padding-bottom: 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="font-size: 20px; font-weight: 700; color: #063D3E; letter-spacing: -0.02em;">
+                    Conser-Avento
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 4px;">
+                    <span style="font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #A8A8A4;">
+                      INVESTOR &amp; PARTNER PORTAL
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Card body -->
+          <tr>
+            <td class="card" style="background: #FFFFFF; border-radius: 20px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);">
+
+              <!-- Icon -->
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 20px;">
+                    <div style="width: 56px; height: 56px; line-height: 56px; text-align: center; background: linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%); border-radius: 16px; font-size: 24px;">
+                      &#128274;
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Headline -->
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 8px;">
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #1A1A18; letter-spacing: -0.02em; line-height: 1.3;">
+                      Ihr Zugangs-Code
+                    </h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 28px;">
+                    <p style="margin: 0; font-size: 14px; color: #6B6B67; line-height: 1.5;">
+                      Geben Sie diesen 6-stelligen Code ein,<br>um sich anzumelden.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- OTP Code -->
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="padding: 20px 0 24px;">
+                    <div style="background: #F7F6F3; border-radius: 16px; padding: 20px 16px; display: inline-block;">
+                      <span style="font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace; font-size: 36px; font-weight: 700; letter-spacing: 12px; color: #063D3E; line-height: 1;">
+                        {{ .Token }}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Timer hint -->
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <div style="display: inline-block; background: rgba(6,61,62,0.06); border-radius: 8px; padding: 8px 16px;">
+                      <span style="font-size: 12px; font-weight: 600; color: #063D3E;">
+                        &#9201; Code gültig für 10 Minuten
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Divider -->
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="border-top: 1px solid #EBEBEA; padding-top: 20px;">
+                    <p style="margin: 0; font-size: 12px; color: #A8A8A4; line-height: 1.6; text-align: center;">
+                      Diesen Code nicht angefordert? Ignorieren Sie diese E-Mail einfach.<br>
+                      Ihr Konto bleibt sicher.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top: 28px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding-bottom: 8px;">
+                    <span style="font-size: 11px; font-weight: 600; color: #A8A8A4; letter-spacing: 0.05em;">
+                      Conser Gosch UG (haftungsbeschr&auml;nkt)
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <span style="font-size: 11px; color: #CBCBC7;">
+                      HRB 22177 &middot; Amtsgericht L&uuml;beck &middot; DE458507310
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 12px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding: 0 8px;">
+                          <a href="https://conser-avento.vercel.app" style="font-size: 11px; color: #063D3E; text-decoration: none; font-weight: 500;">Portal</a>
+                        </td>
+                        <td style="color: #EBEBEA; font-size: 11px;">|</td>
+                        <td style="padding: 0 8px;">
+                          <a href="mailto:torben@conser-avento.de" style="font-size: 11px; color: #063D3E; text-decoration: none; font-weight: 500;">Kontakt</a>
+                        </td>
+                        <td style="color: #EBEBEA; font-size: 11px;">|</td>
+                        <td style="padding: 0 8px;">
+                          <a href="https://conser-avento.vercel.app" style="font-size: 11px; color: #063D3E; text-decoration: none; font-weight: 500;">Datenschutz</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
