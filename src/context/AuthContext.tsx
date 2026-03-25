@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Session } from '@supabase/supabase-js'
-import type { Investor } from '../lib/supabase'
+import type { Investor, Partner } from '../lib/supabase'
 
 interface User {
   investor?: Investor
+  partner?: Partner
   isAdmin: boolean
+  isPartner: boolean
   email?: string
 }
 
@@ -14,6 +16,7 @@ interface AuthContextType {
   loading: boolean
   loginAdmin: (u: User) => void
   loginInvestor: (userId: string, email: string) => Promise<void>
+  loginPartner: (userId: string, email: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -22,20 +25,33 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   loginAdmin: () => {},
   loginInvestor: async () => {},
+  loginPartner: async () => {},
   logout: async () => {},
 })
 
 async function resolveUser(session: Session): Promise<User> {
-  const isAdmin = session.user.app_metadata?.is_admin === true
-  if (isAdmin) {
-    return { isAdmin: true, email: session.user.email }
+  const meta = session.user.app_metadata
+  const email = session.user.email
+
+  if (meta?.is_admin === true) {
+    return { isAdmin: true, isPartner: false, email }
   }
+
+  if (meta?.is_partner === true) {
+    const { data: partner } = await supabase
+      .from('partners')
+      .select('*')
+      .eq('id', session.user.id)
+      .maybeSingle()
+    return { partner: partner ?? undefined, isAdmin: false, isPartner: true, email }
+  }
+
   const { data: inv } = await supabase
     .from('investors')
     .select('id, first_name, last_name, email, phone, status, consent, created_at')
     .eq('id', session.user.id)
     .maybeSingle()
-  return { investor: inv ?? undefined, isAdmin: false, email: session.user.email }
+  return { investor: inv ?? undefined, isAdmin: false, isPartner: false, email }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -63,7 +79,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  // Setzt User direkt nach Login (verhindert Race Condition mit Navigate)
   const loginAdmin = (u: User) => setUser(u)
 
   const loginInvestor = async (userId: string, email: string) => {
@@ -72,7 +87,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .select('id, first_name, last_name, email, phone, status, consent, created_at')
       .eq('id', userId)
       .maybeSingle()
-    setUser({ investor: inv ?? undefined, isAdmin: false, email })
+    setUser({ investor: inv ?? undefined, isAdmin: false, isPartner: false, email })
+  }
+
+  const loginPartner = async (userId: string, email: string) => {
+    const { data: partner } = await supabase
+      .from('partners')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle()
+    setUser({ partner: partner ?? undefined, isAdmin: false, isPartner: true, email })
   }
 
   const logout = async () => {
@@ -81,7 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginAdmin, loginInvestor, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginAdmin, loginInvestor, loginPartner, logout }}>
       {children}
     </AuthContext.Provider>
   )

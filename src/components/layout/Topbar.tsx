@@ -17,9 +17,9 @@ export default function Topbar({ onMenuClick }: Props) {
 
   const initials = user?.investor
     ? `${user.investor.first_name?.[0] ?? ''}${user.investor.last_name?.[0] ?? ''}`.toUpperCase() || 'IN'
-    : 'TG'
+    : user?.partner?.initials ?? 'TG'
 
-  const settingsPath = user?.isAdmin ? '/owner/settings' : '/investor/settings'
+  const settingsPath = user?.isAdmin ? '/owner/settings' : user?.isPartner ? '/partner/settings' : '/investor/settings'
   const handleLogout = async () => { await logout(); navigate('/') }
 
   return (
@@ -76,7 +76,7 @@ export default function Topbar({ onMenuClick }: Props) {
         <div className="flex items-center gap-2" style={{ color: 'var(--text-tertiary)', fontSize: 13 }}>
           <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Conser-Avento</span>
           <span style={{ color: 'var(--border-strong)' }}>/</span>
-          <span>Investor Portal</span>
+          <span>{user?.isAdmin ? 'Owner Console' : user?.isPartner ? 'Partner Portal' : 'Investor Portal'}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full"
@@ -107,7 +107,7 @@ export default function Topbar({ onMenuClick }: Props) {
                      style={{ boxShadow: 'var(--shadow-xl)', padding: '6px' }}>
                   <div className="px-3 py-2 mb-1">
                     <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                      {user?.investor ? `${user.investor.first_name} ${user.investor.last_name}` : 'Investor'}
+                      {user?.investor ? `${user.investor.first_name} ${user.investor.last_name}` : user?.partner?.name ?? 'Benutzer'}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                       {user?.investor?.email || user?.email}

@@ -8,6 +8,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import Landing from './pages/Landing'
 import InvestorLayout from './components/layout/InvestorLayout'
 import OwnerLayout from './components/layout/OwnerLayout'
+import PartnerLayout from './components/layout/PartnerLayout'
 
 // Lazy-loaded pages for code splitting
 const InvestorDashboard = React.lazy(() => import('./pages/investor/Dashboard'))
@@ -34,6 +35,14 @@ const OwnerStructure = React.lazy(() => import('./pages/owner/Structure'))
 const OwnerSettings = React.lazy(() => import('./pages/owner/Settings'))
 const OwnerTeam = React.lazy(() => import('./pages/owner/Team'))
 const OwnerPresentationsHub = React.lazy(() => import('./pages/owner/PresentationsHub'))
+
+const PartnerDashboard = React.lazy(() => import('./pages/partner/Dashboard'))
+const PartnerVision = React.lazy(() => import('./pages/partner/Vision'))
+const PartnerPartnership = React.lazy(() => import('./pages/partner/Partnership'))
+const PartnerRevenue = React.lazy(() => import('./pages/partner/Revenue'))
+const PartnerNetwork = React.lazy(() => import('./pages/partner/Network'))
+const PartnerRoadmap = React.lazy(() => import('./pages/partner/Roadmap'))
+const PartnerSettings = React.lazy(() => import('./pages/partner/Settings'))
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -92,6 +101,13 @@ function OwnerGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function PartnerGuard({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth()
+  if (loading) return <Spinner />
+  if (!user?.isPartner) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
 function AppRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
@@ -127,6 +143,17 @@ function AppRoutes() {
           <Route path="team" element={<OwnerTeam />} />
           <Route path="presentations" element={<OwnerPresentationsHub />} />
           <Route path="settings" element={<OwnerSettings />} />
+        </Route>
+
+        <Route path="/partner" element={<PartnerGuard><PartnerLayout /></PartnerGuard>}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<PartnerDashboard />} />
+          <Route path="vision" element={<PartnerVision />} />
+          <Route path="partnership" element={<PartnerPartnership />} />
+          <Route path="revenue" element={<PartnerRevenue />} />
+          <Route path="network" element={<PartnerNetwork />} />
+          <Route path="roadmap" element={<PartnerRoadmap />} />
+          <Route path="settings" element={<PartnerSettings />} />
         </Route>
 
         {/* Legacy redirects */}

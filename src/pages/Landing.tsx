@@ -12,7 +12,7 @@ import aventoLogo from '../assets/avento_kachel.webp'
 import conserLogo from '../assets/conser_kachel.webp'
 
 export default function Landing() {
-  const { loginAdmin, loginInvestor } = useAuth()
+  const { loginAdmin, loginInvestor, loginPartner } = useAuth()
   const navigate = useNavigate()
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const authCardRef = useRef<HTMLDivElement>(null)
@@ -48,10 +48,13 @@ export default function Landing() {
       })
       if (error) throw error
       loginAttemptsRef.current = 0
-      const isAdmin = data.user.app_metadata?.is_admin === true
-      if (isAdmin) {
-        loginAdmin({ isAdmin: true, email: data.user.email ?? loginEmail.trim() })
+      const meta = data.user.app_metadata
+      if (meta?.is_admin === true) {
+        loginAdmin({ isAdmin: true, isPartner: false, email: data.user.email ?? loginEmail.trim() })
         navigate('/owner/dashboard')
+      } else if (meta?.is_partner === true) {
+        await loginPartner(data.user.id, data.user.email ?? loginEmail.trim())
+        navigate('/partner/dashboard')
       } else {
         await loginInvestor(data.user.id, data.user.email ?? loginEmail.trim())
         navigate('/investor/dashboard')
