@@ -48,7 +48,7 @@ async function resolveUser(session: Session): Promise<User> {
 
   const { data: inv } = await supabase
     .from('investors')
-    .select('id, first_name, last_name, email, phone, status, consent, created_at')
+    .select('id, first_name, last_name, email, phone, status, consent, consent_date, nda_accepted, nda_date, created_at')
     .eq('id', session.user.id)
     .maybeSingle()
   return { investor: inv ?? undefined, isAdmin: false, isPartner: false, email }
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginInvestor = async (userId: string, email: string) => {
     const { data: inv } = await supabase
       .from('investors')
-      .select('id, first_name, last_name, email, phone, status, consent, created_at')
+      .select('id, first_name, last_name, email, phone, status, consent, consent_date, nda_accepted, nda_date, created_at')
       .eq('id', userId)
       .maybeSingle()
     setUser({ investor: inv ?? undefined, isAdmin: false, isPartner: false, email })

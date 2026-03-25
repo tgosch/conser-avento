@@ -1,48 +1,40 @@
 import { useState, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, ArrowRight, ArrowLeft, Building2, Briefcase } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Building2, Briefcase } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
 import NdaModal from '../components/auth/NdaModal'
 import PrivacyModal from '../components/auth/PrivacyModal'
 import ImpressumModal from '../components/auth/ImpressumModal'
-import PasswordStrength from '../components/auth/PasswordStrength'
 import aventoLogo from '../assets/avento_kachel.webp'
 import conserLogo from '../assets/conser_kachel.webp'
 
 type Role = 'investor' | 'partner'
-type InvestorTab = 'login' | 'register'
-type PartnerStep = 'form' | 'login' | 'otp'
+type Step = 'form' | 'login' | 'otp'
 
 export default function Landing() {
   const { loginAdmin, loginInvestor, loginPartner } = useAuth()
   const navigate = useNavigate()
   const authCardRef = useRef<HTMLDivElement>(null)
 
-  // Role switch
   const [role, setRole] = useState<Role>('investor')
+  const [step, setStep] = useState<Step>('form')
+  const [mode, setMode] = useState<'register' | 'login'>('register')
+  const [loading, setLoading] = useState(false)
 
-  // ── INVESTOR STATE ──
-  const [investorTab, setInvestorTab] = useState<InvestorTab>('login')
-  const [loginEmail, setLoginEmail] = useState('')
-  const [loginPassword, setLoginPassword] = useState('')
-  const [loginLoading, setLoginLoading] = useState(false)
-  const [showLoginPwd, setShowLoginPwd] = useState(false)
-  const [reg, setReg] = useState({ first_name: '', last_name: '', email: '', phone: '', password: '', password2: '' })
+  // Investor register
+  const [invForm, setInvForm] = useState({ first_name: '', last_name: '', email: '', phone: '' })
   const [consentPrivacy, setConsentPrivacy] = useState(false)
   const [consentNda, setConsentNda] = useState(false)
-  const [regLoading, setRegLoading] = useState(false)
-  const [showRegPwd, setShowRegPwd] = useState(false)
-  const loginAttemptsRef = useRef(0)
-  const lockoutUntilRef = useRef(0)
 
-  // ── PARTNER STATE ──
-  const [partnerStep, setPartnerStep] = useState<PartnerStep>('form')
-  const [partnerMode, setPartnerMode] = useState<'register' | 'login'>('register')
-  const [partnerLoading, setPartnerLoading] = useState(false)
+  // Partner register
   const [partnerForm, setPartnerForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '' })
-  const [partnerLoginEmail, setPartnerLoginEmail] = useState('')
+
+  // Login (shared for both roles)
+  const [loginEmail, setLoginEmail] = useState('')
+
+  // OTP
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
   const otpRefs = useRef<(HTMLInputElement | null)[]>([])
 
@@ -51,130 +43,71 @@ export default function Landing() {
   const [showPrivacy, setShowPrivacy] = useState(false)
   const [showImpressum, setShowImpressum] = useState(false)
 
-  // ── INVESTOR HANDLERS ──
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (Date.now() < lockoutUntilRef.current) {
-      const secs = Math.ceil((lockoutUntilRef.current - Date.now()) / 1000)
-      toast.error(`Zu viele Versuche. Bitte ${secs}s warten.`)
-      return
-    }
-    setLoginLoading(true)
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail.trim(), password: loginPassword,
-      })
-      if (error) throw error
-      loginAttemptsRef.current = 0
-      const meta = data.user.app_metadata
-      if (meta?.is_admin === true) {
-        loginAdmin({ isAdmin: true, isPartner: false, email: data.user.email ?? loginEmail.trim() })
-        navigate('/owner/dashboard')
-      } else if (meta?.is_partner === true) {
-        await loginPartner(data.user.id, data.user.email ?? loginEmail.trim())
-        navigate('/partner/dashboard')
-      } else {
-        await loginInvestor(data.user.id, data.user.email ?? loginEmail.trim())
-        navigate('/investor/dashboard')
-      }
-    } catch {
-      loginAttemptsRef.current += 1
-      if (loginAttemptsRef.current >= 5) {
-        lockoutUntilRef.current = Date.now() + 60_000
-        loginAttemptsRef.current = 0
-        toast.error('Zu viele Fehlversuche. Bitte 60s warten.')
-      } else {
-        toast.error('Zugangsdaten ungültig.')
-      }
-    } finally { setLoginLoading(false) }
-  }
+  const activeEmail = mode === 'login'
+    ? loginEmail.trim().toLowerCase()
+    : role === 'investor'
+      ? invForm.email.trim().toLowerCase()
+      : partnerForm.email.trim().toLowerCase()
 
-  const validateRegister = useCallback(() => {
+  // ── VALIDATION ──
+  const validateInvestor = useCallback(() => {
     const nameRe = /^[a-zA-ZäöüßÄÖÜ\s'-]{2,50}$/
     const phoneRe = /^[\d\s+\-()]{7,20}$/
-    if (!nameRe.test(reg.first_name)) return 'Vorname ungültig (2–50 Zeichen, nur Buchstaben)'
-    if (!nameRe.test(reg.last_name)) return 'Nachname ungültig (2–50 Zeichen, nur Buchstaben)'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reg.email)) return 'E-Mail-Adresse ungültig'
-    if (!phoneRe.test(reg.phone)) return 'Telefonnummer ungültig'
-    if (reg.password.length < 8) return 'Passwort mind. 8 Zeichen'
-    if (reg.password !== reg.password2) return 'Passwörter stimmen nicht überein'
+    if (!nameRe.test(invForm.first_name)) return 'Vorname ungültig (2–50 Zeichen)'
+    if (!nameRe.test(invForm.last_name)) return 'Nachname ungültig (2–50 Zeichen)'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(invForm.email)) return 'E-Mail ungültig'
+    if (!phoneRe.test(invForm.phone)) return 'Telefonnummer ungültig'
     if (!consentPrivacy) return 'Bitte Datenschutzerklärung akzeptieren'
     if (!consentNda) return 'Bitte NDA akzeptieren'
     return null
-  }, [reg, consentPrivacy, consentNda])
+  }, [invForm, consentPrivacy, consentNda])
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const err = validateRegister()
-    if (err) { toast.error(err); return }
-    setRegLoading(true)
-    try {
-      const { data: authData, error: authErr } = await supabase.auth.signUp({
-        email: reg.email.trim().toLowerCase(), password: reg.password,
-        options: { data: { first_name: reg.first_name.trim(), last_name: reg.last_name.trim(), phone: reg.phone.trim() } },
-      })
-      if (authErr) throw authErr
-      if (authData.user) {
-        await supabase.from('investors').insert([{
-          id: authData.user.id, first_name: reg.first_name.trim(), last_name: reg.last_name.trim(),
-          email: reg.email.trim().toLowerCase(), phone: reg.phone.trim(),
-          consent: true, consent_date: new Date().toISOString(), nda_accepted: true, nda_date: new Date().toISOString(),
-        }])
-      }
-      toast.success(`Willkommen, ${reg.first_name.trim()}! Ihr Zugang wurde eingerichtet.`)
-      navigate('/investor/dashboard')
-    } catch { toast.error('Registrierung fehlgeschlagen') }
-    finally { setRegLoading(false) }
-  }
-
-  const handleForgotPassword = async () => {
-    if (!loginEmail) { toast.error('Bitte E-Mail eingeben'); return }
-    const { error } = await supabase.auth.resetPasswordForEmail(loginEmail)
-    if (error) toast.error(error.message)
-    else toast.success('Passwort-Reset E-Mail gesendet')
-  }
-
-  // ── PARTNER HANDLERS ──
-  const activePartnerEmail = partnerMode === 'login'
-    ? partnerLoginEmail.trim().toLowerCase()
-    : partnerForm.email.trim().toLowerCase()
-
-  const handlePartnerRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const validatePartner = () => {
     const nameRe = /^[a-zA-ZäöüßÄÖÜ\s'-]{2,50}$/
-    if (!nameRe.test(partnerForm.first_name)) { toast.error('Vorname ungültig'); return }
-    if (!nameRe.test(partnerForm.last_name)) { toast.error('Nachname ungültig'); return }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerForm.email)) { toast.error('E-Mail ungültig'); return }
-    if (!/^[\d\s+\-()]{7,20}$/.test(partnerForm.phone)) { toast.error('Telefonnummer ungültig'); return }
-    if (partnerForm.company.trim().length < 2) { toast.error('Bitte Unternehmen angeben'); return }
-    setPartnerLoading(true)
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: partnerForm.email.trim().toLowerCase(),
-        options: { data: { first_name: partnerForm.first_name.trim(), last_name: partnerForm.last_name.trim(), phone: partnerForm.phone.trim(), company: partnerForm.company.trim() } },
-      })
-      if (error) throw error
-      toast.success('Verifizierungscode wurde per E-Mail gesendet.')
-      setPartnerMode('register')
-      setPartnerStep('otp')
-    } catch { toast.error('Code konnte nicht gesendet werden.') }
-    finally { setPartnerLoading(false) }
+    if (!nameRe.test(partnerForm.first_name)) return 'Vorname ungültig'
+    if (!nameRe.test(partnerForm.last_name)) return 'Nachname ungültig'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerForm.email)) return 'E-Mail ungültig'
+    if (!/^[\d\s+\-()]{7,20}$/.test(partnerForm.phone)) return 'Telefonnummer ungültig'
+    if (partnerForm.company.trim().length < 2) return 'Bitte Unternehmen angeben'
+    return null
   }
 
-  const handlePartnerQuickLogin = async (e: React.FormEvent) => {
+  // ── SUBMIT REGISTRATION ──
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerLoginEmail)) { toast.error('E-Mail ungültig'); return }
-    setPartnerLoading(true)
+    const err = role === 'investor' ? validateInvestor() : validatePartner()
+    if (err) { toast.error(err); return }
+    setLoading(true)
+    const email = role === 'investor' ? invForm.email.trim().toLowerCase() : partnerForm.email.trim().toLowerCase()
+    const metadata = role === 'investor'
+      ? { first_name: invForm.first_name.trim(), last_name: invForm.last_name.trim(), phone: invForm.phone.trim() }
+      : { first_name: partnerForm.first_name.trim(), last_name: partnerForm.last_name.trim(), phone: partnerForm.phone.trim(), company: partnerForm.company.trim() }
     try {
-      const { error } = await supabase.auth.signInWithOtp({ email: partnerLoginEmail.trim().toLowerCase() })
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { data: metadata } })
       if (error) throw error
       toast.success('Verifizierungscode wurde per E-Mail gesendet.')
-      setPartnerMode('login')
-      setPartnerStep('otp')
+      setMode('register')
+      setStep('otp')
     } catch { toast.error('Code konnte nicht gesendet werden.') }
-    finally { setPartnerLoading(false) }
+    finally { setLoading(false) }
   }
 
+  // ── QUICK LOGIN ──
+  const handleQuickLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) { toast.error('E-Mail ungültig'); return }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithOtp({ email: loginEmail.trim().toLowerCase() })
+      if (error) throw error
+      toast.success('Verifizierungscode wurde per E-Mail gesendet.')
+      setMode('login')
+      setStep('otp')
+    } catch { toast.error('Code konnte nicht gesendet werden.') }
+    finally { setLoading(false) }
+  }
+
+  // ── OTP INPUT ──
   const handleOtpChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return
     const next = [...otp]; next[index] = value.slice(-1); setOtp(next)
@@ -189,40 +122,119 @@ export default function Landing() {
     if (pasted.length === 6) { setOtp(pasted.split('')); otpRefs.current[5]?.focus() }
   }
 
-  const handleVerifyOtp = async (e: React.FormEvent) => {
+  // ── VERIFY OTP ──
+  const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     const code = otp.join('')
     if (code.length !== 6) { toast.error('Bitte den 6-stelligen Code eingeben.'); return }
-    setPartnerLoading(true)
+    setLoading(true)
     try {
-      const { data, error } = await supabase.auth.verifyOtp({ email: activePartnerEmail, token: code, type: 'email' })
+      const { data, error } = await supabase.auth.verifyOtp({ email: activeEmail, token: code, type: 'email' })
       if (error) throw error
       if (!data.user) throw new Error('Kein Benutzer')
-      if (partnerMode === 'register') {
-        const initials = `${partnerForm.first_name.trim()[0]}${partnerForm.last_name.trim()[0]}`.toUpperCase()
-        await supabase.from('partners').upsert([{
-          id: data.user.id, name: partnerForm.company.trim(), type: 'production' as const, category: '',
-          description: `Ansprechpartner: ${partnerForm.first_name.trim()} ${partnerForm.last_name.trim()}`,
-          status: 'negotiating' as const, logo_path: null, initials, color: '#063D3E', visible: false, order_index: 99,
-        }])
+
+      const meta = data.user.app_metadata
+      if (meta?.is_admin === true) {
+        loginAdmin({ isAdmin: true, isPartner: false, email: data.user.email ?? activeEmail })
+        navigate('/owner/dashboard')
+        return
       }
-      await loginPartner(data.user.id, data.user.email ?? activePartnerEmail)
-      toast.success(partnerMode === 'register' ? `Willkommen, ${partnerForm.company.trim()}!` : 'Willkommen zurück!')
-      navigate('/partner/dashboard')
+
+      if (mode === 'register') {
+        if (role === 'investor') {
+          await supabase.from('investors').upsert([{
+            id: data.user.id,
+            first_name: invForm.first_name.trim(),
+            last_name: invForm.last_name.trim(),
+            email: activeEmail,
+            phone: invForm.phone.trim(),
+            consent: true,
+            consent_date: new Date().toISOString(),
+            nda_accepted: true,
+            nda_date: new Date().toISOString(),
+          }])
+          await loginInvestor(data.user.id, data.user.email ?? activeEmail)
+          toast.success(`Willkommen, ${invForm.first_name.trim()}!`)
+          navigate('/investor/dashboard')
+        } else {
+          const initials = `${partnerForm.first_name.trim()[0]}${partnerForm.last_name.trim()[0]}`.toUpperCase()
+          await supabase.from('partners').upsert([{
+            id: data.user.id, name: partnerForm.company.trim(), type: 'production' as const, category: '',
+            description: `Ansprechpartner: ${partnerForm.first_name.trim()} ${partnerForm.last_name.trim()}`,
+            status: 'negotiating' as const, logo_path: null, initials, color: '#063D3E', visible: false, order_index: 99,
+          }])
+          await loginPartner(data.user.id, data.user.email ?? activeEmail)
+          toast.success(`Willkommen, ${partnerForm.company.trim()}!`)
+          navigate('/partner/dashboard')
+        }
+      } else {
+        // Login — resolveUser detects role automatically
+        const { data: partner } = await supabase.from('partners').select('id').eq('id', data.user.id).maybeSingle()
+        if (partner) {
+          await loginPartner(data.user.id, data.user.email ?? activeEmail)
+          toast.success('Willkommen zurück!')
+          navigate('/partner/dashboard')
+        } else {
+          await loginInvestor(data.user.id, data.user.email ?? activeEmail)
+          toast.success('Willkommen zurück!')
+          navigate('/investor/dashboard')
+        }
+      }
     } catch { toast.error('Code ungültig oder abgelaufen.') }
-    finally { setPartnerLoading(false) }
+    finally { setLoading(false) }
   }
 
-  const handleResendOtp = async () => {
-    setPartnerLoading(true)
+  const handleResend = async () => {
+    setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOtp({ email: activePartnerEmail })
+      const { error } = await supabase.auth.signInWithOtp({ email: activeEmail })
       if (error) throw error
-      toast.success('Neuer Code wurde gesendet.')
+      toast.success('Neuer Code gesendet.')
       setOtp(['', '', '', '', '', '']); otpRefs.current[0]?.focus()
-    } catch { toast.error('Code konnte nicht gesendet werden.') }
-    finally { setPartnerLoading(false) }
+    } catch { toast.error('Fehler beim Senden.') }
+    finally { setLoading(false) }
   }
+
+  const switchRole = (r: Role) => { setRole(r); setStep('form'); setMode('register') }
+
+  // ── OTP INPUT COMPONENT ──
+  const OtpInput = () => (
+    <>
+      <button onClick={() => setStep(mode === 'login' ? 'login' : 'form')}
+        className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
+        style={{ color: 'var(--text-tertiary)' }}>
+        <ArrowLeft size={12} /> Zurück
+      </button>
+      <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
+      <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>6-stelliger Code gesendet an</p>
+      <p className="text-sm font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>{activeEmail}</p>
+      <div className="flex items-center gap-2 mb-5">
+        <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
+        <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
+      </div>
+      <form onSubmit={handleVerify}>
+        <div className="flex gap-2 justify-center mb-5" onPaste={handleOtpPaste}>
+          {otp.map((digit, i) => (
+            <input key={i} ref={el => { otpRefs.current[i] = el }}
+              type="text" inputMode="numeric" maxLength={1} value={digit}
+              onChange={e => handleOtpChange(i, e.target.value)}
+              onKeyDown={e => handleOtpKeyDown(i, e)}
+              className="w-12 h-14 text-center text-xl font-bold rounded-xl border-2 transition-all focus:outline-none"
+              style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }}
+              autoFocus={i === 0} />
+          ))}
+        </div>
+        <button type="submit" disabled={loading || otp.join('').length !== 6} className="btn btn-primary btn-lg w-full">
+          {loading ? 'Wird verifiziert…' : 'Verifizieren & Zugang erhalten'}
+        </button>
+      </form>
+      <div className="text-center mt-4">
+        <button onClick={handleResend} disabled={loading} className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+          Code erneut senden
+        </button>
+      </div>
+    </>
+  )
 
   return (
     <div className="min-h-screen gradient-mesh flex flex-col">
@@ -234,7 +246,7 @@ export default function Landing() {
       </div>
 
       <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
-        {/* LEFT: Brand (desktop only) */}
+        {/* LEFT: Brand (desktop) */}
         <div className="hidden lg:flex lg:w-[52%] gradient-brand noise-overlay flex-col justify-between p-12">
           <div className="flex items-center gap-3">
             <img src={aventoLogo} alt="Avento" className="h-10 rounded-xl" />
@@ -246,9 +258,7 @@ export default function Landing() {
               {role === 'investor' ? 'Investor Portal' : 'Partner Portal'}
             </p>
             <h1 className="text-display-2xl text-white mb-6" style={{ maxWidth: 440 }}>
-              {role === 'investor'
-                ? 'Die Infrastruktur für die Baubranche'
-                : 'Werden Sie Produktionspartner'}
+              {role === 'investor' ? 'Die Infrastruktur für die Baubranche' : 'Werden Sie Produktionspartner'}
             </h1>
             <p className="text-base leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 380 }}>
               {role === 'investor'
@@ -279,20 +289,19 @@ export default function Landing() {
         {/* RIGHT: Auth */}
         <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-sm animate-fade-up" ref={authCardRef}>
-            {/* Mobile Logo */}
             <div className="lg:hidden flex items-center gap-2 justify-center mb-6">
               <img src={aventoLogo} alt="Avento" className="h-8 rounded-lg" />
               <div className="w-px h-5" style={{ background: 'var(--border)' }} />
               <img src={conserLogo} alt="Conser" className="h-8 rounded-lg" />
             </div>
 
-            {/* ── ROLE SWITCH ── */}
+            {/* ROLE SWITCH */}
             <div className="flex gap-2 mb-4">
               {([
                 { key: 'investor' as Role, icon: Briefcase, label: 'Interessent' },
                 { key: 'partner' as Role, icon: Building2, label: 'Partner' },
               ]).map(r => (
-                <button key={r.key} onClick={() => { setRole(r.key); setPartnerStep('form') }}
+                <button key={r.key} onClick={() => switchRole(r.key)}
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition"
                   style={{
                     background: role === r.key ? 'var(--brand)' : 'var(--surface)',
@@ -306,122 +315,93 @@ export default function Landing() {
 
             <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
 
-              {/* ════════════════════ INVESTOR FLOW ════════════════════ */}
-              {role === 'investor' && (
+              {/* ── OTP SCREEN (shared) ── */}
+              {step === 'otp' && <OtpInput />}
+
+              {/* ── LOGIN SCREEN (shared) ── */}
+              {step === 'login' && (
                 <>
-                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>
-                    {investorTab === 'login' ? 'Anmelden' : 'Registrieren'}
-                  </h2>
+                  <button onClick={() => setStep('form')}
+                    className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
+                    style={{ color: 'var(--text-tertiary)' }}>
+                    <ArrowLeft size={12} /> Zurück
+                  </button>
+                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Anmelden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    {investorTab === 'login' ? 'Zugang zum Investor Portal' : 'Kostenlosen Investor-Zugang beantragen'}
+                    E-Mail eingeben — Sie erhalten einen 6-stelligen Code.
                   </p>
-
-                  <div className="flex gap-1 p-1 rounded-[12px] mb-5" style={{ background: 'var(--surface2)' }}>
-                    {(['login', 'register'] as const).map(t => (
-                      <button key={t} onClick={() => setInvestorTab(t)}
-                        className="flex-1 py-2 rounded-[10px] text-sm font-semibold transition"
-                        style={{
-                          background: investorTab === t ? 'var(--surface)' : 'transparent',
-                          color: investorTab === t ? 'var(--text-primary)' : 'var(--text-secondary)',
-                          boxShadow: investorTab === t ? 'var(--shadow-sm)' : 'none',
-                        }}>
-                        {t === 'login' ? 'Anmelden' : 'Registrieren'}
-                      </button>
-                    ))}
-                  </div>
-
-                  {investorTab === 'login' && (
-                    <form onSubmit={handleLogin} className="flex flex-col gap-3">
-                      <input type="email" placeholder="E-Mail" required value={loginEmail}
-                        onChange={e => setLoginEmail(e.target.value)} className="input-base"
-                        disabled={Date.now() < lockoutUntilRef.current} />
-                      <div className="relative">
-                        <input type={showLoginPwd ? 'text' : 'password'} placeholder="Passwort" required
-                          value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
-                          className="input-base pr-10" disabled={Date.now() < lockoutUntilRef.current} />
-                        <button type="button" onClick={() => setShowLoginPwd(v => !v)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-tertiary)' }}>
-                          {showLoginPwd ? <EyeOff size={14} /> : <Eye size={14} />}
-                        </button>
-                      </div>
-                      <button type="submit" disabled={loginLoading || Date.now() < lockoutUntilRef.current}
-                        className="btn btn-primary btn-lg w-full mt-2">
-                        {loginLoading ? 'Wird angemeldet…' : 'Anmelden →'}
-                      </button>
-                      <button type="button" onClick={handleForgotPassword}
-                        className="text-xs text-center hover-press" style={{ color: 'var(--text-tertiary)' }}>
-                        Passwort vergessen?
-                      </button>
-                    </form>
-                  )}
-
-                  {investorTab === 'register' && (
-                    <form onSubmit={handleRegister} className="flex flex-col gap-3">
-                      <input type="text" placeholder="Vorname" required value={reg.first_name}
-                        onChange={e => setReg(p => ({ ...p, first_name: e.target.value }))} className="input-base" />
-                      <input type="text" placeholder="Nachname" required value={reg.last_name}
-                        onChange={e => setReg(p => ({ ...p, last_name: e.target.value }))} className="input-base" />
-                      <input type="email" placeholder="E-Mail Adresse" required value={reg.email}
-                        onChange={e => setReg(p => ({ ...p, email: e.target.value }))} className="input-base" />
-                      <input type="tel" placeholder="Telefonnummer" required value={reg.phone}
-                        onChange={e => setReg(p => ({ ...p, phone: e.target.value }))} className="input-base" />
-                      <div>
-                        <div className="relative">
-                          <input type={showRegPwd ? 'text' : 'password'} placeholder="Passwort (min. 8 Zeichen)" required
-                            value={reg.password} onChange={e => setReg(p => ({ ...p, password: e.target.value }))}
-                            className="input-base pr-10" />
-                          <button type="button" onClick={() => setShowRegPwd(p => !p)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-secondary)' }}>
-                            {showRegPwd ? <EyeOff size={14} /> : <Eye size={14} />}
-                          </button>
-                        </div>
-                        <PasswordStrength password={reg.password} />
-                      </div>
-                      <input type="password" placeholder="Passwort wiederholen" required value={reg.password2}
-                        onChange={e => setReg(p => ({ ...p, password2: e.target.value }))} className="input-base" />
-                      <label className="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
-                          className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                        <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
-                          Ich akzeptiere die{' '}
-                          <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent underline font-medium">Datenschutzerklärung</button> (DSGVO).
-                        </span>
-                      </label>
-                      <label className="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" checked={consentNda} onChange={e => setConsentNda(e.target.checked)}
-                          className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
-                        <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
-                          Ich akzeptiere die{' '}
-                          <button type="button" onClick={() => setShowNda(true)} className="text-accent underline font-medium">Geheimhaltungsvereinbarung (NDA)</button>.
-                        </span>
-                      </label>
-                      <button type="submit" disabled={regLoading || !consentPrivacy || !consentNda}
-                        className="btn btn-primary btn-lg w-full mt-2">
-                        {regLoading ? 'Wird registriert…' : 'Zugang beantragen →'}
-                      </button>
-                      <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
-                        Bereits registriert?{' '}
-                        <button type="button" onClick={() => setInvestorTab('login')} className="font-semibold text-accent">Anmelden →</button>
-                      </p>
-                    </form>
-                  )}
+                  <form onSubmit={handleQuickLogin} className="flex flex-col gap-3">
+                    <input type="email" placeholder="E-Mail Adresse" required autoFocus value={loginEmail}
+                      onChange={e => setLoginEmail(e.target.value)} className="input-base" />
+                    <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
+                      {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+                    </button>
+                  </form>
                 </>
               )}
 
-              {/* ════════════════════ PARTNER FLOW ════════════════════ */}
-              {role === 'partner' && partnerStep === 'form' && (
+              {/* ── INVESTOR REGISTER ── */}
+              {step === 'form' && role === 'investor' && (
+                <>
+                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Investor werden</h2>
+                  <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
+                    Zugang per E-Mail-Code. Kein Passwort nötig.
+                  </p>
+                  <div className="flex items-center gap-2 mb-5">
+                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
+                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--surface3)' }} />
+                  </div>
+                  <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <input type="text" placeholder="Vorname *" required value={invForm.first_name}
+                        onChange={e => setInvForm(p => ({ ...p, first_name: e.target.value }))} className="input-base" />
+                      <input type="text" placeholder="Nachname *" required value={invForm.last_name}
+                        onChange={e => setInvForm(p => ({ ...p, last_name: e.target.value }))} className="input-base" />
+                    </div>
+                    <input type="email" placeholder="E-Mail Adresse *" required value={invForm.email}
+                      onChange={e => setInvForm(p => ({ ...p, email: e.target.value }))} className="input-base" />
+                    <input type="tel" placeholder="Telefonnummer *" required value={invForm.phone}
+                      onChange={e => setInvForm(p => ({ ...p, phone: e.target.value }))} className="input-base" />
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
+                        className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                      <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                        Ich akzeptiere die{' '}
+                        <button type="button" onClick={() => setShowPrivacy(true)} className="text-accent underline font-medium">Datenschutzerklärung</button> (DSGVO).
+                      </span>
+                    </label>
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input type="checkbox" checked={consentNda} onChange={e => setConsentNda(e.target.checked)}
+                        className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
+                      <span className="text-sm leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                        Ich akzeptiere die{' '}
+                        <button type="button" onClick={() => setShowNda(true)} className="text-accent underline font-medium">Geheimhaltungsvereinbarung (NDA)</button>.
+                      </span>
+                    </label>
+                    <button type="submit" disabled={loading || !consentPrivacy || !consentNda} className="btn btn-primary btn-lg w-full mt-2">
+                      {loading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
+                    </button>
+                  </form>
+                  <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
+                    <button onClick={() => setStep('login')} className="text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                      Bereits registriert? Anmelden →
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* ── PARTNER REGISTER ── */}
+              {step === 'form' && role === 'partner' && (
                 <>
                   <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Partner werden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
                     Kostenlos registrieren. Kein Passwort nötig — Zugang per E-Mail-Code.
                   </p>
-
                   <div className="flex items-center gap-2 mb-5">
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--surface3)' }} />
                   </div>
-
-                  <form onSubmit={handlePartnerRegister} className="flex flex-col gap-3">
+                  <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-3">
                     <div className="grid grid-cols-2 gap-3">
                       <input type="text" placeholder="Vorname *" required value={partnerForm.first_name}
                         onChange={e => setPartnerForm(p => ({ ...p, first_name: e.target.value }))} className="input-base" />
@@ -434,89 +414,19 @@ export default function Landing() {
                       onChange={e => setPartnerForm(p => ({ ...p, email: e.target.value }))} className="input-base" />
                     <input type="tel" placeholder="Telefonnummer *" required value={partnerForm.phone}
                       onChange={e => setPartnerForm(p => ({ ...p, phone: e.target.value }))} className="input-base" />
-                    <button type="submit" disabled={partnerLoading} className="btn btn-primary btn-lg w-full mt-2">
-                      {partnerLoading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
+                    <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-2">
+                      {loading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
                     </button>
                   </form>
-
                   <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-xs mb-1" style={{ color: 'var(--text-tertiary)' }}>Bereits registriert?</p>
-                    <button onClick={() => setPartnerStep('login')}
-                      className="text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
-                      Per E-Mail-Code anmelden →
-                    </button>
-                  </div>
-                </>
-              )}
-
-              {role === 'partner' && partnerStep === 'login' && (
-                <>
-                  <button onClick={() => setPartnerStep('form')}
-                    className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
-                    style={{ color: 'var(--text-tertiary)' }}>
-                    <ArrowLeft size={12} /> Zurück
-                  </button>
-                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Partner-Login</h2>
-                  <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    E-Mail eingeben — Sie erhalten einen 6-stelligen Code.
-                  </p>
-                  <form onSubmit={handlePartnerQuickLogin} className="flex flex-col gap-3">
-                    <input type="email" placeholder="E-Mail Adresse" required autoFocus value={partnerLoginEmail}
-                      onChange={e => setPartnerLoginEmail(e.target.value)} className="input-base" />
-                    <button type="submit" disabled={partnerLoading} className="btn btn-primary btn-lg w-full mt-1">
-                      {partnerLoading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
-                    </button>
-                  </form>
-                </>
-              )}
-
-              {role === 'partner' && partnerStep === 'otp' && (
-                <>
-                  <button onClick={() => setPartnerStep(partnerMode === 'login' ? 'login' : 'form')}
-                    className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
-                    style={{ color: 'var(--text-tertiary)' }}>
-                    <ArrowLeft size={12} /> Zurück
-                  </button>
-                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
-                  <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>6-stelliger Code gesendet an</p>
-                  <p className="text-sm font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>{activePartnerEmail}</p>
-
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
-                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
-                  </div>
-
-                  <form onSubmit={handleVerifyOtp}>
-                    <div className="flex gap-2 justify-center mb-5" onPaste={handleOtpPaste}>
-                      {otp.map((digit, i) => (
-                        <input key={i} ref={el => { otpRefs.current[i] = el }}
-                          type="text" inputMode="numeric" maxLength={1} value={digit}
-                          onChange={e => handleOtpChange(i, e.target.value)}
-                          onKeyDown={e => handleOtpKeyDown(i, e)}
-                          className="w-12 h-14 text-center text-xl font-bold rounded-xl border-2 transition-all focus:outline-none"
-                          style={{
-                            background: 'var(--surface2)', color: 'var(--text-primary)',
-                            borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)',
-                          }}
-                          autoFocus={i === 0} />
-                      ))}
-                    </div>
-                    <button type="submit" disabled={partnerLoading || otp.join('').length !== 6}
-                      className="btn btn-primary btn-lg w-full">
-                      {partnerLoading ? 'Wird verifiziert…' : 'Verifizieren & Zugang erhalten'}
-                    </button>
-                  </form>
-                  <div className="text-center mt-4">
-                    <button onClick={handleResendOtp} disabled={partnerLoading}
-                      className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>
-                      Code erneut senden
+                    <button onClick={() => setStep('login')} className="text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                      Bereits registriert? Anmelden →
                     </button>
                   </div>
                 </>
               )}
             </div>
 
-            {/* Legal Links */}
             <div className="flex justify-center gap-4 mt-5">
               <button onClick={() => setShowImpressum(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Impressum</button>
               <button onClick={() => setShowPrivacy(true)} className="text-xs hover-press" style={{ color: 'var(--text-tertiary)' }}>Datenschutz</button>
