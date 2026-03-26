@@ -37,7 +37,8 @@ export default function Landing() {
   const [loginMethod, setLoginMethod] = useState<'password' | 'otp'>('password')
 
   // OTP
-  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const OTP_LENGTH = 8
+  const [otp, setOtp] = useState(Array(8).fill(''))
   const otpRefs = useRef<(HTMLInputElement | null)[]>([])
 
   // Modals
@@ -211,22 +212,22 @@ export default function Landing() {
   const handleOtpChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return
     const next = [...otp]; next[index] = value.slice(-1); setOtp(next)
-    if (value && index < 5) otpRefs.current[index + 1]?.focus()
+    if (value && index < OTP_LENGTH - 1) otpRefs.current[index + 1]?.focus()
   }
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) otpRefs.current[index - 1]?.focus()
   }
   const handleOtpPaste = (e: React.ClipboardEvent) => {
     e.preventDefault()
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6)
-    if (pasted.length === 6) { setOtp(pasted.split('')); otpRefs.current[5]?.focus() }
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, OTP_LENGTH)
+    if (pasted.length === OTP_LENGTH) { setOtp(pasted.split('')); otpRefs.current[OTP_LENGTH - 1]?.focus() }
   }
 
   // ── VERIFY OTP ──
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     const code = otp.join('')
-    if (code.length !== 6) { toast.error('Bitte den 6-stelligen Code eingeben.'); return }
+    if (code.length !== OTP_LENGTH) { toast.error(`Bitte den ${OTP_LENGTH}-stelligen Code eingeben.`); return }
     setLoading(true)
     try {
       const { data, error } = await supabase.auth.verifyOtp({ email: activeEmail, token: code, type: 'email' })
@@ -290,7 +291,7 @@ export default function Landing() {
       const { error } = await supabase.auth.signInWithOtp({ email: activeEmail })
       if (error) throw error
       toast.success('Neuer Code gesendet.')
-      setOtp(['', '', '', '', '', '']); otpRefs.current[0]?.focus()
+      setOtp(Array(OTP_LENGTH).fill('')); otpRefs.current[0]?.focus()
     } catch { toast.error('Fehler beim Senden.') }
     finally { setLoading(false) }
   }
@@ -306,7 +307,7 @@ export default function Landing() {
         <ArrowLeft size={12} /> Zurück
       </button>
       <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
-      <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>6-stelliger Code gesendet an</p>
+      <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>8-stelliger Code gesendet an</p>
       <p className="text-sm font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>{activeEmail}</p>
       <div className="flex items-center gap-2 mb-5">
         <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
@@ -319,12 +320,12 @@ export default function Landing() {
               type="text" inputMode="numeric" maxLength={1} value={digit}
               onChange={e => handleOtpChange(i, e.target.value)}
               onKeyDown={e => handleOtpKeyDown(i, e)}
-              className="w-12 h-14 text-center text-xl font-bold rounded-xl border-2 transition-all focus:outline-none"
+              className="w-10 h-12 text-center text-lg font-bold rounded-lg border-2 transition-all focus:outline-none"
               style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }}
               autoFocus={i === 0} />
           ))}
         </div>
-        <button type="submit" disabled={loading || otp.join('').length !== 6} className="btn btn-primary btn-lg w-full">
+        <button type="submit" disabled={loading || otp.join('').length !== OTP_LENGTH} className="btn btn-primary btn-lg w-full">
           {loading ? 'Wird verifiziert…' : 'Verifizieren & Zugang erhalten'}
         </button>
       </form>
@@ -428,7 +429,7 @@ export default function Landing() {
                   </button>
                   <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Anmelden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    {loginMethod === 'password' ? 'Mit E-Mail und Passwort anmelden.' : 'E-Mail eingeben — Sie erhalten einen 6-stelligen Code.'}
+                    {loginMethod === 'password' ? 'Mit E-Mail und Passwort anmelden.' : 'E-Mail eingeben — Sie erhalten einen 8-stelligen Code.'}
                   </p>
 
                   {loginMethod === 'password' ? (
