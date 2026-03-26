@@ -6,6 +6,8 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
+import aventoLogo from '../../assets/avento_kachel.webp'
+import conserLogo from '../../assets/conser_kachel.webp'
 
 // NAV groups with unreadCount param
 const makeGroups = (unreadCount: number) => [
@@ -61,9 +63,10 @@ export default function OwnerSidebar({ open, onClose }: Props) {
 
         {/* Brand Header */}
         <div className="px-4 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--brand)' }}>
-              <span className="text-white text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>CA</span>
+          <div className="flex items-center gap-2.5 mb-1">
+            <div className="flex items-center gap-1.5">
+              <img src={aventoLogo} alt="Avento" className="h-[28px] w-auto rounded-md object-cover" />
+              <img src={conserLogo} alt="Conser" className="h-[28px] w-auto rounded-md object-cover" />
             </div>
             <div>
               <p className="text-xs font-bold text-white">Conser-Avento</p>

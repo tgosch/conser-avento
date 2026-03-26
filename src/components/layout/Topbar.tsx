@@ -73,8 +73,11 @@ export default function Topbar({ onMenuClick }: Props) {
 
       {/* ── Desktop ── */}
       <div className="hidden lg:flex items-center justify-between w-full">
-        <div className="flex items-center gap-2" style={{ color: 'var(--text-tertiary)', fontSize: 13 }}>
-          <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Conser-Avento</span>
+        <div className="flex items-center gap-2.5" style={{ color: 'var(--text-tertiary)', fontSize: 13 }}>
+          <div className="flex items-center gap-1.5">
+            <img src={aventoLogo} alt="Avento" className="h-6 w-auto rounded object-cover" />
+            <img src={conserLogo} alt="Conser" className="h-6 w-auto rounded object-cover" />
+          </div>
           <span style={{ color: 'var(--border-strong)' }}>/</span>
           <span>{user?.isAdmin ? 'Owner Console' : user?.isPartner ? 'Partner Portal' : 'Investor Portal'}</span>
         </div>

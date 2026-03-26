@@ -75,7 +75,7 @@ const PHASES = [
     title: 'Mobile & Advanced',
     timeline: 'Feb – Mär 2027 · 10 Wochen',
     sections: {
-      'Apps & Features': ['iOS/Android Apps', 'KI-Aufmaß', 'Intelligent Offers', 'Lager Mgmt', 'Offline Mode', 'Push Notifs'],
+      'Apps & Features': ['iOS/Android Apps', 'Controlling', 'Intelligent Offers', 'Lager Mgmt', 'Offline Mode', 'Push Notifs'],
       'Team Effort': ['Martin (CTO): 50%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
@@ -136,7 +136,7 @@ const TEAM = [
   {
     role: '🤖 Backend Developer 3',
     name: 'PLANNED',
-    tasks: ['KI-Features (Aufmaß, Agent)', 'Analytics & Reporting', 'Advanced Features', 'Optimization'],
+    tasks: ['KI-Features (Agent, Automation)', 'Analytics & Reporting', 'Advanced Features', 'Optimization'],
     status: 'NACH FUNDING',
   },
 ]

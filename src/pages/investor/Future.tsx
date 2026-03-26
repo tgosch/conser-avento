@@ -97,14 +97,14 @@ const PHASES = [
     goals: [
       'Avento MVP 100% feature-complete',
       'Mobile App iOS/Android (95%+ fertig)',
-      'KI-Aufmaß Alpha — 85% Genauigkeit',
+      'Komplett-System Alpha — Controlling, Buchhaltung, Team',
       'Closed Beta: 500 User, NPS 60+',
       '10k concurrent users erfolgreich getestet',
     ],
     keyMetrics: [
       { icon: '👷', label: 'Beta User', value: '500' },
       { icon: '⭐', label: 'NPS Ziel', value: '60+' },
-      { icon: '🤖', label: 'KI-Genauigkeit', value: '85%' },
+      { icon: '🤖', label: 'System-Coverage', value: '95%' },
       { icon: '💰', label: 'Budget', value: '510k€' },
     ],
     team: 'Martin (CTO) · 1 Senior Dev · 1 Mid Dev · 1 Designer · 1 QA · External: AWS + KI-Training',
@@ -116,11 +116,11 @@ const PHASES = [
       { label: 'Design & UX', pct: 8, color: '#FF9500' },
       { label: 'Beta Incentives', pct: 3, color: '#AEAEB2' },
     ],
-    tags: ['Kalkulation', 'Zeiterfassung', 'Fakturierung', 'Bautagebuch', 'KI-Aufmaß Alpha', 'Conser Integration'],
+    tags: ['Controlling', 'Buchhaltung', 'Angebote', 'Bautagebuch', 'Team-Steuerung', 'Conser Integration'],
     gate: [
       'MVP Features reliabel (keine kritischen Bugs)',
       'iOS + Android Apps stabil (App Store ready)',
-      'KI-Aufmaß 85%+ Genauigkeit auf Testdatensatz',
+      'Komplett-System validiert (Controlling, Angebote, Team)',
       'Closed Beta NPS 60+',
       '10k concurrent users erfolgreich getestet',
     ],
@@ -174,7 +174,7 @@ const PHASES = [
     accentColor: '#FF9500',
     bgColor: 'rgba(255,149,0,0.08)',
     goals: [
-      'KI-Aufmaß Production (90%+ Genauigkeit)',
+      'Komplett-System Production (alle Module live)',
       'Advanced Features: API, Reporting, RBAC',
       '75k Kunden bis 2031',
       '181 M€ Revenue bis 2032',
@@ -193,7 +193,7 @@ const PHASES = [
       { label: 'Customer Success', pct: 15, color: '#063D3E' },
       { label: 'Infrastructure', pct: 10, color: '#AEAEB2' },
     ],
-    tags: ['KI-Aufmaß Production', 'API + Webhooks', 'Sevdesk · Lexoffice · DATEV', 'White-Label', 'EU-Expansion'],
+    tags: ['Komplett-System', 'API + Webhooks', 'Sevdesk · Lexoffice · DATEV', 'White-Label', 'EU-Expansion'],
     gate: [
       '25.000 Kunden erreicht',
       '95%+ 30-Day Retention',
@@ -285,8 +285,8 @@ export default function InvestorFuture() {
           },
           {
             icon: '💡',
-            title: 'KI-Aufmaß als Alleinstellungsmerkmal',
-            body: 'Kein Wettbewerber bietet automatisierte Aufmaßerstellung. Avento besetzt diesen Slot — mit einer Technologie die 2025 erst durch LLM-Reife möglich wurde.',
+            title: 'Komplett-System als Alleinstellungsmerkmal',
+            body: 'Kein Wettbewerber bietet ein vollintegriertes System für Controlling, Buchhaltung, Angebote und Team-Steuerung. Avento besetzt diesen Slot — alles aus einer Hand.',
             color: '#0066FF',
           },
         ].map(card => (

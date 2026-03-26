@@ -87,7 +87,7 @@ export default function PartnerVision() {
                 </div>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                Integrierte Betriebssoftware für Handwerker: Kalkulation, Zeiterfassung, Aufmaß, Fakturierung.
+                Integrierte Betriebssoftware für Handwerker: Controlling, Buchhaltung, Angebote, Team-Steuerung.
                 Handwerker nutzen Avento täglich — und bestellen Material direkt aus dem Projekt heraus.
               </p>
             </div>

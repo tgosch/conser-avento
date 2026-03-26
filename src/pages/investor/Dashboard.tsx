@@ -136,10 +136,10 @@ export default function InvestorDashboard() {
               </span>
               <h2 className="text-display-md text-white mb-2">Avento</h2>
               <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.60)', lineHeight: 1.7, maxWidth: 280 }}>
-                Das vollständige Betriebssystem für Handwerker. Kalkulation, Zeiterfassung, Fakturierung, KI-Aufmaß — alles in einem.
+                Komplett-System für alles — Fokus auf Controlling, Buchhaltung, Angebote, Team steuern und vieles mehr.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['Kalkulation','Zeiterfassung','Fakturierung','KI-Aufmaß'].map(f => (
+                {['Controlling','Buchhaltung','Angebote','Team-Steuerung'].map(f => (
                   <span key={f} className="tag tag-sm"
                         style={{ background: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.75)' }}>{f}</span>
                 ))}
@@ -203,8 +203,8 @@ export default function InvestorDashboard() {
           {[
             { icon: '🔗', title: 'Integriertes Ökosystem',
               desc: 'ERP + Marktplatz, tief verknüpft. Material direkt aus dem Projekt bestellen. 1 Klick, kein Medienbruch.' },
-            { icon: '🤖', title: 'KI-First von Beginn an',
-              desc: 'KI-Aufmaß per Foto, intelligente Kalkulation — als Kernfunktion, nicht als Add-on.' },
+            { icon: '🤖', title: 'Komplett-System von Beginn an',
+              desc: 'Komplett-System für den Handwerksbetrieb — Controlling, Buchhaltung, Angebote, Team steuern. Alles integriert, nicht als Add-on.' },
             { icon: '🏗️', title: 'Tiefe Branchenkenntnis',
               desc: '7 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
           ].map(usp => (
