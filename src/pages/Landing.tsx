@@ -314,15 +314,18 @@ export default function Landing() {
         <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
       </div>
       <form onSubmit={handleVerify}>
-        <div className="flex gap-2 justify-center mb-5" onPaste={handleOtpPaste}>
+        <div className="flex items-center gap-1.5 mb-5" onPaste={handleOtpPaste}>
           {otp.map((digit, i) => (
-            <input key={i} ref={el => { otpRefs.current[i] = el }}
-              type="text" inputMode="numeric" maxLength={1} value={digit}
-              onChange={e => handleOtpChange(i, e.target.value)}
-              onKeyDown={e => handleOtpKeyDown(i, e)}
-              className="w-10 h-12 text-center text-lg font-bold rounded-lg border-2 transition-all focus:outline-none"
-              style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }}
-              autoFocus={i === 0} />
+            <span key={i} className="contents">
+              {i === 4 && <span className="text-sm font-bold" style={{ color: 'var(--text-tertiary)', margin: '0 2px' }}>–</span>}
+              <input ref={el => { otpRefs.current[i] = el }}
+                type="text" inputMode="numeric" maxLength={1} value={digit}
+                onChange={e => handleOtpChange(i, e.target.value)}
+                onKeyDown={e => handleOtpKeyDown(i, e)}
+                className="flex-1 min-w-0 h-11 text-center text-base font-bold rounded-lg border-2 transition-all focus:outline-none"
+                style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }}
+                autoFocus={i === 0} />
+            </span>
           ))}
         </div>
         <button type="submit" disabled={loading || otp.join('').length !== OTP_LENGTH} className="btn btn-primary btn-lg w-full">
