@@ -6,6 +6,7 @@ import {
   Upload, Trash2, FileText, Image, Presentation,
   ExternalLink, CheckCircle, CloudUpload, AlertCircle,
 } from 'lucide-react'
+import { CardSkeleton } from '../../components/ui/Skeleton'
 import { toast } from 'react-toastify'
 
 /* ─── Constants ─────────────────────────────────────────────────── */
@@ -136,6 +137,7 @@ export default function OwnerDocs() {
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [selectedSection, setSelectedSection] = useState(SECTIONS[0].value)
+  const [deletingDoc, setDeletingDoc] = useState<Document | null>(null)
 
   const dragCounter = useRef(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -281,8 +283,12 @@ export default function OwnerDocs() {
   }
 
   /* ── Delete ─────────────────────────────────────────────────────── */
-  const handleDelete = async (doc: Document) => {
-    if (!confirm(`"${doc.name ?? 'Dokument'}" wirklich löschen?`)) return
+  const handleDeleteRequest = (doc: Document) => setDeletingDoc(doc)
+  const handleDeleteCancel = () => setDeletingDoc(null)
+  const handleDeleteConfirm = async () => {
+    if (!deletingDoc) return
+    const doc = deletingDoc
+    setDeletingDoc(null)
     if (doc.file_path) {
       const { error: sErr } = await supabase.storage.from('documents').remove([doc.file_path])
       if (sErr) { toast.error(`Storage: ${sErr.message}`); return }
@@ -464,13 +470,7 @@ export default function OwnerDocs() {
 
       {/* Grid */}
       {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 rounded-full border-2 animate-spin"
-              style={{ borderColor: '#E5E7EB', borderTopColor: '#0066FF' }} />
-            <p className="text-sm" style={{ color: '#999999' }}>Dokumente laden…</p>
-          </div>
-        </div>
+        <CardSkeleton count={6} />
       ) : fetchError ? (
         <div className="rounded-[20px] border p-8 text-center" style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}>
           <AlertCircle size={32} className="mx-auto mb-3" style={{ color: '#FF3B30' }} />
@@ -490,8 +490,33 @@ export default function OwnerDocs() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map(doc => (
-            <FileCard key={doc.id} doc={doc} onDelete={handleDelete} />
+            <FileCard key={doc.id} doc={doc} onDelete={handleDeleteRequest} />
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deletingDoc && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}
+          role="alertdialog" aria-modal="true" aria-labelledby="delete-dialog-title">
+          <div className="w-full max-w-sm rounded-2xl p-6 animate-scale-in" style={{ background: 'var(--surface)', boxShadow: 'var(--shadow-xl)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'var(--danger-dim)' }}>
+                <Trash2 size={18} style={{ color: 'var(--danger)' }} />
+              </div>
+              <div>
+                <h3 id="delete-dialog-title" className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Dokument löschen?</h3>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+              </div>
+            </div>
+            <p className="text-sm mb-5 px-1 truncate" style={{ color: 'var(--text-primary)' }}>
+              „{deletingDoc.name ?? 'Dokument'}"
+            </p>
+            <div className="flex gap-2">
+              <button onClick={handleDeleteCancel} className="btn btn-secondary flex-1">Abbrechen</button>
+              <button onClick={handleDeleteConfirm} className="btn btn-danger flex-1">Löschen</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS investors (
 -- Messages
 CREATE TABLE IF NOT EXISTS messages (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  investor_id UUID REFERENCES investors(id),
+  investor_id UUID REFERENCES investors(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
   from_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW()
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS messages (
 -- Investment Intents
 CREATE TABLE IF NOT EXISTS investment_intents (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  investor_id UUID REFERENCES investors(id),
+  investor_id UUID REFERENCES investors(id) ON DELETE CASCADE,
   amount NUMERIC NOT NULL,
   status TEXT DEFAULT 'pending',
   created_at TIMESTAMPTZ DEFAULT NOW()

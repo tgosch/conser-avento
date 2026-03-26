@@ -59,8 +59,9 @@ export default function PartnerSettings() {
       if (partner?.id) {
         await supabase.from('partners').delete().eq('id', partner.id)
       }
+      await supabase.auth.signOut()
       await logout()
-      toast.success('Account wurde gelöscht')
+      toast.success('Account und alle Daten wurden gelöscht')
     } catch {
       toast.error('Fehler beim Löschen. Bitte kontaktieren Sie uns.')
     } finally { setDeleteLoading(false) }

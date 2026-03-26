@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 
+import CookieConsent from './components/CookieConsent'
 import Landing from './pages/Landing'
 import PartnerRegister from './pages/PartnerRegister'
 import ResetPassword from './pages/ResetPassword'
@@ -76,7 +77,7 @@ class ErrorBoundary extends React.Component<
 function Spinner() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
-      <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#063D3E', borderTopColor: 'transparent' }} />
+      <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--brand)', borderTopColor: 'transparent' }} />
     </div>
   )
 }
@@ -176,6 +177,7 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <AppRoutes />
+            <CookieConsent />
             <ToastContainer
               position="top-right"
               autoClose={3000}

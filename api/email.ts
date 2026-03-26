@@ -17,6 +17,26 @@ const FROM_EMAIL = 'noreply@conser-avento.de'
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || ''
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || ''
 
+// Rate limiting: 5 emails per minute per IP
+const RATE_LIMIT = 5
+const RATE_WINDOW_MS = 60_000
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  if (rateLimitMap.size > 500) {
+    for (const [key, val] of rateLimitMap) { if (now > val.resetAt) rateLimitMap.delete(key) }
+  }
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
 export default async function handler(req: Request) {
   if (req.method === 'OPTIONS') {
     return new Response(null, {
@@ -27,6 +47,15 @@ export default async function handler(req: Request) {
 
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
+  }
+
+  // Rate limiting
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (!checkRateLimit(ip)) {
+    return new Response(JSON.stringify({ error: 'Too many requests' }), {
+      status: 429,
+      headers: { 'Retry-After': '60', 'Content-Type': 'application/json' },
+    })
   }
 
   // JWT-Validierung

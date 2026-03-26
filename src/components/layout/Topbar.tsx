@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { LogOut, Settings, Sun, Moon } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
@@ -22,6 +22,16 @@ export default function Topbar({ onMenuClick }: Props) {
   const settingsPath = user?.isAdmin ? '/owner/settings' : user?.isPartner ? '/partner/settings' : '/investor/settings'
   const handleLogout = async () => { await logout(); navigate('/') }
 
+  const closeDropdown = useCallback(() => setDropdownOpen(false), [])
+  useEffect(() => {
+    if (!dropdownOpen) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeDropdown()
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [dropdownOpen, closeDropdown])
+
   return (
     <header className="topbar" style={{ boxShadow: 'none' }}>
 
@@ -42,7 +52,7 @@ export default function Topbar({ onMenuClick }: Props) {
               aria-label="Benutzermenu"
               aria-haspopup="menu"
               aria-expanded={dropdownOpen}
-              className="w-8 h-8 rounded-full text-white text-xs font-bold flex items-center justify-center transition hover:opacity-85"
+              className="w-10 h-10 rounded-full text-white text-xs font-bold flex items-center justify-center transition hover:opacity-85"
               style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}
             >
               {initials}

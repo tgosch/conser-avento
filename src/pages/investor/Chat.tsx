@@ -81,7 +81,7 @@ export default function InvestorChat() {
           {/* Header */}
           <div className="flex items-center gap-3 px-5 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
             <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
-              style={{ background: '#063D3E' }}>TG</div>
+              style={{ background: 'var(--brand)' }}>TG</div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Torben Gosch – CEO</p>
               {/* ERGÄNZUNG 1 — Antwortzeit */}
@@ -139,30 +139,37 @@ export default function InvestorChat() {
             {messages.map((m, idx) => {
               const isProposal = m.content.startsWith('[Investitionsvorschlag]')
               const prevSame = idx > 0 && messages[idx - 1].from_admin === m.from_admin
+              const showTime = !prevSame || (idx > 0 && new Date(m.created_at).getTime() - new Date(messages[idx - 1].created_at).getTime() > 300_000)
+              const timeStr = new Date(m.created_at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
               return (
-                <div key={m.id} className={`flex ${m.from_admin ? 'justify-start' : 'justify-end'} ${prevSame ? 'mt-0.5' : 'mt-2'}`}>
-                  {m.from_admin && !prevSame && (
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[9px] font-bold mr-2 mt-auto mb-0.5 shrink-0"
-                      style={{ background: '#063D3E' }}>TG</div>
+                <div key={m.id}>
+                  {showTime && (
+                    <p className="text-center text-[10px] my-2" style={{ color: 'var(--text-tertiary)' }}>{timeStr}</p>
                   )}
-                  {m.from_admin && prevSame && <div className="w-6 mr-2 shrink-0" />}
-                  <div className="max-w-[75%] px-4 py-2.5 text-sm"
-                    style={{
-                      borderRadius: m.from_admin
-                        ? (prevSame ? '14px 18px 18px 4px' : '4px 18px 18px 18px')
-                        : (prevSame ? '18px 4px 14px 18px' : '18px 4px 18px 18px'),
-                      background: m.from_admin ? 'var(--surface2)' : '#063D3E',
-                      color: m.from_admin ? 'var(--text-primary)' : 'white',
-                      lineHeight: '1.5',
-                    }}>
-                    {isProposal ? (
-                      <div>
-                        <span className="block text-[10px] font-bold uppercase tracking-wide mb-1.5 opacity-60">
-                          Investitionsvorschlag
-                        </span>
-                        {m.content.replace('[Investitionsvorschlag] ', '')}
-                      </div>
-                    ) : m.content}
+                  <div className={`flex ${m.from_admin ? 'justify-start' : 'justify-end'} ${prevSame && !showTime ? 'mt-0.5' : 'mt-1'}`}>
+                    {m.from_admin && !prevSame && (
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[9px] font-bold mr-2 mt-auto mb-0.5 shrink-0"
+                        style={{ background: 'var(--brand)' }}>TG</div>
+                    )}
+                    {m.from_admin && prevSame && <div className="w-6 mr-2 shrink-0" />}
+                    <div className="max-w-[75%] px-4 py-2.5 text-sm"
+                      style={{
+                        borderRadius: m.from_admin
+                          ? (prevSame ? '14px 18px 18px 4px' : '4px 18px 18px 18px')
+                          : (prevSame ? '18px 4px 14px 18px' : '18px 4px 18px 18px'),
+                        background: m.from_admin ? 'var(--surface2)' : 'var(--brand)',
+                        color: m.from_admin ? 'var(--text-primary)' : 'white',
+                        lineHeight: '1.5',
+                      }}>
+                      {isProposal ? (
+                        <div>
+                          <span className="block text-[10px] font-bold uppercase tracking-wide mb-1.5 opacity-60">
+                            Investitionsvorschlag
+                          </span>
+                          {m.content.replace('[Investitionsvorschlag] ', '')}
+                        </div>
+                      ) : m.content}
+                    </div>
                   </div>
                 </div>
               )
@@ -182,7 +189,7 @@ export default function InvestorChat() {
                 style={{ color: 'var(--text-primary)' }} />
               <button onClick={sendMessage} disabled={!input.trim()}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 transition disabled:opacity-30"
-                style={{ background: '#063D3E' }}>
+                style={{ background: 'var(--brand)' }}>
                 <Send size={14} />
               </button>
             </div>
@@ -218,16 +225,16 @@ export default function InvestorChat() {
                      borderColor: opt.highlight ? 'rgba(6,61,62,0.25)' : 'var(--border)',
                    }}>
                 <div className="flex items-start justify-between mb-1">
-                  <span className="text-2xl font-bold" style={{ color: '#063D3E' }}>{opt.pct}</span>
+                  <span className="text-2xl font-bold" style={{ color: 'var(--brand)' }}>{opt.pct}</span>
                   <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
                         style={{
-                          background: opt.highlight ? '#063D3E' : 'var(--surface3)',
+                          background: opt.highlight ? 'var(--brand)' : 'var(--surface3)',
                           color: opt.highlight ? 'white' : 'var(--text-secondary)',
                         }}>
                     {opt.label}
                   </span>
                 </div>
-                <p className="text-xs font-semibold mb-1" style={{ color: '#063D3E' }}>{opt.min}</p>
+                <p className="text-xs font-semibold mb-1" style={{ color: 'var(--brand)' }}>{opt.min}</p>
                 <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{opt.desc}</p>
               </div>
             ))}

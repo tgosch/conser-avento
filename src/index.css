@@ -46,6 +46,8 @@
   --danger-dim:  rgba(196,40,28,0.10);
   --info:        #1D5EA8;
   --info-dim:    rgba(29,94,168,0.10);
+  --link:        #0066FF;
+  --link-dim:    rgba(0,102,255,0.10);
 
   /* Border */
   --border:        rgba(0,0,0,0.07);
@@ -112,6 +114,8 @@
   --danger-dim:  rgba(224,75,62,0.12);
   --info:        #3D7FCC;
   --info-dim:    rgba(61,127,204,0.12);
+  --link:        #4D9AFF;
+  --link-dim:    rgba(77,154,255,0.12);
 
   --border:        rgba(255,255,255,0.08);
   --border-strong: rgba(255,255,255,0.14);
@@ -422,8 +426,8 @@ textarea, select {
 .btn-sm   { padding: 6px 12px;  font-size: 12px; border-radius: var(--radius-sm); }
 .btn-lg   { padding: 12px 24px; font-size: 15px; border-radius: var(--radius-lg); }
 .btn-xl   { padding: 14px 28px; font-size: 15px; border-radius: var(--radius-lg); }
-.btn-icon    { padding: 8px; width: 36px; height: 36px; border-radius: var(--radius-md); }
-.btn-icon-sm { padding: 6px; width: 30px; height: 30px; border-radius: var(--radius-sm); }
+.btn-icon    { padding: 8px; width: 44px; height: 44px; border-radius: var(--radius-md); }
+.btn-icon-sm { padding: 6px; width: 36px; height: 36px; border-radius: var(--radius-sm); }
 
 /* Divider */
 .divider { height: 1px; background: var(--border); }

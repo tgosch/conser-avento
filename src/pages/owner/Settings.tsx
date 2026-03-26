@@ -13,11 +13,14 @@ interface Proposal {
   investor?: { first_name: string; last_name: string; email: string }
 }
 
+const PAGE_SIZE = 15
+
 export default function OwnerSettings() {
   const { theme, toggleTheme } = useTheme()
   const [activeTab, setActiveTab] = useState('design')
   const [investors, setInvestors] = useState<Investor[]>([])
   const [proposals, setProposals] = useState<Proposal[]>([])
+  const [invPage, setInvPage] = useState(0)
 
   useEffect(() => {
     if (activeTab === 'investors') {
@@ -112,7 +115,7 @@ export default function OwnerSettings() {
                 </tr>
               </thead>
               <tbody>
-                {investors.map(inv => (
+                {investors.slice(invPage * PAGE_SIZE, (invPage + 1) * PAGE_SIZE).map(inv => (
                   <tr key={inv.id} className="hover:bg-surface2 transition" style={{ borderBottom: `1px solid var(--border)` }}>
                     <td className="px-5 py-3 font-medium" style={{ color: 'var(--text-primary)' }}>{inv.first_name} {inv.last_name}</td>
                     <td className="px-5 py-3" style={{ color: 'var(--text-secondary)' }}>{inv.email}</td>
@@ -129,6 +132,19 @@ export default function OwnerSettings() {
               </tbody>
             </table>
           </div>
+          {investors.length > PAGE_SIZE && (
+            <div className="flex items-center justify-between px-5 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
+              <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                {invPage * PAGE_SIZE + 1}–{Math.min((invPage + 1) * PAGE_SIZE, investors.length)} von {investors.length}
+              </span>
+              <div className="flex gap-1">
+                <button onClick={() => setInvPage(p => Math.max(0, p - 1))} disabled={invPage === 0}
+                  className="btn btn-ghost btn-sm">Zurück</button>
+                <button onClick={() => setInvPage(p => p + 1)} disabled={(invPage + 1) * PAGE_SIZE >= investors.length}
+                  className="btn btn-ghost btn-sm">Weiter</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

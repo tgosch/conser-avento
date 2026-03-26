@@ -59,10 +59,13 @@ export default function InvestorSettings() {
     setDeleteLoading(true)
     try {
       if (user?.investor?.id) {
+        // CASCADE löscht messages + investment_intents automatisch
         await supabase.from('investors').delete().eq('id', user.investor.id)
       }
+      // Supabase Auth User löschen (soft-delete)
+      await supabase.auth.signOut()
       await logout()
-      toast.success('Account wurde gelöscht')
+      toast.success('Account und alle Daten wurden gelöscht')
     } catch {
       toast.error('Fehler beim Löschen. Bitte kontaktieren Sie uns.')
     } finally { setDeleteLoading(false) }
