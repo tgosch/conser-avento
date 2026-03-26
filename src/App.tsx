@@ -7,6 +7,7 @@ import { ThemeProvider } from './context/ThemeContext'
 
 import Landing from './pages/Landing'
 import PartnerRegister from './pages/PartnerRegister'
+import ResetPassword from './pages/ResetPassword'
 import InvestorLayout from './components/layout/InvestorLayout'
 import OwnerLayout from './components/layout/OwnerLayout'
 import PartnerLayout from './components/layout/PartnerLayout'
@@ -91,7 +92,7 @@ function PageLoader() {
 function InvestorGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) return <Spinner />
-  if (!user || user.isAdmin) return <Navigate to="/" replace />
+  if (!user || user.isAdmin || user.isPartner) return <Navigate to="/" replace />
   return <>{children}</>
 }
 
@@ -115,6 +116,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/partner/registrieren" element={<PartnerRegister />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/investor" element={<InvestorGuard><InvestorLayout /></InvestorGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />

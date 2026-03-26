@@ -24,15 +24,17 @@ export default function Landing() {
   const [loading, setLoading] = useState(false)
 
   // Investor register
-  const [invForm, setInvForm] = useState({ first_name: '', last_name: '', email: '', phone: '' })
+  const [invForm, setInvForm] = useState({ first_name: '', last_name: '', email: '', phone: '', password: '' })
   const [consentPrivacy, setConsentPrivacy] = useState(false)
   const [consentNda, setConsentNda] = useState(false)
 
   // Partner register
-  const [partnerForm, setPartnerForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '' })
+  const [partnerForm, setPartnerForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '', password: '' })
 
   // Login (shared for both roles)
   const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const [loginMethod, setLoginMethod] = useState<'password' | 'otp'>('password')
 
   // OTP
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -50,6 +52,13 @@ export default function Landing() {
       : partnerForm.email.trim().toLowerCase()
 
   // ── VALIDATION ──
+  const validatePassword = (pw: string) => {
+    if (pw.length < 8) return 'Passwort muss mindestens 8 Zeichen haben'
+    if (!/[A-Z]/.test(pw)) return 'Passwort muss mindestens einen Großbuchstaben enthalten'
+    if (!/[0-9]/.test(pw)) return 'Passwort muss mindestens eine Zahl enthalten'
+    return null
+  }
+
   const validateInvestor = useCallback(() => {
     const nameRe = /^[a-zA-ZäöüßÄÖÜ\s'-]{2,50}$/
     const phoneRe = /^[\d\s+\-()]{7,20}$/
@@ -57,6 +66,8 @@ export default function Landing() {
     if (!nameRe.test(invForm.last_name)) return 'Nachname ungültig (2–50 Zeichen)'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(invForm.email)) return 'E-Mail ungültig'
     if (!phoneRe.test(invForm.phone)) return 'Telefonnummer ungültig'
+    const pwErr = validatePassword(invForm.password)
+    if (pwErr) return pwErr
     if (!consentPrivacy) return 'Bitte Datenschutzerklärung akzeptieren'
     if (!consentNda) return 'Bitte NDA akzeptieren'
     return null
@@ -69,6 +80,8 @@ export default function Landing() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerForm.email)) return 'E-Mail ungültig'
     if (!/^[\d\s+\-()]{7,20}$/.test(partnerForm.phone)) return 'Telefonnummer ungültig'
     if (partnerForm.company.trim().length < 2) return 'Bitte Unternehmen angeben'
+    const pwErr = validatePassword(partnerForm.password)
+    if (pwErr) return pwErr
     return null
   }
 
@@ -79,21 +92,108 @@ export default function Landing() {
     if (err) { toast.error(err); return }
     setLoading(true)
     const email = role === 'investor' ? invForm.email.trim().toLowerCase() : partnerForm.email.trim().toLowerCase()
+    const password = role === 'investor' ? invForm.password : partnerForm.password
     const metadata = role === 'investor'
       ? { first_name: invForm.first_name.trim(), last_name: invForm.last_name.trim(), phone: invForm.phone.trim() }
       : { first_name: partnerForm.first_name.trim(), last_name: partnerForm.last_name.trim(), phone: partnerForm.phone.trim(), company: partnerForm.company.trim() }
     try {
-      const { error } = await supabase.auth.signInWithOtp({ email, options: { data: metadata } })
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: metadata },
+      })
       if (error) throw error
-      toast.success('Verifizierungscode wurde per E-Mail gesendet.')
-      setMode('register')
-      setStep('otp')
-    } catch { toast.error('Code konnte nicht gesendet werden.') }
+      // Supabase sends confirmation email automatically
+      // If email confirmation is disabled, user is logged in directly
+      if (data.session) {
+        // Auto-confirmed — create record and redirect
+        const user = data.user!
+        if (role === 'investor') {
+          await supabase.from('investors').upsert([{
+            id: user.id, first_name: invForm.first_name.trim(), last_name: invForm.last_name.trim(),
+            email, phone: invForm.phone.trim(), consent: true, consent_date: new Date().toISOString(),
+            nda_accepted: true, nda_date: new Date().toISOString(),
+          }], { onConflict: 'id' })
+          await loginInvestor(user.id, user.email ?? email)
+          toast.success(`Willkommen, ${invForm.first_name.trim()}!`)
+          navigate('/investor/dashboard')
+        } else {
+          const initials = `${partnerForm.first_name.trim()[0]}${partnerForm.last_name.trim()[0]}`.toUpperCase()
+          await supabase.from('partners').upsert([{
+            id: user.id, name: partnerForm.company.trim(), type: 'production' as const, category: '',
+            description: `Ansprechpartner: ${partnerForm.first_name.trim()} ${partnerForm.last_name.trim()}`,
+            status: 'negotiating' as const, logo_path: null, initials, color: '#063D3E', visible: false, order_index: 99,
+          }], { onConflict: 'id' })
+          await loginPartner(user.id, user.email ?? email)
+          toast.success(`Willkommen, ${partnerForm.company.trim()}!`)
+          navigate('/partner/dashboard')
+        }
+      } else {
+        // Email confirmation required — show OTP step
+        toast.success('Verifizierungscode wurde per E-Mail gesendet.')
+        setMode('register')
+        setStep('otp')
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Registrierung fehlgeschlagen.'
+      if (msg.includes('already registered')) {
+        toast.error('Diese E-Mail ist bereits registriert. Bitte melden Sie sich an.')
+      } else {
+        toast.error(msg)
+      }
+    }
     finally { setLoading(false) }
   }
 
-  // ── QUICK LOGIN ──
-  const handleQuickLogin = async (e: React.FormEvent) => {
+  // ── LOGIN WITH PASSWORD ──
+  const handlePasswordLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) { toast.error('E-Mail ungültig'); return }
+    if (!loginPassword) { toast.error('Bitte Passwort eingeben'); return }
+    setLoading(true)
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: loginEmail.trim().toLowerCase(),
+        password: loginPassword,
+      })
+      if (error) throw error
+      const user = data.user
+      const meta = user.app_metadata
+      if (meta?.is_admin === true) {
+        loginAdmin({ isAdmin: true, isPartner: false, email: user.email ?? loginEmail })
+        navigate('/owner/dashboard')
+        return
+      }
+      const { data: partner } = await supabase.from('partners').select('id').eq('id', user.id).maybeSingle()
+      if (partner) {
+        await loginPartner(user.id, user.email ?? loginEmail)
+        toast.success('Willkommen zurück!')
+        navigate('/partner/dashboard')
+      } else {
+        await loginInvestor(user.id, user.email ?? loginEmail)
+        toast.success('Willkommen zurück!')
+        navigate('/investor/dashboard')
+      }
+    } catch { toast.error('E-Mail oder Passwort ungültig.') }
+    finally { setLoading(false) }
+  }
+
+  // ── FORGOT PASSWORD ──
+  const handleForgotPassword = async () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) { toast.error('Bitte zuerst E-Mail eingeben'); return }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(loginEmail.trim().toLowerCase(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+      if (error) throw error
+      toast.success('Link zum Zurücksetzen wurde per E-Mail gesendet.')
+    } catch { toast.error('Fehler beim Senden. Bitte erneut versuchen.') }
+    finally { setLoading(false) }
+  }
+
+  // ── LOGIN WITH OTP ──
+  const handleOtpLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) { toast.error('E-Mail ungültig'); return }
     setLoading(true)
@@ -152,7 +252,7 @@ export default function Landing() {
             consent_date: new Date().toISOString(),
             nda_accepted: true,
             nda_date: new Date().toISOString(),
-          }])
+          }], { onConflict: 'id' })
           await loginInvestor(data.user.id, data.user.email ?? activeEmail)
           toast.success(`Willkommen, ${invForm.first_name.trim()}!`)
           navigate('/investor/dashboard')
@@ -162,7 +262,7 @@ export default function Landing() {
             id: data.user.id, name: partnerForm.company.trim(), type: 'production' as const, category: '',
             description: `Ansprechpartner: ${partnerForm.first_name.trim()} ${partnerForm.last_name.trim()}`,
             status: 'negotiating' as const, logo_path: null, initials, color: '#063D3E', visible: false, order_index: 99,
-          }])
+          }], { onConflict: 'id' })
           await loginPartner(data.user.id, data.user.email ?? activeEmail)
           toast.success(`Willkommen, ${partnerForm.company.trim()}!`)
           navigate('/partner/dashboard')
@@ -195,7 +295,7 @@ export default function Landing() {
     finally { setLoading(false) }
   }
 
-  const switchRole = (r: Role) => { setRole(r); setStep('form'); setMode('register') }
+  const switchRole = (r: Role) => { setRole(r); setStep('form'); setMode('register'); setLoginMethod('password') }
 
   // ── OTP INPUT COMPONENT ──
   const OtpInput = () => (
@@ -328,15 +428,43 @@ export default function Landing() {
                   </button>
                   <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Anmelden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    E-Mail eingeben — Sie erhalten einen 6-stelligen Code.
+                    {loginMethod === 'password' ? 'Mit E-Mail und Passwort anmelden.' : 'E-Mail eingeben — Sie erhalten einen 6-stelligen Code.'}
                   </p>
-                  <form onSubmit={handleQuickLogin} className="flex flex-col gap-3">
-                    <input type="email" placeholder="E-Mail Adresse" required autoFocus value={loginEmail}
-                      onChange={e => setLoginEmail(e.target.value)} className="input-base" />
-                    <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
-                      {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+
+                  {loginMethod === 'password' ? (
+                    <form onSubmit={handlePasswordLogin} className="flex flex-col gap-3">
+                      <input type="email" placeholder="E-Mail Adresse" required autoFocus value={loginEmail}
+                        onChange={e => setLoginEmail(e.target.value)} className="input-base" />
+                      <input type="password" placeholder="Passwort" required value={loginPassword}
+                        onChange={e => setLoginPassword(e.target.value)} className="input-base" />
+                      <div className="text-right -mt-1">
+                        <button type="button" onClick={handleForgotPassword} disabled={loading}
+                          className="text-xs font-medium hover-press" style={{ color: 'var(--text-tertiary)' }}>
+                          Passwort vergessen?
+                        </button>
+                      </div>
+                      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full">
+                        {loading ? 'Wird angemeldet…' : <>Anmelden <ArrowRight size={14} /></>}
+                      </button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleOtpLogin} className="flex flex-col gap-3">
+                      <input type="email" placeholder="E-Mail Adresse" required autoFocus value={loginEmail}
+                        onChange={e => setLoginEmail(e.target.value)} className="input-base" />
+                      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
+                        {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+                      </button>
+                    </form>
+                  )}
+
+                  <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
+                    <button
+                      onClick={() => setLoginMethod(loginMethod === 'password' ? 'otp' : 'password')}
+                      className="text-xs font-semibold hover-press"
+                      style={{ color: 'var(--brand)' }}>
+                      {loginMethod === 'password' ? 'Stattdessen per E-Mail-Code anmelden →' : 'Stattdessen mit Passwort anmelden →'}
                     </button>
-                  </form>
+                  </div>
                 </>
               )}
 
@@ -345,7 +473,7 @@ export default function Landing() {
                 <>
                   <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Investor werden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    Zugang per E-Mail-Code. Kein Passwort nötig.
+                    Konto erstellen und sofort Zugang erhalten.
                   </p>
                   <div className="flex items-center gap-2 mb-5">
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
@@ -362,6 +490,8 @@ export default function Landing() {
                       onChange={e => setInvForm(p => ({ ...p, email: e.target.value }))} className="input-base" />
                     <input type="tel" placeholder="Telefonnummer *" required value={invForm.phone}
                       onChange={e => setInvForm(p => ({ ...p, phone: e.target.value }))} className="input-base" />
+                    <input type="password" placeholder="Passwort * (min. 8, Großbuchstabe + Zahl)" required minLength={8} value={invForm.password}
+                      onChange={e => setInvForm(p => ({ ...p, password: e.target.value }))} className="input-base" />
                     <label className="flex items-start gap-3 cursor-pointer">
                       <input type="checkbox" checked={consentPrivacy} onChange={e => setConsentPrivacy(e.target.checked)}
                         className="mt-1 w-4 h-4 shrink-0 accent-[#063D3E]" />
@@ -379,7 +509,7 @@ export default function Landing() {
                       </span>
                     </label>
                     <button type="submit" disabled={loading || !consentPrivacy || !consentNda} className="btn btn-primary btn-lg w-full mt-2">
-                      {loading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
+                      {loading ? 'Wird erstellt…' : <>Konto erstellen <ArrowRight size={14} /></>}
                     </button>
                   </form>
                   <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
@@ -395,7 +525,7 @@ export default function Landing() {
                 <>
                   <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Partner werden</h2>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    Kostenlos registrieren. Kein Passwort nötig — Zugang per E-Mail-Code.
+                    Kostenlos registrieren und sofort Zugang erhalten.
                   </p>
                   <div className="flex items-center gap-2 mb-5">
                     <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
@@ -414,8 +544,10 @@ export default function Landing() {
                       onChange={e => setPartnerForm(p => ({ ...p, email: e.target.value }))} className="input-base" />
                     <input type="tel" placeholder="Telefonnummer *" required value={partnerForm.phone}
                       onChange={e => setPartnerForm(p => ({ ...p, phone: e.target.value }))} className="input-base" />
+                    <input type="password" placeholder="Passwort * (min. 8, Großbuchstabe + Zahl)" required minLength={8} value={partnerForm.password}
+                      onChange={e => setPartnerForm(p => ({ ...p, password: e.target.value }))} className="input-base" />
                     <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-2">
-                      {loading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
+                      {loading ? 'Wird erstellt…' : <>Konto erstellen <ArrowRight size={14} /></>}
                     </button>
                   </form>
                   <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>

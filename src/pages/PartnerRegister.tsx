@@ -18,10 +18,12 @@ export default function PartnerRegister() {
 
   // Form state
   const [form, setForm] = useState({
-    first_name: '', last_name: '', email: '', phone: '', company: '',
+    first_name: '', last_name: '', email: '', phone: '', company: '', password: '',
   })
   // Quick login state
   const [quickEmail, setQuickEmail] = useState('')
+  const [quickPassword, setQuickPassword] = useState('')
+  const [loginMethod, setLoginMethod] = useState<'password' | 'otp'>('password')
 
   // OTP state
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -34,6 +36,9 @@ export default function PartnerRegister() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'E-Mail ungültig'
     if (!/^[\d\s+\-()]{7,20}$/.test(form.phone)) return 'Telefonnummer ungültig'
     if (form.company.trim().length < 2) return 'Bitte Unternehmen angeben'
+    if (form.password.length < 8) return 'Passwort muss mindestens 8 Zeichen haben'
+    if (!/[A-Z]/.test(form.password)) return 'Passwort muss mindestens einen Großbuchstaben enthalten'
+    if (!/[0-9]/.test(form.password)) return 'Passwort muss mindestens eine Zahl enthalten'
     return null
   }
 
@@ -43,8 +48,9 @@ export default function PartnerRegister() {
     if (err) { toast.error(err); return }
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOtp({
+      const { data, error } = await supabase.auth.signUp({
         email: form.email.trim().toLowerCase(),
+        password: form.password,
         options: {
           data: {
             first_name: form.first_name.trim(),
@@ -55,27 +61,74 @@ export default function PartnerRegister() {
         },
       })
       if (error) throw error
-      toast.success('Verifizierungscode wurde an Ihre E-Mail gesendet.')
-      setMode('register')
-      setStep('otp')
-    } catch {
-      toast.error('Code konnte nicht gesendet werden. Bitte versuchen Sie es erneut.')
+      if (data.session) {
+        const user = data.user!
+        const initials = `${form.first_name.trim()[0]}${form.last_name.trim()[0]}`.toUpperCase()
+        await supabase.from('partners').upsert([{
+          id: user.id, name: form.company.trim(), type: 'production' as const, category: '',
+          description: `Ansprechpartner: ${form.first_name.trim()} ${form.last_name.trim()}`,
+          status: 'negotiating' as const, logo_path: null, initials, color: '#063D3E', visible: false, order_index: 99,
+        }], { onConflict: 'id' })
+        await loginPartner(user.id, user.email ?? form.email)
+        toast.success(`Willkommen, ${form.company.trim()}!`)
+        navigate('/partner/dashboard')
+      } else {
+        toast.success('Verifizierungscode wurde an Ihre E-Mail gesendet.')
+        setMode('register')
+        setStep('otp')
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Registrierung fehlgeschlagen.'
+      if (msg.includes('already registered')) {
+        toast.error('Diese E-Mail ist bereits registriert. Bitte melden Sie sich an.')
+      } else {
+        toast.error(msg)
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleQuickLogin = async (e: React.FormEvent) => {
+  const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) {
-      toast.error('E-Mail ungültig')
-      return
-    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) { toast.error('E-Mail ungültig'); return }
+    if (!quickPassword) { toast.error('Bitte Passwort eingeben'); return }
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOtp({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: quickEmail.trim().toLowerCase(),
+        password: quickPassword,
       })
+      if (error) throw error
+      await loginPartner(data.user.id, data.user.email ?? quickEmail)
+      toast.success('Willkommen zurück!')
+      navigate('/partner/dashboard')
+    } catch {
+      toast.error('E-Mail oder Passwort ungültig.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleForgotPassword = async () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) { toast.error('Bitte zuerst E-Mail eingeben'); return }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(quickEmail.trim().toLowerCase(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+      if (error) throw error
+      toast.success('Link zum Zurücksetzen wurde per E-Mail gesendet.')
+    } catch { toast.error('Fehler beim Senden.') }
+    finally { setLoading(false) }
+  }
+
+  const handleOtpLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quickEmail)) { toast.error('E-Mail ungültig'); return }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithOtp({ email: quickEmail.trim().toLowerCase() })
       if (error) throw error
       toast.success('Verifizierungscode wurde an Ihre E-Mail gesendet.')
       setForm(p => ({ ...p, email: quickEmail.trim().toLowerCase() }))
@@ -144,7 +197,7 @@ export default function PartnerRegister() {
           color: '#063D3E',
           visible: false,
           order_index: 99,
-        }])
+        }], { onConflict: 'id' })
       }
 
       await loginPartner(data.user.id, data.user.email ?? activeEmail)
@@ -268,9 +321,12 @@ export default function PartnerRegister() {
                     <input type="tel" placeholder="Telefonnummer *" required
                       value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
                       className="input-base" />
+                    <input type="password" placeholder="Passwort * (min. 8, Großbuchstabe + Zahl)" required minLength={8}
+                      value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
+                      className="input-base" />
 
                     <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-2">
-                      {loading ? 'Wird gesendet…' : <>Weiter <ArrowRight size={14} /></>}
+                      {loading ? 'Wird erstellt…' : <>Konto erstellen <ArrowRight size={14} /></>}
                     </button>
                   </form>
 
@@ -301,17 +357,45 @@ export default function PartnerRegister() {
                     <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Partner-Login</h2>
                   </div>
                   <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-                    Geben Sie Ihre E-Mail ein. Sie erhalten einen 6-stelligen Code.
+                    {loginMethod === 'password' ? 'Mit E-Mail und Passwort anmelden.' : 'E-Mail eingeben — Sie erhalten einen 6-stelligen Code.'}
                   </p>
 
-                  <form onSubmit={handleQuickLogin} className="flex flex-col gap-3">
-                    <input type="email" placeholder="E-Mail Adresse" required autoFocus
-                      value={quickEmail} onChange={e => setQuickEmail(e.target.value)}
-                      className="input-base" />
-                    <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
-                      {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+                  {loginMethod === 'password' ? (
+                    <form onSubmit={handlePasswordLogin} className="flex flex-col gap-3">
+                      <input type="email" placeholder="E-Mail Adresse" required autoFocus
+                        value={quickEmail} onChange={e => setQuickEmail(e.target.value)}
+                        className="input-base" />
+                      <input type="password" placeholder="Passwort" required
+                        value={quickPassword} onChange={e => setQuickPassword(e.target.value)}
+                        className="input-base" />
+                      <div className="text-right -mt-1">
+                        <button type="button" onClick={handleForgotPassword} disabled={loading}
+                          className="text-xs font-medium hover-press" style={{ color: 'var(--text-tertiary)' }}>
+                          Passwort vergessen?
+                        </button>
+                      </div>
+                      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full">
+                        {loading ? 'Wird angemeldet…' : <>Anmelden <ArrowRight size={14} /></>}
+                      </button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleOtpLogin} className="flex flex-col gap-3">
+                      <input type="email" placeholder="E-Mail Adresse" required autoFocus
+                        value={quickEmail} onChange={e => setQuickEmail(e.target.value)}
+                        className="input-base" />
+                      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full mt-1">
+                        {loading ? 'Wird gesendet…' : <>Code senden <ArrowRight size={14} /></>}
+                      </button>
+                    </form>
+                  )}
+
+                  <div className="border-t mt-4 pt-3 text-center" style={{ borderColor: 'var(--border)' }}>
+                    <button
+                      onClick={() => setLoginMethod(loginMethod === 'password' ? 'otp' : 'password')}
+                      className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                      {loginMethod === 'password' ? 'Stattdessen per E-Mail-Code anmelden →' : 'Stattdessen mit Passwort anmelden →'}
                     </button>
-                  </form>
+                  </div>
                 </>
               )}
 

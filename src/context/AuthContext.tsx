@@ -14,6 +14,8 @@ interface User {
 interface AuthContextType {
   user: User | null
   loading: boolean
+  passwordRecovery: boolean
+  setPasswordRecovery: (v: boolean) => void
   loginAdmin: (u: User) => void
   loginInvestor: (userId: string, email: string) => Promise<void>
   loginPartner: (userId: string, email: string) => Promise<void>
@@ -23,6 +25,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  passwordRecovery: false,
+  setPasswordRecovery: () => {},
   loginAdmin: () => {},
   loginInvestor: async () => {},
   loginPartner: async () => {},
@@ -57,6 +61,7 @@ async function resolveUser(session: Session): Promise<User> {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [passwordRecovery, setPasswordRecovery] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -68,9 +73,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
         const resolved = await resolveUser(session)
         setUser(resolved)
+      } else if (event === 'PASSWORD_RECOVERY' && session) {
+        // User clicked password reset link — flag for UI
+        const resolved = await resolveUser(session)
+        setUser(resolved)
+        setPasswordRecovery(true)
       } else if (event === 'SIGNED_OUT') {
         setUser(null)
       }
@@ -105,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginAdmin, loginInvestor, loginPartner, logout }}>
+    <AuthContext.Provider value={{ user, loading, passwordRecovery, setPasswordRecovery, loginAdmin, loginInvestor, loginPartner, logout }}>
       {children}
     </AuthContext.Provider>
   )
