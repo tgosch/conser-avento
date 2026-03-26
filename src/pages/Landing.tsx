@@ -230,7 +230,15 @@ export default function Landing() {
     if (code.length !== OTP_LENGTH) { toast.error(`Bitte den ${OTP_LENGTH}-stelligen Code eingeben.`); return }
     setLoading(true)
     try {
-      const { data, error } = await supabase.auth.verifyOtp({ email: activeEmail, token: code, type: 'email' })
+      // signup-Codes brauchen type 'signup', Login-OTP braucht 'email'
+      const otpType = mode === 'register' ? 'signup' : 'email'
+      let data, error
+      ;({ data, error } = await supabase.auth.verifyOtp({ email: activeEmail, token: code, type: otpType }))
+
+      // Fallback: wenn signup fehlschlägt, versuche 'email' (manche Supabase-Configs)
+      if (error && otpType === 'signup') {
+        ;({ data, error } = await supabase.auth.verifyOtp({ email: activeEmail, token: code, type: 'email' }))
+      }
       if (error) throw error
       if (!data.user) throw new Error('Kein Benutzer')
 
@@ -281,7 +289,10 @@ export default function Landing() {
           navigate('/investor/dashboard')
         }
       }
-    } catch { toast.error('Code ungültig oder abgelaufen.') }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Code ungültig oder abgelaufen.'
+      toast.error(msg)
+    }
     finally { setLoading(false) }
   }
 
