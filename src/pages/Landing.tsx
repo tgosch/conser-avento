@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, ArrowLeft, Building2, Briefcase } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -14,7 +14,7 @@ type Role = 'investor' | 'partner'
 type Step = 'form' | 'login' | 'otp'
 
 export default function Landing() {
-  const { loginAdmin, loginInvestor, loginPartner } = useAuth()
+  const { user: authUser, loginAdmin, loginInvestor, loginPartner } = useAuth()
   const navigate = useNavigate()
   const authCardRef = useRef<HTMLDivElement>(null)
 
@@ -22,6 +22,14 @@ export default function Landing() {
   const [step, setStep] = useState<Step>('form')
   const [mode, setMode] = useState<'register' | 'login'>('register')
   const [loading, setLoading] = useState(false)
+
+  // Auto-redirect when auth state resolves (safety net for OTP race condition)
+  useEffect(() => {
+    if (!authUser) return
+    if (authUser.isAdmin) navigate('/owner/dashboard', { replace: true })
+    else if (authUser.isPartner) navigate('/partner/dashboard', { replace: true })
+    else navigate('/investor/dashboard', { replace: true })
+  }, [authUser, navigate])
 
   // Investor register
   const [invForm, setInvForm] = useState({ first_name: '', last_name: '', email: '', phone: '', password: '' })
@@ -277,17 +285,9 @@ export default function Landing() {
           navigate('/partner/dashboard')
         }
       } else {
-        // Login — resolveUser detects role automatically
-        const { data: partner } = await supabase.from('partners').select('id').eq('id', data.user.id).maybeSingle()
-        if (partner) {
-          await loginPartner(data.user.id, data.user.email ?? activeEmail)
-          toast.success('Willkommen zurück!')
-          navigate('/partner/dashboard')
-        } else {
-          await loginInvestor(data.user.id, data.user.email ?? activeEmail)
-          toast.success('Willkommen zurück!')
-          navigate('/investor/dashboard')
-        }
+        // Login — onAuthStateChange resolves user automatically,
+        // useEffect above handles navigation once authUser is set.
+        toast.success('Willkommen zurück!')
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Code ungültig oder abgelaufen.'
