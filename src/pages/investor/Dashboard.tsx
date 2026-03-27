@@ -72,7 +72,7 @@ export default function InvestorDashboard() {
           <div className="flex md:flex-col gap-5 md:gap-0 md:justify-center shrink-0">
             {[
               { label: 'Kunden-Ziel',  mono: '75.000', sub: 'bis 2031' },
-              { label: 'Revenue-Ziel', mono: '€181M',  sub: 'Annual (2032)' },
+              { label: 'Revenue-Ziel', mono: '€181M',  sub: 'Jährlich (2032)' },
               { label: 'EBITDA-Ziel',  mono: '49%',    sub: 'Zielmarge' },
             ].map((stat, i) => (
               <div key={stat.label}
@@ -92,7 +92,7 @@ export default function InvestorDashboard() {
         {[
           {
             icon: '💰', title: 'Die Runde', accent: 'var(--brand)',
-            items: [['Raising','€1,5M Seed'],['Form','SAFE / Equity'],['Schließung','Q2 2026'],['Use of Funds','45% Tech · 25% Sales']],
+            items: [['Volumen','€1,5M Seed'],['Form','SAFE / Equity'],['Schließung','Q2 2026'],['Mittelverwendung','45% Tech · 25% Sales']],
           },
           {
             icon: '⚡', title: 'Warum Jetzt', accent: 'var(--accent)',
@@ -100,7 +100,7 @@ export default function InvestorDashboard() {
           },
           {
             icon: '🎯', title: 'Was du bekommst', accent: 'var(--info)',
-            items: [['ROI-Projektion','190–280x (Base/Bull)'],['Beirat','ab €75k Advisory-Position'],['Reporting','Quarterly Updates'],['Zugang','24/7 Investor Portal']],
+            items: [['ROI-Projektion','190–280x (Basis/Bull)'],['Beirat','ab €75k Advisory-Position'],['Reporting','Quartalsberichte'],['Zugang','24/7 Investor-Portal']],
           },
         ].map(col => (
           <div key={col.title} className="card card-interactive p-5">
@@ -157,10 +157,10 @@ export default function InvestorDashboard() {
               </span>
               <h2 className="text-display-md text-white mb-2">Conser</h2>
               <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.60)', lineHeight: 1.7, maxWidth: 280 }}>
-                2,3 Millionen Produkte, 7 Top-Lieferanten — direkt in Avento integriert. 1-Click-Bestellung aus dem ERP heraus.
+                2,3 Millionen Produkte, 9 Top-Lieferanten — direkt in Avento integriert. 1-Klick-Bestellung aus dem ERP heraus.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['2,3M Produkte','7 Partner','B2B-Checkout','1-Click Order'].map(f => (
+                {['2,3M Produkte','9 Partner','B2B-Checkout','1-Klick-Bestellung'].map(f => (
                   <span key={f} className="tag tag-sm"
                         style={{ background: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.75)' }}>{f}</span>
                 ))}
@@ -206,7 +206,7 @@ export default function InvestorDashboard() {
             { icon: '🤖', title: 'Komplett-System von Beginn an',
               desc: 'Komplett-System für den Handwerksbetrieb — Controlling, Buchhaltung, Angebote, Team steuern. Alles integriert, nicht als Add-on.' },
             { icon: '🏗️', title: 'Tiefe Branchenkenntnis',
-              desc: '7 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
+              desc: '9 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
           ].map(usp => (
             <div key={usp.title} className="card card-interactive p-5">
               <span className="text-2xl block mb-3">{usp.icon}</span>

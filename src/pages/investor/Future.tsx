@@ -57,7 +57,7 @@ const PHASES = [
     bgColor: 'rgba(212,102,42,0.08)',
     goals: [
       'Public Launch (Press, Marketing, Social)',
-      'Alle 7 Partner activated & trained',
+      'Alle 9 Partner activated & trained',
       '1.000 Handwerker-Kunden (organic)',
       '100+ Enterprise-Kunden (via Partner)',
       '5 M€ GMV — Proof of Concept',
@@ -65,7 +65,7 @@ const PHASES = [
     keyMetrics: [
       { icon: '👥', label: 'Kunden-Ziel', value: '1.000' },
       { icon: '💶', label: 'GMV Ziel', value: '5M€' },
-      { icon: '📣', label: 'Event Reach', value: '500+' },
+      { icon: '📣', label: 'Event-Reichweite', value: '500+' },
       { icon: '💰', label: 'Budget', value: '250k€' },
     ],
     team: 'Torben (CEO) · 1 Marketing Manager · 1 Sales Dev Rep · 1 CSM · 1 Dev',
@@ -79,7 +79,7 @@ const PHASES = [
     tags: ['TechCrunch', 'Construction Dive', 'TikTok 100k+', 'LinkedIn 50k+', 'Virtual Event'],
     gate: [
       'Produkt stabil (keine kritischen Bugs)',
-      'Alle 7 Partner trained & aktiviert',
+      'Alle 9 Partner trained & aktiviert',
       '1.000 zahlende Kunden akquiriert',
       'Positive Pressecoverage (5+ Artikel)',
       '5 M€ GMV erreicht',
@@ -280,7 +280,7 @@ export default function InvestorFuture() {
           {
             icon: '🤝',
             title: 'Partner-Netzwerk bereits gesichert',
-            body: '7 Produktionspartner (BayWa, R+F, FEGA u.a.) mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
+            body: '9 Produktionspartner (BayWa, R+F, FEGA, Binderholz u.a.) mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
             color: '#D4662A',
           },
           {

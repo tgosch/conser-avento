@@ -281,7 +281,7 @@ export default function OwnerTeam() {
                 <button onClick={() => toggleVisible(m)}
                   className="text-xs px-2.5 py-1 rounded-lg font-medium transition"
                   style={{ background: m.visible ? 'rgba(52,199,89,0.12)' : 'rgba(110,110,115,0.12)', color: m.visible ? '#34C759' : 'var(--text-secondary)' }}>
-                  {m.visible ? 'Sichtbar' : 'Hidden'}
+                  {m.visible ? 'Sichtbar' : 'Verborgen'}
                 </button>
                 <button onClick={() => handleDelete(m.id)}
                   className="text-xs px-2.5 py-1 rounded-lg font-medium transition hover:bg-red-500/20"
