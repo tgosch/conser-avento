@@ -51,7 +51,7 @@ export default function OwnerUpdates() {
             toast.info('Keine Interessenten mit Einwilligung für Newsletter gefunden')
           }
         } catch (newsletterErr) {
-          console.error('[Newsletter]', newsletterErr)
+          // Error shown via toast below
           toast.warn('Update gespeichert, Newsletter-Versand fehlgeschlagen')
         } finally {
           setNewsletterSending(false)

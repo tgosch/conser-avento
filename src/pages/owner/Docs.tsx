@@ -45,9 +45,15 @@ function getFileStyle(name?: string) {
   return { label: 'FILE', color: '#8E8E93', bg: 'rgba(142,142,147,0.10)', Icon: FileText }
 }
 
-function getPublicUrl(filePath: string) {
-  const { data } = supabase.storage.from('documents').getPublicUrl(filePath)
-  return data.publicUrl
+async function getSignedUrl(filePath: string): Promise<string | null> {
+  const { data, error } = await supabase.storage.from('documents').createSignedUrl(filePath, 3600)
+  if (data?.signedUrl) return data.signedUrl
+  // Fallback to public URL if signed URL fails (e.g. bucket is public)
+  if (error) {
+    const { data: pub } = supabase.storage.from('documents').getPublicUrl(filePath)
+    return pub?.fileUrl ?? null
+  }
+  return null
 }
 
 /* ─── Empty state ───────────────────────────────────────────────── */
@@ -82,8 +88,14 @@ function EmptyState({ onUploadClick }: { onUploadClick: () => void }) {
 /* ─── File card ─────────────────────────────────────────────────── */
 function FileCard({ doc, onDelete }: { doc: Document; onDelete: (d: Document) => void }) {
   const { label, color, bg, Icon } = getFileStyle(doc.name)
-  const publicUrl = doc.file_path ? getPublicUrl(doc.file_path) : null
+  const [fileUrl, setFileUrl] = useState<string | null>(null)
   const catLabel = CATEGORIES.find(c => c.value === doc.category)?.label ?? doc.category ?? ''
+
+  useEffect(() => {
+    if (doc.file_path) {
+      getSignedUrl(doc.file_path).then(setFileUrl)
+    }
+  }, [doc.file_path])
 
   return (
     <div
@@ -111,8 +123,8 @@ function FileCard({ doc, onDelete }: { doc: Document; onDelete: (d: Document) =>
       {/* Hover overlay */}
       <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
-        {publicUrl && (
-          <a href={publicUrl} target="_blank" rel="noopener noreferrer"
+        {fileUrl && (
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer"
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform">
             <ExternalLink size={16} style={{ color: '#0066FF' }} />
           </a>
@@ -152,7 +164,7 @@ export default function OwnerDocs() {
       .select('id, name, file_path, category, owner_id')
       .order('id', { ascending: false })
     if (error) {
-      console.error('[Docs fetch]', error)
+      // Error displayed in UI via fetchError state
       setFetchError(error.message)
     } else {
       setDocs((data ?? []) as Document[])
@@ -274,7 +286,7 @@ export default function OwnerDocs() {
     } catch (err: unknown) {
       finishProgress(false)
       const msg = err instanceof Error ? err.message : String(err)
-      console.error('[Upload]', msg)
+      // Error shown via toast below
       toast.error(msg)
     } finally {
       setUploading(false)

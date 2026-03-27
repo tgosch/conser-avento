@@ -67,7 +67,7 @@ export default function InvestorPlanDetail() {
         .limit(1)
         .maybeSingle()
       if (cancelled) return
-      if (error) console.error('[PlanDetail] DB error:', error.message)
+      if (error) { /* silent */ }
       if (data?.file_path) {
         const { data: signed, error: signErr } = await supabase.storage
           .from('documents')
@@ -76,7 +76,7 @@ export default function InvestorPlanDetail() {
         if (signed?.signedUrl) {
           setDocUrl(signed.signedUrl)
         } else {
-          console.warn('[PlanDetail] Signed URL failed, trying public URL:', signErr?.message)
+          // Signed URL failed — fallback to public URL
           const { data: pub } = supabase.storage.from('documents').getPublicUrl(data.file_path)
           setDocUrl(pub?.publicUrl ?? null)
         }

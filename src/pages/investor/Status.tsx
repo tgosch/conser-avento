@@ -11,7 +11,7 @@ export default function InvestorStatus() {
     supabase.from('updates').select('id, title, content, category, created_at')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
-        if (error) console.error('[Status]', error.message)
+        if (error) { /* silent — error shown in UI */ }
         if (data) setUpdates(data as Update[])
         setLoading(false)
       })

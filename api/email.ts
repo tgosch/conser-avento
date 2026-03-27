@@ -41,12 +41,19 @@ export default async function handler(req: Request) {
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
-      headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' },
+      headers: { 'Access-Control-Allow-Origin': origin || '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' },
     })
   }
 
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
+  }
+
+  // Origin validation — only allow same-origin requests
+  const origin = req.headers.get('origin') ?? ''
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  if (!allowedOrigins.some(o => origin.startsWith(o))) {
+    return new Response(JSON.stringify({ error: 'Forbidden origin' }), { status: 403 })
   }
 
   // Rate limiting
