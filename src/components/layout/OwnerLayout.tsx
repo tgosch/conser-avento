@@ -3,8 +3,6 @@ import { Outlet } from 'react-router-dom'
 import OwnerSidebar from './OwnerSidebar'
 import OwnerBottomNav from './OwnerBottomNav'
 import Topbar from './Topbar'
-import AiChatbot from '../chat/AiChatbot'
-
 export default function OwnerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
@@ -23,7 +21,6 @@ export default function OwnerLayout() {
         </div>
       </main>
       {!sidebarOpen && <OwnerBottomNav onMoreClick={() => setSidebarOpen(true)} />}
-      <AiChatbot />
     </div>
   )
 }

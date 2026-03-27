@@ -3,8 +3,6 @@ import { Outlet } from 'react-router-dom'
 import InvestorSidebar from './InvestorSidebar'
 import InvestorBottomNav from './InvestorBottomNav'
 import Topbar from './Topbar'
-import AiChatbot from '../chat/AiChatbot'
-
 export default function InvestorLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
@@ -23,7 +21,6 @@ export default function InvestorLayout() {
         </div>
       </main>
       {!sidebarOpen && <InvestorBottomNav onMoreClick={() => setSidebarOpen(true)} />}
-      <AiChatbot />
     </div>
   )
 }

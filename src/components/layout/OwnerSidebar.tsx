@@ -33,7 +33,7 @@ const makeGroups = (unreadCount: number) => [
 interface Props { open: boolean; onClose: () => void }
 
 export default function OwnerSidebar({ open, onClose }: Props) {
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [unreadCount, setUnreadCount] = useState(0)
 
@@ -109,10 +109,12 @@ export default function OwnerSidebar({ open, onClose }: Props) {
         <div className="p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl mb-2" style={{ cursor: 'default' }}>
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-              style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>TG</div>
+              style={{ background: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>
+              {(user?.email ?? 'AD').slice(0, 2).toUpperCase()}
+            </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white">Torben Gosch</p>
-              <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>CEO · Owner</p>
+              <p className="text-xs font-semibold text-white truncate">{user?.email ?? 'Admin'}</p>
+              <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>Owner</p>
             </div>
           </div>
           <button onClick={handleLogout} className="sidebar-nav-item w-full text-[12px]" style={{ color: 'rgba(255,255,255,0.28)' }}>

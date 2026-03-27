@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
 
 import CookieConsent from './components/CookieConsent'
+import AiChatbot from './components/chat/AiChatbot'
 import Landing from './pages/Landing'
 import PartnerRegister from './pages/PartnerRegister'
 import ResetPassword from './pages/ResetPassword'
@@ -111,6 +112,12 @@ function PartnerGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function AuthChatbot() {
+  const { user } = useAuth()
+  if (!user) return null
+  return <AiChatbot />
+}
+
 function AppRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
@@ -177,6 +184,7 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <AppRoutes />
+            <AuthChatbot />
             <CookieConsent />
             <ToastContainer
               position="top-right"

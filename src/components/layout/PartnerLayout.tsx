@@ -3,8 +3,6 @@ import { Outlet } from 'react-router-dom'
 import PartnerSidebar from './PartnerSidebar'
 import PartnerBottomNav from './PartnerBottomNav'
 import Topbar from './Topbar'
-import AiChatbot from '../chat/AiChatbot'
-
 export default function PartnerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
@@ -23,7 +21,6 @@ export default function PartnerLayout() {
         </div>
       </main>
       {!sidebarOpen && <PartnerBottomNav onMoreClick={() => setSidebarOpen(true)} />}
-      <AiChatbot />
     </div>
   )
 }
