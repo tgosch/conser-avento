@@ -197,7 +197,7 @@ export default function PartnerVision() {
       {/* ── MARKET NUMBERS ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-up delay-4">
         {[
-          { icon: Target, value: '390.000', label: 'Handwerksbetriebe', sub: 'in der DACH-Region', color: 'var(--brand)' },
+          { icon: Target, value: '1,3 Mio.', label: 'Handwerksbetriebe', sub: 'in der DACH-Region', color: 'var(--brand)' },
           { icon: TrendingUp, value: '€600 Mrd', label: 'Bauvolumen/Jahr', sub: 'Deutschland allein', color: 'var(--accent)' },
           { icon: Zap, value: '<10%', label: 'Digitalisiert', sub: 'Riesiges Potenzial', color: '#22C55E' },
         ].map(({ icon: Icon, value, label, sub, color }) => (

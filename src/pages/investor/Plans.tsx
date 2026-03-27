@@ -186,14 +186,14 @@ export default function InvestorPlans() {
             <img src={aventoLogo} alt="Avento" className="rounded-xl object-cover shrink-0" style={{ height: '56px', width: '100px' }} />
             <div>
               <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Avento Software</p>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>B2B Software-Plattform für skalierbare Unternehmensprozesse</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>ERP-Komplettsystem für Handwerksbetriebe — Controlling, Buchhaltung, Team</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <img src={conserLogo} alt="Conser" className="rounded-xl object-cover shrink-0" style={{ height: '56px', width: '100px' }} />
             <div>
-              <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Conser Market</p>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Digitaler Marktplatz für professionelle Dienstleistungen</p>
+              <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>B2B-Marktplatz für Baustoffe & Handwerk — 2,3M Produkte, 9 Partner</p>
             </div>
           </div>
         </div>
