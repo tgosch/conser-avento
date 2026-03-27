@@ -237,6 +237,11 @@ export default function Landing() {
     const code = otp.join('')
     if (code.length !== OTP_LENGTH) { toast.error(`Bitte den ${OTP_LENGTH}-stelligen Code eingeben.`); return }
     setLoading(true)
+    // Safety timeout — if verify hangs for 15s, reset loading state
+    const timeout = setTimeout(() => {
+      setLoading(false)
+      toast.error('Zeitüberschreitung. Bitte erneut versuchen.')
+    }, 15_000)
     try {
       // signup-Codes brauchen type 'signup', Login-OTP braucht 'email'
       const otpType = mode === 'register' ? 'signup' : 'email'
@@ -285,15 +290,25 @@ export default function Landing() {
           navigate('/partner/dashboard')
         }
       } else {
-        // Login — onAuthStateChange resolves user automatically,
-        // useEffect above handles navigation once authUser is set.
-        toast.success('Willkommen zurück!')
+        // Login — resolve role and navigate directly (don't rely on useEffect alone)
+        const userId = data.user.id
+        const email = data.user.email ?? activeEmail
+        const { data: partner } = await supabase.from('partners').select('id').eq('id', userId).maybeSingle()
+        if (partner) {
+          await loginPartner(userId, email)
+          toast.success('Willkommen zurück!')
+          navigate('/partner/dashboard', { replace: true })
+        } else {
+          await loginInvestor(userId, email)
+          toast.success('Willkommen zurück!')
+          navigate('/investor/dashboard', { replace: true })
+        }
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Code ungültig oder abgelaufen.'
       toast.error(msg)
     }
-    finally { setLoading(false) }
+    finally { clearTimeout(timeout); setLoading(false) }
   }
 
   const handleResend = async () => {
@@ -309,47 +324,7 @@ export default function Landing() {
 
   const switchRole = (r: Role) => { setRole(r); setStep('form'); setMode('register'); setLoginMethod('password') }
 
-  // ── OTP INPUT COMPONENT ──
-  const OtpInput = () => (
-    <>
-      <button onClick={() => setStep(mode === 'login' ? 'login' : 'form')}
-        className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
-        style={{ color: 'var(--text-tertiary)' }}>
-        <ArrowLeft size={12} /> Zurück
-      </button>
-      <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
-      <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>8-stelliger Code gesendet an</p>
-      <p className="text-sm font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>{activeEmail}</p>
-      <div className="flex items-center gap-2 mb-5">
-        <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
-        <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
-      </div>
-      <form onSubmit={handleVerify}>
-        <div className="flex items-center gap-1.5 mb-5" onPaste={handleOtpPaste}>
-          {otp.map((digit, i) => (
-            <span key={i} className="contents">
-              {i === 4 && <span className="text-sm font-bold" style={{ color: 'var(--text-tertiary)', margin: '0 2px' }}>–</span>}
-              <input ref={el => { otpRefs.current[i] = el }}
-                type="text" inputMode="numeric" maxLength={1} value={digit}
-                onChange={e => handleOtpChange(i, e.target.value)}
-                onKeyDown={e => handleOtpKeyDown(i, e)}
-                className="flex-1 min-w-0 h-11 text-center text-base font-bold rounded-lg border-2 transition-all focus:outline-none"
-                style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }}
-                autoFocus={i === 0} />
-            </span>
-          ))}
-        </div>
-        <button type="submit" disabled={loading || otp.join('').length !== OTP_LENGTH} className="btn btn-primary btn-lg w-full">
-          {loading ? 'Wird verifiziert…' : 'Verifizieren & Zugang erhalten'}
-        </button>
-      </form>
-      <div className="text-center mt-4">
-        <button onClick={handleResend} disabled={loading} className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>
-          Code erneut senden
-        </button>
-      </div>
-    </>
-  )
+  // OTP input section rendered inline (NOT as a sub-component to avoid remounting)
 
   return (
     <div className="min-h-screen gradient-mesh flex flex-col">
@@ -432,7 +407,46 @@ export default function Landing() {
             <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
 
               {/* ── OTP SCREEN (shared) ── */}
-              {step === 'otp' && <OtpInput />}
+              {/* ── OTP SCREEN (inline to prevent remounting/focus loss) ── */}
+              {step === 'otp' && (
+                <>
+                  <button onClick={() => setStep(mode === 'login' ? 'login' : 'form')}
+                    className="flex items-center gap-1 text-xs font-semibold mb-4 hover-press"
+                    style={{ color: 'var(--text-tertiary)' }}>
+                    <ArrowLeft size={12} /> Zurück
+                  </button>
+                  <h2 className="font-bold text-lg mb-1" style={{ color: 'var(--text-primary)' }}>Code eingeben</h2>
+                  <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>8-stelliger Code gesendet an</p>
+                  <p className="text-sm font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>{activeEmail}</p>
+                  <div className="flex items-center gap-2 mb-5">
+                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
+                    <div className="flex-1 h-1 rounded-full" style={{ background: 'var(--brand)' }} />
+                  </div>
+                  <form onSubmit={handleVerify}>
+                    <div className="flex items-center gap-1.5 mb-5" onPaste={handleOtpPaste}>
+                      {otp.map((digit, i) => (
+                        <span key={i} className="contents">
+                          {i === 4 && <span className="text-sm font-bold" style={{ color: 'var(--text-tertiary)', margin: '0 2px' }}>–</span>}
+                          <input ref={el => { otpRefs.current[i] = el }}
+                            type="text" inputMode="numeric" maxLength={1} value={digit}
+                            onChange={e => handleOtpChange(i, e.target.value)}
+                            onKeyDown={e => handleOtpKeyDown(i, e)}
+                            className="flex-1 min-w-0 h-11 text-center text-base font-bold rounded-lg border-2 transition-all focus:outline-none"
+                            style={{ background: 'var(--surface2)', color: 'var(--text-primary)', borderColor: digit ? 'var(--brand)' : 'var(--border)', fontFamily: 'var(--font-mono)' }} />
+                        </span>
+                      ))}
+                    </div>
+                    <button type="submit" disabled={loading || otp.join('').length !== OTP_LENGTH} className="btn btn-primary btn-lg w-full">
+                      {loading ? 'Wird verifiziert…' : 'Verifizieren & Zugang erhalten'}
+                    </button>
+                  </form>
+                  <div className="text-center mt-4">
+                    <button onClick={handleResend} disabled={loading} className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>
+                      Code erneut senden
+                    </button>
+                  </div>
+                </>
+              )}
 
               {/* ── LOGIN SCREEN (shared) ── */}
               {step === 'login' && (
