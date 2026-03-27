@@ -9,6 +9,7 @@ import PrivacyModal from '../components/auth/PrivacyModal'
 import ImpressumModal from '../components/auth/ImpressumModal'
 import aventoLogo from '../assets/avento_kachel.webp'
 import conserLogo from '../assets/conser_kachel.webp'
+import conserScreen from '../assets/conser-checkout-desktop.png'
 
 type Role = 'investor' | 'partner'
 type Step = 'form' | 'login' | 'otp'
@@ -357,7 +358,7 @@ export default function Landing() {
             </p>
             <div className="grid grid-cols-3 gap-6">
               {(role === 'investor' ? [
-                { n: '75.000', l: 'Kunden-Ziel' }, { n: '€181M', l: 'Revenue-Ziel' }, { n: '7', l: 'Top-Partner' },
+                { n: '75.000', l: 'Kunden-Ziel' }, { n: '€181M', l: 'Revenue-Ziel' }, { n: '9', l: 'Top-Partner' },
               ] : [
                 { n: '75.000', l: 'Zielkunden' }, { n: '€0', l: 'Setup-Kosten' }, { n: '2-4 Wo.', l: 'Onboarding' },
               ]).map(s => (
@@ -368,6 +369,25 @@ export default function Landing() {
               ))}
             </div>
           </div>
+
+          {/* Product Screenshot */}
+          <div className="relative mt-8 mb-6">
+            <div className="relative rounded-xl overflow-hidden"
+              style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.4), 0 8px 20px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              {/* Browser chrome */}
+              <div className="flex items-center gap-1.5 px-3 py-2" style={{ background: '#1A1A1A' }}>
+                <div className="w-[8px] h-[8px] rounded-full" style={{ background: '#FF5F57' }} />
+                <div className="w-[8px] h-[8px] rounded-full" style={{ background: '#FFBD2E' }} />
+                <div className="w-[8px] h-[8px] rounded-full" style={{ background: '#27C93F' }} />
+                <div className="flex-1 h-5 rounded mx-8" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              </div>
+              <img src={conserScreen} alt="Conser Marktplatz — B2B Checkout" className="w-full block" />
+            </div>
+            <p className="text-xs mt-3 font-medium" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Conser Marktplatz — B2B-Checkout mit 2,3 Mio. Produkten
+            </p>
+          </div>
+
           <div className="flex items-center gap-3 flex-wrap">
             {['DSGVO-konform', 'Made in Germany', role === 'investor' ? 'Seed 2026' : 'Keine Bindung'].map(b => (
               <span key={b} className="tag tag-sm"
