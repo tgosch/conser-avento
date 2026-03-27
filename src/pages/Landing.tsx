@@ -411,12 +411,13 @@ export default function Landing() {
             </div>
 
             {/* ROLE SWITCH */}
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-2 mb-4" role="tablist" aria-label="Portal auswählen">
               {([
                 { key: 'investor' as Role, icon: Briefcase, label: 'Interessent' },
                 { key: 'partner' as Role, icon: Building2, label: 'Partner' },
               ]).map(r => (
                 <button key={r.key} onClick={() => switchRole(r.key)}
+                  role="tab" aria-selected={role === r.key} aria-label={`${r.label} Portal`}
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition"
                   style={{
                     background: role === r.key ? 'var(--brand)' : 'var(--surface)',

@@ -7,7 +7,7 @@ interface ChatMessage {
   content: string
 }
 
-const SESSION_LIMIT = 30 // max messages per browser session
+const SESSION_LIMIT = 50 // max messages per browser session
 
 export default function AiChatbot() {
   const [open, setOpen] = useState(false)
@@ -24,7 +24,7 @@ export default function AiChatbot() {
   const send = async () => {
     if (!input.trim() || loading) return
     if (msgCount.current >= SESSION_LIMIT) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Sitzungslimit erreicht. Bitte Seite neu laden.' }])
+      setMessages(prev => [...prev, { role: 'assistant', content: `Sitzungslimit (${SESSION_LIMIT} Nachrichten) erreicht. Bitte laden Sie die Seite neu, um fortzufahren.` }])
       return
     }
     msgCount.current += 1
@@ -76,6 +76,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
     <>
       <button
         onClick={() => setOpen(true)}
+        aria-label="KI-Assistent öffnen"
         className="fixed z-50 w-14 h-14 rounded-full text-white flex items-center justify-center shadow-lg2 hover:opacity-90 transition-transform hover:scale-105"
         style={{ background: 'var(--brand)', bottom: 'var(--fab-bottom)', right: '16px' }}
       >
@@ -100,7 +101,7 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
               <p className="text-white text-sm font-semibold">KI-Assistent</p>
               <p className="text-white/60 text-xs">Avento & Conser</p>
             </div>
-            <button onClick={() => setOpen(false)} className="text-white/70 hover:text-white transition">
+            <button onClick={() => setOpen(false)} aria-label="Chat schließen" className="text-white/70 hover:text-white transition">
               <X size={18} />
             </button>
           </div>
@@ -152,11 +153,16 @@ Antworte professionell, präzise und auf Deutsch. Bei spezifischen Zahlen verwei
                 className="flex-1 bg-transparent text-sm outline-none"
                 style={{ color: 'var(--text-primary)' }}
               />
-              <button onClick={send} disabled={!input.trim() || loading} className="text-accent hover:opacity-70 disabled:opacity-30 transition">
+              <button onClick={send} disabled={!input.trim() || loading} aria-label="Nachricht senden" className="text-accent hover:opacity-70 disabled:opacity-30 transition">
                 <Send size={16} />
               </button>
             </div>
-            <p className="text-center text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>Powered by Claude · Anthropic</p>
+            <div className="flex items-center justify-between mt-2 px-1">
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Powered by Claude · Anthropic</p>
+              <p className="text-xs" style={{ color: msgCount.current >= SESSION_LIMIT * 0.8 ? 'var(--danger, #FF3B30)' : 'var(--text-tertiary)' }}>
+                {msgCount.current}/{SESSION_LIMIT}
+              </p>
+            </div>
           </div>
         </div>
       )}
