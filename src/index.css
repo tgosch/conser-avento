@@ -71,7 +71,7 @@
   --radius-pill:      999px;
 
   /* Mobile */
-  --bottom-nav-height: 60px;
+  --bottom-nav-height: 72px;
   --bottom-nav-total:  calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   --content-offset:    0px;
   --fab-bottom:        calc(var(--bottom-nav-total) + 16px);
@@ -588,8 +588,7 @@ textarea, select {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(2px);
+  background: rgba(0,0,0,0.45);
   animation: fade-in 0.2s ease both;
 }
 

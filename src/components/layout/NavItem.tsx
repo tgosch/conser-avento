@@ -16,8 +16,8 @@ export default function NavItem({ to, icon: Icon, label, exact, hasUnread }: Pro
           {isActive && <span className="bottom-nav-indicator" />}
           <span className="relative">
             <span className="flex items-center justify-center rounded-full transition-all duration-200"
-              style={{ width: 48, height: 28, background: isActive ? 'rgba(6,61,62,0.12)' : 'transparent' }}>
-              <Icon size={20} strokeWidth={isActive ? 2.3 : 1.7}
+              style={{ width: 52, height: 36, background: isActive ? 'rgba(6,61,62,0.12)' : 'transparent' }}>
+              <Icon size={22} strokeWidth={isActive ? 2.3 : 1.7}
                 style={{ color: isActive ? 'var(--brand)' : 'var(--text-tertiary)' }} />
             </span>
             {hasUnread && !isActive && (
@@ -25,7 +25,7 @@ export default function NavItem({ to, icon: Icon, label, exact, hasUnread }: Pro
                 style={{ background: '#E04B3E', border: '2px solid var(--surface)' }} />
             )}
           </span>
-          <span className="text-[10px] font-semibold"
+          <span className="text-[11px] font-semibold"
             style={{ color: isActive ? 'var(--brand)' : 'var(--text-tertiary)' }}>
             {label}
           </span>

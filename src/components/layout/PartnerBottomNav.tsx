@@ -13,10 +13,10 @@ export default function PartnerBottomNav({ onMoreClick }: { onMoreClick: () => v
     <nav className="bottom-nav lg:hidden" style={{ background: 'var(--surface)' }} aria-label="Partner Mobile Navigation">
       {mainNav.map(item => <NavItem key={item.to} {...item} />)}
       <button className="bottom-nav-item" onClick={onMoreClick}>
-        <span className="flex items-center justify-center rounded-full w-12 h-7">
-          <MoreHorizontal size={20} strokeWidth={1.7} style={{ color: 'var(--text-tertiary)' }} />
+        <span className="flex items-center justify-center rounded-full" style={{ width: 52, height: 36 }}>
+          <MoreHorizontal size={22} strokeWidth={1.7} style={{ color: 'var(--text-tertiary)' }} />
         </span>
-        <span className="text-[10px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>Mehr</span>
+        <span className="text-[11px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>Mehr</span>
       </button>
     </nav>
   )

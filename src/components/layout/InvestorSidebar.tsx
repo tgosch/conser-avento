@@ -60,10 +60,10 @@ export default function InvestorSidebar({ open, onClose }: Props) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-20 lg:hidden sheet-overlay" onClick={onClose} />
+        <div className="fixed inset-0 z-[45] lg:hidden sheet-overlay" onClick={onClose} />
       )}
       <aside
-        className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300 scrollbar-thin
+        className={`fixed top-0 left-0 h-full z-50 flex flex-col transition-transform duration-300 scrollbar-thin
           ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         style={{
           width: 'var(--sidebar-width)',

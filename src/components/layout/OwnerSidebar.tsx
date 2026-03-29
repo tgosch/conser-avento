@@ -52,9 +52,9 @@ export default function OwnerSidebar({ open, onClose }: Props) {
 
   return (
     <>
-      {open && <div className="fixed inset-0 z-20 lg:hidden sheet-overlay" onClick={onClose} />}
+      {open && <div className="fixed inset-0 z-[45] lg:hidden sheet-overlay" onClick={onClose} />}
       <aside
-        className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed top-0 left-0 h-full z-50 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         style={{ width: 'var(--sidebar-width)', background: '#0A0A0A', borderRight: '1px solid rgba(255,255,255,0.07)' }}
       >
         <button className="absolute top-4 right-4 btn btn-icon lg:hidden" style={{ color: 'rgba(255,255,255,0.3)' }} onClick={onClose} aria-label="Sidebar schliessen">

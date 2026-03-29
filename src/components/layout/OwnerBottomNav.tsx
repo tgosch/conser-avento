@@ -31,10 +31,10 @@ export default function OwnerBottomNav({ onMoreClick }: Props) {
         <NavItem key={item.to} {...item} hasUnread={item.badge ? unreadCount > 0 : false} />
       ))}
       <button className="bottom-nav-item" onClick={onMoreClick}>
-        <span className="flex items-center justify-center w-12 h-7">
-          <MoreHorizontal size={20} strokeWidth={1.7} style={{ color: 'var(--text-tertiary)' }} />
+        <span className="flex items-center justify-center rounded-full" style={{ width: 52, height: 36 }}>
+          <MoreHorizontal size={22} strokeWidth={1.7} style={{ color: 'var(--text-tertiary)' }} />
         </span>
-        <span className="text-[10px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>Mehr</span>
+        <span className="text-[11px] font-semibold" style={{ color: 'var(--text-tertiary)' }}>Mehr</span>
       </button>
     </nav>
   )
