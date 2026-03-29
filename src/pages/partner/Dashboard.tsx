@@ -1,18 +1,32 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useCountUp } from '../../hooks/useCountUp'
-import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, TrendingUp, Zap } from 'lucide-react'
+import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, TrendingUp, Zap, Calendar } from 'lucide-react'
 import { LaptopMockup, PhoneMockup } from '../../components/showcase/DeviceMockup'
 
 const STEPS = [
-  { key: 'negotiating', label: 'Verhandlung', desc: 'Konditionen & Katalog', icon: '🤝' },
-  { key: 'active',      label: 'Integration',  desc: 'Technische Anbindung', icon: '⚙️' },
-  { key: 'beta',        label: 'Beta-Phase',   desc: 'Pilot mit Kunden', icon: '🧪' },
-  { key: 'partner',     label: 'Live Partner',  desc: 'Voller Zugang', icon: '🚀' },
+  { key: 1, label: 'Kennenlernen',        desc: 'Persönlicher Termin',       icon: '🤝' },
+  { key: 2, label: 'Partnerzeit',         desc: 'Konditionen & Katalog',     icon: '💬' },
+  { key: 3, label: 'Verträge & Ablauf',   desc: 'Vertragsdetails klären',    icon: '📋' },
+  { key: 4, label: 'Vertragsrücksendung', desc: 'Content-Vertrag signed',    icon: '✍️' },
+  { key: 5, label: 'IT-Abstimmung',       desc: 'Technische Anforderungen',  icon: '👨‍💻' },
+  { key: 6, label: 'Datenaustausch',      desc: 'OCI / API / CSV',           icon: '🔄' },
+  { key: 7, label: 'Produktintegration',  desc: 'Produkte live auf Conser',  icon: '⚙️' },
+  { key: 8, label: 'Go Live!',            desc: 'Sichtbar für alle Nutzer',  icon: '🚀' },
 ]
 
+function mapStatusToStep(status: string): number {
+  switch (status) {
+    case 'negotiating': return 2
+    case 'active': return 5
+    case 'beta': return 7
+    case 'partner': return 8
+    default: return 1
+  }
+}
+
 function stepIndex(status: string) {
-  const i = STEPS.findIndex(s => s.key === status)
+  const i = mapStatusToStep(status) - 1
   return i >= 0 ? i : 0
 }
 
@@ -65,10 +79,10 @@ export default function PartnerDashboard() {
                 style={{ background: 'white', color: '#063D3E' }}>
                 Partnermodell ansehen <ArrowRight size={14} />
               </Link>
-              <a href="mailto:torben@conser-avento.de"
+              <a href="https://calendly.com/torben-gosch" target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:translate-y-[-1px]"
                 style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
-                Kontakt aufnehmen
+                <Calendar size={14} /> Termin vereinbaren
               </a>
             </div>
           </div>
@@ -80,7 +94,7 @@ export default function PartnerDashboard() {
         {[
           { value: kunden.formatted, label: 'Zielkunden', sub: 'Handwerksbetriebe DACH', icon: Users, color: 'var(--brand)' },
           { value: `€${revenue.formatted}M`, label: 'Revenue-Ziel', sub: 'Avento + Conser kombiniert', icon: TrendingUp, color: 'var(--accent)' },
-          { value: `${partners.formatted}+`, label: 'Partner', sub: 'Produktionspartner an Bord', icon: Rocket, color: '#22C55E' },
+          { value: partners.formatted, label: 'Partner', sub: 'Produktionspartner an Bord', icon: Rocket, color: '#22C55E' },
         ].map((kpi, i) => (
           <div key={kpi.label} className={`card p-6 group hover:translate-y-[-2px] transition-all duration-300 animate-fade-up delay-${i + 1}`}>
             <div className="flex items-center justify-between mb-3">
@@ -104,17 +118,17 @@ export default function PartnerDashboard() {
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Desktop View */}
+          {/* Desktop View — Partner-Branded */}
           <div className="card p-6 md:p-8">
             <LaptopMockup
               placeholderIcon="📊"
-              placeholderText="Avento ERP — Dashboard"
-              gradient="linear-gradient(145deg, #041E1F 0%, #063D3E 50%, #0A5C5E 100%)"
-              label="Avento ERP"
-              sublabel="Das Steckenpferd — tägliche Software für Handwerker"
+              placeholderText={`${partner?.name ?? 'Ihr Unternehmen'} im Conser Marktplatz`}
+              gradient={`linear-gradient(145deg, #041E1F 0%, ${partner?.color ?? '#063D3E'} 50%, #0A5C5E 100%)`}
+              label="Conser Marktplatz"
+              sublabel={`Integriert mit ${partner?.name ?? 'Ihrem Katalog'}`}
             />
           </div>
-          {/* Mobile Views */}
+          {/* Mobile Views — Partner-Branded */}
           <div className="card p-6 md:p-8">
             <div className="flex justify-center gap-6">
               <PhoneMockup
@@ -126,17 +140,28 @@ export default function PartnerDashboard() {
               />
               <PhoneMockup
                 placeholderIcon="🛒"
-                placeholderText="Conser Shop"
-                gradient="linear-gradient(145deg, #1A0A00 0%, #C8611A 100%)"
-                label="Conser Shop"
+                placeholderText={`${partner?.name ?? 'Partner'} Shop`}
+                gradient={`linear-gradient(145deg, #1A0A00 0%, ${partner?.color ?? '#C8611A'} 100%)`}
+                label={`${partner?.name ?? 'Partner'} auf Conser`}
                 sublabel="1-Click Bestellung"
               />
             </div>
           </div>
         </div>
-        <p className="text-center text-xs mt-3" style={{ color: 'var(--text-tertiary)' }}>
-          Screenshots werden durch Live-Aufnahmen ersetzt sobald verfügbar
-        </p>
+        {/* Mini-Stats */}
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          {[
+            { value: '2.300+', label: 'Produkte', icon: '📦' },
+            { value: '12', label: 'Kategorien', icon: '🏷️' },
+            { value: '75.000', label: 'Reichweite', icon: '👥' },
+          ].map(s => (
+            <div key={s.label} className="card p-3 text-center">
+              <span className="text-sm block mb-1">{s.icon}</span>
+              <p className="text-sm font-bold" style={{ color: 'var(--brand)' }}>{s.value}</p>
+              <p className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ── AVENTO KI-MODULE ── */}
@@ -202,16 +227,16 @@ export default function PartnerDashboard() {
         </div>
       </div>
 
-      {/* ── PARTNERSHIP TIMELINE ── */}
+      {/* ── ONBOARDING FORTSCHRITT (8 Schritte) ── */}
       <div className="card overflow-hidden mb-8 animate-fade-up delay-4">
         <div className="px-6 py-4 flex items-center justify-between"
           style={{ borderBottom: '1px solid var(--border)' }}>
           <div className="flex items-center gap-2">
-            <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>IHRE PARTNERSCHAFT</p>
+            <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>IHR ONBOARDING</p>
           </div>
           <span className="text-xs px-2.5 py-1 rounded-full font-semibold"
             style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>
-            Phase {currentStep + 1} von 4
+            Schritt {currentStep + 1} von 8 · {Math.round(((currentStep + 1) / 8) * 100)}%
           </span>
         </div>
         <div className="p-6">
@@ -219,7 +244,7 @@ export default function PartnerDashboard() {
           <div className="relative mb-6">
             <div className="h-1.5 rounded-full" style={{ background: 'var(--surface3)' }}>
               <div className="h-full rounded-full transition-all duration-1000"
-                style={{ width: `${((currentStep + 1) / 4) * 100}%`, background: 'linear-gradient(90deg, var(--brand), #0E7A7D)' }} />
+                style={{ width: `${((currentStep + 1) / 8) * 100}%`, background: 'linear-gradient(90deg, var(--brand), #0E7A7D)' }} />
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -227,32 +252,46 @@ export default function PartnerDashboard() {
               const done = i < currentStep
               const active = i === currentStep
               return (
-                <div key={s.key} className="relative p-4 rounded-xl transition-all duration-300"
+                <div key={s.key} className="relative p-3.5 rounded-xl transition-all duration-300"
                   style={{
                     background: active ? 'var(--brand-dim)' : done ? 'rgba(34,197,94,0.04)' : 'var(--surface2)',
                     border: active ? '1.5px solid var(--brand)' : '1.5px solid transparent',
                     boxShadow: active ? '0 4px 20px rgba(6,61,62,0.1)' : 'none',
+                    opacity: !done && !active ? 0.6 : 1,
                   }}>
-                  <span className="text-xl block mb-2">{s.icon}</span>
-                  <div className="flex items-center gap-1.5 mb-1.5">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-base">{s.icon}</span>
                     {done ? (
-                      <CheckCircle size={13} style={{ color: '#22C55E' }} />
+                      <CheckCircle size={12} style={{ color: '#22C55E' }} />
                     ) : (
-                      <Circle size={13} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />
+                      <Circle size={12} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />
                     )}
-                    <span className="text-[10px] font-bold tracking-wide" style={{ color: active ? 'var(--brand)' : done ? '#22C55E' : 'var(--text-tertiary)' }}>
-                      PHASE {i + 1}
+                    <span className="text-[9px] font-bold tracking-wide" style={{ color: active ? 'var(--brand)' : done ? '#22C55E' : 'var(--text-tertiary)' }}>
+                      {i + 1}/8
                     </span>
                   </div>
-                  <p className="text-sm font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
-                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{s.desc}</p>
+                  <p className="text-xs font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+                  <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>{s.desc}</p>
                   {active && (
-                    <span className="absolute top-3 right-3 w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--brand)' }} />
+                    <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--brand)' }} />
                   )}
                 </div>
               )
             })}
           </div>
+          {/* Nächster Schritt Highlight */}
+          {currentStep < STEPS.length && (
+            <div className="mt-4 p-4 rounded-xl" style={{ background: 'var(--brand-dim)', border: '1.5px solid var(--brand)' }}>
+              <div className="flex items-center gap-3">
+                <span className="text-xl">{STEPS[currentStep].icon}</span>
+                <div>
+                  <p className="text-[10px] font-bold tracking-wide" style={{ color: 'var(--brand)' }}>AKTUELLER SCHRITT</p>
+                  <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{STEPS[currentStep].label}</p>
+                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{STEPS[currentStep].desc}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

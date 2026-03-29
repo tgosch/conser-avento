@@ -26,6 +26,8 @@ const InvestorStructure = React.lazy(() => import('./pages/investor/Structure'))
 const InvestorSettings = React.lazy(() => import('./pages/investor/Settings'))
 const InvestorPartners = React.lazy(() => import('./pages/investor/Partners'))
 const InvestorRoadmap = React.lazy(() => import('./pages/investor/Roadmap'))
+const InvestorCompetition = React.lazy(() => import('./pages/investor/Competition'))
+const InvestorFAQ = React.lazy(() => import('./pages/investor/FAQ'))
 
 const OwnerDashboard = React.lazy(() => import('./pages/owner/Dashboard'))
 const OwnerDocs = React.lazy(() => import('./pages/owner/Docs'))
@@ -138,6 +140,8 @@ function AppRoutes() {
           <Route path="structure" element={<InvestorStructure />} />
           <Route path="partners" element={<InvestorPartners />} />
           <Route path="roadmap" element={<InvestorRoadmap />} />
+          <Route path="competition" element={<InvestorCompetition />} />
+          <Route path="faq" element={<InvestorFAQ />} />
           <Route path="settings" element={<InvestorSettings />} />
         </Route>
 

@@ -1,4 +1,4 @@
-import { Users, ShoppingCart, Eye, BarChart3, Megaphone, Link2, ArrowRight, Shield, CheckCircle, Clock, Server, MapPin, PartyPopper, Handshake } from 'lucide-react'
+import { Users, ShoppingCart, Eye, BarChart3, Megaphone, Link2, ArrowRight, Shield, CheckCircle, Clock, Server, MapPin, PartyPopper, Handshake, Calendar } from 'lucide-react'
 import { LaptopMockup } from '../../components/showcase/DeviceMockup'
 
 // ── 8-Schritte Onboarding ────────────────────────────────────────
@@ -232,9 +232,9 @@ export default function PartnerPartnership() {
           ))}
         </div>
         <div className="px-6 py-4 text-center" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
-          <a href="mailto:torben@conser-avento.de"
+          <a href="https://calendly.com/torben-gosch" target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
-            Jetzt Kennenlernen vereinbaren <ArrowRight size={14} />
+            <Calendar size={14} /> Termin vereinbaren <ArrowRight size={14} />
           </a>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { Update } from '../../lib/supabase'
-import { ArrowRight, ChevronRight } from 'lucide-react'
+import { ArrowRight, ChevronRight, Play } from 'lucide-react'
 import { useCountUp } from '../../hooks/useCountUp'
 
 const categoryColor: Record<string, string> = {
@@ -83,6 +83,29 @@ export default function InvestorDashboard() {
                 <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{stat.sub}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* VIDEO PITCH */}
+      <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift"
+           style={{
+             background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
+             aspectRatio: '16/9',
+           }}>
+        <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full opacity-[0.06]"
+             style={{ background: 'radial-gradient(circle, #FFFFFF 0%, transparent 70%)' }} />
+        <div className="absolute -left-16 -bottom-16 w-48 h-48 rounded-full opacity-[0.04]"
+             style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+               style={{ background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}>
+            <Play size={24} fill="white" color="white" style={{ marginLeft: 2 }} />
+          </div>
+          <h3 className="text-lg md:text-xl font-bold text-white mb-2">90 Sekunden mit Torben</h3>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Video wird bald verfügbar</p>
           </div>
         </div>
       </div>
