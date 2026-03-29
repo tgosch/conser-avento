@@ -69,7 +69,7 @@ export default function InvestorPlanDetail() {
       if (cancelled) return
       if (error) { /* silent */ }
       if (data?.file_path) {
-        const { data: signed, error: signErr } = await supabase.storage
+        const { data: signed } = await supabase.storage
           .from('documents')
           .createSignedUrl(data.file_path, 3600)
         if (cancelled) return

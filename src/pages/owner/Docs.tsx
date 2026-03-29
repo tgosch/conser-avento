@@ -51,7 +51,7 @@ async function getSignedUrl(filePath: string): Promise<string | null> {
   // Fallback to public URL if signed URL fails (e.g. bucket is public)
   if (error) {
     const { data: pub } = supabase.storage.from('documents').getPublicUrl(filePath)
-    return pub?.fileUrl ?? null
+    return pub?.publicUrl ?? null
   }
   return null
 }

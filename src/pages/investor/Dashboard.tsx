@@ -170,6 +170,55 @@ export default function InvestorDashboard() {
         </div>
       </div>
 
+      {/* AVENTO MODULE — Space AI & BauDoku AI */}
+      <div className="mb-8 delay-2 animate-fade-up">
+        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>FERTIGE AVENTO-MODULE</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
+               style={{ borderLeft: '3px solid #8B5CF6' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl"
+                   style={{ background: 'rgba(139,92,246,0.12)' }}>🧠</div>
+              <div>
+                <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Space AI</h3>
+                <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+              Intelligenter KI-Assistent für Handwerksbetriebe. Automatisierte Angebotserstellung,
+              Materialkalkulation und Projektplanung — direkt im Avento ERP. Versteht Branchensprache,
+              lernt aus jedem Projekt und beschleunigt Arbeitsabläufe um bis zu 60%.
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {['KI-Angebote','Materialkalkulation','Projektplanung','Branchensprache'].map(t => (
+                <span key={t} className="tag tag-sm" style={{ background: 'rgba(139,92,246,0.08)', color: '#8B5CF6' }}>{t}</span>
+              ))}
+            </div>
+          </div>
+          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
+               style={{ borderLeft: '3px solid #0EA5E9' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl"
+                   style={{ background: 'rgba(14,165,233,0.12)' }}>📋</div>
+              <div>
+                <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>BauDoku AI</h3>
+                <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+              Digitales Bautagebuch mit KI-Unterstützung. Fotos, Notizen, Wetter und Fortschritt werden
+              automatisch dokumentiert. Rechtssichere Protokolle per Klick — inklusive Signaturen,
+              Zeitstempel und automatischer Zuordnung zu Projekten und Gewerken.
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {['Foto-Doku','KI-Protokolle','Signaturen','Rechtssicher'].map(t => (
+                <span key={t} className="tag tag-sm" style={{ background: 'rgba(14,165,233,0.08)', color: '#0EA5E9' }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* VISION / COUNTUP */}
       <div className="card p-7 md:p-8 mb-8 delay-3 animate-fade-up">
         <p className="label-tag mb-6" style={{ color: 'var(--text-tertiary)' }}>WO WIR HINWOLLEN</p>
@@ -203,8 +252,8 @@ export default function InvestorDashboard() {
           {[
             { icon: '🔗', title: 'Integriertes Ökosystem',
               desc: 'ERP + Marktplatz, tief verknüpft. Material direkt aus dem Projekt bestellen. 1 Klick, kein Medienbruch.' },
-            { icon: '🤖', title: 'Komplett-System von Beginn an',
-              desc: 'Komplett-System für den Handwerksbetrieb — Controlling, Buchhaltung, Angebote, Team steuern. Alles integriert, nicht als Add-on.' },
+            { icon: '🤖', title: 'KI-Module bereits fertig',
+              desc: 'Space AI (KI-Assistent) und BauDoku AI (digitales Bautagebuch) sind live. Komplett-System für Controlling, Buchhaltung, Angebote und Team — alles integriert.' },
             { icon: '🏗️', title: 'Tiefe Branchenkenntnis',
               desc: '9 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
           ].map(usp => (

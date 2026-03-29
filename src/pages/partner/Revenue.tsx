@@ -147,10 +147,10 @@ export default function PartnerRevenue() {
         </div>
         <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Escrow-System', desc: 'Sicheres Payment', icon: '🔒' },
+            { label: 'Treuhänder-Konten', desc: '3-Fach-Verifizierung', icon: '🔒' },
             { label: 'Auto-Rechnungen', desc: 'Automatisiert', icon: '📄' },
-            { label: 'DSGVO-konform', desc: 'Made in Germany', icon: '🇩🇪' },
-            { label: 'Echtzeit-Reports', desc: 'Volle Transparenz', icon: '📊' },
+            { label: 'Server Deutschland', desc: 'Standort Fürth, Bayern', icon: '🇩🇪' },
+            { label: 'DSGVO-konform', desc: 'Volle Transparenz', icon: '📊' },
           ].map(item => (
             <div key={item.label} className="text-center p-4 rounded-xl group hover:translate-y-[-1px] transition-all duration-300"
               style={{ background: 'var(--surface2)' }}>

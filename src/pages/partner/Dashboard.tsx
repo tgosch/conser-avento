@@ -24,7 +24,7 @@ export default function PartnerDashboard() {
 
   const kunden = useCountUp(75000, { duration: 2000 })
   const revenue = useCountUp(181, { duration: 1800 })
-  const partners = useCountUp(7, { duration: 1200 })
+  const partners = useCountUp(9, { duration: 1200 })
 
   const now = new Date()
   const hour = now.getHours()
@@ -139,6 +139,44 @@ export default function PartnerDashboard() {
         </p>
       </div>
 
+      {/* ── AVENTO KI-MODULE ── */}
+      <div className="mb-8 animate-fade-up delay-2">
+        <div className="flex items-center gap-2 mb-4">
+          <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>AVENTO KI-MODULE — BEREITS FERTIG</p>
+          <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
+            style={{ borderBottom: '2px solid #8B5CF6' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
+                style={{ background: 'rgba(139,92,246,0.12)' }}>🧠</div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              KI-Assistent für Handwerker: automatisierte Angebote, Materialkalkulation, Projektplanung. Ihre Produkte werden direkt in Empfehlungen einbezogen.
+            </p>
+          </div>
+          <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
+            style={{ borderBottom: '2px solid #0EA5E9' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
+                style={{ background: 'rgba(14,165,233,0.12)' }}>📋</div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              Digitales Bautagebuch mit KI: Fotos, Protokolle, Signaturen automatisch. Jeder Materialverbrauch wird dokumentiert — optimiert Nachbestellungen bei Ihnen.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* ── BENEFITS ── */}
       <div className="mb-8 animate-fade-up delay-3">
         <div className="flex items-center gap-2 mb-4">
@@ -225,7 +263,7 @@ export default function PartnerDashboard() {
         </div>
         {[
           { to: '/partner/vision',       label: 'Vision & Mission entdecken',  sub: 'Warum wir Avento & Conser bauen', icon: '🎯' },
-          { to: '/partner/partnership',  label: 'Partnermodell verstehen',     sub: 'Prozess, Benefits & Integration', icon: '🤝' },
+          { to: '/partner/partnership',  label: 'Onboarding & Partnermodell',  sub: '8 Schritte, 4–8 Wochen, Benefits', icon: '🤝' },
           { to: '/partner/revenue',      label: 'Revenue-Modell ansehen',      sub: 'Provisionen, Payment & Projektionen', icon: '💰' },
           { to: '/partner/network',      label: 'Netzwerk erkunden',           sub: 'Partner & Pilotkunden', icon: '🌐' },
         ].map((item, i) => (

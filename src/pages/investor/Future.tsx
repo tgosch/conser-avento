@@ -18,14 +18,14 @@ const PHASES = [
     bgColor: 'rgba(6,61,62,0.08)',
     goals: [
       'Conser MVP (Webshop + Produktkatalog)',
-      '7 Producer-Partner vollständig integriert',
+      '9 Producer-Partner vollständig integriert',
       '2,3 Mio. Produkte live im System',
       'Payment & Logistik-Infrastruktur ready',
       'Legal & GDPR compliant',
     ],
     keyMetrics: [
       { icon: '📦', label: 'Produkte live', value: '2,3M' },
-      { icon: '🤝', label: 'Partner', value: '7' },
+      { icon: '🤝', label: 'Partner', value: '9' },
       { icon: '💰', label: 'Budget', value: '300k€' },
       { icon: '⏱️', label: 'Dauer', value: '3 Mon.' },
     ],
@@ -116,7 +116,7 @@ const PHASES = [
       { label: 'Design & UX', pct: 8, color: '#FF9500' },
       { label: 'Beta Incentives', pct: 3, color: '#AEAEB2' },
     ],
-    tags: ['Controlling', 'Buchhaltung', 'Angebote', 'Bautagebuch', 'Team-Steuerung', 'Conser Integration'],
+    tags: ['Space AI ✅', 'BauDoku AI ✅', 'Controlling', 'Buchhaltung', 'Angebote', 'Team-Steuerung', 'Conser Integration'],
     gate: [
       'MVP Features reliabel (keine kritischen Bugs)',
       'iOS + Android Apps stabil (App Store ready)',

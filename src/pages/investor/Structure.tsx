@@ -4,7 +4,7 @@ import type { TeamMember } from '../../lib/supabase'
 import { Building2, CheckCircle, Clock, Code2, ChevronDown } from 'lucide-react'
 
 const HOLDING = {
-  name: 'Bautech Holding',
+  name: 'Bautech Holding GmbH',
   description: 'Muttergesellschaft · Strategische Steuerung',
   color: '#1C1C1E',
 }

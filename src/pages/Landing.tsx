@@ -176,10 +176,16 @@ export default function Landing() {
       }
       const { data: partner } = await supabase.from('partners').select('id').eq('id', user.id).maybeSingle()
       if (partner) {
+        if (role === 'investor') {
+          toast.info('Dieses Konto ist als Partner registriert. Sie werden zum Partner-Portal weitergeleitet.')
+        }
         await loginPartner(user.id, user.email ?? loginEmail)
         toast.success('Willkommen zurück!')
         navigate('/partner/dashboard')
       } else {
+        if (role === 'partner') {
+          toast.info('Dieses Konto ist als Investor registriert. Sie werden zum Investor-Portal weitergeleitet.')
+        }
         await loginInvestor(user.id, user.email ?? loginEmail)
         toast.success('Willkommen zurück!')
         navigate('/investor/dashboard')
@@ -296,10 +302,12 @@ export default function Landing() {
         const email = data.user.email ?? activeEmail
         const { data: partner } = await supabase.from('partners').select('id').eq('id', userId).maybeSingle()
         if (partner) {
+          if (role === 'investor') toast.info('Konto ist als Partner registriert — Weiterleitung zum Partner-Portal.')
           await loginPartner(userId, email)
           toast.success('Willkommen zurück!')
           navigate('/partner/dashboard', { replace: true })
         } else {
+          if (role === 'partner') toast.info('Konto ist als Investor registriert — Weiterleitung zum Investor-Portal.')
           await loginInvestor(userId, email)
           toast.success('Willkommen zurück!')
           navigate('/investor/dashboard', { replace: true })
@@ -354,13 +362,13 @@ export default function Landing() {
             <p className="text-base leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 380 }}>
               {role === 'investor'
                 ? 'Avento ERP + Conser Marktplatz. Das erste vollständig integrierte Ökosystem für Handwerksbetriebe in der DACH-Region.'
-                : 'Zugang zu 75.000 Handwerksbetrieben. Automatisierte Bestellungen über Avento ERP. Keine Setup-Kosten.'}
+                : 'Zugang zu 75.000 Handwerksbetrieben. Automatisierte Bestellungen über Avento ERP. Für die ersten 10 Partner kostenlos.'}
             </p>
             <div className="grid grid-cols-3 gap-6">
               {(role === 'investor' ? [
                 { n: '75.000', l: 'Kunden-Ziel' }, { n: '€181M', l: 'Revenue-Ziel' }, { n: '9', l: 'Top-Partner' },
               ] : [
-                { n: '75.000', l: 'Zielkunden' }, { n: '€0', l: 'Setup-Kosten' }, { n: '2-4 Wo.', l: 'Onboarding' },
+                { n: '75.000', l: 'Zielkunden' }, { n: '€0', l: 'Erste 10 gratis' }, { n: '4–8 Wo.', l: 'Onboarding' },
               ]).map(s => (
                 <div key={s.l}>
                   <p className="text-metric-lg text-white mb-0.5">{s.n}</p>
@@ -423,6 +431,12 @@ export default function Landing() {
                 </button>
               ))}
             </div>
+
+            <p className="text-xs text-center mb-3" style={{ color: 'var(--text-tertiary)' }}>
+              {role === 'investor'
+                ? 'Für Investoren und Interessenten — Zugang zum Investment Case.'
+                : 'Für Produktionspartner — Zugang zum Partner-Portal und Onboarding.'}
+            </p>
 
             <div className="card p-6" style={{ boxShadow: 'var(--shadow-xl)' }}>
 
