@@ -5,7 +5,7 @@ import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, Tren
 import { LaptopMockup, PhoneMockup } from '../../components/showcase/DeviceMockup'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
-import conserShopImg from '../../assets/conser.shop.png'
+import conserShopImg from '../../assets/conser-shop.webp'
 
 const STEPS = [
   { key: 1, label: 'Kennenlernen',        desc: 'Persönlicher Termin',       icon: '🤝' },

@@ -5,4 +5,4 @@ Disallow: /owner/
 Disallow: /partner/
 Disallow: /reset-password
 
-Sitemap: https://conser-avento.vercel.app/sitemap.xml
+Sitemap: https://conser-avento-app.vercel.app/sitemap.xml

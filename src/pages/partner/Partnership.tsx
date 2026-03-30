@@ -1,6 +1,6 @@
 import { Users, ShoppingCart, Eye, BarChart3, Megaphone, Link2, ArrowRight, Shield, CheckCircle, Clock, Server, MapPin, PartyPopper, Handshake, Calendar } from 'lucide-react'
 import { LaptopMockup } from '../../components/showcase/DeviceMockup'
-import conserShopImg from '../../assets/conser.shop.png'
+import conserShopImg from '../../assets/conser-shop.webp'
 
 // ── 8-Schritte Onboarding ────────────────────────────────────────
 const ONBOARDING = [

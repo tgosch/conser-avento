@@ -104,10 +104,7 @@ export default function InvestorDashboard() {
             <Play size={24} fill="white" color="white" style={{ marginLeft: 2 }} />
           </div>
           <h3 className="text-lg md:text-xl font-bold text-white mb-2">90 Sekunden mit Torben</h3>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Video wird bald verfügbar</p>
-          </div>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Pitch-Video · Demnächst hier</p>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Partner } from '../../lib/supabase'
-import { ArrowRight, Quote, Calendar } from 'lucide-react'
+import { ArrowRight, Calendar } from 'lucide-react'
 
 const FALLBACK_PRODUCTION: Partner[] = [
   { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär & Heizung', description: 'Führender Großhändler für Sanitär, Heizung und Klima', status: 'partner', logo_path: null, initials: 'SH', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
@@ -73,42 +73,6 @@ export default function PartnerNetwork() {
         ))}
       </div>
 
-      {/* ── PARTNER-STIMMEN (Coming Soon) ── */}
-      <div className="mb-8 animate-fade-up delay-1">
-        <div className="flex items-center gap-2 mb-4">
-          <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>PARTNER-STIMMEN</p>
-          <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { initials: 'SH', color: '#0055A4', company: 'Sanitär & Heizung', role: 'Produktionspartner' },
-            { initials: 'BS', color: '#008C45', company: 'Baustoffe', role: 'Produktionspartner' },
-            { initials: 'EL', color: '#E30613', company: 'Elektro', role: 'Produktionspartner' },
-          ].map((t, i) => (
-            <div key={i} className="card p-5 relative overflow-hidden">
-              <div className="absolute inset-0 z-10 flex items-center justify-center"
-                   style={{ background: 'color-mix(in srgb, var(--bg) 75%, transparent)', backdropFilter: 'blur(4px)' }}>
-                <span className="text-xs font-bold px-3 py-1.5 rounded-full"
-                      style={{ background: 'var(--surface)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>
-                  Bald verfügbar
-                </span>
-              </div>
-              <Quote size={22} style={{ color: 'var(--brand)', opacity: 0.15 }} className="mb-3" />
-              <p className="text-sm italic mb-4" style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                "Platzhalter für ein echtes Testimonial dieses Partners..."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                     style={{ background: t.color }}>{t.initials}</div>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>{t.company}</p>
-                  <p className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── PRODUCTION PARTNERS ── */}
       <div className="mb-8 animate-fade-up delay-2">
