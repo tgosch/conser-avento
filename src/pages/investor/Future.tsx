@@ -18,14 +18,14 @@ const PHASES = [
     bgColor: 'rgba(6,61,62,0.08)',
     goals: [
       'Conser MVP (Webshop + Produktkatalog)',
-      '9 Producer-Partner vollständig integriert',
+      '7 Producer-Partner vollständig integriert',
       '2,3 Mio. Produkte live im System',
       'Payment & Logistik-Infrastruktur ready',
       'Legal & GDPR compliant',
     ],
     keyMetrics: [
       { icon: '📦', label: 'Produkte live', value: '2,3M' },
-      { icon: '🤝', label: 'Partner', value: '9' },
+      { icon: '🤝', label: 'Partner', value: '7' },
       { icon: '💰', label: 'Budget', value: '300k€' },
       { icon: '⏱️', label: 'Dauer', value: '3 Mon.' },
     ],
@@ -57,7 +57,7 @@ const PHASES = [
     bgColor: 'rgba(212,102,42,0.08)',
     goals: [
       'Public Launch (Press, Marketing, Social)',
-      'Alle 9 Partner activated & trained',
+      'Alle 7 Partner activated & trained',
       '1.000 Handwerker-Kunden (organic)',
       '100+ Enterprise-Kunden (via Partner)',
       '5 M€ GMV — Proof of Concept',
@@ -79,7 +79,7 @@ const PHASES = [
     tags: ['TechCrunch', 'Construction Dive', 'TikTok 100k+', 'LinkedIn 50k+', 'Virtual Event'],
     gate: [
       'Produkt stabil (keine kritischen Bugs)',
-      'Alle 9 Partner trained & aktiviert',
+      'Alle 7 Partner trained & aktiviert',
       '1.000 zahlende Kunden akquiriert',
       'Positive Pressecoverage (5+ Artikel)',
       '5 M€ GMV erreicht',

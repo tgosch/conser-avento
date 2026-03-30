@@ -30,7 +30,7 @@ const PHASES = [
     title: 'Conser MVP',
     timeline: 'Jul – Aug 2026 · 8 Wochen',
     sections: {
-      'Features': ['2,3M Produkte Live', '9 Partner Integration', 'Product Search', 'Shopping Cart', 'Payment & Escrow', 'Order Mgmt'],
+      'Features': ['2,3M Produkte Live', '7 Partner Integration', 'Product Search', 'Shopping Cart', 'Payment & Escrow', 'Order Mgmt'],
       'Team Effort': ['Martin (CTO): 80%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [

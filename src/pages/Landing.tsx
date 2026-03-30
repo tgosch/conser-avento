@@ -366,7 +366,7 @@ export default function Landing() {
             </p>
             <div className="grid grid-cols-3 gap-6">
               {(role === 'investor' ? [
-                { n: '75.000', l: 'Kunden-Ziel' }, { n: '€181M', l: 'Revenue-Ziel' }, { n: '9', l: 'Top-Partner' },
+                { n: '75.000', l: 'Kunden-Ziel' }, { n: '€181M', l: 'Revenue-Ziel' }, { n: '7', l: 'Top-Partner' },
               ] : [
                 { n: '75.000', l: 'Zielkunden' }, { n: '€0', l: 'Erste 10 gratis' }, { n: '4–8 Wo.', l: 'Onboarding' },
               ]).map(s => (

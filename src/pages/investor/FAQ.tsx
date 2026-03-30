@@ -63,7 +63,7 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Was sind die nächsten Meilensteine?',
-        a: 'Phase 1 (Apr–Jun 2026): Conser MVP mit 2,3M Produkten und 9 Partnern live. Phase 2 (Jul–Sep 2026): Conser Launch, 1.000 Kunden, 5M€ GMV. Phase 3 (Okt 2026–Feb 2027): Avento MVP mit allen Core-Features. Phase 4 (Mär–Jun 2027): Public Beta Launch, 5.000 Kunden, Series A.',
+        a: 'Phase 1 (Apr–Jun 2026): Conser MVP mit 2,3M Produkten und 7 Partnern live. Phase 2 (Jul–Sep 2026): Conser Launch, 1.000 Kunden, 5M€ GMV. Phase 3 (Okt 2026–Feb 2027): Avento MVP mit allen Core-Features. Phase 4 (Mär–Jun 2027): Public Beta Launch, 5.000 Kunden, Series A.',
       },
       {
         q: 'Wann wird der Break-Even erreicht?',

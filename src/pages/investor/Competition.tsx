@@ -179,7 +179,7 @@ export default function InvestorCompetition() {
               { value: '10/10', label: 'Features abgedeckt' },
               { value: '0', label: 'Wettbewerber mit gleichem Scope' },
               { value: '2', label: 'KI-Module bereits live' },
-              { value: '9', label: 'Partner-Integrationen' },
+              { value: '7', label: 'Partner-Integrationen' },
             ].map(s => (
               <div key={s.label}>
                 <p className="text-metric-md text-white mb-1">{s.value}</p>

@@ -184,7 +184,7 @@ export default function InvestorDashboard() {
                 2,3 Millionen Produkte, 9 Top-Lieferanten — direkt in Avento integriert. 1-Klick-Bestellung aus dem ERP heraus.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['2,3M Produkte','9 Partner','B2B-Checkout','1-Klick-Bestellung'].map(f => (
+                {['2,3M Produkte','7 Partner','B2B-Checkout','1-Klick-Bestellung'].map(f => (
                   <span key={f} className="tag tag-sm"
                         style={{ background: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.75)' }}>{f}</span>
                 ))}

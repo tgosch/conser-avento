@@ -41,7 +41,7 @@ export default function PartnerDashboard() {
 
   const kunden = useCountUp(75000, { duration: 2000 })
   const revenue = useCountUp(181, { duration: 1800 })
-  const partners = useCountUp(9, { duration: 1200 })
+  const partners = useCountUp(7, { duration: 1200 })
 
   const now = new Date()
   const hour = now.getHours()
