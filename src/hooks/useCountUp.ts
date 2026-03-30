@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Options {
   duration?: number    // ms, default 1400
@@ -18,38 +18,38 @@ export function useCountUp(target: number, options: Options = {}) {
   } = options
 
   const [display, setDisplay] = useState(startOnMount ? 0 : target)
-  const [running, setRunning] = useState(false)
-  const ref = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  const start = useCallback(() => {
-    if (running) return
-    setRunning(true)
-    let current = 0
-    const steps = Math.ceil(duration / 16)
-    const increment = target / steps
-    ref.current = setInterval(() => {
-      current += increment
-      if (current >= target) {
-        setDisplay(target)
-        setRunning(false)
-        if (ref.current) clearInterval(ref.current)
-      } else {
-        setDisplay(parseFloat(current.toFixed(decimals + 1)))
-      }
-    }, 16)
-  }, [target, duration, decimals, running])
+  const rafRef = useRef<number | null>(null)
+  const startTimeRef = useRef<number | null>(null)
 
   useEffect(() => {
-    if (startOnMount) {
-      // Defer to next tick to avoid sync setState in effect
-      const id = requestAnimationFrame(() => start())
-      return () => {
-        cancelAnimationFrame(id)
-        if (ref.current) clearInterval(ref.current)
+    if (!startOnMount || target === 0) {
+      setDisplay(target)
+      return
+    }
+
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp
+      const elapsed = timestamp - startTimeRef.current
+      const progress = Math.min(elapsed / duration, 1)
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      const current = eased * target
+
+      if (progress < 1) {
+        setDisplay(parseFloat(current.toFixed(decimals + 1)))
+        rafRef.current = requestAnimationFrame(animate)
+      } else {
+        setDisplay(target)
       }
     }
-    return () => { if (ref.current) clearInterval(ref.current) }
-  }, [target, startOnMount, start])
+
+    rafRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      startTimeRef.current = null
+    }
+  }, [target, duration, decimals, startOnMount])
 
   const formatted = `${prefix}${
     decimals > 0
@@ -57,5 +57,5 @@ export function useCountUp(target: number, options: Options = {}) {
       : Math.floor(display).toLocaleString('de-DE')
   }${suffix}`
 
-  return { value: display, formatted, start }
+  return { value: display, formatted }
 }
