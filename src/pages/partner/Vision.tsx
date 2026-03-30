@@ -18,7 +18,7 @@ export default function PartnerVision() {
 
       {/* ── HERO STATEMENT ── */}
       <div className="card overflow-hidden mb-8 animate-fade-up delay-1">
-        <div className="relative px-8 py-12 md:px-12 md:py-16 text-center"
+        <div className="relative px-5 py-8 md:px-12 md:py-16 text-center"
           style={{ background: 'linear-gradient(135deg, #041E1F 0%, #063D3E 40%, #0A5C5E 100%)' }}>
           <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-[0.06]"
             style={{ background: 'radial-gradient(circle, #22D3EE 0%, transparent 70%)', transform: 'translate(30%, -40%)' }} />
@@ -91,7 +91,7 @@ export default function PartnerVision() {
                 Handwerker nutzen Avento täglich — und bestellen Material direkt aus dem Projekt heraus.
               </p>
             </div>
-            <div className="p-6 flex justify-center" style={{ background: 'var(--surface2)' }}>
+            <div className="p-4 md:p-6 flex justify-center" style={{ background: 'var(--surface2)' }}>
               <LaptopMockup
                 placeholderIcon="📊"
                 placeholderText="Avento ERP Dashboard"
@@ -115,7 +115,7 @@ export default function PartnerVision() {
                 automatische Preisvergleiche, Lieferzeiten in Echtzeit. Ihr Katalog, unsere Kunden.
               </p>
             </div>
-            <div className="p-6 flex justify-center" style={{ background: 'var(--surface2)' }}>
+            <div className="p-4 md:p-6 flex justify-center" style={{ background: 'var(--surface2)' }}>
               <LaptopMockup
                 placeholderIcon="🛒"
                 placeholderText="Conser Marktplatz"
@@ -165,12 +165,12 @@ export default function PartnerVision() {
       </div>
 
       {/* ── MOBILE EXPERIENCE ── */}
-      <div className="card p-6 md:p-8 mb-8 animate-fade-up delay-4">
+      <div className="card p-4 md:p-8 mb-8 animate-fade-up delay-4">
         <div className="flex items-center gap-2 mb-6">
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>DIE MOBILE ERFAHRUNG</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-12">
           <PhoneMockup
             placeholderIcon="📋"
             placeholderText="Projekt-Übersicht"
@@ -199,7 +199,7 @@ export default function PartnerVision() {
       </div>
 
       {/* ── ECOSYSTEM FLOW ── */}
-      <div className="card p-6 md:p-8 mb-8 animate-fade-up delay-4">
+      <div className="card p-4 md:p-8 mb-8 animate-fade-up delay-4">
         <div className="flex items-center gap-2 mb-6">
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>DER BESTELLFLOW</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />

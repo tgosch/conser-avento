@@ -94,11 +94,11 @@ export default function InvestorCompetition() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide"
+                <th className="px-3 py-3 md:px-6 md:py-4 text-left text-xs font-semibold uppercase tracking-wide"
                     style={{ color: 'var(--text-tertiary)' }}>Feature</th>
                 {COMPETITORS.map(c => (
                   <th key={c.name}
-                      className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wide"
+                      className="px-2 py-3 md:px-4 md:py-4 text-center text-xs font-semibold uppercase tracking-wide"
                       style={{
                         color: c.highlight ? 'var(--brand)' : 'var(--text-tertiary)',
                         background: c.highlight ? 'var(--brand-dim)' : 'transparent',
@@ -111,12 +111,12 @@ export default function InvestorCompetition() {
             <tbody>
               {FEATURES.map((f, i) => (
                 <tr key={f.name} style={{ borderBottom: i < FEATURES.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                  <td className="px-6 py-3.5">
+                  <td className="px-3 py-2.5 md:px-6 md:py-3.5">
                     <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{f.name}</p>
                     <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{f.tooltip}</p>
                   </td>
                   {(['avento', 'lexoffice', 'plancraft', 'excel'] as const).map(key => (
-                    <td key={key} className="px-4 py-3.5 text-center"
+                    <td key={key} className="px-2 py-2.5 md:px-4 md:py-3.5 text-center"
                         style={{ background: key === 'avento' ? 'var(--brand-dim)' : 'transparent' }}>
                       <div className="flex justify-center">
                         <StatusIcon level={f[key]} />
@@ -166,7 +166,7 @@ export default function InvestorCompetition() {
 
       {/* ── AVENTO ADVANTAGE ── */}
       <div className="card overflow-hidden mb-8 animate-fade-up delay-3">
-        <div className="relative px-8 py-10 md:px-12 md:py-14 text-center"
+        <div className="relative px-5 py-8 md:px-12 md:py-14 text-center"
              style={{ background: 'linear-gradient(135deg, #071F20 0%, #0A3436 40%, #0D4547 100%)' }}>
           <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-[0.06]"
                style={{ background: 'radial-gradient(circle, #C8611A 0%, transparent 70%)', transform: 'translate(30%, -40%)' }} />

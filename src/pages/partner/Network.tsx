@@ -145,7 +145,7 @@ export default function PartnerNetwork() {
 
       {/* ── CTA ── */}
       <div className="card overflow-hidden animate-fade-up delay-4">
-        <div className="relative px-8 py-10 md:py-12 text-center"
+        <div className="relative px-5 py-8 md:px-8 md:py-12 text-center"
           style={{ background: 'linear-gradient(135deg, #041E1F 0%, #063D3E 40%, #0A5C5E 100%)' }}>
           <div className="absolute top-0 right-0 w-60 h-60 rounded-full opacity-[0.06]"
             style={{ background: 'radial-gradient(circle, #22D3EE 0%, transparent 70%)', transform: 'translate(30%, -40%)' }} />

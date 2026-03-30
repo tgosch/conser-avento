@@ -49,7 +49,7 @@ export default function PartnerDashboard() {
 
       {/* ── HERO ── */}
       <div className="card overflow-hidden mb-8 animate-fade-up">
-        <div className="relative px-6 py-10 md:px-10 md:py-14"
+        <div className="relative px-5 py-6 md:px-10 md:py-14"
           style={{ background: 'linear-gradient(135deg, #041E1F 0%, #063D3E 30%, #0A5C5E 60%, #0E7A7D 100%)' }}>
           {/* Decorative orbs */}
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full opacity-[0.08]"
@@ -119,7 +119,7 @@ export default function PartnerDashboard() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Desktop View — Partner-Branded */}
-          <div className="card p-6 md:p-8">
+          <div className="card p-4 md:p-8">
             <LaptopMockup
               placeholderIcon="📊"
               placeholderText={`${partner?.name ?? 'Ihr Unternehmen'} im Conser Marktplatz`}
@@ -129,8 +129,8 @@ export default function PartnerDashboard() {
             />
           </div>
           {/* Mobile Views — Partner-Branded */}
-          <div className="card p-6 md:p-8">
-            <div className="flex justify-center gap-6">
+          <div className="card p-4 md:p-8">
+            <div className="flex justify-center gap-3 sm:gap-6">
               <PhoneMockup
                 placeholderIcon="🔨"
                 placeholderText="Avento Mobile"

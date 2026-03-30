@@ -39,7 +39,7 @@ export default function InvestorDashboard() {
         <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full opacity-[0.04]"
              style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
 
-        <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row gap-8">
+        <div className="relative z-10 p-5 md:p-10 flex flex-col md:flex-row gap-6 md:gap-8">
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5"
                  style={{ background: 'rgba(200,97,26,0.2)', border: '1px solid rgba(200,97,26,0.35)' }}>
@@ -88,10 +88,9 @@ export default function InvestorDashboard() {
       </div>
 
       {/* VIDEO PITCH */}
-      <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift"
+      <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
            style={{
              background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
-             aspectRatio: '16/9',
            }}>
         <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full opacity-[0.06]"
              style={{ background: 'radial-gradient(circle, #FFFFFF 0%, transparent 70%)' }} />
@@ -148,8 +147,8 @@ export default function InvestorDashboard() {
       <div className="mb-8 delay-2 animate-fade-up">
         <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>WAS WIR BAUEN</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative rounded-[24px] overflow-hidden p-7 noise-overlay hover-lift"
-               style={{ background: 'linear-gradient(145deg, #071F20 0%, #0A3436 100%)', minHeight: 210 }}>
+          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
+               style={{ background: 'linear-gradient(145deg, #071F20 0%, #0A3436 100%)', minHeight: 180 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />
             <div className="relative z-10">
@@ -169,8 +168,8 @@ export default function InvestorDashboard() {
               </div>
             </div>
           </div>
-          <div className="relative rounded-[24px] overflow-hidden p-7 noise-overlay hover-lift"
-               style={{ background: 'linear-gradient(145deg, #6B2D0C 0%, #8B3D12 100%)', minHeight: 210 }}>
+          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
+               style={{ background: 'linear-gradient(145deg, #6B2D0C 0%, #8B3D12 100%)', minHeight: 180 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />
             <div className="relative z-10">
@@ -243,15 +242,15 @@ export default function InvestorDashboard() {
       </div>
 
       {/* VISION / COUNTUP */}
-      <div className="card p-7 md:p-8 mb-8 delay-3 animate-fade-up">
+      <div className="card p-5 md:p-8 mb-8 delay-3 animate-fade-up">
         <p className="label-tag mb-6" style={{ color: 'var(--text-tertiary)' }}>WO WIR HINWOLLEN</p>
-        <div className="grid grid-cols-3 gap-6 md:gap-10 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-10 mb-6">
           {[
             { val: c75k, display: c75k.toLocaleString('de-DE'), label: 'Kunden',       sub: 'bis 2031, DACH-Fokus' },
             { val: c181, display: `€${c181}M`,                  label: 'Jahresumsatz', sub: 'bei Reife (2032)' },
             { val: c49,  display: `${c49}%`,                    label: 'EBITDA',       sub: 'Zielmarge' },
           ].map((v, i) => (
-            <div key={v.label} className={i > 0 ? 'border-l pl-6 md:pl-10' : ''}
+            <div key={v.label} className={i > 0 ? 'sm:border-l sm:pl-6 md:pl-10 border-t sm:border-t-0 pt-4 sm:pt-0' : ''}
                  style={{ borderColor: 'var(--border)' }}>
               <p className="text-metric-xl count-pop mb-1" style={{ color: 'var(--brand)' }}>{v.display}</p>
               <p className="font-semibold text-sm mb-0.5" style={{ color: 'var(--text-primary)' }}>{v.label}</p>

@@ -130,7 +130,7 @@ export default function PartnerPartnership() {
       </div>
 
       {/* ── ORDER FLOW VISUALIZATION ── */}
-      <div className="card p-6 md:p-8 mb-8 animate-fade-up delay-2">
+      <div className="card p-4 md:p-8 mb-8 animate-fade-up delay-2">
         <div className="flex items-center gap-2 mb-6">
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>SO SIEHT EINE BESTELLUNG AUS</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />

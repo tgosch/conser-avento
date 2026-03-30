@@ -22,7 +22,7 @@ export default function PartnerRevenue() {
 
       {/* ── HERO ── */}
       <div className="card overflow-hidden mb-8 animate-fade-up delay-1">
-        <div className="relative px-8 py-12 md:px-12 md:py-16 text-center"
+        <div className="relative px-5 py-8 md:px-12 md:py-16 text-center"
           style={{ background: 'linear-gradient(135deg, #041E1F 0%, #063D3E 40%, #0A5C5E 100%)' }}>
           <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-[0.06]"
             style={{ background: 'radial-gradient(circle, #C8611A 0%, transparent 70%)', transform: 'translate(30%, -40%)' }} />

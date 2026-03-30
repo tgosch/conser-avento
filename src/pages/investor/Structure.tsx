@@ -99,7 +99,7 @@ export default function InvestorStructure() {
 
         <div className="flex flex-col items-center" style={{ height: '40px', position: 'relative' }}>
           <div className="w-px flex-1" style={{ background: 'var(--border)' }} />
-          <div className="flex gap-32 md:gap-48">
+          <div className="flex gap-16 md:gap-48">
             <div className="w-px h-4" style={{ background: 'var(--border)' }} />
             <div className="w-px h-4" style={{ background: 'var(--border)' }} />
           </div>

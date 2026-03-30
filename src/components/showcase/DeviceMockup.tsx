@@ -19,11 +19,11 @@ export function PhoneMockup({
   placeholderIcon = '📱', placeholderText = 'App Preview',
 }: PhoneProps) {
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-2 sm:gap-3">
       {/* Phone Frame */}
-      <div className="relative" style={{ width: 200, height: 410 }}>
+      <div className="relative w-[140px] h-[287px] sm:w-[200px] sm:h-[410px]">
         {/* Outer shell */}
-        <div className="absolute inset-0 rounded-[36px]"
+        <div className="absolute inset-0 rounded-[24px] sm:rounded-[36px]"
           style={{ background: '#1A1A1A', boxShadow: '0 25px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)' }} />
         {/* Side button */}
         <div className="absolute -right-[2px] top-[90px] w-[3px] h-[30px] rounded-r-sm" style={{ background: '#2A2A2A' }} />
@@ -31,9 +31,9 @@ export function PhoneMockup({
         <div className="absolute -left-[2px] top-[110px] w-[3px] h-[35px] rounded-l-sm" style={{ background: '#2A2A2A' }} />
         <div className="absolute -left-[2px] top-[155px] w-[3px] h-[35px] rounded-l-sm" style={{ background: '#2A2A2A' }} />
         {/* Screen */}
-        <div className="absolute inset-[4px] rounded-[32px] overflow-hidden" style={{ background: '#000' }}>
+        <div className="absolute inset-[3px] sm:inset-[4px] rounded-[21px] sm:rounded-[32px] overflow-hidden" style={{ background: '#000' }}>
           {/* Dynamic Island */}
-          <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[90px] h-[28px] rounded-full z-10" style={{ background: '#000' }} />
+          <div className="absolute top-[7px] sm:top-[10px] left-1/2 -translate-x-1/2 w-[64px] sm:w-[90px] h-[20px] sm:h-[28px] rounded-full z-10" style={{ background: '#000' }} />
           {/* Screen content */}
           {src ? (
             <img src={src} alt={alt} className="w-full h-full object-cover" />
@@ -46,7 +46,7 @@ export function PhoneMockup({
           )}
         </div>
         {/* Home indicator */}
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[100px] h-[4px] rounded-full" style={{ background: 'rgba(255,255,255,0.3)' }} />
+        <div className="absolute bottom-[6px] sm:bottom-[8px] left-1/2 -translate-x-1/2 w-[70px] sm:w-[100px] h-[3px] sm:h-[4px] rounded-full" style={{ background: 'rgba(255,255,255,0.3)' }} />
       </div>
       {/* Label */}
       {label && (
@@ -77,7 +77,7 @@ export function LaptopMockup({
   return (
     <div className="flex flex-col items-center gap-3">
       {/* Laptop Frame */}
-      <div className="relative w-full" style={{ maxWidth: 480 }}>
+      <div className="relative w-full max-w-[300px] sm:max-w-[480px]">
         {/* Screen bezel */}
         <div className="relative rounded-t-xl overflow-hidden"
           style={{ background: '#1A1A1A', padding: '8px 8px 0', boxShadow: '0 -2px 20px rgba(0,0,0,0.15)' }}>
