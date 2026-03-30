@@ -1,5 +1,8 @@
 import { Zap, TrendingUp, Target, ArrowRight } from 'lucide-react'
 import { PhoneMockup, LaptopMockup } from '../../components/showcase/DeviceMockup'
+import spaceAiLogo from '../../assets/SpaceAI.png'
+import bauDokuLogo from '../../assets/BauDokuAI.png'
+import conserShopImg from '../../assets/conser.shop.png'
 
 export default function PartnerVision() {
   return (
@@ -117,9 +120,8 @@ export default function PartnerVision() {
             </div>
             <div className="p-4 md:p-6 flex justify-center" style={{ background: 'var(--surface2)' }}>
               <LaptopMockup
-                placeholderIcon="🛒"
-                placeholderText="Conser Marktplatz"
-                gradient="linear-gradient(145deg, #1A0A00 0%, #8B4513 50%, #C8611A 100%)"
+                src={conserShopImg}
+                alt="Conser Marktplatz"
               />
             </div>
           </div>
@@ -135,8 +137,7 @@ export default function PartnerVision() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="card p-6" style={{ borderLeft: '3px solid #8B5CF6' }}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
-                style={{ background: 'rgba(139,92,246,0.12)' }}>🧠</div>
+              <img src={spaceAiLogo} alt="Space AI" className="w-10 h-10 rounded-xl object-cover" />
               <div>
                 <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -149,8 +150,7 @@ export default function PartnerVision() {
           </div>
           <div className="card p-6" style={{ borderLeft: '3px solid #0EA5E9' }}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
-                style={{ background: 'rgba(14,165,233,0.12)' }}>📋</div>
+              <img src={bauDokuLogo} alt="BauDoku AI" className="w-10 h-10 rounded-xl object-cover" />
               <div>
                 <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>

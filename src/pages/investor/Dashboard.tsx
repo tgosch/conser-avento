@@ -4,6 +4,8 @@ import { supabase } from '../../lib/supabase'
 import type { Update } from '../../lib/supabase'
 import { ArrowRight, ChevronRight, Play } from 'lucide-react'
 import { useCountUp } from '../../hooks/useCountUp'
+import spaceAiLogo from '../../assets/SpaceAI.png'
+import bauDokuLogo from '../../assets/BauDokuAI.png'
 
 const categoryColor: Record<string, string> = {
   general: '#6E6E73', milestone: '#063D3E', important: '#C8611A',
@@ -199,8 +201,7 @@ export default function InvestorDashboard() {
           <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
                style={{ borderLeft: '3px solid #8B5CF6' }}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl"
-                   style={{ background: 'rgba(139,92,246,0.12)' }}>🧠</div>
+              <img src={spaceAiLogo} alt="Space AI" className="w-11 h-11 rounded-2xl object-cover" />
               <div>
                 <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Space AI</h3>
                 <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -220,8 +221,7 @@ export default function InvestorDashboard() {
           <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
                style={{ borderLeft: '3px solid #0EA5E9' }}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl"
-                   style={{ background: 'rgba(14,165,233,0.12)' }}>📋</div>
+              <img src={bauDokuLogo} alt="BauDoku AI" className="w-11 h-11 rounded-2xl object-cover" />
               <div>
                 <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>BauDoku AI</h3>
                 <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>

@@ -1,5 +1,6 @@
 import { Users, ShoppingCart, Eye, BarChart3, Megaphone, Link2, ArrowRight, Shield, CheckCircle, Clock, Server, MapPin, PartyPopper, Handshake, Calendar } from 'lucide-react'
 import { LaptopMockup } from '../../components/showcase/DeviceMockup'
+import conserShopImg from '../../assets/conser.shop.png'
 
 // ── 8-Schritte Onboarding ────────────────────────────────────────
 const ONBOARDING = [
@@ -137,9 +138,8 @@ export default function PartnerPartnership() {
         </div>
         <div className="flex justify-center">
           <LaptopMockup
-            placeholderIcon="📦"
-            placeholderText="Bestellflow: Avento → Conser → Partner"
-            gradient="linear-gradient(145deg, #0C1222 0%, #162032 40%, #1A3A5C 100%)"
+            src={conserShopImg}
+            alt="Conser Marktplatz — Bestellprozess"
             label="Automatisierter Bestellprozess"
             sublabel="Handwerker bestellt → Conser matched → Sie liefern"
           />

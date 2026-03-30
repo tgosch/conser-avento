@@ -3,6 +3,9 @@ import { useAuth } from '../../context/AuthContext'
 import { useCountUp } from '../../hooks/useCountUp'
 import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, TrendingUp, Zap, Calendar } from 'lucide-react'
 import { LaptopMockup, PhoneMockup } from '../../components/showcase/DeviceMockup'
+import spaceAiLogo from '../../assets/SpaceAI.png'
+import bauDokuLogo from '../../assets/BauDokuAI.png'
+import conserShopImg from '../../assets/conser.shop.png'
 
 const STEPS = [
   { key: 1, label: 'Kennenlernen',        desc: 'Persönlicher Termin',       icon: '🤝' },
@@ -121,9 +124,8 @@ export default function PartnerDashboard() {
           {/* Desktop View — Partner-Branded */}
           <div className="card p-4 md:p-8">
             <LaptopMockup
-              placeholderIcon="📊"
-              placeholderText={`${partner?.name ?? 'Ihr Unternehmen'} im Conser Marktplatz`}
-              gradient={`linear-gradient(145deg, #041E1F 0%, ${partner?.color ?? '#063D3E'} 50%, #0A5C5E 100%)`}
+              src={conserShopImg}
+              alt="Conser Marktplatz"
               label="Conser Marktplatz"
               sublabel={`Integriert mit ${partner?.name ?? 'Ihrem Katalog'}`}
             />
@@ -174,8 +176,7 @@ export default function PartnerDashboard() {
           <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
             style={{ borderBottom: '2px solid #8B5CF6' }}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
-                style={{ background: 'rgba(139,92,246,0.12)' }}>🧠</div>
+              <img src={spaceAiLogo} alt="Space AI" className="w-10 h-10 rounded-xl object-cover" />
               <div>
                 <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -188,8 +189,7 @@ export default function PartnerDashboard() {
           <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
             style={{ borderBottom: '2px solid #0EA5E9' }}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
-                style={{ background: 'rgba(14,165,233,0.12)' }}>📋</div>
+              <img src={bauDokuLogo} alt="BauDoku AI" className="w-10 h-10 rounded-xl object-cover" />
               <div>
                 <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
