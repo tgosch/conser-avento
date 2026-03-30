@@ -1,14 +1,12 @@
-import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import InvestorSidebar from './InvestorSidebar'
 import InvestorBottomNav from './InvestorBottomNav'
 import Topbar from './Topbar'
 export default function InvestorLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <InvestorSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Topbar onMenuClick={() => setSidebarOpen(true)} />
+      <InvestorSidebar open={false} onClose={() => {}} />
+      <Topbar />
       <main
         className="pt-[var(--topbar-height)] min-h-screen"
         style={{
@@ -20,7 +18,7 @@ export default function InvestorLayout() {
           <Outlet />
         </div>
       </main>
-      {!sidebarOpen && <InvestorBottomNav onMoreClick={() => setSidebarOpen(true)} />}
+      <InvestorBottomNav />
     </div>
   )
 }

@@ -1,14 +1,12 @@
-import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import PartnerSidebar from './PartnerSidebar'
 import PartnerBottomNav from './PartnerBottomNav'
 import Topbar from './Topbar'
 export default function PartnerLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <PartnerSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Topbar onMenuClick={() => setSidebarOpen(true)} />
+      <PartnerSidebar open={false} onClose={() => {}} />
+      <Topbar />
       <main
         className="pt-[var(--topbar-height)] min-h-screen"
         style={{
@@ -20,7 +18,7 @@ export default function PartnerLayout() {
           <Outlet />
         </div>
       </main>
-      {!sidebarOpen && <PartnerBottomNav onMoreClick={() => setSidebarOpen(true)} />}
+      <PartnerBottomNav />
     </div>
   )
 }
