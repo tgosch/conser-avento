@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { useState } from 'react'
 import type { Partner } from '../../lib/supabase'
 import { ArrowRight, Quote, Calendar } from 'lucide-react'
 
 const FALLBACK_PRODUCTION: Partner[] = [
-  { id: 'p1', name: 'Richter+Frenzel', type: 'production', category: 'Sanitär & Heizung', description: 'Marktführer für Sanitär, Heizung und Klima', status: 'partner', logo_path: null, initials: 'RF', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
-  { id: 'p2', name: 'BayWa', type: 'production', category: 'Baustoffe', description: 'Internationaler Baustoffhändler', status: 'active', logo_path: null, initials: 'BW', color: '#008C45', visible: true, order_index: 2, created_at: '' },
-  { id: 'p3', name: 'FEGA & Schmitt', type: 'production', category: 'Elektro', description: 'Elektro-Großhandel', status: 'active', logo_path: null, initials: 'FS', color: '#E30613', visible: true, order_index: 3, created_at: '' },
-  { id: 'p4', name: 'Sonepar', type: 'production', category: 'Elektro', description: 'Weltweit größter Elektro-Distributor', status: 'negotiating', logo_path: null, initials: 'SO', color: '#003DA5', visible: true, order_index: 4, created_at: '' },
-  { id: 'p5', name: 'Würth', type: 'production', category: 'Befestigungstechnik', description: 'Weltmarktführer Befestigungstechnik', status: 'negotiating', logo_path: null, initials: 'WÜ', color: '#CC0000', visible: true, order_index: 5, created_at: '' },
+  { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär & Heizung', description: 'Führender Großhändler für Sanitär, Heizung und Klima', status: 'partner', logo_path: null, initials: 'SH', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
+  { id: 'p2', name: 'Baustoffe', type: 'production', category: 'Baustoffe', description: 'Internationaler Baustoffhändler', status: 'active', logo_path: null, initials: 'BS', color: '#008C45', visible: true, order_index: 2, created_at: '' },
+  { id: 'p3', name: 'Elektro', type: 'production', category: 'Elektro', description: 'Elektro-Großhandel für Fachbetriebe', status: 'active', logo_path: null, initials: 'EL', color: '#E30613', visible: true, order_index: 3, created_at: '' },
+  { id: 'p4', name: 'Befestigungstechnik', type: 'production', category: 'Befestigungstechnik', description: 'Spezialist für Befestigungs- und Montagetechnik', status: 'active', logo_path: null, initials: 'BF', color: '#CC0000', visible: true, order_index: 4, created_at: '' },
+  { id: 'p5', name: 'Dach & Fassade', type: 'production', category: 'Dach & Fassade', description: 'Dachbaustoffe und Fassadensysteme', status: 'partner', logo_path: null, initials: 'DF', color: '#7C3AED', visible: true, order_index: 5, created_at: '' },
+  { id: 'p6', name: 'Werkzeuge & Maschinen', type: 'production', category: 'Werkzeuge & Maschinen', description: 'Profi-Werkzeuge und Baumaschinen', status: 'active', logo_path: null, initials: 'WM', color: '#003DA5', visible: true, order_index: 6, created_at: '' },
+  { id: 'p7', name: 'Haustechnik', type: 'production', category: 'Haustechnik', description: 'Lüftung, Klima und Gebäudetechnik', status: 'negotiating', logo_path: null, initials: 'HT', color: '#0EA5E9', visible: true, order_index: 7, created_at: '' },
 ]
 
-const FALLBACK_CUSTOMERS: Partner[] = [
-  { id: 'c1', name: 'P+E Schmitt', type: 'customer', category: 'SHK-Fachbetrieb', description: 'Pilotkunde für Sanitär & Heizung', status: 'beta', logo_path: null, initials: 'PS', color: '#2563EB', visible: true, order_index: 1, created_at: '' },
-  { id: 'c2', name: 'In Concept', type: 'customer', category: 'Elektro-Fachbetrieb', description: 'Pilotpartner für Elektro-Integration', status: 'beta', logo_path: null, initials: 'IC', color: '#7C3AED', visible: true, order_index: 2, created_at: '' },
-  { id: 'c3', name: 'IKEA Bau', type: 'customer', category: 'Generalunternehmer', description: 'Pilotprojekt Modulares Bauen', status: 'active', logo_path: null, initials: 'IB', color: '#0051BA', visible: true, order_index: 3, created_at: '' },
-]
+const FALLBACK_CUSTOMERS: Partner[] = []
 
 const STATUS_MAP: Record<string, { bg: string; text: string; label: string }> = {
   negotiating: { bg: 'rgba(234,179,8,0.10)',  text: '#EAB308', label: 'Verhandlung' },
@@ -25,17 +22,9 @@ const STATUS_MAP: Record<string, { bg: string; text: string; label: string }> = 
 }
 
 export default function PartnerNetwork() {
-  const [production, setProduction] = useState<Partner[]>(FALLBACK_PRODUCTION)
-  const [customers, setCustomers] = useState<Partner[]>(FALLBACK_CUSTOMERS)
-
-  useEffect(() => {
-    supabase.from('partners').select('*').eq('visible', true).order('order_index').then(({ data }) => {
-      if (data && data.length > 0) {
-        setProduction(data.filter(p => p.type === 'production'))
-        setCustomers(data.filter(p => p.type === 'customer'))
-      }
-    })
-  }, [])
+  // Partner-Portal zeigt nur anonyme Branchen-Kategorien, keine echten Firmennamen
+  const production = FALLBACK_PRODUCTION
+  const [customers] = useState<Partner[]>(FALLBACK_CUSTOMERS)
 
   const PartnerCard = ({ p }: { p: Partner }) => {
     const s = STATUS_MAP[p.status] ?? STATUS_MAP.negotiating
@@ -71,8 +60,8 @@ export default function PartnerNetwork() {
       {/* ── STATS ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 animate-fade-up delay-1">
         {[
-          { value: String(production.length), label: 'Produktionspartner', icon: '🏭' },
-          { value: String(customers.length), label: 'Pilotkunden', icon: '🔨' },
+          { value: '7', label: 'Partner an Bord', icon: '🏭' },
+          { value: '7', label: 'Branchen', icon: '🔨' },
           { value: '2,3M', label: 'Produkte', icon: '📦' },
           { value: 'DACH', label: 'Region', icon: '🌍' },
         ].map(s => (
@@ -92,9 +81,9 @@ export default function PartnerNetwork() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { initials: 'RF', color: '#0055A4', company: 'Richter+Frenzel', role: 'Produktionspartner' },
-            { initials: 'BW', color: '#008C45', company: 'BayWa', role: 'Produktionspartner' },
-            { initials: 'FS', color: '#E30613', company: 'FEGA & Schmitt', role: 'Produktionspartner' },
+            { initials: 'SH', color: '#0055A4', company: 'Sanitär & Heizung', role: 'Produktionspartner' },
+            { initials: 'BS', color: '#008C45', company: 'Baustoffe', role: 'Produktionspartner' },
+            { initials: 'EL', color: '#E30613', company: 'Elektro', role: 'Produktionspartner' },
           ].map((t, i) => (
             <div key={i} className="card p-5 relative overflow-hidden">
               <div className="absolute inset-0 z-10 flex items-center justify-center"
@@ -132,16 +121,18 @@ export default function PartnerNetwork() {
         </div>
       </div>
 
-      {/* ── PILOT CUSTOMERS ── */}
-      <div className="mb-8 animate-fade-up delay-3">
-        <div className="flex items-center gap-2 mb-4">
-          <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>PILOTKUNDEN</p>
-          <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+      {/* Pilotkunden nur anzeigen wenn vorhanden */}
+      {customers.length > 0 && (
+        <div className="mb-8 animate-fade-up delay-3">
+          <div className="flex items-center gap-2 mb-4">
+            <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>PILOTKUNDEN</p>
+            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {customers.map(p => <PartnerCard key={p.id} p={p} />)}
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {customers.map(p => <PartnerCard key={p.id} p={p} />)}
-        </div>
-      </div>
+      )}
 
       {/* ── CTA ── */}
       <div className="card overflow-hidden animate-fade-up delay-4">
