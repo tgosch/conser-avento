@@ -175,12 +175,10 @@ export default function PartnerDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
             style={{ borderBottom: '2px solid #8B5CF6' }}>
-            <div className="flex items-center gap-3 mb-3">
-              <img src={spaceAiLogo} alt="Space AI" className="w-10 h-10 rounded-xl object-cover" />
-              <div>
-                <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
-              </div>
+            <img src={spaceAiLogo} alt="Space AI" className="w-16 h-16 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
             </div>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               KI-Assistent für Handwerker: automatisierte Angebote, Materialkalkulation, Projektplanung. Ihre Produkte werden direkt in Empfehlungen einbezogen.
@@ -188,12 +186,10 @@ export default function PartnerDashboard() {
           </div>
           <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
             style={{ borderBottom: '2px solid #0EA5E9' }}>
-            <div className="flex items-center gap-3 mb-3">
-              <img src={bauDokuLogo} alt="BauDoku AI" className="w-10 h-10 rounded-xl object-cover" />
-              <div>
-                <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
-              </div>
+            <img src={bauDokuLogo} alt="BauDoku AI" className="w-16 h-16 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
             </div>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Digitales Bautagebuch mit KI: Fotos, Protokolle, Signaturen automatisch. Jeder Materialverbrauch wird dokumentiert — optimiert Nachbestellungen bei Ihnen.
