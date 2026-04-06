@@ -195,7 +195,7 @@ export default function PartnerVision() {
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>DIE MOBILE ERFAHRUNG</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
-        <div className="flex flex-wrap justify-center gap-4 md:gap-12">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-8">
           <PhoneMockup
             placeholderIcon="📋"
             placeholderText="Projekt-Übersicht"
@@ -217,9 +217,23 @@ export default function PartnerVision() {
             label="Conser Shop"
             sublabel="12,8M Produkte"
           />
+          <PhoneMockup
+            placeholderIcon="📊"
+            placeholderText="Bautagebuch"
+            gradient="linear-gradient(145deg, #0A1628 0%, #0EA5E9 100%)"
+            label="BauDoku AI"
+            sublabel="Automatische Doku"
+          />
+          <PhoneMockup
+            placeholderIcon="🤖"
+            placeholderText="KI-Assistent"
+            gradient="linear-gradient(145deg, #1A0A2E 0%, #8B5CF6 100%)"
+            label="Space AI"
+            sublabel="Angebote & Kalkulation"
+          />
         </div>
         <p className="text-center text-xs mt-6 font-semibold" style={{ color: 'var(--brand)' }}>
-          Handwerker bestellen Material direkt von der Baustelle — 1-Click an Sie als Partner.
+          5 Module, 1 App — Handwerker bestellen Material direkt von der Baustelle. 1-Click an Sie als Partner.
         </p>
       </div>
 
