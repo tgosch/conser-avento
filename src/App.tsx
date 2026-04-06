@@ -61,6 +61,7 @@ const PartnerPartnership = React.lazy(() => import('./pages/partner/Partnership'
 const PartnerRevenue = React.lazy(() => import('./pages/partner/Revenue'))
 const PartnerNetwork = React.lazy(() => import('./pages/partner/Network'))
 const PartnerRoadmap = React.lazy(() => import('./pages/partner/Roadmap'))
+const PartnerTeam = React.lazy(() => import('./pages/partner/Team'))
 const PartnerSettings = React.lazy(() => import('./pages/partner/Settings'))
 const PartnerCalculator = React.lazy(() => import('./pages/partner/Calculator'))
 
@@ -197,6 +198,7 @@ function AppRoutes() {
           <Route path="calculator" element={<PartnerCalculator />} />
           <Route path="network" element={<PartnerNetwork />} />
           <Route path="roadmap" element={<PartnerRoadmap />} />
+          <Route path="team" element={<PartnerTeam />} />
           <Route path="settings" element={<PartnerSettings />} />
         </Route>
 

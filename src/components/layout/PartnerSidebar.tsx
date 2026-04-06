@@ -23,6 +23,7 @@ const NAV = [
       { to: '/partner/calculator',   icon: Calculator, label: 'Revenue Calculator' },
       { to: '/partner/network',     icon: Users,      label: 'Netzwerk' },
       { to: '/partner/roadmap',     icon: Map,        label: 'Roadmap' },
+      { to: '/partner/team',        icon: Users,      label: 'Unser Team' },
     ]
   },
   {

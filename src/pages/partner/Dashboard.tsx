@@ -5,7 +5,7 @@ import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
 import conserLogo from '../../assets/conser_kachel.webp'
 import aventoLogo from '../../assets/avento_kachel.webp'
-import conserShopImg from '../../assets/conser-shop.webp'
+import conserShopImg from '../../assets/conser-checkout-desktop.png'
 
 const STEPS = [
   { key: 1, label: 'Kennenlernen',        desc: 'Persönlicher Termin' },
