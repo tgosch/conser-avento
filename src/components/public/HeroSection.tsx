@@ -109,7 +109,7 @@ export default function HeroSection() {
                       loop
                       muted={muted}
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       className="w-full block"
                       style={{ aspectRatio: '9/16', objectFit: 'cover' }}
                     />
