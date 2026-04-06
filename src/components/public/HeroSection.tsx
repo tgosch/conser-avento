@@ -34,17 +34,17 @@ export default function HeroSection() {
       <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,61,62,0.4) 0%, rgba(6,61,62,0.85) 100%)' }} />
 
       <motion.div style={{ opacity }} className="relative z-10">
-        <div className="public-container pt-32 pb-14 md:pt-44 md:pb-20 text-center">
-          {/* Logos */}
+        <div className="public-container pt-24 pb-10 md:pt-44 md:pb-20 text-center">
+          {/* Logos — hidden on mobile (navbar already shows them) */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease }}
-            className="flex items-center justify-center gap-3 mb-8"
+            className="hidden sm:flex items-center justify-center gap-3 mb-8"
           >
-            <img src={aventoLogo} alt="Avento" className="h-8 md:h-9 rounded-lg" />
+            <img src={aventoLogo} alt="Avento" className="h-9 rounded-lg" />
             <div className="w-px h-4" style={{ background: 'rgba(255,255,255,0.2)' }} />
-            <img src={conserLogo} alt="Conser" className="h-8 md:h-9 rounded-lg" />
+            <img src={conserLogo} alt="Conser" className="h-9 rounded-lg" />
           </motion.div>
 
           <motion.h1
@@ -106,12 +106,12 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Product image — Marktplatz */}
-      <motion.div className="relative z-10 public-container pb-0" style={{ y: imgY }}
+      <motion.div className="relative z-10 public-container pb-0 mt-6 md:mt-0" style={{ y: imgY }}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.5, ease }}
       >
-        <div className="max-w-5xl mx-auto rounded-t-2xl overflow-hidden"
+        <div className="max-w-5xl mx-auto rounded-t-xl md:rounded-t-2xl overflow-hidden"
           style={{ boxShadow: '0 -20px 80px rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}>
           <div className="flex items-center gap-1.5 px-3 md:px-4 py-2" style={{ background: 'rgba(0,0,0,0.6)' }}>
             <div className="w-2 h-2 rounded-full" style={{ background: '#FF5F57' }} />
