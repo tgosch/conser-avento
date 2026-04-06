@@ -32,9 +32,9 @@
   --accent-dim:  rgba(200,97,26,0.10);
 
   /* Text */
-  --text-primary:   #1A1A18;   /* Fast schwarz, warmer Ton                     */
-  --text-secondary: #6B6B67;   /* Mid-gray                                     */
-  --text-tertiary:  #A8A8A4;   /* Subtle                                       */
+  --text-primary:   #111110;   /* Kräftiger — fast schwarz, warm                */
+  --text-secondary: #555550;   /* Stärker lesbar als vorher                     */
+  --text-tertiary:  #8A8A85;   /* Sichtbarer, aber noch dezent                  */
   --text-inverse:   #FFFFFF;
 
   /* Semantic */
@@ -689,3 +689,70 @@ textarea, select {
 
 /* glow-teal legacy */
 .glow-teal { box-shadow: 0 0 0 3px rgba(6,61,62,0.18); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PUBLIC PAGES
+═══════════════════════════════════════════════════════════════════ */
+
+.public-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 768px) {
+  .public-container { padding: 0 40px; }
+}
+@media (min-width: 1280px) {
+  .public-container { padding: 0 60px; }
+}
+
+/* Animated gradient mesh */
+@keyframes mesh-drift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+.gradient-mesh-animated {
+  background: linear-gradient(
+    135deg,
+    #063D3E 0%,
+    #0A5557 25%,
+    #063D3E 50%,
+    #0C2E2F 75%,
+    #063D3E 100%
+  );
+  background-size: 400% 400%;
+  animation: mesh-drift 20s ease-in-out infinite;
+}
+
+/* Floating orb decorations */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(-1.5deg); }
+}
+.float-slow { animation: float-slow 8s ease-in-out infinite; }
+.float-slower { animation: float-slower 12s ease-in-out infinite; }
+
+/* Glass card for public sections */
+.glass-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-xl);
+}
+[data-theme="dark"] .glass-card {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* Section divider gradient */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}

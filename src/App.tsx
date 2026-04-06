@@ -7,14 +7,23 @@ import { ThemeProvider } from './context/ThemeContext'
 
 import CookieConsent from './components/CookieConsent'
 import AiChatbot from './components/chat/AiChatbot'
-import Landing from './pages/Landing'
-import PartnerRegister from './pages/PartnerRegister'
-import ResetPassword from './pages/ResetPassword'
+import PublicLayout from './components/public/PublicLayout'
 import InvestorLayout from './components/layout/InvestorLayout'
 import OwnerLayout from './components/layout/OwnerLayout'
 import PartnerLayout from './components/layout/PartnerLayout'
 
-// Lazy-loaded pages for code splitting
+// Public pages (lazy)
+const PublicHome = React.lazy(() => import('./pages/public/PublicHome'))
+const PublicProducts = React.lazy(() => import('./pages/public/PublicProducts'))
+const PublicAbout = React.lazy(() => import('./pages/public/PublicAbout'))
+const PublicContact = React.lazy(() => import('./pages/public/PublicContact'))
+
+// Auth pages (lazy)
+const AuthPage = React.lazy(() => import('./pages/AuthPage'))
+const PartnerRegister = React.lazy(() => import('./pages/PartnerRegister'))
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'))
+
+// Investor pages (lazy)
 const InvestorDashboard = React.lazy(() => import('./pages/investor/Dashboard'))
 const InvestorPlans = React.lazy(() => import('./pages/investor/Plans'))
 const InvestorPlanDetail = React.lazy(() => import('./pages/investor/PlanDetail'))
@@ -29,6 +38,7 @@ const InvestorRoadmap = React.lazy(() => import('./pages/investor/Roadmap'))
 const InvestorCompetition = React.lazy(() => import('./pages/investor/Competition'))
 const InvestorFAQ = React.lazy(() => import('./pages/investor/FAQ'))
 
+// Owner pages (lazy)
 const OwnerDashboard = React.lazy(() => import('./pages/owner/Dashboard'))
 const OwnerDocs = React.lazy(() => import('./pages/owner/Docs'))
 const OwnerChat = React.lazy(() => import('./pages/owner/Chat'))
@@ -42,6 +52,7 @@ const OwnerSettings = React.lazy(() => import('./pages/owner/Settings'))
 const OwnerTeam = React.lazy(() => import('./pages/owner/Team'))
 const OwnerPresentationsHub = React.lazy(() => import('./pages/owner/PresentationsHub'))
 
+// Partner pages (lazy)
 const PartnerDashboard = React.lazy(() => import('./pages/partner/Dashboard'))
 const PartnerVision = React.lazy(() => import('./pages/partner/Vision'))
 const PartnerPartnership = React.lazy(() => import('./pages/partner/Partnership'))
@@ -96,21 +107,21 @@ function PageLoader() {
 function InvestorGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) return <Spinner />
-  if (!user || user.isAdmin || user.isPartner) return <Navigate to="/" replace />
+  if (!user || user.isAdmin || user.isPartner) return <Navigate to="/login" replace />
   return <>{children}</>
 }
 
 function OwnerGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) return <Spinner />
-  if (!user?.isAdmin) return <Navigate to="/" replace />
+  if (!user?.isAdmin) return <Navigate to="/login" replace />
   return <>{children}</>
 }
 
 function PartnerGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) return <Spinner />
-  if (!user?.isPartner) return <Navigate to="/" replace />
+  if (!user?.isPartner) return <Navigate to="/login" replace />
   return <>{children}</>
 }
 
@@ -124,10 +135,20 @@ function AppRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        {/* Public pages */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<PublicHome />} />
+          <Route path="/produkte" element={<PublicProducts />} />
+          <Route path="/ueber-uns" element={<PublicAbout />} />
+          <Route path="/kontakt" element={<PublicContact />} />
+        </Route>
+
+        {/* Auth */}
+        <Route path="/login" element={<AuthPage />} />
         <Route path="/partner/registrieren" element={<PartnerRegister />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
+        {/* Investor portal */}
         <Route path="/investor" element={<InvestorGuard><InvestorLayout /></InvestorGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<InvestorDashboard />} />
@@ -145,6 +166,7 @@ function AppRoutes() {
           <Route path="settings" element={<InvestorSettings />} />
         </Route>
 
+        {/* Owner portal */}
         <Route path="/owner" element={<OwnerGuard><OwnerLayout /></OwnerGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<OwnerDashboard />} />
@@ -161,6 +183,7 @@ function AppRoutes() {
           <Route path="settings" element={<OwnerSettings />} />
         </Route>
 
+        {/* Partner portal */}
         <Route path="/partner" element={<PartnerGuard><PartnerLayout /></PartnerGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<PartnerDashboard />} />
