@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import aventoLogo from '../../assets/avento_kachel.webp'
 import conserLogo from '../../assets/conser_kachel.webp'
@@ -15,17 +15,9 @@ const navLinks = [
 export default function PublicNavbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
-  const { scrollY } = useScroll()
-
-  // Auf der Startseite: Navbar startet mit dunklem Hintergrund (Hero ist dunkel)
-  // Auf Unterseiten: Navbar startet transparent (Hintergrund ist hell)
-  const isHome = location.pathname === '/'
-
-  const bgOpacity = useTransform(scrollY, [0, 60], [isHome ? 0 : 0, 0.92])
-
   return (
     <>
-      <motion.header className="fixed top-0 left-0 right-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50">
         {/* Background — immer sichtbar */}
         <div className="absolute inset-0"
           style={{
@@ -72,7 +64,7 @@ export default function PublicNavbar() {
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </nav>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {menuOpen && (
