@@ -28,7 +28,7 @@ export default function ArchitectSection() {
           <div>
             <ScrollReveal className="mb-10 md:mb-12">
               <p className="text-xs uppercase tracking-widest mb-5"
-                style={{ color: '#C8611A', fontFamily: 'var(--font-mono)' }}>
+                style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>
                 Für Architekten & Planer
               </p>
               <h2 style={{
@@ -65,7 +65,7 @@ export default function ArchitectSection() {
             <ScrollReveal className="mt-8 md:mt-10">
               <Link to="/kontakt"
                 className="inline-flex items-center gap-2 text-sm font-medium transition-all hover:gap-3"
-                style={{ color: '#063D3E' }}>
+                style={{ color: 'var(--brand)' }}>
                 Testzugang anfragen <ArrowRight size={14} />
               </Link>
             </ScrollReveal>

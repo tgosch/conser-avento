@@ -31,7 +31,7 @@ export default function FeaturesSection() {
   const [tab, setTab] = useState<Tab>('erp')
   const features = tab === 'erp' ? erp : shop
   const labels = tab === 'erp' ? erpLabels : shopLabels
-  const color = tab === 'erp' ? '#063D3E' : '#C8611A'
+  const color = tab === 'erp' ? 'var(--brand)' : 'var(--accent)'
 
   return (
     <section className="py-28 md:py-36" style={{ background: 'var(--bg)' }}>
@@ -57,8 +57,8 @@ export default function FeaturesSection() {
         <div className="flex justify-center mb-14">
           <div className="inline-flex gap-1 p-1 rounded-full" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
             {([
-              { key: 'erp' as Tab, label: 'Avento ERP', c: '#063D3E' },
-              { key: 'shop' as Tab, label: 'Conser Marktplatz', c: '#C8611A' },
+              { key: 'erp' as Tab, label: 'Avento ERP', c: 'var(--brand)' },
+              { key: 'shop' as Tab, label: 'Conser Marktplatz', c: 'var(--accent)' },
             ]).map(t => (
               <button key={t.key} onClick={() => setTab(t.key)}
                 className="px-6 py-2.5 rounded-full text-sm font-medium transition-all"

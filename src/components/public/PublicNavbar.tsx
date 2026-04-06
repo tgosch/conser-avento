@@ -54,7 +54,7 @@ export default function PublicNavbar() {
             ))}
             <Link to="/login"
               className="text-xs font-medium px-4 py-1.5 rounded-full transition-all hover:opacity-80"
-              style={{ background: '#063D3E', color: 'white' }}>
+              style={{ background: 'var(--brand)', color: 'white' }}>
               Zugang
             </Link>
           </div>
@@ -90,7 +90,7 @@ export default function PublicNavbar() {
               ))}
               <Link to="/login" onClick={() => setMenuOpen(false)}
                 className="mt-6 text-center py-3.5 rounded-full text-sm font-medium"
-                style={{ background: '#063D3E', color: 'white' }}>
+                style={{ background: 'var(--brand)', color: 'white' }}>
                 Zugang erhalten
               </Link>
             </div>

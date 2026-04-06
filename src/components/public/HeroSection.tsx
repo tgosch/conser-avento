@@ -80,7 +80,7 @@ export default function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.35, ease }}
             className="text-xs md:text-sm mb-10"
-            style={{ color: 'rgba(200,97,26,0.9)' }}
+            style={{ color: 'var(--accent)', opacity: 0.9 }}
           >
             Gewerkübergreifend · 2,3 Mio. Produkte · DSGVO-konform · Made in Germany
           </motion.p>
@@ -93,7 +93,7 @@ export default function HeroSection() {
           >
             <Link to="/kontakt"
               className="w-full sm:w-auto text-center px-8 py-3.5 rounded-full text-sm font-medium transition-all hover:scale-[1.03]"
-              style={{ background: 'white', color: '#063D3E' }}>
+              style={{ background: 'white', color: 'var(--brand)' }}>
               Testzugang anfragen
             </Link>
             <Link to="/produkte"

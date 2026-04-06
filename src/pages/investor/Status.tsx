@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { Update } from '../../lib/supabase'
+import { toast } from 'react-toastify'
 
 export default function InvestorStatus() {
   const [updates, setUpdates] = useState<Update[]>([])
@@ -11,7 +12,7 @@ export default function InvestorStatus() {
     supabase.from('updates').select('id, title, content, category, created_at')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
-        if (error) { /* silent — error shown in UI */ }
+        if (error) { toast.error('Updates konnten nicht geladen werden.') }
         if (data) setUpdates(data as Update[])
         setLoading(false)
       })

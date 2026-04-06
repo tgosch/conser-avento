@@ -38,10 +38,16 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export default async function handler(req: Request) {
+  // Origin validation
+  const origin = req.headers.get('origin') ?? ''
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const isAllowed = allowedOrigins.some(o => origin.startsWith(o))
+
   if (req.method === 'OPTIONS') {
+    if (!isAllowed) return new Response(null, { status: 403 })
     return new Response(null, {
       status: 204,
-      headers: { 'Access-Control-Allow-Origin': origin || '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' },
+      headers: { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' },
     })
   }
 
@@ -49,10 +55,7 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
   }
 
-  // Origin validation — only allow same-origin requests
-  const origin = req.headers.get('origin') ?? ''
-  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
-  if (!allowedOrigins.some(o => origin.startsWith(o))) {
+  if (!isAllowed) {
     return new Response(JSON.stringify({ error: 'Forbidden origin' }), { status: 403 })
   }
 
@@ -105,6 +108,13 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ error: 'Missing required fields: to, subject, html' }), { status: 400 })
   }
 
+  // Email-Format validieren
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const emails = Array.isArray(body.to) ? body.to : [body.to]
+  if (!emails.every(e => emailRegex.test(e))) {
+    return new Response(JSON.stringify({ error: 'Invalid email format' }), { status: 400 })
+  }
+
   if (body.subject.length > 200) {
     return new Response(JSON.stringify({ error: 'Subject too long' }), { status: 400 })
   }
@@ -126,8 +136,7 @@ export default async function handler(req: Request) {
     })
 
     if (!res.ok) {
-      const err = await res.text()
-      return new Response(JSON.stringify({ error: err }), { status: res.status })
+      return new Response(JSON.stringify({ error: 'Email-Service nicht erreichbar' }), { status: 502 })
     }
 
     const data = await res.json()

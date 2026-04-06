@@ -62,7 +62,7 @@ export default function IntegrationSection() {
             <ScrollReveal key={s.num} delay={i * 0.04}>
               <div className="flex gap-4 md:gap-8 py-6 md:py-7" style={{ borderBottom: '1px solid var(--border)' }}>
                 <span className="text-xs font-medium shrink-0 pt-0.5"
-                  style={{ color: i % 2 === 0 ? '#063D3E' : '#C8611A', fontFamily: 'var(--font-mono)', minWidth: 24 }}>
+                  style={{ color: i % 2 === 0 ? 'var(--brand)' : 'var(--accent)', fontFamily: 'var(--font-mono)', minWidth: 24 }}>
                   {s.num}
                 </span>
                 <div>
@@ -81,7 +81,7 @@ export default function IntegrationSection() {
         {/* Integrations */}
         <ScrollReveal className="text-center">
           <p className="text-xs uppercase tracking-widest mb-5"
-            style={{ color: '#063D3E', fontFamily: 'var(--font-mono)' }}>
+            style={{ color: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>
             Integrationen
           </p>
           <div className="flex flex-wrap justify-center gap-2 max-w-xl mx-auto mb-10">
@@ -94,7 +94,7 @@ export default function IntegrationSection() {
           </div>
           <Link to="/kontakt"
             className="inline-flex items-center gap-2 text-sm font-medium transition-all hover:gap-3"
-            style={{ color: '#063D3E' }}>
+            style={{ color: 'var(--brand)' }}>
             Testzugang anfragen <ArrowRight size={14} />
           </Link>
         </ScrollReveal>

@@ -50,7 +50,7 @@ export default function CtaSection() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/kontakt"
               className="w-full sm:w-auto text-center px-8 py-3.5 rounded-full text-sm font-medium transition-all hover:scale-[1.03]"
-              style={{ background: 'white', color: '#063D3E' }}>
+              style={{ background: 'white', color: 'var(--brand)' }}>
               Testzugang anfragen
             </Link>
             <Link to="/produkte"

@@ -33,17 +33,34 @@ interface RequestBody {
 }
 
 export default async function handler(req: Request): Promise<Response> {
-  const corsHeaders = {
+  // Origin validation
+  const origin = req.headers.get('origin') ?? ''
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const isAllowed = allowedOrigins.some(o => origin.startsWith(o))
+
+  const corsHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
     'X-Content-Type-Options': 'nosniff',
+    ...(isAllowed ? { 'Access-Control-Allow-Origin': origin } : {}),
   }
 
-  // Nur POST erlaubt
+  if (req.method === 'OPTIONS') {
+    if (!isAllowed) return new Response(null, { status: 403 })
+    return new Response(null, {
+      status: 204,
+      headers: { ...corsHeaders, 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' },
+    })
+  }
+
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
       headers: corsHeaders,
     })
+  }
+
+  if (!isAllowed) {
+    return new Response(JSON.stringify({ error: 'Forbidden origin' }), { status: 403, headers: corsHeaders })
   }
 
   // ── Rate Limiting (IP-basiert) ────────────────────────────────────

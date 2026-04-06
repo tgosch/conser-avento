@@ -32,7 +32,7 @@ export default function OwnerDashboard() {
   const fetchEntries = () => {
     supabase.from('phase_entries').select('*').order('date', { ascending: false }).limit(10)
       .then(({ data, error }) => {
-        if (error) { toast.error('Eintraege laden fehlgeschlagen'); return }
+        if (error) { toast.error('Einträge laden fehlgeschlagen'); return }
         if (data) setEntries(data as PhaseEntry[])
       })
   }
