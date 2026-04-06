@@ -10,7 +10,8 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || ''
 
 export default async function handler(req: Request): Promise<Response> {
   const origin = req.headers.get('origin') ?? ''
-  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de',
+    ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:5173'] : [])]
   const isAllowed = allowedOrigins.includes(origin)
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -61,11 +62,10 @@ export default async function handler(req: Request): Promise<Response> {
       })
     }
 
+    // Nur eigene Datensätze löschen (CASCADE löscht messages automatisch)
     await Promise.all([
       deleteFrom('investors', 'id'),
       deleteFrom('partners', 'id'),
-      deleteFrom('messages', 'investor_id'),
-      deleteFrom('contact_requests', 'email'),
     ])
 
     return new Response(JSON.stringify({
@@ -73,7 +73,9 @@ export default async function handler(req: Request): Promise<Response> {
       message: 'Alle persönlichen Daten wurden gelöscht. Ihr Konto wird in Kürze deaktiviert.',
       deleted_at: new Date().toISOString(),
     }), { status: 200, headers })
-  } catch {
-    return new Response(JSON.stringify({ error: 'Löschung fehlgeschlagen' }), { status: 500, headers })
+  } catch (err) {
+    const reqId = Math.random().toString(36).slice(2, 10)
+    console.error(`[api/user-delete] req=${reqId}:`, err instanceof Error ? err.message : String(err))
+    return new Response(JSON.stringify({ error: 'Löschung fehlgeschlagen', requestId: reqId }), { status: 500, headers })
   }
 }

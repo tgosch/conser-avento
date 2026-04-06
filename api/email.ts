@@ -40,7 +40,8 @@ function checkRateLimit(ip: string): boolean {
 export default async function handler(req: Request) {
   // Origin validation
   const origin = req.headers.get('origin') ?? ''
-  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de',
+    ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:5173'] : [])]
   const isAllowed = allowedOrigins.includes(origin)
 
   if (req.method === 'OPTIONS') {

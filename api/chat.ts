@@ -35,7 +35,8 @@ interface RequestBody {
 export default async function handler(req: Request): Promise<Response> {
   // Origin validation
   const origin = req.headers.get('origin') ?? ''
-  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de',
+    ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:5173'] : [])]
   const isAllowed = allowedOrigins.includes(origin)
 
   const corsHeaders: Record<string, string> = {
@@ -78,8 +79,8 @@ export default async function handler(req: Request): Promise<Response> {
   } else {
     rateLimitMap.set(clientIp, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
   }
-  // Cleanup stale entries periodically
-  if (rateLimitMap.size > 1000) {
+  // Cleanup stale entries
+  if (rateLimitMap.size > 500) {
     for (const [key, val] of rateLimitMap) {
       if (now > val.resetAt) rateLimitMap.delete(key)
     }
@@ -181,8 +182,9 @@ export default async function handler(req: Request): Promise<Response> {
       headers: corsHeaders,
     })
   } catch (err) {
-    console.error('[api/chat] Upstream-Fehler:', err)
-    return new Response(JSON.stringify({ error: 'KI-Service nicht erreichbar' }), {
+    const reqId = Math.random().toString(36).slice(2, 10)
+    console.error(`[api/chat] req=${reqId}:`, err instanceof Error ? err.message : String(err))
+    return new Response(JSON.stringify({ error: 'KI-Service nicht erreichbar', requestId: reqId }), {
       status: 502,
       headers: corsHeaders,
     })

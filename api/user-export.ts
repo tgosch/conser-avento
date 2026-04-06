@@ -10,7 +10,8 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || ''
 
 export default async function handler(req: Request): Promise<Response> {
   const origin = req.headers.get('origin') ?? ''
-  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
+  const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de',
+    ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:5173'] : [])]
   const isAllowed = allowedOrigins.includes(origin)
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -74,7 +75,9 @@ export default async function handler(req: Request): Promise<Response> {
       status: 200,
       headers: { ...headers, 'Content-Disposition': 'attachment; filename="meine-daten.json"' },
     })
-  } catch {
-    return new Response(JSON.stringify({ error: 'Export fehlgeschlagen' }), { status: 500, headers })
+  } catch (err) {
+    const reqId = Math.random().toString(36).slice(2, 10)
+    console.error(`[api/user-export] req=${reqId}:`, err instanceof Error ? err.message : String(err))
+    return new Response(JSON.stringify({ error: 'Export fehlgeschlagen', requestId: reqId }), { status: 500, headers })
   }
 }
