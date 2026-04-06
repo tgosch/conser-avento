@@ -26,16 +26,9 @@ export default function PublicNavbar() {
   return (
     <>
       <motion.header className="fixed top-0 left-0 right-0 z-50">
-        {/* Permanenter dunkler Background auf Startseite */}
-        {isHome && (
-          <div className="absolute inset-0" style={{ background: '#063D3E' }} />
-        )}
-
-        {/* Scroll-basierter heller Background */}
-        <motion.div
-          className="absolute inset-0"
+        {/* Background — immer sichtbar */}
+        <div className="absolute inset-0"
           style={{
-            opacity: bgOpacity,
             background: 'rgba(255,255,255,0.95)',
             backdropFilter: 'saturate(180%) blur(20px)',
             WebkitBackdropFilter: 'saturate(180%) blur(20px)',
@@ -59,9 +52,7 @@ export default function PublicNavbar() {
                 <Link key={link.to} to={link.to}
                   className="text-xs transition-colors"
                   style={{
-                    color: active
-                      ? (isHome ? 'white' : 'var(--text-primary)')
-                      : (isHome ? 'rgba(255,255,255,0.6)' : 'var(--text-tertiary)'),
+                    color: active ? 'var(--text-primary)' : 'var(--text-tertiary)',
                     fontWeight: active ? 500 : 400,
                   }}>
                   {link.label}
@@ -70,14 +61,14 @@ export default function PublicNavbar() {
             })}
             <Link to="/login"
               className="text-xs font-medium px-4 py-1.5 rounded-full transition-all hover:opacity-80"
-              style={{ background: isHome ? 'white' : 'var(--brand)', color: isHome ? '#063D3E' : 'white' }}>
+              style={{ background: 'var(--brand)', color: 'white' }}>
               Zugang
             </Link>
           </div>
 
           {/* Mobile */}
           <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-1" aria-label="Menu"
-            style={{ color: isHome ? 'white' : 'var(--text-primary)' }}>
+            style={{ color: 'var(--text-primary)' }}>
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </nav>
