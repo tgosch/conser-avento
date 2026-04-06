@@ -6,6 +6,7 @@ import { ArrowRight, ChevronRight, Play } from 'lucide-react'
 import { useCountUp } from '../../hooks/useCountUp'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
+import conserLogo from '../../assets/conser_kachel.webp'
 
 const categoryColor: Record<string, string> = {
   general: '#6E6E73', milestone: '#063D3E', important: '#C8611A',
@@ -194,9 +195,10 @@ export default function InvestorDashboard() {
       {/* AVENTO MODULE — Space AI & BauDoku AI */}
       <div className="mb-8 delay-2 animate-fade-up">
         <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>FERTIGE AVENTO-MODULE</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
-               style={{ borderLeft: '3px solid #8B5CF6' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
+             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+               style={{ borderLeft: '3px solid #8B5CF6', textDecoration: 'none', display: 'block' }}>
             <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-3">
               <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Space AI</h3>
@@ -212,9 +214,10 @@ export default function InvestorDashboard() {
                 <span key={t} className="tag tag-sm" style={{ background: 'rgba(139,92,246,0.08)', color: '#8B5CF6' }}>{t}</span>
               ))}
             </div>
-          </div>
-          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
-               style={{ borderLeft: '3px solid #0EA5E9' }}>
+          </a>
+          <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
+             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+               style={{ borderLeft: '3px solid #0EA5E9', textDecoration: 'none', display: 'block' }}>
             <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-3">
               <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>BauDoku AI</h3>
@@ -230,7 +233,25 @@ export default function InvestorDashboard() {
                 <span key={t} className="tag tag-sm" style={{ background: 'rgba(14,165,233,0.08)', color: '#0EA5E9' }}>{t}</span>
               ))}
             </div>
-          </div>
+          </a>
+          <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
+             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+               style={{ borderLeft: '3px solid #C8611A', textDecoration: 'none', display: 'block' }}>
+            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</h3>
+              <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+            </div>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+              2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Grosshandelspreise, 24h Lieferung.
+              Direkt integriert in Avento ERP.
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {['2,3M Produkte','7 Hersteller','24h Lieferung'].map(t => (
+                <span key={t} className="tag tag-sm" style={{ background: 'rgba(200,97,26,0.08)', color: '#C8611A' }}>{t}</span>
+              ))}
+            </div>
+          </a>
         </div>
       </div>
 

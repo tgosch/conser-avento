@@ -2,6 +2,7 @@ import { Zap, TrendingUp, Target, ArrowRight } from 'lucide-react'
 import { PhoneMockup, LaptopMockup } from '../../components/showcase/DeviceMockup'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
+import conserLogo from '../../assets/conser_kachel.webp'
 import conserShopImg from '../../assets/conser-shop.webp'
 
 export default function PartnerVision() {
@@ -134,8 +135,10 @@ export default function PartnerVision() {
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>BEREITS FERTIGE KI-MODULE</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="card p-6" style={{ borderLeft: '3px solid #8B5CF6' }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
+            className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+            style={{ borderLeft: '3px solid #8B5CF6' }}>
             <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
               <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
@@ -145,8 +148,10 @@ export default function PartnerVision() {
               KI-Assistent, der automatisch Angebote erstellt, Materialmengen kalkuliert und Projekte plant.
               Ihre Produkte fließen direkt in die KI-Empfehlungen ein — mehr Bestellungen für Sie.
             </p>
-          </div>
-          <div className="card p-6" style={{ borderLeft: '3px solid #0EA5E9' }}>
+          </a>
+          <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
+            className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+            style={{ borderLeft: '3px solid #0EA5E9' }}>
             <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
               <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
@@ -156,7 +161,19 @@ export default function PartnerVision() {
               Digitales Bautagebuch mit KI. Jeder Materialverbrauch wird automatisch dokumentiert —
               das optimiert Nachbestellungen und generiert wiederkehrende Orders bei Ihnen.
             </p>
-          </div>
+          </a>
+          <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
+            className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+            style={{ borderLeft: '3px solid #C8611A' }}>
+            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+            </div>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              2,3 Mio. Bauprodukte. Direkt integriert in Avento ERP. Faire Großhandelspreise von 7 Premium-Herstellern.
+            </p>
+          </a>
         </div>
       </div>
 

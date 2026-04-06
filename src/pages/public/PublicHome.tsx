@@ -2,6 +2,7 @@ import HeroSection from '../../components/public/HeroSection'
 import VideoSection from '../../components/public/VideoSection'
 import FeaturesSection from '../../components/public/FeaturesSection'
 import ScreenshotsSection from '../../components/public/ScreenshotsSection'
+import ModulesSection from '../../components/public/ModulesSection'
 import IntegrationSection from '../../components/public/IntegrationSection'
 import ArchitectSection from '../../components/public/ArchitectSection'
 import CtaSection from '../../components/public/CtaSection'
@@ -13,6 +14,7 @@ export default function PublicHome() {
       <VideoSection />
       <FeaturesSection />
       <ScreenshotsSection />
+      <ModulesSection />
       <IntegrationSection />
       <ArchitectSection />
       <CtaSection />

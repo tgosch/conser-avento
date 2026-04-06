@@ -5,6 +5,7 @@ import { ArrowRight, ShoppingCart, Users, Eye, CheckCircle, Circle, Rocket, Tren
 import { LaptopMockup, PhoneMockup } from '../../components/showcase/DeviceMockup'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
+import conserLogo from '../../assets/conser_kachel.webp'
 import conserShopImg from '../../assets/conser-shop.webp'
 
 const STEPS = [
@@ -172,8 +173,9 @@ export default function PartnerDashboard() {
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>AVENTO KI-MODULE — BEREITS FERTIG</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
+            className="card p-5 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderBottom: '2px solid #8B5CF6' }}>
             <img src={spaceAiLogo} alt="Space AI" className="w-16 h-16 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
@@ -183,8 +185,9 @@ export default function PartnerDashboard() {
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               KI-Assistent für Handwerker: automatisierte Angebote, Materialkalkulation, Projektplanung. Ihre Produkte werden direkt in Empfehlungen einbezogen.
             </p>
-          </div>
-          <div className="card p-5 group hover:translate-y-[-2px] transition-all duration-300"
+          </a>
+          <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
+            className="card p-5 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderBottom: '2px solid #0EA5E9' }}>
             <img src={bauDokuLogo} alt="BauDoku AI" className="w-16 h-16 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
@@ -194,7 +197,24 @@ export default function PartnerDashboard() {
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Digitales Bautagebuch mit KI: Fotos, Protokolle, Signaturen automatisch. Jeder Materialverbrauch wird dokumentiert — optimiert Nachbestellungen bei Ihnen.
             </p>
-          </div>
+          </a>
+          <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
+            className="card p-5 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
+            style={{ borderBottom: '2px solid var(--accent)' }}>
+            <img src={conserLogo} alt="Conser Marktplatz" className="w-16 h-16 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'var(--accent-dim)', color: 'var(--accent)' }}>2,3M Produkte</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>B2B</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(34,197,94,0.1)', color: '#22C55E' }}>24h Lieferung</span>
+            </div>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              2,3 Mio. Bauprodukte. Direkt integriert in Avento ERP. Faire Großhandelspreise von 7 Premium-Herstellern.
+            </p>
+          </a>
         </div>
       </div>
 

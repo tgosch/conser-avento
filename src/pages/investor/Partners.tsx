@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { Partner } from '../../lib/supabase'
-import { Factory, Users2, Clock, Handshake, Star, CheckCircle } from 'lucide-react'
+import { Factory, Users2, Clock, Handshake, Star, CheckCircle, ExternalLink } from 'lucide-react'
 
 const FALLBACK_PRODUCTION: Partner[] = [
   { id: 'p1', name: 'Richter+Frenzel', type: 'production', category: 'Sanitär · Heizung · Installation', description: 'Führender Großhändler für Haustechnik in Deutschland. Starkes SHK-Netzwerk mit über 180 Standorten bundesweit.', status: 'negotiating', logo_path: null, initials: 'RF', color: '#B71C1C', visible: true, order_index: 1, created_at: '' },
@@ -215,6 +215,40 @@ export default function InvestorPartners() {
                 <StatusBadge status={c.status} />
               </div>
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Oekosystem-Module */}
+      <div className="mt-10">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(200,97,26,0.10)' }}>
+            <Star size={18} style={{ color: '#C8611A' }} />
+          </div>
+          <div>
+            <h2 className="font-bold text-base leading-none" style={{ color: 'var(--text-primary)' }}>Oekosystem-Module</h2>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Live-Produkte im Avento-Oekosystem</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { name: 'Space AI', desc: 'KI-Assistent fuer Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
+            { name: 'BauDoku AI', desc: 'Digitales Bautagebuch mit KI-Protokollen und Signaturen.', href: 'https://baudoku-ai.vercel.app', color: '#0EA5E9' },
+            { name: 'Conser Marktplatz', desc: '2,3 Mio. Bauprodukte, 7 Hersteller, 24h Lieferung.', href: 'https://www.conser-gosch.de', color: '#C8611A' },
+          ].map(mod => (
+            <a key={mod.name} href={mod.href} target="_blank" rel="noopener noreferrer"
+               className="card card-interactive p-5 hover-lift no-underline"
+               style={{ borderLeft: `3px solid ${mod.color}`, textDecoration: 'none', display: 'block' }}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{mod.name}</h3>
+                <ExternalLink size={14} style={{ color: 'var(--text-tertiary)' }} />
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>{mod.desc}</p>
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full mt-3"
+                style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759', border: '1px solid rgba(52,199,89,0.25)' }}>
+                <CheckCircle size={10} strokeWidth={2.5} /> Live
+              </span>
+            </a>
           ))}
         </div>
       </div>
