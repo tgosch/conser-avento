@@ -142,13 +142,13 @@ const TEAM = [
 ]
 
 const PARTNERS = [
-  { name: 'BayWa', products: '100–200k Produkte' },
-  { name: 'Richter+Frenzel', products: '30–50k Produkte' },
-  { name: 'FEGA & Schmitt', products: '30–50k Produkte' },
-  { name: 'Klöpfer Holzhandel', products: '20–30k Produkte' },
-  { name: 'Elektro Nägele', products: '15–25k Produkte' },
-  { name: 'Holz Ziller', products: '30–50k Produkte' },
-  { name: 'Partner 7', products: 'TBD' },
+  { name: 'Baustoffe & Agrar', products: '100–200k Produkte' },
+  { name: 'Sanitär-Großhandel', products: '30–50k Produkte' },
+  { name: 'Elektro-Großhandel', products: '30–50k Produkte' },
+  { name: 'Holzhandel', products: '20–30k Produkte' },
+  { name: 'Elektrotechnik', products: '15–25k Produkte' },
+  { name: 'Holzfachhandel', products: '30–50k Produkte' },
+  { name: 'Baustoffhandel', products: 'TBD' },
 ]
 
 const COSTS = [
@@ -296,7 +296,7 @@ export default function InvestorRoadmap() {
         </p>
         <div className="space-y-2">
           {[
-            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7', region: 'DACH-Region', desc: 'BayWa, Richter+F., FEGA, Klöpfer, Nägele, Ziller + 1 weitere = 2,3M Produkte' },
+            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7', region: 'DACH-Region', desc: '7 führende Großhändler aus SHK, Elektro, Holz und Baustoffen = 2,3M Produkte' },
             { timeline: 'Phase 2–3 (Sep 2026–Feb 2027)', count: '+8–12', region: 'Erweiterte DACH', desc: 'Zusätzliche regionale Partner (Baustoff-Häuser, Großhändler, Spezialisten)' },
             { timeline: 'Phase 4–5 (Mär–Mai 2027)', count: '+10–20', region: 'Europa', desc: 'Internationale Partner in FR, NL, AT, IT, ES, Poland, Czech (30–50 Partner Ziel)' },
           ].map(e => (

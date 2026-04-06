@@ -45,7 +45,7 @@ export async function sendEmail(payload: EmailPayload): Promise<{ success: boole
 }
 
 /**
- * Newsletter-Template fuer neue Updates/Phasen.
+ * Newsletter-Template für neue Updates/Phasen.
  */
 export function buildNewsletterHtml(params: {
   title: string

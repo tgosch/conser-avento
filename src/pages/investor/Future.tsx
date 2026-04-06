@@ -37,7 +37,7 @@ const PHASES = [
       { label: 'Testing', pct: 10, color: '#FF9500' },
       { label: 'Partner APIs', pct: 7, color: '#AEAEB2' },
     ],
-    tags: ['BayWa 500k', 'R+F 300k', 'FEGA 200k', 'Klöpfer 200k', 'Nägele 150k', 'Gebhardt 300k', 'Ziller 250k'],
+    tags: ['Baustoffe 500k', 'SHK 300k', 'Elektro 200k', 'Holz 200k', 'Elektrotechnik 150k', 'Baustoffhandel 300k', 'Holzfachhandel 250k'],
     gate: [
       '2,3M Produkte durchsuchbar & auffindbar',
       'Payment 100% sicher & live',
@@ -280,7 +280,7 @@ export default function InvestorFuture() {
           {
             icon: '🤝',
             title: 'Partner-Netzwerk bereits gesichert',
-            body: '9 Produktionspartner (BayWa, R+F, FEGA, Binderholz u.a.) mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
+            body: '9 führende Produktionspartner mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
             color: '#D4662A',
           },
           {

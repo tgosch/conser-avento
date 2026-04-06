@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ScrollReveal from './ScrollReveal'
-import conserShop from '../../assets/conser-shop.webp'
+import aventoLogo from '../../assets/avento_kachel.webp'
+import conserLogo from '../../assets/conser_kachel.webp'
 
 const erp = [
   { title: 'Kalkulation & Angebote', desc: 'Professionelle Angebote in Minuten. Automatische Materialberechnung, branchenspezifische Vorlagen, digitale Signatur — direkt auf der Baustelle.' },
@@ -14,7 +15,7 @@ const erp = [
 
 const shop = [
   { title: '2,3 Mio. Produkte', desc: 'Das größte B2B-Sortiment für Baustoffe in der DACH-Region. Rohre, Kabel, Fliesen, Dämmstoffe, Werkzeuge — alles an einem Ort.' },
-  { title: '7 Premium-Hersteller', desc: 'BayWa, Richter+Frenzel, FEGA, Klöpfer, Nägele, Gebhardt, Ziller. Faire Großhandelspreise, direkt verhandelt.' },
+  { title: '7 Premium-Hersteller', desc: '7 führende Großhändler der DACH-Region. Faire Großhandelspreise, direkt verhandelt.' },
   { title: '24h Baustellen-Lieferung', desc: 'DPD/DHL Integration. Direkt auf die Baustelle, an den Lagerplatz oder ins Büro. Express-Option für dringende Fälle.' },
   { title: 'Flexible Zahlungswege', desc: 'Rechnung mit 30 Tagen Zahlungsziel, SEPA-Lastschrift, Kreditkarte. Monatliche Sammelrechnung für Stammkunden.' },
   { title: 'KI-gestützte Suche', desc: 'Findet exakt was du brauchst — auch bei Tippfehlern, Teilnummern oder umgangssprachlichen Begriffen. Artikelvergleich inklusive.' },
@@ -75,38 +76,46 @@ export default function FeaturesSection() {
             transition={{ duration: 0.3 }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-6xl mx-auto items-start">
-              {/* Left: Screenshot statt Remotion */}
+              {/* Left: Product Card */}
               <div className="hidden lg:block">
-                <div className="sticky top-24">
-                  {tab === 'shop' ? (
-                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 16px 48px rgba(0,0,0,0.08)', border: '1px solid var(--border)' }}>
-                      <div className="flex items-center gap-1.5 px-3 py-2" style={{ background: '#1A1A1A' }}>
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#FF5F57' }} />
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#FFBD2E' }} />
-                        <div className="w-2 h-2 rounded-full" style={{ background: '#27C93F' }} />
-                      </div>
-                      <img src={conserShop} alt="Conser Marktplatz" className="w-full block" />
-                    </div>
-                  ) : (
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={tab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                    className="sticky top-24"
+                  >
                     <div className="rounded-2xl p-8 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                      <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
-                        style={{ background: 'var(--brand)' }}>
-                        <span className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>A</span>
-                      </div>
-                      <p className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Avento ERP</p>
-                      <p className="text-xs mb-6" style={{ color: 'var(--text-tertiary)' }}>In Entwicklung</p>
+                      <img
+                        src={tab === 'erp' ? aventoLogo : conserLogo}
+                        alt={tab === 'erp' ? 'Avento' : 'Conser'}
+                        className="w-16 h-16 rounded-2xl mx-auto mb-5 object-cover"
+                        style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}
+                      />
+                      <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+                        {tab === 'erp' ? 'Avento ERP' : 'Conser Marktplatz'}
+                      </p>
+                      <p className="text-xs mb-6" style={{ color: 'var(--text-tertiary)' }}>
+                        {tab === 'erp' ? 'Handwerker-Betriebssystem' : 'B2B-Baustoff-Plattform'}
+                      </p>
                       <div className="space-y-2">
-                        {['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Buchhaltung', 'Controlling', 'Team', 'Mobile'].map((f) => (
+                        {(tab === 'erp'
+                          ? ['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Buchhaltung', 'Controlling', 'Team', 'Mobile']
+                          : ['2,3M Produkte', '7 Hersteller', '24h Lieferung', 'KI-Suche', 'ERP-Integration', 'Zahlung']
+                        ).map((f) => (
                           <div key={f} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left"
                             style={{ background: 'var(--bg)' }}>
-                            <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--brand)' }} />
+                            <div className="w-1.5 h-1.5 rounded-full"
+                              style={{ background: tab === 'erp' ? 'var(--brand)' : 'var(--accent)' }} />
                             <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>{f}</span>
                           </div>
                         ))}
                       </div>
                     </div>
-                  )}
-                </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
               {/* Right: Feature Cards */}

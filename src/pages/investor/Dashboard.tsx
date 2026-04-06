@@ -309,7 +309,7 @@ export default function InvestorDashboard() {
               <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
             </div>
             <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
-              2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Grosshandelspreise, 24h Lieferung.
+              2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Großhandelspreise, 24h Lieferung.
               Direkt integriert in Avento ERP.
             </p>
             <div className="flex flex-wrap gap-1.5">

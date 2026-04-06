@@ -124,7 +124,7 @@ export default function ModulesSection() {
                 <div className="space-y-4">
                   {[
                     { label: '2,3 Mio.', sub: 'Produkte im Sortiment' },
-                    { label: '7', sub: 'Premium-Hersteller (BayWa, R+F, FEGA, ...)' },
+                    { label: '7', sub: 'Premium-Hersteller (unter Verschluss)' },
                     { label: '24h', sub: 'Lieferung auf die Baustelle' },
                   ].map(h => (
                     <div key={h.label} className="flex items-baseline gap-3">

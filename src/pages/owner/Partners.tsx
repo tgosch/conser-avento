@@ -247,7 +247,7 @@ export default function OwnerPartners() {
             <div>
               <label className="text-xs font-semibold mb-1 block" style={{ color: 'var(--text-secondary)' }}>Name *</label>
               <input
-                type="text" required placeholder="z.B. Richter+Frenzel"
+                type="text" required placeholder="z.B. Sanitär-Großhandel GmbH"
                 value={form.name}
                 onChange={e => setForm(p => ({
                   ...p,

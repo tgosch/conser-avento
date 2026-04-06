@@ -4,15 +4,15 @@ import type { Partner } from '../../lib/supabase'
 import { Factory, Users2, Clock, Handshake, Star, CheckCircle, ExternalLink } from 'lucide-react'
 
 const FALLBACK_PRODUCTION: Partner[] = [
-  { id: 'p1', name: 'Richter+Frenzel', type: 'production', category: 'Sanitär · Heizung · Installation', description: 'Führender Großhändler für Haustechnik in Deutschland. Starkes SHK-Netzwerk mit über 180 Standorten bundesweit.', status: 'negotiating', logo_path: null, initials: 'RF', color: '#B71C1C', visible: true, order_index: 1, created_at: '' },
-  { id: 'p2', name: 'Gebhardt Bauzentrum', type: 'production', category: 'Baustoffhandel', description: 'Regionaler Baustoffhändler mit breitem Produktportfolio für den professionellen Tief- und Hochbau.', status: 'negotiating', logo_path: null, initials: 'GB', color: '#1A5C1A', visible: true, order_index: 2, created_at: '' },
-  { id: 'p3', name: 'FEGA & Schmitt', type: 'production', category: 'Elektrotechnik · Großhandel', description: 'Elektrogroßhändler mit Vollsortiment für Elektroinstallation, Industrietechnik und Gebäudeautomation.', status: 'negotiating', logo_path: null, initials: 'FS', color: '#003DA5', visible: true, order_index: 3, created_at: '' },
-  { id: 'p4', name: 'Klöpfer Holzhandel', type: 'production', category: 'Holz · Holzwerkstoffe', description: 'Einer der größten Holzgroßhändler Deutschlands. Spezialist für Schnittholz, Platten und Veredelungsprodukte.', status: 'negotiating', logo_path: null, initials: 'KH', color: '#7B3F00', visible: true, order_index: 4, created_at: '' },
-  { id: 'p5', name: 'AWN Stahl', type: 'production', category: 'Stahlhandel · Metallbau', description: 'Stahl- und Metallgroßhandel für Bau und Industrie. Breites Sortiment an Trägern, Rohren und Blechen.', status: 'negotiating', logo_path: null, initials: 'AW', color: '#455A64', visible: true, order_index: 5, created_at: '' },
-  { id: 'p6', name: 'BayWa AG', type: 'production', category: 'Agrar · Bau · Energie', description: 'Internationaler Handels- und Dienstleistungskonzern mit starkem Fokus auf Baustoffe und Agrarprodukte.', status: 'negotiating', logo_path: null, initials: 'BA', color: '#00695C', visible: true, order_index: 6, created_at: '' },
-  { id: 'p7', name: 'Rexel Germany', type: 'production', category: 'Elektrotechnik · B2B', description: 'Global führender B2B-Distributor für Elektromaterial. Spezialist für Installations- und Industrietechnik.', status: 'negotiating', logo_path: null, initials: 'RX', color: '#C62828', visible: true, order_index: 7, created_at: '' },
-  { id: 'p8', name: 'Binderholz Group', type: 'production', category: 'Holz · Massivholz · CLT', description: 'Europaweit führender Massivholzproduzent. Spezialist für CLT, BSH und konstruktive Holzbauprodukte.', status: 'negotiating', logo_path: null, initials: 'BH', color: '#2E7D32', visible: true, order_index: 8, created_at: '' },
-  { id: 'p9', name: 'Holz Ziller', type: 'production', category: 'Holzhandel · Bayern', description: 'Regionaler Holzfachhändler in Bayern mit Fokus auf Sägewerk-Produkte, Zimmerei-Holz und Holzwerkstoffe.', status: 'negotiating', logo_path: null, initials: 'HZ', color: '#E65100', visible: true, order_index: 9, created_at: '' },
+  { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär · Heizung · Installation', description: 'Führender Großhändler für Haustechnik in Deutschland. Starkes SHK-Netzwerk mit über 180 Standorten bundesweit.', status: 'negotiating', logo_path: null, initials: 'SH', color: '#B71C1C', visible: true, order_index: 1, created_at: '' },
+  { id: 'p2', name: 'Baustoffhandel', type: 'production', category: 'Baustoffhandel', description: 'Regionaler Baustoffhändler mit breitem Produktportfolio für den professionellen Tief- und Hochbau.', status: 'negotiating', logo_path: null, initials: 'BH', color: '#1A5C1A', visible: true, order_index: 2, created_at: '' },
+  { id: 'p3', name: 'Elektrotechnik', type: 'production', category: 'Elektrotechnik · Großhandel', description: 'Elektrogroßhändler mit Vollsortiment für Elektroinstallation, Industrietechnik und Gebäudeautomation.', status: 'negotiating', logo_path: null, initials: 'ET', color: '#003DA5', visible: true, order_index: 3, created_at: '' },
+  { id: 'p4', name: 'Holz & Holzwerkstoffe', type: 'production', category: 'Holz · Holzwerkstoffe', description: 'Einer der größten Holzgroßhändler Deutschlands. Spezialist für Schnittholz, Platten und Veredelungsprodukte.', status: 'negotiating', logo_path: null, initials: 'HH', color: '#7B3F00', visible: true, order_index: 4, created_at: '' },
+  { id: 'p5', name: 'Stahlhandel', type: 'production', category: 'Stahlhandel · Metallbau', description: 'Stahl- und Metallgroßhandel für Bau und Industrie. Breites Sortiment an Trägern, Rohren und Blechen.', status: 'negotiating', logo_path: null, initials: 'ST', color: '#455A64', visible: true, order_index: 5, created_at: '' },
+  { id: 'p6', name: 'Baustoffe & Agrar', type: 'production', category: 'Agrar · Bau · Energie', description: 'Internationaler Handels- und Dienstleistungskonzern mit starkem Fokus auf Baustoffe und Agrarprodukte.', status: 'negotiating', logo_path: null, initials: 'BA', color: '#00695C', visible: true, order_index: 6, created_at: '' },
+  { id: 'p7', name: 'Elektro-Distribution', type: 'production', category: 'Elektrotechnik · B2B', description: 'Global führender B2B-Distributor für Elektromaterial. Spezialist für Installations- und Industrietechnik.', status: 'negotiating', logo_path: null, initials: 'ED', color: '#C62828', visible: true, order_index: 7, created_at: '' },
+  { id: 'p8', name: 'Massivholz & CLT', type: 'production', category: 'Holz · Massivholz · CLT', description: 'Europaweit führender Massivholzproduzent. Spezialist für CLT, BSH und konstruktive Holzbauprodukte.', status: 'negotiating', logo_path: null, initials: 'MC', color: '#2E7D32', visible: true, order_index: 8, created_at: '' },
+  { id: 'p9', name: 'Holzfachhandel', type: 'production', category: 'Holzhandel · Bayern', description: 'Regionaler Holzfachhändler in Bayern mit Fokus auf Sägewerk-Produkte, Zimmerei-Holz und Holzwerkstoffe.', status: 'negotiating', logo_path: null, initials: 'HF', color: '#E65100', visible: true, order_index: 9, created_at: '' },
 ]
 
 const FALLBACK_CUSTOMERS: Partner[] = [
@@ -116,15 +116,15 @@ export default function InvestorPartners() {
           <span className="text-2xl shrink-0">🏗️</span>
           <div>
             <p className="font-bold text-white text-sm mb-2">
-              Warum BayWa, Richter+Frenzel und FEGA keine Zufälle sind
+              Warum diese Partner keine Zufälle sind
             </p>
             <p className="text-xs leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              Diese drei Unternehmen haben zusammen Zugang zu über 50.000 professionellen
+              Diese Partner haben zusammen Zugang zu über 50.000 professionellen
               Handwerksbetrieben in DACH. Wir nutzen ihre bestehenden Vertriebskanäle —
               das bedeutet Warm-Referrals durch vertrauenswürdige Industrie-Namen statt Cold-Outreach.
             </p>
             <div className="flex flex-wrap gap-2">
-              {['BayWa · Bayern + AT', 'Richter+Frenzel · SHK-Netzwerk', 'FEGA · Elektrotechnik'].map(t => (
+              {['SHK-Netzwerk · 180+ Standorte', 'Elektrotechnik · Vollsortiment', 'Baustoffe · DACH-weit'].map(t => (
                 <span key={t} className="tag" style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>{t}</span>
               ))}
             </div>

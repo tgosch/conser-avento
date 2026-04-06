@@ -19,7 +19,7 @@ const aventoModules = [
 
 const conserHighlights = [
   { icon: ShoppingCart, title: '2,3 Mio. Produkte', desc: 'Größtes B2B-Sortiment der DACH-Region.' },
-  { icon: Package, title: '7 Hersteller', desc: 'BayWa, R+F, FEGA, Klöpfer, Nägele, Gebhardt, Ziller.' },
+  { icon: Package, title: '7 Hersteller', desc: '7 führende Großhändler der DACH-Region.' },
   { icon: Truck, title: '24h Lieferung', desc: 'DPD/DHL. Baustelle oder Lager.' },
   { icon: CreditCard, title: 'Zahlung', desc: 'Rechnung, SEPA, Kreditkarte. Sammelrechnung.' },
   { icon: Search, title: 'KI-Suche', desc: 'Findet alles — auch bei Tippfehlern.' },
