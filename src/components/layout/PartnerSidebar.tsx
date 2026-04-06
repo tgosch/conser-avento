@@ -75,12 +75,7 @@ export default function PartnerSidebar({ open, onClose }: Props) {
 
         {/* Brand */}
         <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="flex gap-2 mb-1">
-            <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover flex-1" style={{ height: 46 }} />
-            <img src={conserLogo} alt="Conser" className="rounded-lg object-cover flex-1" style={{ height: 46 }} />
-          </div>
-          <p className="text-center mt-2"
-             style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>
             Partner Portal
           </p>
         </div>
