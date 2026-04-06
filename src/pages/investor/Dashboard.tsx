@@ -90,6 +90,32 @@ export default function InvestorDashboard() {
         </div>
       </div>
 
+      {/* WO WIR STEHEN — Aktueller Status */}
+      <div className="card p-5 md:p-8 mb-8 animate-fade-up delay-1">
+        <div className="flex items-center gap-2 mb-5">
+          <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
+          <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
+            Wo wir stehen — Stand April 2026
+          </p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { label: 'Phase', value: 'Pre-Revenue', sub: 'Seed-Runde offen' },
+            { label: 'Team', value: '3+1', sub: 'Gründer + Dev-Partner' },
+            { label: 'Gespräche', value: '100+', sub: 'Handwerksbetriebe' },
+            { label: 'Partner', value: '7', sub: 'In Verhandlung' },
+            { label: 'Produkte', value: '2,3M', sub: 'Im Onboarding' },
+            { label: 'Investiert', value: 'EK', sub: 'Eigenkapital' },
+          ].map(s => (
+            <div key={s.label} className="text-center md:text-left">
+              <p className="text-lg font-bold mb-0.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{s.value}</p>
+              <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{s.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* VIDEO PITCH */}
       <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
            style={{

@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Activity, Rocket, Map, FileText,
   Users, Handshake, Building2, MessageSquare, Settings,
-  LogOut, X, Swords, HelpCircle,
+  LogOut, X, Swords, HelpCircle, AlertTriangle,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.webp'
@@ -23,6 +23,7 @@ const NAV = [
       { to: '/investor/roadmap',  icon: Map,      label: 'Enterprise Roadmap' },
       { to: '/investor/plans',       icon: FileText, label: 'Dokumente' },
       { to: '/investor/competition', icon: Swords,   label: 'Wettbewerb' },
+      { to: '/investor/risiken',     icon: AlertTriangle, label: 'Risiken' },
     ]
   },
   {

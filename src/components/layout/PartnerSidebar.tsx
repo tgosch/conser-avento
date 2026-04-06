@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Rocket, Handshake, TrendingUp,
-  Users, Map, Settings, LogOut, X,
+  Users, Map, Settings, LogOut, X, Calculator,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import aventoLogo from '../../assets/avento_kachel.webp'
@@ -20,6 +20,7 @@ const NAV = [
     items: [
       { to: '/partner/partnership', icon: Handshake,  label: 'Partnermodell' },
       { to: '/partner/revenue',     icon: TrendingUp, label: 'Revenue-Modell' },
+      { to: '/partner/calculator',   icon: Calculator, label: 'Revenue Calculator' },
       { to: '/partner/network',     icon: Users,      label: 'Netzwerk' },
       { to: '/partner/roadmap',     icon: Map,        label: 'Roadmap' },
     ]

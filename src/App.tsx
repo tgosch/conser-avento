@@ -37,6 +37,7 @@ const InvestorPartners = React.lazy(() => import('./pages/investor/Partners'))
 const InvestorRoadmap = React.lazy(() => import('./pages/investor/Roadmap'))
 const InvestorCompetition = React.lazy(() => import('./pages/investor/Competition'))
 const InvestorFAQ = React.lazy(() => import('./pages/investor/FAQ'))
+const InvestorRisks = React.lazy(() => import('./pages/investor/Risks'))
 
 // Owner pages (lazy)
 const OwnerDashboard = React.lazy(() => import('./pages/owner/Dashboard'))
@@ -60,6 +61,7 @@ const PartnerRevenue = React.lazy(() => import('./pages/partner/Revenue'))
 const PartnerNetwork = React.lazy(() => import('./pages/partner/Network'))
 const PartnerRoadmap = React.lazy(() => import('./pages/partner/Roadmap'))
 const PartnerSettings = React.lazy(() => import('./pages/partner/Settings'))
+const PartnerCalculator = React.lazy(() => import('./pages/partner/Calculator'))
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -162,6 +164,7 @@ function AppRoutes() {
           <Route path="partners" element={<InvestorPartners />} />
           <Route path="roadmap" element={<InvestorRoadmap />} />
           <Route path="competition" element={<InvestorCompetition />} />
+          <Route path="risiken" element={<InvestorRisks />} />
           <Route path="faq" element={<InvestorFAQ />} />
           <Route path="settings" element={<InvestorSettings />} />
         </Route>
@@ -190,6 +193,7 @@ function AppRoutes() {
           <Route path="vision" element={<PartnerVision />} />
           <Route path="partnership" element={<PartnerPartnership />} />
           <Route path="revenue" element={<PartnerRevenue />} />
+          <Route path="calculator" element={<PartnerCalculator />} />
           <Route path="network" element={<PartnerNetwork />} />
           <Route path="roadmap" element={<PartnerRoadmap />} />
           <Route path="settings" element={<PartnerSettings />} />
