@@ -18,7 +18,7 @@ const aventoModules = [
 ]
 
 const conserHighlights = [
-  { icon: ShoppingCart, title: '2,3 Mio. Produkte', desc: 'Größtes B2B-Sortiment der DACH-Region.' },
+  { icon: ShoppingCart, title: '12,8 Mio. Produkte', desc: 'Größtes B2B-Sortiment der DACH-Region.' },
   { icon: Package, title: '7 Hersteller', desc: 'Aktuell 7, Ziel: 25 führende Großhändler der DACH-Region.' },
   { icon: Truck, title: '24h Lieferung', desc: 'DPD/DHL. Baustelle oder Lager.' },
   { icon: CreditCard, title: 'Zahlung', desc: 'Rechnung, SEPA, Kreditkarte. Sammelrechnung.' },

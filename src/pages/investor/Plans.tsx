@@ -193,7 +193,7 @@ export default function InvestorPlans() {
             <img src={conserLogo} alt="Conser" className="rounded-xl object-cover shrink-0" style={{ height: '56px', width: '100px' }} />
             <div>
               <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</p>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>B2B-Marktplatz für Baustoffe & Handwerk — 2,3M Produkte, 7 Partner</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>B2B-Marktplatz für Baustoffe & Handwerk — 12,8M Produkte, 7 Partner</p>
             </div>
           </div>
         </div>

@@ -115,7 +115,7 @@ export default function PartnerVision() {
                 </div>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                B2B-Marktplatz mit 2,3M Produkten, direkt ins ERP integriert. 1-Click-Bestellung,
+                B2B-Marktplatz mit 12,8M Produkten, direkt ins ERP integriert. 1-Click-Bestellung,
                 automatische Preisvergleiche, Lieferzeiten in Echtzeit. Ihr Katalog, unsere Kunden.
               </p>
             </div>
@@ -183,7 +183,7 @@ export default function PartnerVision() {
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-              2,3 Mio. Bauprodukte. Direkt integriert in Avento ERP. Faire Großhandelspreise von 7 Premium-Herstellern.
+              12,8 Mio. Bauprodukte. Direkt integriert in Avento ERP. Faire Großhandelspreise von 7 Premium-Herstellern.
             </p>
           </a>
         </div>
@@ -215,7 +215,7 @@ export default function PartnerVision() {
             placeholderText="Conser Shop"
             gradient="linear-gradient(145deg, #1A0A00 0%, #C8611A 100%)"
             label="Conser Shop"
-            sublabel="2,3M Produkte"
+            sublabel="12,8M Produkte"
           />
         </div>
         <p className="text-center text-xs mt-6 font-semibold" style={{ color: 'var(--brand)' }}>

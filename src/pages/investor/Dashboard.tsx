@@ -101,10 +101,10 @@ export default function InvestorDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
             { label: 'Phase', value: 'Pre-Revenue', sub: 'Seed-Runde offen' },
-            { label: 'Team', value: '3+1', sub: 'Gründer + Dev-Partner' },
+            { label: 'Team', value: '6', sub: '2 Gründer + 4 Mitarbeiter' },
             { label: 'Gespräche', value: '100+', sub: 'Handwerksbetriebe' },
             { label: 'Partner', value: '7', sub: 'In Verhandlung' },
-            { label: 'Produkte', value: '2,3M', sub: 'Im Onboarding' },
+            { label: 'Produkte', value: '12,8M', sub: 'Im Onboarding' },
             { label: 'Investiert', value: 'EK', sub: 'Eigenkapital' },
           ].map(s => (
             <div key={s.label} className="text-center md:text-left">
@@ -126,7 +126,7 @@ export default function InvestorDashboard() {
             { title: 'Bankpartner', desc: 'Namhafte deutsche Großbank · unter Verschluss', color: 'var(--brand)' },
             { title: 'Payment', desc: 'PCI-DSS Level 1 zertifiziert', color: 'var(--accent)' },
             { title: 'Hosting', desc: 'EU-Server · Frankfurt', color: 'var(--brand)' },
-            { title: 'Rechtsform', desc: 'UG (haftungsbeschr.) · HRB 22177', color: 'var(--accent)' },
+            { title: 'Rechtsform', desc: 'GmbH · HRB 22177', color: 'var(--accent)' },
           ].map(t => (
             <div key={t.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>
               <p className="text-xs font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{t.title}</p>
@@ -225,10 +225,10 @@ export default function InvestorDashboard() {
               </span>
               <h2 className="text-display-md text-white mb-2">Conser</h2>
               <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.60)', lineHeight: 1.7, maxWidth: 280 }}>
-                2,3 Millionen Produkte, 9 Top-Lieferanten — direkt in Avento integriert. 1-Klick-Bestellung aus dem ERP heraus.
+                12,8 Millionen Produkte, 7 Top-Lieferanten — direkt in Avento integriert. 1-Klick-Bestellung aus dem ERP heraus.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['2,3M Produkte','7 Partner','B2B-Checkout','1-Klick-Bestellung'].map(f => (
+                {['12,8M Produkte','7 Partner','B2B-Checkout','1-Klick-Bestellung'].map(f => (
                   <span key={f} className="tag tag-sm"
                         style={{ background: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.75)' }}>{f}</span>
                 ))}
@@ -309,11 +309,11 @@ export default function InvestorDashboard() {
               <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
             </div>
             <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
-              2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Großhandelspreise, 24h Lieferung.
+              12,8 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Großhandelspreise, 24h Lieferung.
               Direkt integriert in Avento ERP.
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {['2,3M Produkte','7 Hersteller','24h Lieferung'].map(t => (
+              {['12,8M Produkte','7 Hersteller','24h Lieferung'].map(t => (
                 <span key={t} className="tag tag-sm" style={{ background: 'rgba(200,97,26,0.08)', color: '#C8611A' }}>{t}</span>
               ))}
             </div>
@@ -357,7 +357,7 @@ export default function InvestorDashboard() {
             { icon: '🤖', title: 'KI-Module bereits fertig',
               desc: 'Space AI (KI-Assistent) und BauDoku AI (digitales Bautagebuch) sind live. Komplett-System für Controlling, Buchhaltung, Angebote und Team — alles integriert.' },
             { icon: '🏗️', title: 'Tiefe Branchenkenntnis',
-              desc: '9 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
+              desc: '7 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
           ].map(usp => (
             <div key={usp.title} className="card card-interactive p-5">
               <span className="text-2xl block mb-3">{usp.icon}</span>

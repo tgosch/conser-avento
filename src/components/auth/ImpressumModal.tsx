@@ -28,7 +28,7 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
 
           <div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Angaben gem. § 5 TMG</p>
-            <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Gosch UG (haftungsbeschränkt)</p>
+            <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>Conser GmbH</p>
             <p>Geschäftsführer: Torben Gosch</p>
             <p>Amtsgericht Lübeck · HRB 22177</p>
             <p>USt-IdNr.: DE458507310</p>
@@ -69,7 +69,7 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <p className="text-xs pt-2 border-t" style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>
-            Stand: März 2026 · Conser Gosch UG (haftungsbeschränkt)
+            Stand: April 2026 · Conser GmbH
           </p>
         </div>
 

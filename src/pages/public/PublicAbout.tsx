@@ -65,7 +65,7 @@ export default function PublicAbout() {
         <div className="public-container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-3xl mx-auto">
             {[
-              { label: 'Firmensitz', value: 'Deutschland', sub: 'Conser Gosch UG (haftungsbeschränkt)' },
+              { label: 'Firmensitz', value: 'Deutschland', sub: 'Conser GmbH' },
               { label: 'Handelsregister', value: 'HRB 22177', sub: 'USt-IdNr. DE458507310' },
               { label: 'Gründung', value: '2025', sub: 'Seed-Runde Mai 2026' },
             ].map((info, i) => (

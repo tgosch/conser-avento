@@ -139,7 +139,7 @@ export default function OwnerDashboard() {
       <div className="mb-6">
         <p className="label-overline mb-1">{today}</p>
         <h1 className="font-bold text-2xl md:text-3xl mb-1"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', fontFamily: 'var(--font-body)' }}>
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', fontFamily: 'var(--font-display)' }}>
           {greeting}, Torben 👋
         </h1>
         <div className="flex items-center gap-3 flex-wrap">
@@ -233,7 +233,7 @@ export default function OwnerDashboard() {
             { name: 'BuchBalance', status: 'Live', color: '#1D5EA8', href: null },
           ].map(m => (
             <a key={m.name} href={m.href ?? undefined} target={m.href ? '_blank' : undefined} rel={m.href ? 'noopener noreferrer' : undefined}
-              className="card p-4 no-underline hover:translate-y-[-1px] transition-all"
+              className="card p-4 no-underline hover:translate-y-[-2px] transition-all"
               style={{ borderLeft: `3px solid ${m.color}` }}>
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
@@ -251,7 +251,7 @@ export default function OwnerDashboard() {
             { title: 'Bankpartner', desc: 'Deutsche Großbank · NDA' },
             { title: 'Payment', desc: 'PCI-DSS Level 1' },
             { title: 'Hosting', desc: 'EU-Server · Frankfurt' },
-            { title: 'Rechtsform', desc: 'UG · HRB 22177' },
+            { title: 'Rechtsform', desc: 'GmbH · HRB 22177' },
           ].map(t => (
             <div key={t.title} className="p-3 rounded-xl" style={{ background: 'var(--surface2)' }}>
               <p className="text-[10px] font-semibold" style={{ color: 'var(--text-primary)' }}>{t.title}</p>

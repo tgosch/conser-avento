@@ -3,7 +3,7 @@ import { Calculator, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function PartnerCalculator() {
-  const [customers, setCustomers] = useState(200)
+  const [customers, setCustomers] = useState(5000)
   const [avgOrder, setAvgOrder] = useState(800)
   const [digitalRate, setDigitalRate] = useState(25)
   const [commission, setCommission] = useState(5)
@@ -43,15 +43,15 @@ export default function PartnerCalculator() {
                   Aktueller Kundenstamm (Handwerksbetriebe)
                 </label>
                 <span className="text-sm font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-                  {customers}
+                  {customers.toLocaleString('de-DE')}
                 </span>
               </div>
-              <input type="range" min={50} max={1000} step={10} value={customers}
+              <input type="range" min={500} max={75000} step={500} value={customers}
                 onChange={e => setCustomers(Number(e.target.value))}
                 className="w-full accent-[#063D3E]" />
               <div className="flex justify-between mt-1">
-                <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>50</span>
-                <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>1.000</span>
+                <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>500</span>
+                <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>75.000</span>
               </div>
             </div>
 
@@ -161,7 +161,7 @@ export default function PartnerCalculator() {
 
           {/* CTA */}
           <Link to="/partner/partnership"
-            className="card p-4 flex items-center justify-between hover:translate-y-[-1px] transition-all"
+            className="card p-4 flex items-center justify-between hover:translate-y-[-2px] transition-all"
             style={{ background: 'var(--brand)', color: 'white' }}>
             <div>
               <p className="text-sm font-semibold">Überzeugt?</p>

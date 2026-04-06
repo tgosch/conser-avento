@@ -19,12 +19,12 @@ const PHASES = [
     goals: [
       'Conser MVP (Webshop + Produktkatalog)',
       '7 Producer-Partner vollständig integriert',
-      '2,3 Mio. Produkte live im System',
+      '12,8 Mio. Produkte live im System',
       'Payment & Logistik-Infrastruktur ready',
       'Legal & GDPR compliant',
     ],
     keyMetrics: [
-      { icon: '📦', label: 'Produkte live', value: '2,3M' },
+      { icon: '📦', label: 'Produkte live', value: '12,8M' },
       { icon: '🤝', label: 'Partner', value: '7 / 25' },
       { icon: '💰', label: 'Budget', value: '300k€' },
       { icon: '⏱️', label: 'Dauer', value: '3 Mon.' },
@@ -37,9 +37,9 @@ const PHASES = [
       { label: 'Testing', pct: 10, color: '#FF9500' },
       { label: 'Partner APIs', pct: 7, color: '#AEAEB2' },
     ],
-    tags: ['Baustoffe 500k', 'SHK 300k', 'Elektro 200k', 'Holz 200k', 'Elektrotechnik 150k', 'Baustoffhandel 300k', 'Holzfachhandel 250k'],
+    tags: ['Baustoffe 12M', 'Elektro 400k', 'Sanitär 300k', 'Holz 100k'],
     gate: [
-      '2,3M Produkte durchsuchbar & auffindbar',
+      '12,8M Produkte durchsuchbar & auffindbar',
       'Payment 100% sicher & live',
       'Mobile App stabil (iOS + Android)',
       'Partner-Daten vollständig integriert',
@@ -280,7 +280,7 @@ export default function InvestorFuture() {
           {
             icon: '🤝',
             title: 'Partner-Netzwerk bereits gesichert',
-            body: '9 führende Produktionspartner mit 2,3M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
+            body: '7 führende Produktionspartner mit 12,8M Produkten verhandelt. Der Marktplatz-Inhalt ist bereit — es fehlt nur die Finanzierung zum Launch.',
             color: '#D4662A',
           },
           {
@@ -479,7 +479,7 @@ export default function InvestorFuture() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider mb-2"
                   style={{ color: 'var(--text-secondary)' }}>
-                  {phase.id === 1 ? 'PARTNER (2,3M PRODUKTE)' : phase.id === 2 ? 'LAUNCH-KANÄLE' : phase.id === 3 ? 'MVP FEATURES' : phase.id === 4 ? 'PRICING' : 'FEATURES BETA2'}
+                  {phase.id === 1 ? 'PARTNER (12,8M PRODUKTE)' : phase.id === 2 ? 'LAUNCH-KANÄLE' : phase.id === 3 ? 'MVP FEATURES' : phase.id === 4 ? 'PRICING' : 'FEATURES BETA2'}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {phase.tags.map(tag => (

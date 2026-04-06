@@ -1,9 +1,9 @@
 import { ArrowRight, Shield, TrendingUp, Zap } from 'lucide-react'
 
 const PROJECTIONS = [
-  { year: 'Jahr 1', users: '1.000', orders: '~500/Mo', highlight: false },
-  { year: 'Jahr 2', users: '5.000', orders: '~5.000/Mo', highlight: false },
-  { year: 'Jahr 3', users: '25.000', orders: '~50.000/Mo', highlight: true },
+  { year: 'Jahr 1', users: '5.000', orders: '~2.500/Mo', highlight: false },
+  { year: 'Jahr 2', users: '25.000', orders: '~25.000/Mo', highlight: false },
+  { year: 'Jahr 3', users: '75.000', orders: '~150.000/Mo', highlight: true },
 ]
 
 export default function PartnerRevenue() {
@@ -135,7 +135,7 @@ export default function PartnerRevenue() {
             ))}
           </div>
           <p className="text-center text-sm mt-5 font-semibold" style={{ color: 'var(--brand)' }}>
-            Stellen Sie sich vor: 25.000 Handwerker bestellen 1-Click bei Ihnen.
+            Stellen Sie sich vor: 75.000 Handwerker bestellen 1-Click bei Ihnen.
           </p>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default function PartnerRevenue() {
             { label: 'Server Deutschland', desc: 'Standort Fürth, Bayern', icon: '🇩🇪' },
             { label: 'DSGVO-konform', desc: 'Volle Transparenz', icon: '📊' },
           ].map(item => (
-            <div key={item.label} className="text-center p-4 rounded-xl group hover:translate-y-[-1px] transition-all duration-300"
+            <div key={item.label} className="text-center p-4 rounded-xl group hover:translate-y-[-2px] transition-all duration-300"
               style={{ background: 'var(--surface2)' }}>
               <span className="text-xl block mb-2 transition-transform duration-300 group-hover:scale-110">{item.icon}</span>
               <p className="text-sm font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>{item.label}</p>

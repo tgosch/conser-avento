@@ -251,11 +251,11 @@ export default function InvestorPartners() {
             { name: 'Space AI', desc: 'KI-Assistent für Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
             { name: 'BauDoku AI', desc: 'Digitales Bautagebuch mit KI-Protokollen und Signaturen.', href: 'https://baudoku-ai.vercel.app', color: '#0EA5E9' },
             { name: 'BuchBalance', desc: 'Angebundene Buchhaltung für Handwerker. Rechnungen, DATEV-Export, USt-Voranmeldung.', href: '', color: '#1D5EA8' },
-            { name: 'Conser Marktplatz', desc: '2,3 Mio. Bauprodukte, 7 Hersteller, 24h Lieferung.', href: 'https://www.conser-gosch.de', color: '#C8611A' },
+            { name: 'Conser Marktplatz', desc: '12,8 Mio. Bauprodukte, 7 Hersteller, 24h Lieferung.', href: 'https://www.conser-gosch.de', color: '#C8611A' },
           ].map(mod => mod.href ? (
             <a key={mod.name} href={mod.href} target="_blank" rel="noopener noreferrer"
                className="card card-interactive p-5 hover-lift no-underline"
-               style={{ borderLeft: `3px solid ${mod.color}`, textDecoration: 'none', display: 'block' }}>
+               style={{ borderLeft: `3px solid ${mod.color}` }}>
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{mod.name}</h3>
                 <ExternalLink size={14} style={{ color: 'var(--text-tertiary)' }} />

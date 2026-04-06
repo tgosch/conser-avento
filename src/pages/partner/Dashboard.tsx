@@ -41,7 +41,7 @@ export default function PartnerDashboard() {
     <div className="max-w-5xl mx-auto">
 
       {/* ── HERO ── */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 animate-fade-up"
+      <div className="relative rounded-[24px] overflow-hidden mb-8 animate-fade-up"
         style={{ background: '#063D3E' }}>
         <div className="relative z-10 px-6 py-8 md:px-10 md:py-12">
           <p className="text-xs font-medium tracking-wide mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
@@ -123,7 +123,7 @@ export default function PartnerDashboard() {
               </div>
             </div>
             <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
-              2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Hier werden Ihre Produkte gelistet und direkt aus dem Avento ERP bestellt. Zugangsdaten erhalten Sie auf Anfrage.
+              12,8 Mio. Bauprodukte von 7 Premium-Herstellern. Hier werden Ihre Produkte gelistet und direkt aus dem Avento ERP bestellt. Zugangsdaten erhalten Sie auf Anfrage.
             </p>
             <div className="flex items-center gap-1.5 text-xs font-medium" style={{ color: 'var(--accent)' }}>
               Shop besuchen <ExternalLink size={11} />
@@ -152,7 +152,7 @@ export default function PartnerDashboard() {
 
           {/* SpaceAI */}
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
-            className="card p-5 no-underline group hover:translate-y-[-1px] transition-all">
+            className="card p-5 no-underline group hover:translate-y-[-2px] transition-all">
             <div className="flex items-center gap-2.5 mb-3">
               <img src={spaceAiLogo} alt="SpaceAI" className="w-9 h-9 rounded-lg object-cover" />
               <div>
@@ -170,7 +170,7 @@ export default function PartnerDashboard() {
 
           {/* BauDoku AI */}
           <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
-            className="card p-5 no-underline group hover:translate-y-[-1px] transition-all">
+            className="card p-5 no-underline group hover:translate-y-[-2px] transition-all">
             <div className="flex items-center gap-2.5 mb-3">
               <img src={bauDokuLogo} alt="BauDoku AI" className="w-9 h-9 rounded-lg object-cover" />
               <div>
@@ -213,7 +213,7 @@ export default function PartnerDashboard() {
           {[
             { icon: Landmark, title: 'Bankpartner', desc: 'Namhafte deutsche Großbank', color: 'var(--brand)' },
             { icon: Shield, title: 'DSGVO-konform', desc: 'Alle Daten in der EU', color: 'var(--brand)' },
-            { icon: Building2, title: 'HRB 22177', desc: 'Conser Gosch UG', color: 'var(--accent)' },
+            { icon: Building2, title: 'HRB 22177', desc: 'Conser GmbH', color: 'var(--accent)' },
             { icon: CreditCard, title: 'Payment', desc: 'PCI-DSS Level 1 zertifiziert', color: 'var(--accent)' },
           ].map(t => (
             <div key={t.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>

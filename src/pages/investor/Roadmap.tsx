@@ -16,7 +16,7 @@ const PHASES = [
     timeline: 'Apr – Jun 2026 · 12 Wochen',
     sections: {
       'Infrastruktur': ['AWS Cloud Setup', 'Auth System (OAuth)', 'Design System', 'CI/CD Pipeline', 'Monitoring', 'RLS & Security'],
-      'Team Effort': ['Martin (CTO): 100%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 50%'],
+      'Team Effort': ['Martin (CFO): 100%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 50%'],
     },
     metrics: [
       { label: 'Kosten', value: '180k€' },
@@ -30,8 +30,8 @@ const PHASES = [
     title: 'Conser MVP',
     timeline: 'Jul – Aug 2026 · 8 Wochen',
     sections: {
-      'Features': ['2,3M Produkte Live', '7 Partner Integration', 'Product Search', 'Shopping Cart', 'Payment & Escrow', 'Order Mgmt'],
-      'Team Effort': ['Martin (CTO): 80%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
+      'Features': ['12,8M Produkte Live', '7 Partner Integration', 'Product Search', 'Shopping Cart', 'Payment & Escrow', 'Order Mgmt'],
+      'Team Effort': ['Martin (CFO): 80%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
       { label: 'Kunden', value: '1.000+' },
@@ -46,7 +46,7 @@ const PHASES = [
     timeline: 'Sep 2026 · 8 Wochen',
     sections: {
       'Core ERP': ['Zeiterfassung', 'Kalender', 'Angebote', 'Rechnungen', 'Dashboard', 'Admin Panel'],
-      'Team Effort': ['Martin (CTO): 70%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
+      'Team Effort': ['Martin (CFO): 70%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
       { label: 'Kunden', value: '1.000' },
@@ -61,7 +61,7 @@ const PHASES = [
     timeline: 'Nov 2026 · 10 Wochen',
     sections: {
       'Advanced Features': ['Conser ↔ Avento Sync', 'KI-Mitarbeiter', 'Baustellen-Doku', 'Analytics', 'Mobile App', 'Smart Recs'],
-      'Team Effort': ['Martin (CTO): 60%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
+      'Team Effort': ['Martin (CFO): 60%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
       { label: 'Kunden', value: '5.000' },
@@ -76,7 +76,7 @@ const PHASES = [
     timeline: 'Feb – Mär 2027 · 10 Wochen',
     sections: {
       'Apps & Features': ['iOS/Android Apps', 'Controlling', 'Intelligent Offers', 'Lager Mgmt', 'Offline Mode', 'Push Notifs'],
-      'Team Effort': ['Martin (CTO): 50%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
+      'Team Effort': ['Martin (CFO): 50%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
       { label: 'Kunden', value: '25.000' },
@@ -91,7 +91,7 @@ const PHASES = [
     timeline: 'Apr – Mai 2027 · 6 Wochen',
     sections: {
       'Finalization': ['Workflow Engine', 'Full Union', 'UI/UX Polish', 'Code Cleanup', 'Hardening', 'GA Ready'],
-      'Team Effort': ['Martin (CTO): 40%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
+      'Team Effort': ['Martin (CFO): 40%', 'Dev 1 (Backend): 100%', 'Dev 2 (Frontend): 100%', 'Dev 3 (Backend): 100%'],
     },
     metrics: [
       { label: 'Kunden', value: '75.000+' },
@@ -110,9 +110,9 @@ const TEAM = [
     status: 'ACTIVE',
   },
   {
-    role: '⚙️ CTO & Lead Backend',
-    name: 'Martin Groote',
-    tasks: ['15+ Jahre SAP/Enterprise', 'Architecture Decisions', 'Database Design', 'Security & Infrastructure'],
+    role: '💰 CFO & Co-Founder',
+    name: 'Martin Grote',
+    tasks: ['Finanzen & Controlling', 'Operative Steuerung', 'Business Development', 'Team Leadership'],
     status: 'ACTIVE',
   },
   {
@@ -296,7 +296,7 @@ export default function InvestorRoadmap() {
         </p>
         <div className="space-y-2">
           {[
-            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7 (Ziel: 25)', region: 'DACH-Region', desc: '7 führende Großhändler aus SHK, Elektro, Holz und Baustoffen = 2,3M Produkte' },
+            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7 (Ziel: 25)', region: 'DACH-Region', desc: '7 führende Großhändler aus SHK, Elektro, Holz und Baustoffen = 12,8M Produkte' },
             { timeline: 'Phase 2–3 (Sep 2026–Feb 2027)', count: '+8–12', region: 'Erweiterte DACH', desc: 'Zusätzliche regionale Partner (Baustoff-Häuser, Großhändler, Spezialisten)' },
             { timeline: 'Phase 4–5 (Mär–Mai 2027)', count: '+10–20', region: 'Europa', desc: 'Internationale Partner in FR, NL, AT, IT, ES, Poland, Czech (30–50 Partner Ziel)' },
           ].map(e => (

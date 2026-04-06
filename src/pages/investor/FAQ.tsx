@@ -29,7 +29,7 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Wie ist der aktuelle MVP-Status?',
-        a: 'Zwei KI-Module sind bereits fertig und live: Space AI (KI-Assistent für Angebote und Kalkulation) und BauDoku AI (digitales Bautagebuch). Avento ERP Core und der Conser Marktplatz starten nach Funding in Phase 1 (Q3 2026) mit 9 Produktionspartnern und 2,3M Produkten.',
+        a: 'Zwei KI-Module sind bereits fertig und live: Space AI (KI-Assistent für Angebote und Kalkulation) und BauDoku AI (digitales Bautagebuch). Avento ERP Core und der Conser Marktplatz starten nach Funding in Phase 1 (Q3 2026) mit 7 Produktionspartnern und 12,8M Produkten.',
       },
       {
         q: 'Was ist das Revenue-Modell?',
@@ -37,7 +37,7 @@ const FAQ_DATA = [
       },
       {
         q: 'Wie steht ihr zum Wettbewerb?',
-        a: 'Kein bestehender Anbieter kombiniert ERP + Marktplatz + KI speziell für die Baubranche. Lexoffice ist generisch (keine Bau-Features), Plancraft hat kein Marktplatz-Modell, Excel hat keine Zukunft. Avento + Conser ist der einzige integrierte Ansatz — Details auf der Wettbewerb-Seite.',
+        a: 'Kein bestehender Anbieter kombiniert ERP + Marktplatz + KI speziell für die Baubranche. Plancraft fokussiert auf Kalkulation (kein Marktplatz), HERO hat keine KI-Module und keinen integrierten Marktplatz, ToolTime ist funktional eingeschränkt. Avento + Conser ist der einzige integrierte Ansatz — Details auf der Wettbewerb-Seite.',
       },
     ],
   },
@@ -63,7 +63,7 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Was sind die nächsten Meilensteine?',
-        a: 'Phase 1 (Apr–Jun 2026): Conser MVP mit 2,3M Produkten und 7 Partnern live. Phase 2 (Jul–Sep 2026): Conser Launch, 1.000 Kunden, 5M€ GMV. Phase 3 (Okt 2026–Feb 2027): Avento MVP mit allen Core-Features. Phase 4 (Mär–Jun 2027): Public Beta Launch, 5.000 Kunden, Series A.',
+        a: 'Phase 1 (Apr–Jun 2026): Conser MVP mit 12,8M Produkten und 7 Partnern live. Phase 2 (Jul–Sep 2026): Conser Launch, 5.000 Kunden, 5M€ GMV. Phase 3 (Okt 2026–Feb 2027): Avento MVP mit allen Core-Features. Phase 4 (Mär–Jun 2027): Public Beta Launch, 25.000 Kunden, Series A.',
       },
       {
         q: 'Wann wird der Break-Even erreicht?',

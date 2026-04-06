@@ -156,7 +156,7 @@ export default function PublicContact() {
                       <Building2 size={18} style={{ color: 'var(--accent)' }} />
                     </div>
                     <h3 className="text-sm font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Unternehmen</h3>
-                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Conser Gosch UG (haftungsbeschränkt)</p>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Conser GmbH</p>
                     <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>HRB 22177 &middot; DE458507310</p>
                   </div>
                 </ScrollReveal>

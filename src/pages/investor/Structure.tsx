@@ -40,10 +40,13 @@ export default function InvestorStructure() {
       .then(({ data }) => {
         if (data && data.length > 0) setMembers(data as TeamMember[])
         else setMembers([
-          { id: '1', name: 'Torben Gosch',  role: 'CEO', bio: 'Gründer und Geschäftsführer. Strategie, Partnerschaften & Investoren.', initials: 'TG', color: '#063D3E', type: 'founder',  equity_percent: 45, visible: true, order_index: 1 },
-          { id: '2', name: 'Martin Groote', role: 'CTO', bio: 'Technologieleiter & Mitgründer. Produktentwicklung & Innovation.',       initials: 'MG', color: '#D4662A', type: 'founder',  equity_percent: 45, visible: true, order_index: 2 },
-          { id: '4', name: 'Paul Bockting',  role: 'CDO', bio: 'UI/UX-Leiter & Mitgründer. Design, Nutzererfahrung & visuelle Identität.', initials: 'PB', color: '#5856D6', type: 'founder',  equity_percent: 0,  visible: true, order_index: 3 },
-          { id: '3', name: 'Code Ara GmbH', role: 'Entwicklungspartner', bio: 'Strategischer Technologiepartner. Externe Software-Entwicklung.', initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 10, visible: true, order_index: 4 },
+          { id: '1', name: 'Torben Gosch',    role: 'CEO & Geschäftsführer',       bio: 'Gründer und Geschäftsführer. Strategie, Partnerschaften & Investoren.',                initials: 'TG', color: '#063D3E', type: 'founder',  equity_percent: 60, visible: true, order_index: 1 },
+          { id: '2', name: 'Martin Grote',    role: 'CFO & Co-Founder',            bio: 'Co-Founder und Finanzleiter. Finanzen, Controlling & operative Steuerung.',             initials: 'MG', color: '#D4662A', type: 'founder',  equity_percent: 35, visible: true, order_index: 2 },
+          { id: '5', name: 'Oscar',           role: 'Full-Stack Entwickler',       bio: 'Full-Stack Entwickler. Baut und betreut die technische Plattform.',                     initials: 'OS', color: '#0EA5E9', type: 'team',     equity_percent: 0,  visible: true, order_index: 3 },
+          { id: '6', name: 'Luis',            role: 'Full-Stack Entwickler',       bio: 'Full-Stack Entwickler. Features und technische Integration.',                            initials: 'LU', color: '#8B5CF6', type: 'team',     equity_percent: 0,  visible: true, order_index: 4 },
+          { id: '7', name: 'UI/UX Designer',  role: 'UI/UX Designer',             bio: 'Gestaltet Nutzererfahrung, Produktdesign und visuelle Identität.',                       initials: 'UX', color: '#F59E0B', type: 'team',     equity_percent: 0,  visible: true, order_index: 5 },
+          { id: '8', name: 'Kundenberaterin', role: 'Kundenberaterin',            bio: 'Beratung und Betreuung von Kunden und Partnern.',                                        initials: 'KB', color: '#EC4899', type: 'team',     equity_percent: 0,  visible: true, order_index: 6 },
+          { id: '3', name: 'Code Ara GmbH',   role: 'Entwicklungspartner',        bio: 'Strategischer Technologiepartner. Externe Software-Entwicklung.',                        initials: 'CA', color: '#2d6a4f', type: 'external', equity_percent: 5,  visible: true, order_index: 7 },
         ])
         setLoading(false)
       })
@@ -152,13 +155,13 @@ export default function InvestorStructure() {
             </div>
             <div>
               <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Code Ara GmbH</p>
-              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Strategischer Entwicklungspartner · 10% Anteile</p>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Strategischer Entwicklungspartner · 5% Anteile</p>
             </div>
             <span className="ml-auto text-xs font-semibold px-2.5 py-1 rounded-full"
               style={{ background: 'rgba(45,106,79,0.12)', color: '#2d6a4f' }}>Entwickler</span>
           </div>
           <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-            Code Ara GmbH ist der externe Software-Entwicklungspartner der Bautech Holding. Das Unternehmen verantwortet die technische Umsetzung der Plattform und hält 10% Unternehmensanteile als strategische Beteiligung.
+            Code Ara GmbH ist der externe Software-Entwicklungspartner der Bautech Holding. Das Unternehmen verantwortet die technische Umsetzung der Plattform und hält 5% Unternehmensanteile als strategische Beteiligung.
           </p>
         </div>
       </div>
@@ -199,9 +202,9 @@ export default function InvestorStructure() {
             </thead>
             <tbody>
               {[
-                { name: 'Torben Gosch',  role: 'CEO & Co-Founder',    equity: '45%', status: 'Gründer' },
-                { name: 'Martin Groote', role: 'CTO & Co-Founder',    equity: '45%', status: 'Gründer' },
-                { name: 'Code Ara GmbH', role: 'Entwicklungspartner', equity: '10%', status: 'Strategisch' },
+                { name: 'Torben Gosch',  role: 'CEO & Founder',       equity: '60%', status: 'Gründer' },
+                { name: 'Martin Grote',  role: 'CFO & Co-Founder',    equity: '35%', status: 'Gründer' },
+                { name: 'Code Ara GmbH', role: 'Entwicklungspartner', equity: '5%',  status: 'Strategisch' },
                 { name: 'Investor Pool', role: 'Seed Round (€1,5M)',   equity: 'TBD', status: 'Offen' },
               ].map((row, i) => (
                 <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>

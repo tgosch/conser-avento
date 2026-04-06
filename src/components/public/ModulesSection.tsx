@@ -117,13 +117,13 @@ export default function ModulesSection() {
                   </a>
                 </div>
                 <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--text-secondary)' }}>
-                  2,3 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Großhandelspreise, 24h Lieferung direkt auf die Baustelle. Nahtlos integriert in Avento ERP — 1-Click-Bestellung aus jedem Projekt.
+                  12,8 Mio. Bauprodukte von 7 Premium-Herstellern. Faire Großhandelspreise, 24h Lieferung direkt auf die Baustelle. Nahtlos integriert in Avento ERP — 1-Click-Bestellung aus jedem Projekt.
                 </p>
 
                 {/* Highlights */}
                 <div className="space-y-4">
                   {[
-                    { label: '2,3 Mio.', sub: 'Produkte im Sortiment' },
+                    { label: '12,8 Mio.', sub: 'Produkte im Sortiment' },
                     { label: '7', sub: 'aktuell · Ziel: 25' },
                     { label: '24h', sub: 'Lieferung auf die Baustelle' },
                   ].map(h => (

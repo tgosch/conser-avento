@@ -24,7 +24,7 @@ export default function PublicFooter() {
                 <img src={conserLogo} alt="Conser" className="h-5 rounded" />
               </div>
               <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                &copy; {new Date().getFullYear()} Conser Gosch UG (haftungsbeschränkt)
+                &copy; {new Date().getFullYear()} Conser GmbH
               </p>
             </div>
 

@@ -63,7 +63,7 @@ export default function HeroSection() {
                 className="text-xs md:text-sm mb-8"
                 style={{ color: 'var(--accent)', opacity: 0.9 }}
               >
-                Gewerkübergreifend · 2,3 Mio. Produkte · DSGVO-konform · Made in Germany
+                Gewerkübergreifend · 12,8 Mio. Produkte · DSGVO-konform · Made in Germany
               </motion.p>
 
               <motion.div

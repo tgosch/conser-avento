@@ -3,7 +3,7 @@ import { CheckCircle, Circle, ArrowRight } from 'lucide-react'
 const PHASES = [
   {
     phase: 'Phase 1', period: 'Mai 2026', title: 'Conser MVP', icon: '🚀',
-    items: ['9 Produktionspartner live', '2,3M Produkte auf dem Marktplatz', 'Payment-System aktiv'],
+    items: ['7 Produktionspartner live', '12,8M Produkte auf dem Marktplatz', 'Payment-System aktiv'],
     partnerBenefit: 'Ihr Katalog ist live und suchbar für alle Handwerker.',
     status: 'active',
   },
@@ -50,7 +50,7 @@ export default function PartnerRoadmap() {
       {/* ── TIMELINE ── */}
       <div className="flex flex-col gap-4 mb-8">
         {PHASES.map((p, i) => (
-          <div key={p.phase} className={`card overflow-hidden animate-fade-up delay-${Math.min(i + 1, 4)} group hover:translate-y-[-1px] transition-all duration-300`}
+          <div key={p.phase} className={`card overflow-hidden animate-fade-up delay-${Math.min(i + 1, 4)} group hover:translate-y-[-2px] transition-all duration-300`}
             style={p.status === 'active' ? { border: '1.5px solid var(--brand)', boxShadow: '0 4px 20px rgba(6,61,62,0.08)' } : {}}>
             <div className="flex items-center gap-3 px-5 py-3"
               style={{ borderBottom: '1px solid var(--border)', background: p.status === 'active' ? 'var(--brand-dim)' : 'transparent' }}>
@@ -107,7 +107,7 @@ export default function PartnerRoadmap() {
             { phase: '2-3', partners: '+12', region: 'Erweiterte DACH', icon: '🇦🇹', active: false },
             { phase: '4-5', partners: '+20', region: 'Europa', icon: '🇪🇺', active: false },
           ].map((e, i) => (
-            <div key={e.phase} className="relative flex items-center gap-4 p-4 rounded-xl group hover:translate-y-[-1px] transition-all duration-300"
+            <div key={e.phase} className="relative flex items-center gap-4 p-4 rounded-xl group hover:translate-y-[-2px] transition-all duration-300"
               style={{ background: 'var(--surface2)', border: e.active ? '1.5px solid var(--brand)' : '1.5px solid var(--border)' }}>
               <span className="text-2xl">{e.icon}</span>
               <div className="flex-1">

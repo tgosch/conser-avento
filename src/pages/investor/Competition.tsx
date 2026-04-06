@@ -8,29 +8,29 @@ interface Feature {
   name: string
   tooltip: string
   avento: Level
-  lexoffice: Level
   plancraft: Level
-  excel: Level
+  hero: Level
+  tooltime: Level
 }
 
 const FEATURES: Feature[] = [
-  { name: 'Kalkulation',         tooltip: 'Projekt- und Angebotskalkulation', avento: 'full', lexoffice: 'partial', plancraft: 'full', excel: 'partial' },
-  { name: 'Buchhaltung',         tooltip: 'Rechnungen, Ausgaben, Steuer',      avento: 'full', lexoffice: 'full',    plancraft: 'none',    excel: 'partial' },
-  { name: 'Angebotserstellung',  tooltip: 'Professionelle Angebote erstellen', avento: 'full', lexoffice: 'partial', plancraft: 'full',    excel: 'partial' },
-  { name: 'Bautagebuch (BauDoku AI)', tooltip: 'Digitales Bautagebuch mit KI',  avento: 'full', lexoffice: 'none',    plancraft: 'partial', excel: 'none'    },
-  { name: 'Material-Bestellung', tooltip: '1-Click Bestellung über Marktplatz', avento: 'full', lexoffice: 'none',    plancraft: 'none',    excel: 'none'    },
-  { name: 'Team-Steuerung',      tooltip: 'Mitarbeiter, Zeiterfassung, Rollen', avento: 'full', lexoffice: 'none',    plancraft: 'partial', excel: 'none'    },
-  { name: 'KI-Assistent (Space AI)', tooltip: 'Intelligente Automatisierung', avento: 'full', lexoffice: 'none',    plancraft: 'none',    excel: 'none'    },
-  { name: 'Mobile App',          tooltip: 'iOS und Android nativ',             avento: 'full', lexoffice: 'full',    plancraft: 'full',    excel: 'none'    },
-  { name: 'Integrierter Marktplatz', tooltip: 'Conser: 2,3M Produkte direkt im ERP', avento: 'full', lexoffice: 'none', plancraft: 'none', excel: 'none' },
-  { name: 'DACH-Fokus Baubranche', tooltip: 'Spezialisiert auf Handwerk & Bau', avento: 'full', lexoffice: 'partial', plancraft: 'full',  excel: 'partial' },
+  { name: 'Kalkulation',              tooltip: 'Projekt- und Angebotskalkulation',        avento: 'full', plancraft: 'full',    hero: 'full',    tooltime: 'full'    },
+  { name: 'Buchhaltung (BuchBalance)', tooltip: 'Rechnungen, DATEV-Export, USt',           avento: 'full', plancraft: 'none',    hero: 'partial', tooltime: 'partial' },
+  { name: 'Angebotserstellung',       tooltip: 'Professionelle Angebote erstellen',        avento: 'full', plancraft: 'full',    hero: 'full',    tooltime: 'full'    },
+  { name: 'Bautagebuch (BauDoku AI)', tooltip: 'Digitales Bautagebuch mit KI',             avento: 'full', plancraft: 'partial', hero: 'partial', tooltime: 'none'    },
+  { name: 'Material-Bestellung',      tooltip: '1-Click Bestellung über Marktplatz',       avento: 'full', plancraft: 'none',    hero: 'none',    tooltime: 'none'    },
+  { name: 'Team-Steuerung',           tooltip: 'Mitarbeiter, Zeiterfassung, Plantafel',    avento: 'full', plancraft: 'partial', hero: 'full',    tooltime: 'partial' },
+  { name: 'KI-Assistent (Space AI)',  tooltip: 'Intelligente Automatisierung & Kalkulation', avento: 'full', plancraft: 'none', hero: 'partial', tooltime: 'none'    },
+  { name: 'Mobile App',               tooltip: 'iOS und Android nativ',                    avento: 'full', plancraft: 'full',    hero: 'full',    tooltime: 'full'    },
+  { name: 'Integrierter Marktplatz',  tooltip: 'Conser: 12,8M Produkte direkt im ERP',    avento: 'full', plancraft: 'none',    hero: 'none',    tooltime: 'none'    },
+  { name: 'DACH-Fokus Baubranche',    tooltip: 'Spezialisiert auf Handwerk & Bau',         avento: 'full', plancraft: 'full',    hero: 'full',    tooltime: 'full'    },
 ]
 
 const COMPETITORS = [
   { name: 'Avento + Conser', highlight: true },
-  { name: 'Lexoffice',       highlight: false },
   { name: 'Plancraft',       highlight: false },
-  { name: 'Excel / Papier',  highlight: false },
+  { name: 'HERO',            highlight: false },
+  { name: 'ToolTime',        highlight: false },
 ]
 
 function StatusIcon({ level }: { level: Level }) {
@@ -47,25 +47,28 @@ function StatusIcon({ level }: { level: Level }) {
 // ── Competitor Profile Cards ─────────────────────────────────────
 const PROFILES = [
   {
-    name: 'Lexoffice',
-    desc: 'Generische Buchhaltungssoftware von Haufe. Gut für Freelancer und kleine Unternehmen — aber nicht für die Baubranche gebaut.',
-    strength: 'Buchhaltung & Steuer',
-    weakness: 'Kein Bau-Know-how, kein Marktplatz, kein KI',
-    color: '#0066CC',
-  },
-  {
     name: 'Plancraft',
-    desc: 'Handwerker-Software mit Fokus auf Kalkulation. Solides Produkt — aber isoliert ohne Material-Bestellung oder Marktplatz.',
-    strength: 'Kalkulation & Angebote',
-    weakness: 'Keine Buchhaltung, kein Marktplatz, kein KI',
+    desc: 'Cloud-Handwerkersoftware aus Hamburg. Fokus auf einfache Kalkulation und Angebote. Note 1,4 (für-gründer.de 2026). Ab 74,90€/Mo. Keine Buchhaltung, keine Materialbestellung.',
+    strength: 'Einfache Bedienung, Kalkulation & Aufmaß',
+    weakness: 'Keine Buchhaltung, kein Marktplatz, kein KI, keine Lagerverwaltung',
     color: '#FF6B35',
+    source: 'Quelle: für-gründer.de, trusted.de (2026)',
   },
   {
-    name: 'Excel / Papier',
-    desc: '73% der Handwerksbetriebe. Funktioniert — bis es nicht mehr funktioniert. Fehleranfällig, nicht skalierbar, kein System.',
-    strength: 'Bekannt, keine Kosten',
-    weakness: 'Alles. Medienbrüche, Fehler, kein Überblick',
-    color: '#6E6E73',
+    name: 'HERO Software',
+    desc: 'Testsieger bei trusted (Note 1,0 Usability). Umfangreiche Handwerkersoftware ab 69€/Mo. Starke Plantafel und App — aber kein eigener Marktplatz, keine KI-Module.',
+    strength: 'Plantafel, Auftragsabwicklung, Mobile App',
+    weakness: 'Kein integrierter Marktplatz, keine KI, keine Buchhaltung',
+    color: '#1A73E8',
+    source: 'Quelle: trusted.de, hero-software.de (2026)',
+  },
+  {
+    name: 'ToolTime',
+    desc: 'Cloudbasierte Lösung für kleine Betriebe. Note 1,7 (für-gründer.de 2026). Ab 35€/Mo. Einfach, aber eingeschränkter Funktionsumfang.',
+    strength: 'Günstig, einfache Bedienung, Cloud-first',
+    weakness: 'Begrenzter Scope, kein Marktplatz, kein KI, keine Bautagebuch-Funktion',
+    color: '#00B8D4',
+    source: 'Quelle: für-gründer.de, clockin.de (2026)',
   },
 ]
 
@@ -115,7 +118,7 @@ export default function InvestorCompetition() {
                     <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{f.name}</p>
                     <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{f.tooltip}</p>
                   </td>
-                  {(['avento', 'lexoffice', 'plancraft', 'excel'] as const).map(key => (
+                  {(['avento', 'plancraft', 'hero', 'tooltime'] as const).map(key => (
                     <td key={key} className="px-2 py-2.5 md:px-4 md:py-3.5 text-center"
                         style={{ background: key === 'avento' ? 'var(--brand-dim)' : 'transparent' }}>
                       <div className="flex justify-center">
@@ -159,6 +162,9 @@ export default function InvestorCompetition() {
                   <p className="text-xs" style={{ color: 'var(--text-secondary)' }}><span className="font-semibold">Schwäche:</span> {p.weakness}</p>
                 </div>
               </div>
+              {p.source && (
+                <p className="text-[9px] mt-3 pt-2 border-t" style={{ borderColor: 'var(--border)', color: 'var(--text-tertiary)' }}>{p.source}</p>
+              )}
             </div>
           ))}
         </div>

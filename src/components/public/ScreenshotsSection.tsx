@@ -8,7 +8,7 @@ import bauDoku from '../../assets/BauDokuAI.png'
 
 const items = [
   { id: 'checkout', title: 'Conser Checkout', desc: 'Nahtloser B2B-Checkout mit Rechnungskauf und Sammelrechnung.', image: conserScreen },
-  { id: 'shop', title: 'Marktplatz', desc: '2,3 Mio. Bauprodukte — das größte Sortiment der DACH-Region.', image: conserShop },
+  { id: 'shop', title: 'Marktplatz', desc: '12,8 Mio. Bauprodukte — das größte Sortiment der DACH-Region.', image: conserShop },
   { id: 'spaceai', title: 'SpaceAI', desc: 'KI-gestützte Gartengestaltung — eines unserer Innovation-Tools.', image: spaceAI },
   { id: 'baudoku', title: 'BauDoku AI', desc: 'Automatische Baudokumentation mit KI — Fotos, Berichte, Protokolle.', image: bauDoku },
 ]
