@@ -5,7 +5,6 @@
 -- ═══════════════════════════════════════════════════════════════
 
 -- 1. Performance-Indexes auf häufig gefilterte Spalten
-CREATE INDEX IF NOT EXISTS idx_investors_status ON investors(status);
 CREATE INDEX IF NOT EXISTS idx_investors_email ON investors(email);
 CREATE INDEX IF NOT EXISTS idx_updates_created_at ON updates(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_documents_category ON documents(category);
