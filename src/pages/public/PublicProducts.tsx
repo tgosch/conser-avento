@@ -108,6 +108,14 @@ export default function PublicProducts() {
                   </ScrollReveal>
                 ))}
               </div>
+
+              <ScrollReveal className="mt-6">
+                <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium transition-all hover:gap-3"
+                  style={{ color: 'var(--accent)' }}>
+                  Shop besuchen <ArrowRight size={14} />
+                </a>
+              </ScrollReveal>
             </div>
           </div>
         </div>
