@@ -104,7 +104,6 @@ export default function HeroSection() {
                   <div style={{ overflow: 'hidden', aspectRatio: '9/14' }}>
                     <video
                       ref={videoRef}
-                      src="/werbevideo1.mov"
                       autoPlay
                       loop
                       muted={muted}
@@ -112,7 +111,10 @@ export default function HeroSection() {
                       preload="metadata"
                       className="w-full block"
                       style={{ aspectRatio: '9/16', objectFit: 'cover' }}
-                    />
+                    >
+                      <source src="/werbevideo1.mp4" type="video/mp4" />
+                      <source src="/werbevideo1.mov" type="video/quicktime" />
+                    </video>
                   </div>
                   {/* Mute toggle */}
                   <button onClick={toggleMute}

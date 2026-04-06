@@ -6,12 +6,13 @@ import ScrollReveal from './ScrollReveal'
 export default function VideoSection() {
   const [playing, setPlaying] = useState(false)
   const [muted, setMuted] = useState(true)
+  const [error, setError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const handlePlay = () => {
     setPlaying(true)
     if (videoRef.current) {
-      videoRef.current.play()
+      videoRef.current.play().catch(() => setError(true))
     }
   }
 
@@ -20,6 +21,9 @@ export default function VideoSection() {
     setMuted(!muted)
     if (videoRef.current) videoRef.current.muted = !muted
   }
+
+  // Don't render section if video fails
+  if (error) return null
 
   return (
     <section id="video" className="py-28 md:py-36" style={{ background: 'var(--bg)' }}>
@@ -43,13 +47,17 @@ export default function VideoSection() {
 
               <video
                 ref={videoRef}
-                src="/Haupt.video.mov"
                 muted={muted}
                 playsInline
                 loop
+                preload="metadata"
+                onError={() => setError(true)}
                 className="w-full block"
                 style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-              />
+              >
+                <source src="/Haupt.video.mp4" type="video/mp4" />
+                <source src="/Haupt.video.mov" type="video/quicktime" />
+              </video>
 
               {/* Play overlay — nur wenn nicht gestartet */}
               {!playing && (
