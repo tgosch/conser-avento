@@ -210,13 +210,70 @@ export default function PartnerVision() {
             label="Bestellung"
             sublabel="1-Click aus dem Projekt"
           />
-          <PhoneMockup
-            placeholderIcon="🏪"
-            placeholderText="Conser Shop"
-            gradient="linear-gradient(145deg, #1A0A00 0%, #C8611A 100%)"
-            label="Conser Shop"
-            sublabel="12,8M Produkte"
-          />
+          <div className="flex flex-col items-center gap-2 sm:gap-3">
+            <div className="relative w-[140px] h-[287px] sm:w-[200px] sm:h-[410px]">
+              <div className="absolute inset-0 rounded-2xl sm:rounded-[36px]"
+                style={{ background: '#1A1A1A', boxShadow: '0 25px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)' }} />
+              <div className="absolute -right-[2px] top-[90px] w-[3px] h-[30px] rounded-r-sm" style={{ background: '#2A2A2A' }} />
+              <div className="absolute -left-[2px] top-[80px] w-[3px] h-[20px] rounded-l-sm" style={{ background: '#2A2A2A' }} />
+              <div className="absolute -left-[2px] top-[110px] w-[3px] h-[35px] rounded-l-sm" style={{ background: '#2A2A2A' }} />
+              <div className="absolute -left-[2px] top-[155px] w-[3px] h-[35px] rounded-l-sm" style={{ background: '#2A2A2A' }} />
+              <div className="absolute inset-[3px] sm:inset-[4px] rounded-[21px] sm:rounded-[32px] overflow-hidden" style={{ background: '#000' }}>
+                <div className="absolute top-[7px] sm:top-[10px] left-1/2 -translate-x-1/2 w-[64px] sm:w-[90px] h-[20px] sm:h-[28px] rounded-full z-10" style={{ background: '#000' }} />
+                {/* Conser Shop Mobile UI */}
+                <div className="w-full h-full flex flex-col" style={{ background: '#F7F6F3' }}>
+                  {/* Status bar */}
+                  <div className="flex items-center justify-between px-3 pt-[30px] sm:pt-[40px] pb-1.5"
+                    style={{ background: '#063D3E' }}>
+                    <span className="text-[6px] sm:text-[8px] font-bold text-white/90">conser.shop</span>
+                    <span className="text-[6px] sm:text-[8px] text-white/50">🛒 3</span>
+                  </div>
+                  {/* Search */}
+                  <div className="mx-1.5 sm:mx-2 mt-1.5 sm:mt-2 px-2 py-1 sm:py-1.5 rounded-md"
+                    style={{ background: '#EBEBEA', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <span className="text-[5px] sm:text-[7px]" style={{ color: '#8A8A85' }}>🔍 Produkt suchen...</span>
+                  </div>
+                  {/* Products */}
+                  <div className="flex-1 px-1.5 sm:px-2 pt-1.5 sm:pt-2 flex flex-col gap-1 sm:gap-1.5 overflow-hidden">
+                    {[
+                      { name: 'Kupferrohr 15mm', price: '€12,49', color: '#063D3E' },
+                      { name: 'Flex-Schlauch DN20', price: '€8,90', color: '#D4662A' },
+                      { name: 'Fitting T-Stück 3/4"', price: '€3,20', color: '#063D3E' },
+                      { name: 'Dichtungsring Set', price: '€5,60', color: '#D4662A' },
+                    ].map((p, i) => (
+                      <div key={i} className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-md"
+                        style={{ background: 'white', border: '1px solid rgba(0,0,0,0.05)' }}>
+                        <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-sm shrink-0 flex items-center justify-center"
+                          style={{ background: `${p.color}10` }}>
+                          <span className="text-[6px] sm:text-[8px]">📦</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[5px] sm:text-[7px] font-semibold truncate" style={{ color: '#111' }}>{p.name}</p>
+                          <p className="text-[5px] sm:text-[6px] font-bold" style={{ color: '#063D3E' }}>{p.price}</p>
+                        </div>
+                        <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex items-center justify-center shrink-0"
+                          style={{ background: '#C8611A' }}>
+                          <span className="text-[4px] sm:text-[5px] text-white font-bold">+</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Bottom bar */}
+                  <div className="px-1.5 sm:px-2 py-1.5 sm:py-2 flex items-center justify-between"
+                    style={{ background: '#063D3E' }}>
+                    <span className="text-[5px] sm:text-[7px] text-white/70">3 Artikel</span>
+                    <span className="text-[6px] sm:text-[8px] font-bold text-white px-2 py-0.5 rounded-full"
+                      style={{ background: '#C8611A' }}>Bestellen →</span>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute bottom-[6px] sm:bottom-[8px] left-1/2 -translate-x-1/2 w-[70px] sm:w-[100px] h-[3px] sm:h-[4px] rounded-full" style={{ background: 'rgba(255,255,255,0.3)' }} />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Shop</p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>12,8M Produkte</p>
+            </div>
+          </div>
           <PhoneMockup
             placeholderIcon="📊"
             placeholderText="Bautagebuch"
