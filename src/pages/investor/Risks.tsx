@@ -63,8 +63,8 @@ export default function Risks() {
       </div>
 
       <div className="flex flex-col gap-5">
-        {risks.map((r) => (
-          <div key={r.category} className="card p-6 md:p-8">
+        {risks.map((r, i) => (
+          <div key={r.category} className={`card p-6 md:p-8 animate-fade-up delay-${i + 1}`}>
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">

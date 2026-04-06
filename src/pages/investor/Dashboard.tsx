@@ -20,11 +20,12 @@ const currentMonth = `${monthNames[new Date().getMonth()]} ${new Date().getFullY
 
 export default function InvestorDashboard() {
   const [updates, setUpdates] = useState<Update[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     supabase.from('updates').select('id,title,content,category,created_at')
       .order('created_at', { ascending: false }).limit(4)
-      .then(({ data }) => { if (data) setUpdates(data as Update[]) })
+      .then(({ data }) => { if (data) setUpdates(data as Update[]); setLoading(false) })
   }, [])
 
   const { value: c75k } = useCountUp(75000, { duration: 1600 })
@@ -465,7 +466,7 @@ export default function InvestorDashboard() {
       </div>
 
       {/* NEUIGKEITEN */}
-      {updates.length > 0 && (
+      {(loading || updates.length > 0) && (
         <div className="mb-8 delay-5 animate-fade-up">
           <div className="flex items-center justify-between mb-4">
             <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>NEUIGKEITEN</p>
@@ -475,25 +476,31 @@ export default function InvestorDashboard() {
               Alle <ChevronRight size={12} />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {updates.map(u => (
-              <div key={u.id} className="card p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="tag"
-                    style={{ background: `${categoryColor[u.category]}14`, color: categoryColor[u.category] }}>
-                    {categoryLabel[u.category]}
-                  </span>
-                  <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                    {new Date(u.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'short' })}
-                  </span>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[1,2].map(i => <div key={i} className="skeleton h-28 rounded-xl" />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {updates.map(u => (
+                <div key={u.id} className="card p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="tag"
+                      style={{ background: `${categoryColor[u.category]}14`, color: categoryColor[u.category] }}>
+                      {categoryLabel[u.category]}
+                    </span>
+                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                      {new Date(u.created_at).toLocaleDateString('de-DE', { day: 'numeric', month: 'short' })}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{u.title}</h3>
+                  <p className="text-xs truncate-2" style={{ color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+                    {u.content}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{u.title}</h3>
-                <p className="text-xs truncate-2" style={{ color: 'var(--text-secondary)', lineHeight: 1.65 }}>
-                  {u.content}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

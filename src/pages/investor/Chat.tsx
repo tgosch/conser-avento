@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 export default function InvestorChat() {
   const { user } = useAuth()
   const [messages, setMessages] = useState<Message[]>([])
+  const [loading, setLoading] = useState(true)
   const [input, setInput] = useState('')
   const [proposal, setProposal] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -20,7 +21,7 @@ export default function InvestorChat() {
   useEffect(() => {
     if (!investorId) return
     supabase.from('messages').select('*').eq('investor_id', investorId).order('created_at')
-      .then(({ data }) => { if (data) setMessages(data as Message[]) })
+      .then(({ data }) => { if (data) setMessages(data as Message[]); setLoading(false) })
 
     const channel = supabase.channel(`inv-chat-${investorId}`)
       .on('postgres_changes', {
@@ -104,7 +105,14 @@ export default function InvestorChat() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2.5">
-            {messages.length === 0 && (
+            {loading && (
+              <div className="flex flex-col gap-3 p-4">
+                {[1,2,3].map(i => (
+                  <div key={i} className={`skeleton h-16 rounded-xl ${i % 2 === 0 ? 'ml-auto w-2/3' : 'w-3/4'}`} />
+                ))}
+              </div>
+            )}
+            {!loading && messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full text-center py-10">
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4"
                   style={{ background: 'var(--surface2)' }}>
@@ -116,7 +124,7 @@ export default function InvestorChat() {
             )}
 
             {/* ERGÄNZUNG 2 — Starter-Fragen */}
-            {messages.length === 0 && (
+            {!loading && messages.length === 0 && (
               <div className="p-4">
                 <p className="text-xs font-semibold mb-3" style={{ color: 'var(--text-tertiary)' }}>HÄUFIGE FRAGEN</p>
                 <div className="flex flex-col gap-2">
