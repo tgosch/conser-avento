@@ -190,8 +190,7 @@ export default function PartnerCalculator() {
 
       {/* Disclaimer */}
       <p className="text-[10px] mt-6 text-center" style={{ color: 'var(--text-tertiary)' }}>
-        Alle Zahlen sind Schätzungen basierend auf Ihren Eingaben. Tatsächliche Ergebnisse können abweichen.
-        Kommissionssätze werden individuell verhandelt.
+        Alle Berechnungen sind Schätzungen auf Basis Ihrer Eingaben. Tatsächliche Ergebnisse hängen von Marktentwicklung und Adoptionsrate ab. Kommissionssätze werden individuell verhandelt.
       </p>
     </div>
   )

@@ -155,7 +155,10 @@ export default function InvestorDashboard() {
             <Play size={24} fill="white" color="white" style={{ marginLeft: 2 }} />
           </div>
           <h3 className="text-lg md:text-xl font-bold text-white mb-2">90 Sekunden mit Torben</h3>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Pitch-Video · Demnächst hier</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Pitch-Video · Coming Soon</p>
+          <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.30)', maxWidth: 320 }}>
+            Persönlicher Pitch von Torben Gosch — Warum wir bauen, was wir bauen.
+          </p>
         </div>
       </div>
 
@@ -448,11 +451,11 @@ export default function InvestorDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[
             { icon: '🔗', title: 'Integriertes Ökosystem',
-              desc: 'ERP + Marktplatz, tief verknüpft. Material direkt aus dem Projekt bestellen. 1 Klick, kein Medienbruch.' },
+              desc: 'ERP + Marktplatz in einem System. Material direkt aus dem Projekt bestellen — 1 Klick, kein Medienbruch, keine Zettelwirtschaft.' },
             { icon: '🤖', title: 'KI-Module bereits fertig',
-              desc: 'Space AI (KI-Assistent) und BauDoku AI (digitales Bautagebuch) sind live. Komplett-System für Controlling, Buchhaltung, Angebote und Team — alles integriert.' },
+              desc: '3 Live-Produkte: Space AI, BauDoku AI, BuchBalance. Nicht geplant, nicht in Entwicklung — bereits im Einsatz bei echten Nutzern.' },
             { icon: '🏗️', title: 'Tiefe Branchenkenntnis',
-              desc: '7 Produktionspartner, 15+ Jahre SAP-Erfahrung. Wir kennen die Schmerzen — wir haben die Lösung gebaut.' },
+              desc: 'Gründer mit Track Record in Software-Exits und Unternehmensaufbau. 7 Produktionspartner verhandelt, 12,8M Produkte im Onboarding.' },
           ].map(usp => (
             <div key={usp.title} className="card card-interactive p-5">
               <span className="text-2xl block mb-3">{usp.icon}</span>

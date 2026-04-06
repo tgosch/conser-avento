@@ -82,10 +82,10 @@ export default function InvestorStatus() {
         <div className="card p-12 text-center">
           <span className="text-5xl block mb-4">📭</span>
           <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--text-primary)' }}>
-            Noch keine Updates
+            Noch keine Neuigkeiten
           </h3>
           <p className="text-sm mb-5" style={{ color: 'var(--text-secondary)' }}>
-            Das Gründerteam wird hier regelmäßig über Meilensteine und Entwicklungen berichten.
+            Updates werden hier in Echtzeit angezeigt, sobald das Team neue Meilensteine teilt.
           </p>
           <Link to="/investor/chat"
             className="btn btn-primary">

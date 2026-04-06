@@ -51,7 +51,7 @@ export default function PartnerDashboard() {
             {greeting}, {partner?.name ?? 'Partner'}
           </h1>
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.55)', maxWidth: 480 }}>
-            Gemeinsam die Baubranche digitalisieren. Zugang zu 75.000 Handwerksbetrieben — automatisierte Bestellungen direkt aus dem ERP.
+            Gemeinsam die Baubranche digitalisieren. Zugang zu 75.000 Handwerksbetrieben — automatisierte Bestellungen direkt aus dem ERP, ohne manuellen Aufwand für Sie.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/partner/partnership"
