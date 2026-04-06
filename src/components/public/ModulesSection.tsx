@@ -31,7 +31,7 @@ export default function ModulesSection() {
           {/* Avento ERP */}
           <ScrollReveal>
             <div className="rounded-2xl overflow-hidden h-full" style={{ background: '#063D3E' }}>
-              <div className="p-8 md:p-10">
+              <div className="p-5 md:p-10">
                 <div className="flex items-center gap-3 mb-6">
                   <img src={aventoLogo} alt="Avento" className="w-10 h-10 rounded-xl" />
                   <div>
@@ -103,7 +103,7 @@ export default function ModulesSection() {
           {/* Conser Marktplatz */}
           <ScrollReveal delay={0.1}>
             <div className="rounded-2xl overflow-hidden h-full" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-              <div className="p-8 md:p-10">
+              <div className="p-5 md:p-10">
                 <div className="flex items-center gap-3 mb-6">
                   <img src={conserLogo} alt="Conser" className="w-10 h-10 rounded-xl" />
                   <div>

@@ -93,15 +93,16 @@ export default function HeroSection() {
               <div className="sticky top-24 flex justify-center">
                 <div className="relative rounded-2xl overflow-hidden w-56 xl:w-64"
                   style={{
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    opacity: 0.85,
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(255,255,255,0.04)',
+                    opacity: 0.55,
+                    filter: 'brightness(0.85)',
                   }}>
                   {/* Clip bottom 12% to crop CapCut watermark */}
                   <div style={{ overflow: 'hidden', aspectRatio: '9/14' }}>
                     <video
                       ref={videoRef}
-                      src="/werbe.video.1.MOV"
+                      src="/werbevideo1.mov"
                       autoPlay
                       loop
                       muted={muted}
