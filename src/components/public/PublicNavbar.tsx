@@ -16,11 +16,22 @@ export default function PublicNavbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const { scrollY } = useScroll()
-  const bgOpacity = useTransform(scrollY, [0, 60], [0, 0.92])
+
+  // Auf der Startseite: Navbar startet mit dunklem Hintergrund (Hero ist dunkel)
+  // Auf Unterseiten: Navbar startet transparent (Hintergrund ist hell)
+  const isHome = location.pathname === '/'
+
+  const bgOpacity = useTransform(scrollY, [0, 60], [isHome ? 0 : 0, 0.92])
 
   return (
     <>
       <motion.header className="fixed top-0 left-0 right-0 z-50">
+        {/* Permanenter dunkler Background auf Startseite */}
+        {isHome && (
+          <div className="absolute inset-0" style={{ background: '#063D3E' }} />
+        )}
+
+        {/* Scroll-basierter heller Background */}
         <motion.div
           className="absolute inset-0"
           style={{
@@ -42,26 +53,31 @@ export default function PublicNavbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-7">
-            {navLinks.map(link => (
-              <Link key={link.to} to={link.to}
-                className="text-xs transition-colors"
-                style={{
-                  color: location.pathname === link.to ? 'var(--text-primary)' : 'var(--text-tertiary)',
-                  fontWeight: location.pathname === link.to ? 500 : 400,
-                }}>
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              const active = location.pathname === link.to
+              return (
+                <Link key={link.to} to={link.to}
+                  className="text-xs transition-colors"
+                  style={{
+                    color: active
+                      ? (isHome ? 'white' : 'var(--text-primary)')
+                      : (isHome ? 'rgba(255,255,255,0.6)' : 'var(--text-tertiary)'),
+                    fontWeight: active ? 500 : 400,
+                  }}>
+                  {link.label}
+                </Link>
+              )
+            })}
             <Link to="/login"
               className="text-xs font-medium px-4 py-1.5 rounded-full transition-all hover:opacity-80"
-              style={{ background: 'var(--brand)', color: 'white' }}>
+              style={{ background: isHome ? 'white' : 'var(--brand)', color: isHome ? '#063D3E' : 'white' }}>
               Zugang
             </Link>
           </div>
 
           {/* Mobile */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-1"
-            style={{ color: 'var(--text-primary)' }} aria-label="Menu">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-1" aria-label="Menu"
+            style={{ color: isHome ? 'white' : 'var(--text-primary)' }}>
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </nav>
