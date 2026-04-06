@@ -113,7 +113,6 @@ export default function HeroSection() {
                       style={{ aspectRatio: '9/16', objectFit: 'cover' }}
                     >
                       <source src="/werbevideo1.mp4" type="video/mp4" />
-                      <source src="/werbevideo1.mov" type="video/quicktime" />
                     </video>
                   </div>
                   {/* Mute toggle */}

@@ -56,7 +56,6 @@ export default function VideoSection() {
                 style={{ aspectRatio: '16/9', objectFit: 'cover' }}
               >
                 <source src="/Haupt.video.mp4" type="video/mp4" />
-                <source src="/Haupt.video.mov" type="video/quicktime" />
               </video>
 
               {/* Play overlay — nur wenn nicht gestartet */}
