@@ -22,6 +22,7 @@ const PublicContact = React.lazy(() => import('./pages/public/PublicContact'))
 const AuthPage = React.lazy(() => import('./pages/AuthPage'))
 const PartnerRegister = React.lazy(() => import('./pages/PartnerRegister'))
 const ResetPassword = React.lazy(() => import('./pages/ResetPassword'))
+const NotFound = React.lazy(() => import('./pages/NotFound'))
 
 // Investor pages (lazy)
 const InvestorDashboard = React.lazy(() => import('./pages/investor/Dashboard'))
@@ -202,7 +203,7 @@ function AppRoutes() {
         {/* Legacy redirects */}
         <Route path="/dashboard/*" element={<Navigate to="/investor/dashboard" replace />} />
         <Route path="/admin/*" element={<Navigate to="/owner/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   )

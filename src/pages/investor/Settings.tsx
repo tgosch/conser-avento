@@ -43,26 +43,38 @@ export default function InvestorSettings() {
   }
 
   const handleExportData = async () => {
-    if (!user?.investor) return
-    const data = JSON.stringify(user.investor, null, 2)
-    const blob = new Blob([data], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `conser-avento-daten-${new Date().toISOString().slice(0, 10)}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-    toast.success('Daten exportiert')
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) { toast.error('Bitte erneut anmelden'); return }
+      const res = await fetch('/api/user-export', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` },
+      })
+      if (!res.ok) throw new Error()
+      const data = await res.text()
+      const blob = new Blob([data], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `conser-avento-daten-${new Date().toISOString().slice(0, 10)}.json`
+      a.click()
+      URL.revokeObjectURL(url)
+      toast.success('Daten exportiert')
+    } catch {
+      toast.error('Export fehlgeschlagen')
+    }
   }
 
   const handleDeleteAccount = async () => {
     setDeleteLoading(true)
     try {
-      if (user?.investor?.id) {
-        // CASCADE löscht messages + investment_intents automatisch
-        await supabase.from('investors').delete().eq('id', user.investor.id)
-      }
-      // Supabase Auth User löschen (soft-delete)
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) { toast.error('Bitte erneut anmelden'); return }
+      const res = await fetch('/api/user-delete', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: true }),
+      })
+      if (!res.ok) throw new Error()
       await supabase.auth.signOut()
       await logout()
       toast.success('Account und alle Daten wurden gelöscht')

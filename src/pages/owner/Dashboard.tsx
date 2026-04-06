@@ -220,6 +220,47 @@ export default function OwnerDashboard() {
         getPhaseName={getPhaseName}
       />
 
+      {/* ÖKOSYSTEM-STATUS */}
+      <div className="mt-6 animate-fade-up delay-4">
+        <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          Ökosystem · Live-Module
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { name: 'Conser Shop', status: 'Live', color: '#C8611A', href: 'https://www.conser-gosch.de' },
+            { name: 'SpaceAI', status: 'Live', color: '#8B5CF6', href: 'https://spaceai-henna.vercel.app' },
+            { name: 'BauDoku AI', status: 'Live', color: '#0EA5E9', href: 'https://baudoku-ai.vercel.app' },
+            { name: 'BuchBalance', status: 'Live', color: '#1D5EA8', href: null },
+          ].map(m => (
+            <a key={m.name} href={m.href ?? undefined} target={m.href ? '_blank' : undefined} rel={m.href ? 'noopener noreferrer' : undefined}
+              className="card p-4 no-underline hover:translate-y-[-1px] transition-all"
+              style={{ borderLeft: `3px solid ${m.color}` }}>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
+                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.1)', color: '#34C759' }}>{m.status}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* INFRASTRUKTUR */}
+      <div className="mt-4 animate-fade-up delay-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { title: 'Bankpartner', desc: 'Deutsche Großbank · NDA' },
+            { title: 'Payment', desc: 'PCI-DSS Level 1' },
+            { title: 'Hosting', desc: 'EU-Server · Frankfurt' },
+            { title: 'Rechtsform', desc: 'UG · HRB 22177' },
+          ].map(t => (
+            <div key={t.title} className="p-3 rounded-xl" style={{ background: 'var(--surface2)' }}>
+              <p className="text-[10px] font-semibold" style={{ color: 'var(--text-primary)' }}>{t.title}</p>
+              <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   )
 }
