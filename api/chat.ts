@@ -36,7 +36,7 @@ export default async function handler(req: Request): Promise<Response> {
   // Origin validation
   const origin = req.headers.get('origin') ?? ''
   const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
-  const isAllowed = allowedOrigins.some(o => origin.startsWith(o))
+  const isAllowed = allowedOrigins.includes(origin)
 
   const corsHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -97,7 +97,10 @@ export default async function handler(req: Request): Promise<Response> {
   // Token gegen Supabase verifizieren
   const supabaseUrl = process.env.VITE_SUPABASE_URL
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY
-  if (supabaseUrl && supabaseKey) {
+  if (!supabaseUrl || !supabaseKey) {
+    return new Response(JSON.stringify({ error: 'Serverkonfigurationsfehler' }), { status: 500, headers: corsHeaders })
+  }
+  {
     try {
       const authRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
         headers: { 'Authorization': `Bearer ${token}`, 'apikey': supabaseKey },
@@ -124,6 +127,11 @@ export default async function handler(req: Request): Promise<Response> {
       status: 500,
       headers: corsHeaders,
     })
+  }
+
+  // Content-Type prüfen
+  if (!req.headers.get('content-type')?.includes('application/json')) {
+    return new Response(JSON.stringify({ error: 'Content-Type muss application/json sein' }), { status: 415, headers: corsHeaders })
   }
 
   // Body parsen + validieren

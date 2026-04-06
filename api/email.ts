@@ -41,7 +41,7 @@ export default async function handler(req: Request) {
   // Origin validation
   const origin = req.headers.get('origin') ?? ''
   const allowedOrigins = ['https://conser-avento.vercel.app', 'https://conser-avento.de', 'http://localhost:5173']
-  const isAllowed = allowedOrigins.some(o => origin.startsWith(o))
+  const isAllowed = allowedOrigins.includes(origin)
 
   if (req.method === 'OPTIONS') {
     if (!isAllowed) return new Response(null, { status: 403 })

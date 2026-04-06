@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Player } from '@remotion/player'
-import { FeatureGrid } from '../../remotion/animations'
 import ScrollReveal from './ScrollReveal'
+import conserShop from '../../assets/conser-shop.webp'
 
 const erp = [
   { title: 'Kalkulation & Angebote', desc: 'Professionelle Angebote in Minuten. Automatische Materialberechnung, branchenspezifische Vorlagen, digitale Signatur — direkt auf der Baustelle.' },
@@ -22,16 +21,11 @@ const shop = [
   { title: 'Nahtlose ERP-Integration', desc: '1-Click-Bestellung direkt aus Avento. Material wird automatisch dem richtigen Projekt und der richtigen Kostenstelle zugeordnet.' },
 ]
 
-const erpLabels = ['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Controlling', 'Team', 'Mobile']
-const shopLabels = ['2,3M Produkte', '7 Hersteller', 'Lieferung', 'Zahlung', 'KI-Suche', 'ERP-Link']
-
 type Tab = 'erp' | 'shop'
 
 export default function FeaturesSection() {
   const [tab, setTab] = useState<Tab>('erp')
   const features = tab === 'erp' ? erp : shop
-  const labels = tab === 'erp' ? erpLabels : shopLabels
-  const color = tab === 'erp' ? 'var(--brand)' : 'var(--accent)'
 
   return (
     <section className="py-28 md:py-36" style={{ background: 'var(--bg)' }}>
@@ -64,7 +58,7 @@ export default function FeaturesSection() {
                 className="px-6 py-2.5 rounded-full text-sm font-medium transition-all"
                 style={{
                   color: tab === t.key ? 'white' : 'var(--text-secondary)',
-                  background: tab === t.key ? t.c : 'transparent', transition: 'all 0.2s',
+                  background: tab === t.key ? t.c : 'transparent',
                 }}>
                 {t.label}
               </button>
@@ -81,24 +75,41 @@ export default function FeaturesSection() {
             transition={{ duration: 0.3 }}
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-6xl mx-auto items-start">
-              {/* Remotion visual — left */}
+              {/* Left: Screenshot statt Remotion */}
               <div className="hidden lg:block">
-                <div className="sticky top-24 rounded-2xl overflow-hidden" style={{ aspectRatio: '3/4', background: color }}>
-                  <Player
-                    component={() => <FeatureGrid features={labels} accentColor={color} />}
-                    compositionWidth={400}
-                    compositionHeight={533}
-                    durationInFrames={300}
-                    fps={30}
-                    loop
-                    autoPlay
-                    style={{ width: '100%', height: '100%' }}
-                    controls={false}
-                  />
+                <div className="sticky top-24">
+                  {tab === 'shop' ? (
+                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 16px 48px rgba(0,0,0,0.08)', border: '1px solid var(--border)' }}>
+                      <div className="flex items-center gap-1.5 px-3 py-2" style={{ background: '#1A1A1A' }}>
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#FF5F57' }} />
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#FFBD2E' }} />
+                        <div className="w-2 h-2 rounded-full" style={{ background: '#27C93F' }} />
+                      </div>
+                      <img src={conserShop} alt="Conser Marktplatz" className="w-full block" />
+                    </div>
+                  ) : (
+                    <div className="rounded-2xl p-8 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                      <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
+                        style={{ background: 'var(--brand)' }}>
+                        <span className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>A</span>
+                      </div>
+                      <p className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Avento ERP</p>
+                      <p className="text-xs mb-6" style={{ color: 'var(--text-tertiary)' }}>In Entwicklung</p>
+                      <div className="space-y-2">
+                        {['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Controlling', 'Team', 'Mobile'].map((f) => (
+                          <div key={f} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left"
+                            style={{ background: 'var(--bg)' }}>
+                            <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--brand)' }} />
+                            <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Feature list — right */}
+              {/* Right: Feature Cards */}
               <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10">
                 {features.map((f) => (
                   <div key={f.title}>
