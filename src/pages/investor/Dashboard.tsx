@@ -116,6 +116,26 @@ export default function InvestorDashboard() {
         </div>
       </div>
 
+      {/* VERTRAUEN & INFRASTRUKTUR */}
+      <div className="card p-5 md:p-8 mb-8 animate-fade-up delay-1">
+        <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          Infrastruktur & Partner
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { title: 'Bankpartner', desc: 'HypoVereinsbank / UniCredit', color: 'var(--brand)' },
+            { title: 'Payment', desc: 'Stripe · PCI-DSS Level 1', color: 'var(--accent)' },
+            { title: 'Hosting', desc: 'Vercel + AWS Frankfurt', color: 'var(--brand)' },
+            { title: 'Rechtsform', desc: 'UG (haftungsbeschr.) · HRB 22177', color: 'var(--accent)' },
+          ].map(t => (
+            <div key={t.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>
+              <p className="text-xs font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{t.title}</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* VIDEO PITCH */}
       <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
            style={{
@@ -220,7 +240,8 @@ export default function InvestorDashboard() {
 
       {/* AVENTO MODULE — Space AI & BauDoku AI */}
       <div className="mb-8 delay-2 animate-fade-up">
-        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>FERTIGE AVENTO-MODULE</p>
+        <p className="label-tag mb-1" style={{ color: 'var(--text-tertiary)' }}>INTEGRIERTE AVENTO-MODULE</p>
+        <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>Vollständig in Avento ERP integriert · Live-Demos auf Anfrage verfügbar</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
              className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"

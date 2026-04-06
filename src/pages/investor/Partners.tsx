@@ -219,17 +219,33 @@ export default function InvestorPartners() {
         </div>
       </div>
 
-      {/* Oekosystem-Module */}
-      <div className="mt-10">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(200,97,26,0.10)' }}>
-            <Star size={18} style={{ color: '#C8611A' }} />
-          </div>
-          <div>
-            <h2 className="font-bold text-base leading-none" style={{ color: 'var(--text-primary)' }}>Oekosystem-Module</h2>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Live-Produkte im Avento-Oekosystem</p>
-          </div>
+      {/* Strategische Partner */}
+      <div className="mt-10 mb-10">
+        <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          Strategische Partner & Infrastruktur
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { name: 'HypoVereinsbank', sub: 'UniCredit Group', desc: 'Bankpartner' },
+            { name: 'Stripe', sub: 'PCI-DSS Level 1', desc: 'Payment' },
+            { name: 'Vercel + AWS', sub: 'EU Frankfurt', desc: 'Cloud' },
+            { name: 'Supabase', sub: 'PostgreSQL', desc: 'Backend' },
+          ].map(p => (
+            <div key={p.name} className="card p-4">
+              <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{p.name}</p>
+              <p className="text-[10px] font-medium mb-0.5" style={{ color: 'var(--brand)' }}>{p.sub}</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{p.desc}</p>
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Ökosystem-Module */}
+      <div>
+        <p className="text-xs font-medium uppercase tracking-widest mb-1" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          Integrierte Avento-Module
+        </p>
+        <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>Live-Demos auf Anfrage verfügbar</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { name: 'Space AI', desc: 'KI-Assistent für Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
