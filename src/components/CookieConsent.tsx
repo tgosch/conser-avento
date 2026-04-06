@@ -29,7 +29,7 @@ export default function CookieConsent() {
             <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Datenschutz</p>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Wir verwenden nur technisch notwendige Cookies für die Funktionalität dieser Seite. Keine Tracking- oder Werbe-Cookies.{' '}
-              <a href="mailto:torben@conser-avento.de" className="underline" style={{ color: 'var(--brand)' }}>Mehr erfahren</a>
+              <a href="mailto:info@conser-avento.de" className="underline" style={{ color: 'var(--brand)' }}>Mehr erfahren</a>
             </p>
             <button onClick={accept} className="btn btn-primary btn-sm mt-3">
               Verstanden

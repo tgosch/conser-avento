@@ -36,7 +36,7 @@ export default function ImpressumModal({ onClose }: { onClose: () => void }) {
 
           <div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Kontakt</p>
-            <p>E-Mail: <a href="mailto:torben@conser-avento.de" className="text-accent underline">torben@conser-avento.de</a></p>
+            <p>E-Mail: <a href="mailto:info@conser-avento.de" className="text-accent underline">info@conser-avento.de</a></p>
             <p>Web: <a href="https://www.conser-avento.de" target="_blank" rel="noopener noreferrer" className="text-accent underline">www.conser-avento.de</a></p>
           </div>
 
