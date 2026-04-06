@@ -5,8 +5,6 @@ import {
   LogOut, X, Swords, HelpCircle, AlertTriangle,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
 
 const NAV = [
   {

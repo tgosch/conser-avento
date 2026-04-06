@@ -4,8 +4,6 @@ import {
   Users, Map, Settings, LogOut, X, Calculator,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
 
 const NAV = [
   {
