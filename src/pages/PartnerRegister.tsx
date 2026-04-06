@@ -4,8 +4,8 @@ import { ArrowLeft, ArrowRight, Building2, CheckCircle, Mail } from 'lucide-reac
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-toastify'
-import aventoLogo from '../assets/avento_kachel.webp'
-import conserLogo from '../assets/conser_kachel.webp'
+const aventoLogo = '/avento.PNG'
+const conserLogo = '/conser.PNG'
 
 type Step = 'form' | 'quickLogin' | 'otp'
 

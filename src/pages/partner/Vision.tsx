@@ -2,7 +2,7 @@ import { Zap, TrendingUp, Target, ArrowRight } from 'lucide-react'
 import { PhoneMockup, LaptopMockup } from '../../components/showcase/DeviceMockup'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
-import conserLogo from '../../assets/conser_kachel.webp'
+const conserLogo = '/conser.PNG'
 import conserShopImg from '../../assets/conser-shop.webp'
 
 export default function PartnerVision() {

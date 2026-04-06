@@ -2,8 +2,8 @@ import { ArrowUpRight } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 import spaceAI from '../../assets/SpaceAI.png'
 import bauDoku from '../../assets/BauDokuAI.png'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
+const aventoLogo = '/avento.PNG'
+const conserLogo = '/conser.PNG'
 
 export default function ModulesSection() {
   return (

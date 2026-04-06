@@ -9,7 +9,7 @@ const TEAM = [
     initials: 'TG',
     color: '#063D3E',
     bio: 'Wir wollen die Handwerk- und Baubranche wieder an ihren Peak bringen und setzen alles auf eine neue Expansion. Avento und Conser sind die Werkzeuge dafür — gebaut von Menschen, die die Branche verstehen.',
-    link: { label: 'Mehr über Torben Gosch', url: 'https://www.conser-gosch.de' },
+    link: { label: 'Mehr über Torben Gosch', url: 'https://www.goschgroup.de' },
     featured: true,
   },
   {

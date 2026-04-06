@@ -3,8 +3,8 @@ import { useAuth } from '../../context/AuthContext'
 import { ArrowRight, ExternalLink, ShoppingCart, Users, Eye, CheckCircle, Circle, Calendar, Shield, Building2, Landmark, CreditCard } from 'lucide-react'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
-import conserLogo from '../../assets/conser_kachel.webp'
-import aventoLogo from '../../assets/avento_kachel.webp'
+const conserLogo = '/conser.PNG'
+const aventoLogo = '/avento.PNG'
 import conserShopImg from '../../assets/conser-checkout-desktop.png'
 
 const STEPS = [

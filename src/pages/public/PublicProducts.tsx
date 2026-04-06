@@ -4,8 +4,8 @@ import {
   ShoppingCart, Package, Truck, CreditCard, Search, ArrowLeftRight,
 } from 'lucide-react'
 import ScrollReveal from '../../components/public/ScrollReveal'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
+const aventoLogo = '/avento.PNG'
+const conserLogo = '/conser.PNG'
 import conserShop from '../../assets/conser-shop.webp'
 
 const aventoModules = [

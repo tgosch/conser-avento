@@ -6,8 +6,8 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
+const aventoLogo = '/avento.PNG'
+const conserLogo = '/conser.PNG'
 
 // NAV groups with unreadCount param
 const makeGroups = (unreadCount: number) => [

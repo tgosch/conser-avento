@@ -6,7 +6,7 @@ import { ArrowRight, ChevronRight, Play } from 'lucide-react'
 import { useCountUp } from '../../hooks/useCountUp'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
-import conserLogo from '../../assets/conser_kachel.webp'
+const conserLogo = '/conser.PNG'
 
 const categoryColor: Record<string, string> = {
   general: '#6E6E73', milestone: '#063D3E', important: '#C8611A',

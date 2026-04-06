@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ScrollReveal from './ScrollReveal'
-import aventoLogo from '../../assets/avento_kachel.webp'
-import conserLogo from '../../assets/conser_kachel.webp'
+const aventoLogo = '/avento.PNG'
+const conserLogo = '/conser.PNG'
 
 const erp = [
   { title: 'Kalkulation & Angebote', desc: 'Professionelle Angebote in Minuten. Automatische Materialberechnung, branchenspezifische Vorlagen, digitale Signatur — direkt auf der Baustelle.' },
