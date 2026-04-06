@@ -189,7 +189,14 @@ export default function Landing() {
         toast.success('Willkommen zurück!')
         navigate('/investor/dashboard')
       }
-    } catch { toast.error('E-Mail oder Passwort ungültig.') }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : ''
+      if (msg.includes('Invalid login credentials')) {
+        toast.error('E-Mail oder Passwort ungültig.')
+      } else if (!msg.includes('already')) {
+        toast.error('Anmeldung fehlgeschlagen. Bitte erneut versuchen.')
+      }
+    }
     finally { setLoading(false) }
   }
 
