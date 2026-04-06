@@ -58,7 +58,7 @@ export default function InvestorStatus() {
             Aktuelle Phase: Phase 1 — Finanzierungsrunde läuft
           </p>
           <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-            Das Team arbeitet an Avento MVP · Conser-Integration · Seed-Runde Q2 2026
+            Das Team arbeitet an Avento MVP · Conser-Integration · Seed-Runde Mai 2026
           </p>
         </div>
         {updates[0] && (

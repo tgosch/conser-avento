@@ -217,7 +217,7 @@ const GROWTH_DATA = [
 
 // ── Investment Milestones ─────────────────────────────────────────
 const MILESTONES = [
-  { id: 1, label: 'Seed Close', period: 'Q2 2026', amount: '1,5 M€', desc: 'MVP-Finanzierung', icon: '🌱', color: '#063D3E' },
+  { id: 1, label: 'Seed Close', period: 'Mai 2026', amount: '1,5 M€', desc: 'MVP-Finanzierung', icon: '🌱', color: '#063D3E' },
   { id: 2, label: 'Series A Trigger', period: 'Q1 2027', amount: '5k Kunden', desc: '12M€ Revenue Ziel', icon: '📊', color: '#0066FF' },
   { id: 3, label: 'Series A Close', period: 'Q2 2027', amount: '20–30 M€', desc: 'Scale-Finanzierung', icon: '💼', color: '#D4662A' },
   { id: 4, label: 'Series B Trigger', period: 'Q3 2028', amount: '15k Kunden', desc: '40M€ Revenue Ziel', icon: '🚀', color: '#34C759' },

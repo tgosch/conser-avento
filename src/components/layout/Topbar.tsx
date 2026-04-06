@@ -105,7 +105,7 @@ export default function Topbar({ onMenuClick }: Props) {
                  style={{ background: 'var(--accent-dim)', border: '1px solid rgba(200,97,26,0.2)' }}>
               <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
               <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
-                Seed Round · Q2 2026
+                Seed Round · Mai 2026
               </span>
             </div>
           )}

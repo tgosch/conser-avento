@@ -135,7 +135,7 @@ export default function PartnerVision() {
           <p className="label-tag" style={{ color: 'var(--text-tertiary)' }}>BEREITS FERTIGE KI-MODULE</p>
           <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderLeft: '3px solid #8B5CF6' }}>
@@ -162,6 +162,18 @@ export default function PartnerVision() {
               das optimiert Nachbestellungen und generiert wiederkehrende Orders bei Ihnen.
             </p>
           </a>
+          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
+            style={{ borderLeft: '3px solid #1D5EA8' }}>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 text-white text-2xl font-bold"
+                 style={{ background: '#1D5EA8', boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}>B</div>
+            <div className="flex items-center gap-2 mb-2">
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BuchBalance</p>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+            </div>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              Angebundene Buchhaltung für Handwerker. Rechnungen, DATEV-Export, USt-Voranmeldung — nahtlos integriert in Avento ERP.
+            </p>
+          </div>
           <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderLeft: '3px solid #C8611A' }}>

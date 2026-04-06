@@ -40,10 +40,10 @@ export default function PartnerNetwork() {
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { icon: Landmark, name: 'HypoVereinsbank', sub: 'UniCredit Group', desc: 'Bankpartner', color: 'var(--brand)' },
-            { icon: CreditCard, name: 'Stripe', sub: 'Payment Processing', desc: 'Zahlungsabwicklung', color: 'var(--accent)' },
-            { icon: Server, name: 'Vercel + AWS', sub: 'Cloud Infrastructure', desc: 'Hosting & CDN', color: 'var(--brand)' },
-            { icon: Shield, name: 'Supabase', sub: 'Database & Auth', desc: 'Backend & Sicherheit', color: 'var(--accent)' },
+            { icon: Landmark, name: 'Bankpartner', sub: 'Deutsche Großbank', desc: 'Finanzinfrastruktur · NDA', color: 'var(--brand)' },
+            { icon: CreditCard, name: 'Payment', sub: 'PCI-DSS Level 1', desc: 'Zahlungsabwicklung', color: 'var(--accent)' },
+            { icon: Server, name: 'Cloud & Hosting', sub: 'EU Frankfurt', desc: 'Infrastruktur & CDN', color: 'var(--brand)' },
+            { icon: Shield, name: 'Datenbank & Auth', sub: 'PostgreSQL · EU', desc: 'Backend & Sicherheit', color: 'var(--accent)' },
           ].map(p => (
             <div key={p.name} className="card p-4">
               <p.icon size={16} className="mb-2.5" style={{ color: p.color }} />
@@ -94,8 +94,8 @@ export default function PartnerNetwork() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { title: 'DSGVO-konform', desc: 'Alle personenbezogenen Daten werden ausschließlich in der EU verarbeitet und gespeichert. Vollständige Datenschutzerklärung und Löschfunktion.' },
-            { title: 'Server-Standort', desc: 'Unsere Infrastruktur läuft auf Servern in Frankfurt (AWS EU) und Fürth (Supabase). Kein Datentransfer in Drittländer.' },
-            { title: 'Zahlungssicherheit', desc: 'PCI-DSS Level 1 zertifiziert über Stripe. Escrow-System für Transaktionssicherheit. Automatische Rechnungsstellung.' },
+            { title: 'Server-Standort', desc: 'Unsere Infrastruktur läuft ausschließlich auf EU-Servern in Frankfurt und Fürth. Kein Datentransfer in Drittländer.' },
+            { title: 'Zahlungssicherheit', desc: 'PCI-DSS Level 1 zertifiziert. Escrow-System für Transaktionssicherheit. Automatische Rechnungsstellung.' },
           ].map(c => (
             <div key={c.title}>
               <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>{c.title}</p>

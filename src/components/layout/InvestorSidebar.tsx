@@ -129,7 +129,7 @@ export default function InvestorSidebar({ open, onClose }: Props) {
               <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
             </div>
             <p className="text-sm font-bold" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>
-              €1,5M · Q2 2026
+              €1,5M · Mai 2026
             </p>
           </div>
           <div className="flex items-center gap-3 px-1 mb-2">

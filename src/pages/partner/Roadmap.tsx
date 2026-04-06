@@ -2,7 +2,7 @@ import { CheckCircle, Circle, ArrowRight } from 'lucide-react'
 
 const PHASES = [
   {
-    phase: 'Phase 1', period: 'Q2 2026', title: 'Conser MVP', icon: '🚀',
+    phase: 'Phase 1', period: 'Mai 2026', title: 'Conser MVP', icon: '🚀',
     items: ['9 Produktionspartner live', '2,3M Produkte auf dem Marktplatz', 'Payment-System aktiv'],
     partnerBenefit: 'Ihr Katalog ist live und suchbar für alle Handwerker.',
     status: 'active',

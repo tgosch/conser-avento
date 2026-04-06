@@ -226,10 +226,10 @@ export default function InvestorPartners() {
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { name: 'HypoVereinsbank', sub: 'UniCredit Group', desc: 'Bankpartner' },
-            { name: 'Stripe', sub: 'PCI-DSS Level 1', desc: 'Payment' },
-            { name: 'Vercel + AWS', sub: 'EU Frankfurt', desc: 'Cloud' },
-            { name: 'Supabase', sub: 'PostgreSQL', desc: 'Backend' },
+            { name: 'Bankpartner', sub: 'Deutsche Großbank · NDA', desc: 'Bankpartner' },
+            { name: 'Payment', sub: 'PCI-DSS Level 1', desc: 'Zahlungsabwicklung' },
+            { name: 'Cloud', sub: 'EU Frankfurt', desc: 'Infrastruktur' },
+            { name: 'Backend', sub: 'PostgreSQL · EU', desc: 'Datenbank & Auth' },
           ].map(p => (
             <div key={p.name} className="card p-4">
               <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{p.name}</p>
@@ -246,12 +246,13 @@ export default function InvestorPartners() {
           Integrierte Avento-Module
         </p>
         <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>Live-Demos auf Anfrage verfügbar</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { name: 'Space AI', desc: 'KI-Assistent für Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
             { name: 'BauDoku AI', desc: 'Digitales Bautagebuch mit KI-Protokollen und Signaturen.', href: 'https://baudoku-ai.vercel.app', color: '#0EA5E9' },
+            { name: 'BuchBalance', desc: 'Angebundene Buchhaltung für Handwerker. Rechnungen, DATEV-Export, USt-Voranmeldung.', href: '', color: '#1D5EA8' },
             { name: 'Conser Marktplatz', desc: '2,3 Mio. Bauprodukte, 7 Hersteller, 24h Lieferung.', href: 'https://www.conser-gosch.de', color: '#C8611A' },
-          ].map(mod => (
+          ].map(mod => mod.href ? (
             <a key={mod.name} href={mod.href} target="_blank" rel="noopener noreferrer"
                className="card card-interactive p-5 hover-lift no-underline"
                style={{ borderLeft: `3px solid ${mod.color}`, textDecoration: 'none', display: 'block' }}>
@@ -265,6 +266,19 @@ export default function InvestorPartners() {
                 <CheckCircle size={10} strokeWidth={2.5} /> Live
               </span>
             </a>
+          ) : (
+            <div key={mod.name}
+               className="card card-interactive p-5 hover-lift"
+               style={{ borderLeft: `3px solid ${mod.color}` }}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{mod.name}</h3>
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>{mod.desc}</p>
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full mt-3"
+                style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759', border: '1px solid rgba(52,199,89,0.25)' }}>
+                <CheckCircle size={10} strokeWidth={2.5} /> Live
+              </span>
+            </div>
           ))}
         </div>
       </div>

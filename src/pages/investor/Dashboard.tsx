@@ -123,9 +123,9 @@ export default function InvestorDashboard() {
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { title: 'Bankpartner', desc: 'HypoVereinsbank / UniCredit', color: 'var(--brand)' },
-            { title: 'Payment', desc: 'Stripe · PCI-DSS Level 1', color: 'var(--accent)' },
-            { title: 'Hosting', desc: 'Vercel + AWS Frankfurt', color: 'var(--brand)' },
+            { title: 'Bankpartner', desc: 'Namhafte deutsche Großbank · unter Verschluss', color: 'var(--brand)' },
+            { title: 'Payment', desc: 'PCI-DSS Level 1 zertifiziert', color: 'var(--accent)' },
+            { title: 'Hosting', desc: 'EU-Server · Frankfurt', color: 'var(--brand)' },
             { title: 'Rechtsform', desc: 'UG (haftungsbeschr.) · HRB 22177', color: 'var(--accent)' },
           ].map(t => (
             <div key={t.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>
@@ -160,7 +160,7 @@ export default function InvestorDashboard() {
         {[
           {
             icon: '💰', title: 'Die Runde', accent: 'var(--brand)',
-            items: [['Volumen','€1,5M Seed'],['Form','SAFE / Equity'],['Schließung','Q2 2026'],['Mittelverwendung','45% Tech · 25% Sales']],
+            items: [['Volumen','€1,5M Seed'],['Form','SAFE / Equity'],['Schließung','Mai 2026'],['Mittelverwendung','45% Tech · 25% Sales']],
           },
           {
             icon: '⚡', title: 'Warum Jetzt', accent: 'var(--accent)',
@@ -281,6 +281,25 @@ export default function InvestorDashboard() {
               ))}
             </div>
           </a>
+          <div className="card p-6 group hover:translate-y-[-2px] transition-all duration-300"
+               style={{ borderLeft: '3px solid #1D5EA8' }}>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 text-white text-2xl font-bold"
+                 style={{ background: '#1D5EA8', boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}>B</div>
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>BuchBalance</h3>
+              <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
+            </div>
+            <p className="text-[10px] mb-2" style={{ color: 'var(--text-tertiary)' }}>Avento-Modul · auf Anfrage</p>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+              Angebundene Buchhaltung für Handwerker. Rechnungen, DATEV-Export, Umsatzsteuer —
+              nahtlos integriert in Avento ERP.
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {['Rechnungen','DATEV-Export','USt-Voranmeldung','ZUGFeRD'].map(t => (
+                <span key={t} className="tag tag-sm" style={{ background: 'rgba(29,94,168,0.08)', color: '#1D5EA8' }}>{t}</span>
+              ))}
+            </div>
+          </div>
           <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
              className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
                style={{ borderLeft: '3px solid #C8611A', textDecoration: 'none', display: 'block' }}>

@@ -75,6 +75,19 @@ export default function ModulesSection() {
                     </div>
                     <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
                   </a>
+
+                  <div className="flex items-center gap-3 p-3 rounded-xl"
+                    style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold shrink-0"
+                         style={{ background: '#1D5EA8' }}>B</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-white">BuchBalance</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.15)', color: '#4ADE80' }}>Live</span>
+                      </div>
+                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>Angebundene Buchhaltung — Rechnungen, DATEV, USt</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mt-6">

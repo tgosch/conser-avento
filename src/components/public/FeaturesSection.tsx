@@ -96,7 +96,7 @@ export default function FeaturesSection() {
                       <p className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Avento ERP</p>
                       <p className="text-xs mb-6" style={{ color: 'var(--text-tertiary)' }}>In Entwicklung</p>
                       <div className="space-y-2">
-                        {['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Controlling', 'Team', 'Mobile'].map((f) => (
+                        {['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Buchhaltung', 'Controlling', 'Team', 'Mobile'].map((f) => (
                           <div key={f} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left"
                             style={{ background: 'var(--bg)' }}>
                             <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--brand)' }} />

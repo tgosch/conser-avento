@@ -135,7 +135,7 @@ export default function PartnerDashboard() {
         </a>
 
         {/* Avento + Module */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Avento ERP */}
           <div className="card p-5">
             <div className="flex items-center gap-2.5 mb-3">
@@ -185,6 +185,24 @@ export default function PartnerDashboard() {
               Automatische Baudokumentation. Demo verfügbar — Zugangsdaten auf Anfrage.
             </p>
           </a>
+
+          {/* BuchBalance */}
+          <div className="card p-5">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-sm font-bold"
+                   style={{ background: '#1D5EA8' }}>B</div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>BuchBalance</h3>
+                  <span className="text-[8px] font-semibold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.1)', color: '#34C759' }}>Live</span>
+                </div>
+                <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Avento-Modul · auf Anfrage</p>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              Angebundene Buchhaltung. Rechnungen, DATEV-Export, USt-Voranmeldung.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -193,10 +211,10 @@ export default function PartnerDashboard() {
         <h2 className="text-sm font-semibold mb-5" style={{ color: 'var(--text-primary)' }}>Vertrauen & Infrastruktur</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Landmark, title: 'Bankpartner', desc: 'HypoVereinsbank / UniCredit', color: 'var(--brand)' },
+            { icon: Landmark, title: 'Bankpartner', desc: 'Namhafte deutsche Großbank', color: 'var(--brand)' },
             { icon: Shield, title: 'DSGVO-konform', desc: 'Alle Daten in der EU', color: 'var(--brand)' },
             { icon: Building2, title: 'HRB 22177', desc: 'Conser Gosch UG', color: 'var(--accent)' },
-            { icon: CreditCard, title: 'Stripe Payment', desc: 'PCI-DSS zertifiziert', color: 'var(--accent)' },
+            { icon: CreditCard, title: 'Payment', desc: 'PCI-DSS Level 1 zertifiziert', color: 'var(--accent)' },
           ].map(t => (
             <div key={t.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>
               <t.icon size={16} className="mb-2" style={{ color: t.color }} />
