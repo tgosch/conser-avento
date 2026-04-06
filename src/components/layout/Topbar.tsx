@@ -38,9 +38,9 @@ export default function Topbar({ onMenuClick }: Props) {
       {/* ── Mobile ── */}
       <div className="flex lg:hidden items-center justify-between w-full">
         <div className="flex items-center gap-2">
-          <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover h-7 w-auto" />
-          <div className="w-px h-4" style={{ background: 'var(--border)' }} />
-          <img src={conserLogo} alt="Conser" className="rounded-lg object-cover h-7 w-auto" />
+          <img src={aventoLogo} alt="Avento" className="rounded-lg object-cover h-8 w-auto" />
+          <div className="w-px h-5" style={{ background: 'var(--border)' }} />
+          <img src={conserLogo} alt="Conser" className="rounded-lg object-cover h-8 w-auto" />
         </div>
         <div className="flex items-center gap-1">
           <button onClick={toggleTheme} className="btn btn-icon btn-ghost btn-icon-sm focus-ring" aria-label={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}>
@@ -83,13 +83,12 @@ export default function Topbar({ onMenuClick }: Props) {
 
       {/* ── Desktop ── */}
       <div className="hidden lg:flex items-center justify-between w-full">
-        <div className="flex items-center gap-2.5" style={{ color: 'var(--text-tertiary)', fontSize: 13 }}>
-          <div className="flex items-center gap-1.5">
-            <img src={aventoLogo} alt="Avento" className="h-6 w-auto rounded object-cover" />
-            <img src={conserLogo} alt="Conser" className="h-6 w-auto rounded object-cover" />
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
+            <img src={aventoLogo} alt="Avento" className="h-8 w-auto rounded-lg object-cover" />
+            <div className="w-px h-5" style={{ background: 'var(--border)' }} />
+            <img src={conserLogo} alt="Conser" className="h-8 w-auto rounded-lg object-cover" />
           </div>
-          <span style={{ color: 'var(--border-strong)' }}>/</span>
-          <span>{user?.isAdmin ? 'Owner Console' : user?.isPartner ? 'Partner Portal' : 'Investor Portal'}</span>
         </div>
         <div className="flex items-center gap-2">
           {user?.isPartner ? (
@@ -105,7 +104,7 @@ export default function Topbar({ onMenuClick }: Props) {
                  style={{ background: 'var(--accent-dim)', border: '1px solid rgba(200,97,26,0.2)' }}>
               <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
               <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
-                Seed Round · Mai 2026
+                Seed Round · Offen
               </span>
             </div>
           )}

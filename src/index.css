@@ -88,7 +88,7 @@
   --overlay-light-85: rgba(255,255,255,0.85);
 
   /* Mobile */
-  --bottom-nav-height: 72px;
+  --bottom-nav-height: 80px;
   --bottom-nav-total:  calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   --content-offset:    0px;
   --fab-bottom:        calc(var(--bottom-nav-total) + 16px);

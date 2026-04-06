@@ -18,6 +18,7 @@ const moreNav = [
   { to: '/partner/vision',      icon: Rocket,     label: 'Vision' },
   { to: '/partner/calculator',  icon: Calculator, label: 'Calculator' },
   { to: '/partner/roadmap',     icon: Map,        label: 'Roadmap' },
+  { to: '/partner/team',        icon: Users,      label: 'Unser Team' },
   { to: '/partner/settings',    icon: Settings,   label: 'Einstellungen' },
 ]
 
@@ -58,7 +59,7 @@ export default function PartnerBottomNav() {
               </button>
             </div>
             {/* Nav Items */}
-            <div className="px-3 py-2 grid grid-cols-3 gap-1">
+            <div className="px-3 py-2 grid grid-cols-4 gap-1">
               {moreNav.map(({ to, icon: Icon, label }) => (
                 <NavLink
                   key={to}
