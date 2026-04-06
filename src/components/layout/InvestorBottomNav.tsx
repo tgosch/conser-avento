@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, FileText, MessageSquare, Rocket, MoreHorizontal,
-  Activity, Map, Swords, Users, Handshake, Building2, HelpCircle, Settings, LogOut, X,
+  Activity, Map, Swords, Users, Handshake, Building2, HelpCircle, Settings, LogOut, X, AlertTriangle,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import NavItem from './NavItem'
@@ -17,8 +17,9 @@ const mainNav = [
 const moreNav = [
   { to: '/investor/status',      icon: Activity,    label: 'Neuigkeiten' },
   { to: '/investor/roadmap',     icon: Map,         label: 'Enterprise Roadmap' },
-  { to: '/investor/competition', icon: Swords,      label: 'Wettbewerb' },
-  { to: '/investor/team',        icon: Users,       label: 'Das Team' },
+  { to: '/investor/competition', icon: Swords,         label: 'Wettbewerb' },
+  { to: '/investor/risiken',     icon: AlertTriangle,  label: 'Risiken' },
+  { to: '/investor/team',        icon: Users,          label: 'Das Team' },
   { to: '/investor/partners',    icon: Handshake,   label: 'Partner' },
   { to: '/investor/structure',   icon: Building2,   label: 'Struktur' },
   { to: '/investor/faq',         icon: HelpCircle,  label: 'FAQ' },

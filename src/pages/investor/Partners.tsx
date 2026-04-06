@@ -232,7 +232,7 @@ export default function InvestorPartners() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { name: 'Space AI', desc: 'KI-Assistent fuer Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
+            { name: 'Space AI', desc: 'KI-Assistent für Angebote, Kalkulation und Projektplanung.', href: 'https://spaceai-henna.vercel.app', color: '#8B5CF6' },
             { name: 'BauDoku AI', desc: 'Digitales Bautagebuch mit KI-Protokollen und Signaturen.', href: 'https://baudoku-ai.vercel.app', color: '#0EA5E9' },
             { name: 'Conser Marktplatz', desc: '2,3 Mio. Bauprodukte, 7 Hersteller, 24h Lieferung.', href: 'https://www.conser-gosch.de', color: '#C8611A' },
           ].map(mod => (

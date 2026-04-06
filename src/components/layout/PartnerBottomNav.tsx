@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Handshake, TrendingUp, Users, MoreHorizontal,
-  Rocket, Map, Settings, LogOut, X,
+  Rocket, Map, Settings, LogOut, X, Calculator,
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import NavItem from './NavItem'
@@ -15,9 +15,10 @@ const mainNav = [
 ]
 
 const moreNav = [
-  { to: '/partner/vision',   icon: Rocket,   label: 'Vision' },
-  { to: '/partner/roadmap',  icon: Map,      label: 'Roadmap' },
-  { to: '/partner/settings', icon: Settings, label: 'Einstellungen' },
+  { to: '/partner/vision',      icon: Rocket,     label: 'Vision' },
+  { to: '/partner/calculator',  icon: Calculator, label: 'Calculator' },
+  { to: '/partner/roadmap',     icon: Map,        label: 'Roadmap' },
+  { to: '/partner/settings',    icon: Settings,   label: 'Einstellungen' },
 ]
 
 export default function PartnerBottomNav() {
