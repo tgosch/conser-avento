@@ -21,7 +21,7 @@ export default function HeroSection() {
   return (
     <section className="relative overflow-hidden" style={{ background: '#063D3E' }}>
       {/* Spacer für fixed Navbar */}
-      <div className="h-14" />
+      <div className="h-20" />
       <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,61,62,0.4) 0%, rgba(6,61,62,0.85) 100%)' }} />
 
       <motion.div style={{ opacity }} className="relative z-10">
