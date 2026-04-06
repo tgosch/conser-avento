@@ -23,7 +23,7 @@ export default function HeroSection() {
       <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,61,62,0.4) 0%, rgba(6,61,62,0.85) 100%)' }} />
 
       <motion.div style={{ opacity }} className="relative z-10">
-        <div className="public-container pt-24 pb-10 md:pt-36 md:pb-16">
+        <div className="public-container pt-32 pb-10 md:pt-36 md:pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-center">
 
             {/* Left: Text — 3 Spalten */}
