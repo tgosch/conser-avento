@@ -29,12 +29,12 @@ export default function PublicFooter() {
             </div>
 
             {/* Links — wrap on mobile */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <Link to="/produkte" className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Produkte</Link>
-              <Link to="/ueber-uns" className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Über uns</Link>
-              <Link to="/kontakt" className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Kontakt</Link>
-              <button onClick={() => setShowImpressum(true)} className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Impressum</button>
-              <button onClick={() => setShowPrivacy(true)} className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Datenschutz</button>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+              <Link to="/produkte" className="text-sm py-1" style={{ color: 'var(--text-tertiary)' }}>Produkte</Link>
+              <Link to="/ueber-uns" className="text-sm py-1" style={{ color: 'var(--text-tertiary)' }}>Über uns</Link>
+              <Link to="/kontakt" className="text-sm py-1" style={{ color: 'var(--text-tertiary)' }}>Kontakt</Link>
+              <button onClick={() => setShowImpressum(true)} className="text-sm py-1" style={{ color: 'var(--text-tertiary)' }}>Impressum</button>
+              <button onClick={() => setShowPrivacy(true)} className="text-sm py-1" style={{ color: 'var(--text-tertiary)' }}>Datenschutz</button>
             </div>
           </div>
         </div>

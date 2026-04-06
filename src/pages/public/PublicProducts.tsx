@@ -47,7 +47,7 @@ export default function PublicProducts() {
       <section className="py-20 md:py-28" style={{ background: 'var(--surface)' }}>
         <div className="public-container max-w-4xl">
           <ScrollReveal className="flex items-center gap-3 mb-10">
-            <img src={aventoLogo} alt="Avento" className="h-10 rounded-xl" />
+            <img src={aventoLogo} alt="Avento" className="h-10 rounded-xl" loading="lazy" />
             <div>
               <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Avento ERP</h2>
               <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Handwerker-Betriebssystem</p>
@@ -82,13 +82,13 @@ export default function PublicProducts() {
                   <div className="w-2 h-2 rounded-full" style={{ background: '#FFBD2E' }} />
                   <div className="w-2 h-2 rounded-full" style={{ background: '#27C93F' }} />
                 </div>
-                <img src={conserShop} alt="Conser Marktplatz" className="w-full block" />
+                <img src={conserShop} alt="Conser Marktplatz" className="w-full block" loading="lazy" />
               </div>
             </ScrollReveal>
 
             <div>
               <ScrollReveal className="flex items-center gap-3 mb-8">
-                <img src={conserLogo} alt="Conser" className="h-10 rounded-xl" />
+                <img src={conserLogo} alt="Conser" className="h-10 rounded-xl" loading="lazy" />
                 <div>
                   <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</h2>
                   <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>B2B-Baustoff-Plattform</p>

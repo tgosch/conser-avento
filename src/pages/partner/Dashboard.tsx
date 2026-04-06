@@ -131,7 +131,7 @@ export default function PartnerDashboard() {
           className="card p-6 md:p-8 mb-4 flex flex-col md:flex-row gap-6 items-start no-underline group hover:translate-y-[-2px] transition-all">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
-              <img src={conserLogo} alt="Conser" className="w-10 h-10 rounded-xl" />
+              <img src={conserLogo} alt="Conser" className="w-10 h-10 rounded-xl" loading="lazy" />
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</h3>
@@ -148,7 +148,7 @@ export default function PartnerDashboard() {
             </div>
           </div>
           <div className="w-full md:w-64 shrink-0 rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
-            <img src={conserShopImg} alt="Conser Shop" className="w-full block" />
+            <img src={conserShopImg} alt="Conser Shop" className="w-full block" loading="lazy" />
           </div>
         </a>
 
@@ -157,7 +157,7 @@ export default function PartnerDashboard() {
           {/* Avento ERP */}
           <div className="card p-5">
             <div className="flex items-center gap-2.5 mb-3">
-              <img src={aventoLogo} alt="Avento" className="w-9 h-9 rounded-lg" />
+              <img src={aventoLogo} alt="Avento" className="w-9 h-9 rounded-lg" loading="lazy" />
               <div>
                 <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Avento ERP</h3>
                 <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>In Entwicklung</p>
@@ -172,7 +172,7 @@ export default function PartnerDashboard() {
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
             className="card p-5 no-underline group hover:translate-y-[-2px] transition-all">
             <div className="flex items-center gap-2.5 mb-3">
-              <img src={spaceAiLogo} alt="SpaceAI" className="w-9 h-9 rounded-lg object-cover" />
+              <img src={spaceAiLogo} alt="SpaceAI" className="w-9 h-9 rounded-lg object-cover" loading="lazy" />
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>SpaceAI</h3>
@@ -190,7 +190,7 @@ export default function PartnerDashboard() {
           <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
             className="card p-5 no-underline group hover:translate-y-[-2px] transition-all">
             <div className="flex items-center gap-2.5 mb-3">
-              <img src={bauDokuLogo} alt="BauDoku AI" className="w-9 h-9 rounded-lg object-cover" />
+              <img src={bauDokuLogo} alt="BauDoku AI" className="w-9 h-9 rounded-lg object-cover" loading="lazy" />
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</h3>

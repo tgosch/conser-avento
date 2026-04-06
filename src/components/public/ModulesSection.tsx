@@ -33,7 +33,7 @@ export default function ModulesSection() {
             <div className="rounded-2xl overflow-hidden h-full" style={{ background: '#063D3E' }}>
               <div className="p-5 md:p-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <img src={aventoLogo} alt="Avento" className="w-10 h-10 rounded-xl" />
+                  <img src={aventoLogo} alt="Avento" className="w-10 h-10 rounded-xl" loading="lazy" />
                   <div>
                     <h3 className="text-lg font-semibold text-white">Avento ERP</h3>
                     <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Handwerker-Betriebssystem</p>
@@ -51,7 +51,7 @@ export default function ModulesSection() {
                   <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:bg-white/5"
                     style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <img src={spaceAI} alt="SpaceAI" className="w-10 h-10 rounded-lg object-cover" />
+                    <img src={spaceAI} alt="SpaceAI" className="w-10 h-10 rounded-lg object-cover" loading="lazy" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-white">SpaceAI</span>
@@ -65,7 +65,7 @@ export default function ModulesSection() {
                   <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:bg-white/5"
                     style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <img src={bauDoku} alt="BauDoku AI" className="w-10 h-10 rounded-lg object-cover" />
+                    <img src={bauDoku} alt="BauDoku AI" className="w-10 h-10 rounded-lg object-cover" loading="lazy" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-white">BauDoku AI</span>
@@ -105,7 +105,7 @@ export default function ModulesSection() {
             <div className="rounded-2xl overflow-hidden h-full" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
               <div className="p-5 md:p-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <img src={conserLogo} alt="Conser" className="w-10 h-10 rounded-xl" />
+                  <img src={conserLogo} alt="Conser" className="w-10 h-10 rounded-xl" loading="lazy" />
                   <div>
                     <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</h3>
                     <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>B2B-Baustoff-Plattform</p>

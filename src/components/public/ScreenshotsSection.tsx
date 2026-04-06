@@ -60,6 +60,7 @@ export default function ScreenshotsSection() {
                   src={items[active].image}
                   alt={items[active].title}
                   className="w-full block"
+                  loading="lazy"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

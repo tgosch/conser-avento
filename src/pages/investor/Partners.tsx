@@ -62,7 +62,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
       <div className="w-14 h-14 rounded-[14px] overflow-hidden shrink-0 flex items-center justify-center"
         style={{ background: `${partner.color}12`, border: `1px solid ${partner.color}25` }}>
         <img src={logoUrl} alt={partner.name} className="w-full h-full object-contain p-1.5"
-          onError={() => setImgError(true)} />
+          loading="lazy" onError={() => setImgError(true)} />
       </div>
     )
   }

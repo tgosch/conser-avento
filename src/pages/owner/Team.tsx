@@ -78,7 +78,7 @@ function MemberPhoto({ member, onUploaded }: { member: TeamMember; onUploaded: (
     <div className="relative group">
       {photoUrl && !imgError ? (
         <div className="w-16 h-16 rounded-full overflow-hidden">
-          <img src={photoUrl} alt={member.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+          <img src={photoUrl} alt={member.name} className="w-full h-full object-cover" loading="lazy" onError={() => setImgError(true)} />
         </div>
       ) : (
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold"

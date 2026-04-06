@@ -97,8 +97,8 @@ export default function HeroSection() {
                   style={{
                     boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
                     border: '1px solid rgba(255,255,255,0.04)',
-                    opacity: 0.55,
-                    filter: 'brightness(0.85)',
+                    opacity: 0.35,
+                    filter: 'saturate(1.1)',
                   }}>
                   {/* Clip bottom 12% to crop CapCut watermark */}
                   <div style={{ overflow: 'hidden', aspectRatio: '9/14' }}>
@@ -109,6 +109,7 @@ export default function HeroSection() {
                       loop
                       muted={muted}
                       playsInline
+                      preload="none"
                       className="w-full block"
                       style={{ aspectRatio: '9/16', objectFit: 'cover' }}
                     />

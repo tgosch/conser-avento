@@ -10,7 +10,7 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Wie ist die aktuelle Bewertung?',
-        a: 'Die Bewertung wird individuell mit jedem Investor besprochen. Grundlage sind unser Traction-Level, die Marktgröße (€42 Mrd. DACH-Baumarkt) und vergleichbare Construction-Tech Deals. Mindest-Runway: 12 Monate (~€1,2M).',
+        a: 'Die Bewertung wird individuell mit jedem Investor besprochen. Grundlage sind unser Traction-Level, die Marktgröße (€770 Mrd. Handwerksumsatz DE, Quelle: ZDH 2024) und vergleichbare Construction-Tech Deals. Mindest-Runway: 12 Monate (~€1,2M).',
       },
       {
         q: 'Wie wird Verwässerung gehandhabt?',

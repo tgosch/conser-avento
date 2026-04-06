@@ -42,7 +42,7 @@ export default function PublicNavbar() {
               const active = location.pathname === link.to
               return (
                 <Link key={link.to} to={link.to}
-                  className="text-xs transition-colors"
+                  className="text-sm py-2 transition-colors"
                   style={{
                     color: active ? 'var(--text-primary)' : 'var(--text-tertiary)',
                     fontWeight: active ? 500 : 400,
@@ -51,15 +51,20 @@ export default function PublicNavbar() {
                 </Link>
               )
             })}
+            <Link to="/kontakt"
+              className="text-sm py-2 transition-colors"
+              style={{ color: 'var(--text-tertiary)' }}>
+              Testzugang
+            </Link>
             <Link to="/login"
-              className="text-xs font-medium px-4 py-1.5 rounded-full transition-all hover:opacity-80"
+              className="text-sm font-medium px-5 py-2 rounded-full transition-all hover:opacity-80"
               style={{ background: 'var(--brand)', color: 'white' }}>
-              Zugang
+              Einloggen
             </Link>
           </div>
 
           {/* Mobile */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-1" aria-label="Menu"
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2.5" aria-label="Menu"
             style={{ color: 'var(--text-primary)' }}>
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -87,10 +92,15 @@ export default function PublicNavbar() {
                   {link.label}
                 </Link>
               ))}
+              <Link to="/kontakt" onClick={() => setMenuOpen(false)}
+                className="mt-4 text-center py-3.5 rounded-full text-sm font-medium"
+                style={{ border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+                Testzugang anfragen
+              </Link>
               <Link to="/login" onClick={() => setMenuOpen(false)}
-                className="mt-6 text-center py-3.5 rounded-full text-sm font-medium"
+                className="mt-2 text-center py-3.5 rounded-full text-sm font-medium"
                 style={{ background: 'var(--brand)', color: 'white' }}>
-                Zugang erhalten
+                Einloggen
               </Link>
             </div>
           </motion.div>

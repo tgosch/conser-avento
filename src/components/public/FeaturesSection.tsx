@@ -93,6 +93,7 @@ export default function FeaturesSection() {
                         alt={tab === 'erp' ? 'Avento' : 'Conser'}
                         className="w-16 h-16 rounded-2xl mx-auto mb-5 object-cover"
                         style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}
+                        loading="lazy"
                       />
                       <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
                         {tab === 'erp' ? 'Avento ERP' : 'Conser Marktplatz'}

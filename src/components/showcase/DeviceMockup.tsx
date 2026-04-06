@@ -36,7 +36,7 @@ export function PhoneMockup({
           <div className="absolute top-[7px] sm:top-[10px] left-1/2 -translate-x-1/2 w-[64px] sm:w-[90px] h-[20px] sm:h-[28px] rounded-full z-10" style={{ background: '#000' }} />
           {/* Screen content */}
           {src ? (
-            <img src={src} alt={alt} className="w-full h-full object-cover" />
+            <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 pt-8"
               style={{ background: gradient }}>
@@ -86,7 +86,7 @@ export function LaptopMockup({
           {/* Screen */}
           <div className="rounded-t-lg overflow-hidden" style={{ aspectRatio: '16/10' }}>
             {src ? (
-              <img src={src} alt={alt} className="w-full h-full object-cover object-top" />
+              <img src={src} alt={alt} className="w-full h-full object-cover object-top" loading="lazy" />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center gap-3"
                 style={{ background: gradient }}>

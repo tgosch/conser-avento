@@ -201,7 +201,7 @@ export default function InvestorCompetition() {
         <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>MARKTPOSITIONIERUNG</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { label: 'TAM', value: '€42 Mrd.', desc: 'Gesamter Baumarkt DACH — Digitalisierungspotenzial', color: 'var(--brand)' },
+            { label: 'TAM', value: '€770 Mrd.', desc: 'Umsatz Handwerk Deutschland 2024 (Quelle: ZDH)', color: 'var(--brand)' },
             { label: 'SAM', value: '€8,4 Mrd.', desc: 'Adressierbarer Markt — Software + Marktplatz für Handwerk', color: 'var(--accent)' },
             { label: 'SOM', value: '€181M', desc: 'Unser Ziel bei Reife (2032) — 75.000 Kunden, 49% EBITDA', color: '#22C55E' },
           ].map(m => (

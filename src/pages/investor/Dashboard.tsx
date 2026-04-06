@@ -272,9 +272,9 @@ export default function InvestorDashboard() {
         <div className="card p-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { value: '430.000', label: 'Handwerksbetriebe', sub: 'DACH-Region' },
+              { value: '1 Mio.+', label: 'Handwerksbetriebe', sub: 'DACH-Region (ZDH 2024)' },
               { value: '73%', label: 'Noch auf Papier', sub: 'Digitalisierungslücke' },
-              { value: '€42 Mrd.', label: 'Baumarkt DACH', sub: 'Gesamtpotenzial' },
+              { value: '€770 Mrd.', label: 'Umsatz Handwerk', sub: 'Deutschland 2024 (ZDH)' },
               { value: '2027', label: 'EU-Richtlinie', sub: 'Digital Construction' },
             ].map(s => (
               <div key={s.label} className="text-center">
@@ -344,7 +344,7 @@ export default function InvestorDashboard() {
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
              className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
                style={{ borderLeft: '3px solid #8B5CF6', textDecoration: 'none', display: 'block' }}>
-            <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-3">
               <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Space AI</h3>
               <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -363,7 +363,7 @@ export default function InvestorDashboard() {
           <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
              className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
                style={{ borderLeft: '3px solid #0EA5E9', textDecoration: 'none', display: 'block' }}>
-            <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-3">
               <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>BauDoku AI</h3>
               <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -401,7 +401,7 @@ export default function InvestorDashboard() {
           <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
              className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
                style={{ borderLeft: '3px solid #C8611A', textDecoration: 'none', display: 'block' }}>
-            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-3">
               <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</h3>
               <span className="tag tag-sm" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>

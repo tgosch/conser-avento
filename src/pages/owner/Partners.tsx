@@ -405,7 +405,7 @@ export default function OwnerPartners() {
                 <div className="w-14 h-14 rounded-[14px] flex items-center justify-center overflow-hidden shrink-0 relative"
                   style={{ background: `${p.color}14`, border: `1.5px solid ${p.color}30` }}>
                   {logoUrl ? (
-                    <img src={logoUrl} alt={p.name} className="w-full h-full object-contain p-1.5" />
+                    <img src={logoUrl} alt={p.name} className="w-full h-full object-contain p-1.5" loading="lazy" />
                   ) : (
                     <span className="text-sm font-bold" style={{ color: p.color }}>{p.initials}</span>
                   )}

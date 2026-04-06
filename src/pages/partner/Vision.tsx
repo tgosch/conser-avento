@@ -139,7 +139,7 @@ export default function PartnerVision() {
           <a href="https://spaceai-henna.vercel.app" target="_blank" rel="noopener noreferrer"
             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderLeft: '3px solid #8B5CF6' }}>
-            <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={spaceAiLogo} alt="Space AI" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
               <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Space AI</p>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -152,7 +152,7 @@ export default function PartnerVision() {
           <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderLeft: '3px solid #0EA5E9' }}>
-            <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={bauDokuLogo} alt="BauDoku AI" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
               <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>BauDoku AI</p>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -177,7 +177,7 @@ export default function PartnerVision() {
           <a href="https://www.conser-gosch.de" target="_blank" rel="noopener noreferrer"
             className="card p-6 group hover:translate-y-[-2px] transition-all duration-300 no-underline"
             style={{ borderLeft: '3px solid #C8611A' }}>
-            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
+            <img src={conserLogo} alt="Conser Marktplatz" className="w-14 h-14 rounded-2xl object-cover mb-3" loading="lazy" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }} />
             <div className="flex items-center gap-2 mb-2">
               <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Conser Marktplatz</p>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759' }}>Live</span>
@@ -260,8 +260,8 @@ export default function PartnerVision() {
       {/* ── MARKET NUMBERS ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-up delay-4">
         {[
-          { icon: Target, value: '1,3 Mio.', label: 'Handwerksbetriebe', sub: 'in der DACH-Region', color: 'var(--brand)' },
-          { icon: TrendingUp, value: '€600 Mrd', label: 'Bauvolumen/Jahr', sub: 'Deutschland allein', color: 'var(--accent)' },
+          { icon: Target, value: '1 Mio.+', label: 'Handwerksbetriebe', sub: 'DACH-Region (ZDH 2024)', color: 'var(--brand)' },
+          { icon: TrendingUp, value: '€770 Mrd.', label: 'Umsatz Handwerk', sub: 'Deutschland 2024 (ZDH)', color: 'var(--accent)' },
           { icon: Zap, value: '<10%', label: 'Digitalisiert', sub: 'Riesiges Potenzial', color: '#22C55E' },
         ].map(({ icon: Icon, value, label, sub, color }) => (
           <div key={label} className="card p-6 text-center group hover:translate-y-[-2px] transition-all duration-300">
