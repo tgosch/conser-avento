@@ -87,9 +87,9 @@ export default function InvestorTeam() {
       <div className="skeleton h-8 w-64 rounded-xl mb-3" />
       <div className="skeleton h-4 w-96 rounded-lg mb-8" />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-        {[1,2,3].map(i => <div key={i} className="skeleton h-64 rounded-[24px]" />)}
+        {[1,2,3].map(i => <div key={i} className="skeleton h-64 rounded-2xl" />)}
       </div>
-      <div className="skeleton h-32 rounded-[20px]" />
+      <div className="skeleton h-32 rounded-xl" />
     </div>
   )
 

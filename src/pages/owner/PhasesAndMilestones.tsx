@@ -589,7 +589,7 @@ export default function PhasesAndMilestones() {
       {/* Overall progress */}
       {phases.length > 1 && (
         <div
-          className="rounded-[18px] p-4 border mb-6"
+          className="rounded-xl p-4 border mb-6"
           style={{ background: '#FFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
         >
           <div className="flex items-center justify-between mb-2">
@@ -619,7 +619,7 @@ export default function PhasesAndMilestones() {
 
       {/* Empty state */}
       {phases.length === 0 && (
-        <div className="rounded-[20px] border p-16 text-center" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+        <div className="rounded-xl border p-16 text-center" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
           <div className="flex items-center justify-center gap-0 mb-6">
             {[0, 1, 2].map(i => (
               <div key={i} className="flex items-center">

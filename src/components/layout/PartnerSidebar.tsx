@@ -117,7 +117,7 @@ export default function PartnerSidebar({ open, onClose }: Props) {
 
         {/* Bottom */}
         <div className="p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="mb-3 px-3 py-2.5 rounded-[12px] relative overflow-hidden"
+          <div className="mb-3 px-3 py-2.5 rounded-md relative overflow-hidden"
                style={{ background: statusInfo.bg, border: `1px solid ${statusInfo.text}40` }}>
             <div className="flex items-center justify-between mb-0.5">
               <span className="label-overline" style={{ color: 'rgba(255,255,255,0.45)' }}>Status</span>

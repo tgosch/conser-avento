@@ -57,10 +57,10 @@ export default function InvestorStructure() {
       <div className="skeleton h-8 w-56 rounded-xl mb-3" />
       <div className="skeleton h-4 w-72 rounded-lg mb-8" />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-        {[1,2,3].map(i => <div key={i} className="skeleton h-20 rounded-[18px]" />)}
+        {[1,2,3].map(i => <div key={i} className="skeleton h-20 rounded-xl" />)}
       </div>
-      <div className="skeleton h-64 rounded-[20px] mb-6" />
-      <div className="skeleton h-48 rounded-[20px]" />
+      <div className="skeleton h-64 rounded-xl mb-6" />
+      <div className="skeleton h-48 rounded-xl" />
     </div>
   )
 
@@ -90,7 +90,7 @@ export default function InvestorStructure() {
       <h2 className="font-bold text-base mb-5" style={{ color: 'var(--text-primary)' }}>Holding-Struktur</h2>
       <div className="flex flex-col items-center">
 
-        <div className="w-full max-w-xs rounded-[18px] p-5 border-2 text-center relative"
+        <div className="w-full max-w-xs rounded-xl p-5 border-2 text-center relative"
           style={{ background: '#1C1C1E', borderColor: '#363636' }}>
           <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
             style={{ background: 'rgba(255,255,255,0.12)' }}>

@@ -346,7 +346,7 @@ export default function OwnerDocs() {
       </div>
 
       {/* Upload card */}
-      <div className="rounded-[20px] p-5 border mb-6"
+      <div className="rounded-xl p-5 border mb-6"
         style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
 
         {/* Section selector */}
@@ -484,7 +484,7 @@ export default function OwnerDocs() {
       {loading ? (
         <CardSkeleton count={6} />
       ) : fetchError ? (
-        <div className="rounded-[20px] border p-8 text-center" style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}>
+        <div className="rounded-xl border p-8 text-center" style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}>
           <AlertCircle size={32} className="mx-auto mb-3" style={{ color: '#FF3B30' }} />
           <p className="font-semibold text-sm mb-1" style={{ color: '#FF3B30' }}>Fehler beim Laden</p>
           <p className="text-xs mb-4 font-mono" style={{ color: '#666666' }}>{fetchError}</p>
@@ -495,7 +495,7 @@ export default function OwnerDocs() {
           </button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-[20px] border"
+        <div className="rounded-xl border"
           style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <EmptyState onUploadClick={() => fileInputRef.current?.click()} />
         </div>

@@ -205,7 +205,7 @@ export default function OwnerTeam() {
       </div>
 
       {adding && (
-        <form onSubmit={handleAdd} className="rounded-[20px] p-5 border mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3"
+        <form onSubmit={handleAdd} className="rounded-xl p-5 border mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3"
           style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <input placeholder="Name *" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
             className="px-4 py-2.5 rounded-xl border outline-none text-sm"
@@ -246,13 +246,13 @@ export default function OwnerTeam() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-[20px] h-28 animate-pulse" style={{ background: 'var(--surface2)' }} />
+            <div key={i} className="rounded-xl h-28 animate-pulse" style={{ background: 'var(--surface2)' }} />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {members.map(m => (
-            <div key={m.id} className="rounded-[20px] p-5 border flex items-start gap-4"
+            <div key={m.id} className="rounded-xl p-5 border flex items-start gap-4"
               style={{ background: 'var(--surface)', borderColor: 'var(--border)', opacity: m.visible ? 1 : 0.5 }}>
               <MemberPhoto member={m} onUploaded={load} />
               <div className="flex-1 min-w-0">
@@ -299,7 +299,7 @@ export default function OwnerTeam() {
       </p>
 
       {/* ── Post-Seed Hire Planner ── */}
-      <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+      <div className="rounded-xl p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <SectionHeader label="Planung" title="Post-Seed Hire Planner" sub="Geplante Einstellungen nach erfolgreicher Seed-Finanzierung" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           {[
@@ -308,10 +308,10 @@ export default function OwnerTeam() {
             { role: 'Customer Success',  when: 'Q4 2026', priority: 'Mittel', icon: '🤝', color: '#5856D6', note: 'Onboarding & Retention' },
             { role: 'Marketing Manager', when: 'Q4 2026', priority: 'Mittel', icon: '🎯', color: '#FF9500', note: 'Content & Performance Marketing' },
           ].map(h => (
-            <div key={h.role} className="rounded-[16px] p-4 border"
+            <div key={h.role} className="rounded-lg p-4 border"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-xl shrink-0"
+                <div className="w-10 h-10 rounded-md flex items-center justify-center text-xl shrink-0"
                   style={{ background: `${h.color}14` }}>{h.icon}</div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm truncate" style={{ color: 'var(--text-primary)' }}>{h.role}</p>

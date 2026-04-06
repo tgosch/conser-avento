@@ -36,7 +36,7 @@ export default function OwnerFuture() {
     <div className="max-w-3xl">
       <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Zukunft verwalten</h1>
 
-      <form onSubmit={handleSubmit} className="rounded-[20px] p-6 border mb-8" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+      <form onSubmit={handleSubmit} className="rounded-xl p-6 border mb-8" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <h2 className="font-bold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Neuen Eintrag hinzufügen</h2>
         <div className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -73,7 +73,7 @@ export default function OwnerFuture() {
 
       <div className="flex flex-col gap-3">
         {items.map(item => (
-          <div key={item.id} className="rounded-[20px] p-4 border flex items-center gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div key={item.id} className="rounded-xl p-4 border flex items-center gap-4" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-surface2" style={{ color: 'var(--text-secondary)' }}>{item.type}</span>

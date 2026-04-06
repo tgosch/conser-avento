@@ -23,7 +23,7 @@ export function PhoneMockup({
       {/* Phone Frame */}
       <div className="relative w-[140px] h-[287px] sm:w-[200px] sm:h-[410px]">
         {/* Outer shell */}
-        <div className="absolute inset-0 rounded-[24px] sm:rounded-[36px]"
+        <div className="absolute inset-0 rounded-2xl sm:rounded-[36px]"
           style={{ background: '#1A1A1A', boxShadow: '0 25px 60px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)' }} />
         {/* Side button */}
         <div className="absolute -right-[2px] top-[90px] w-[3px] h-[30px] rounded-r-sm" style={{ background: '#2A2A2A' }} />

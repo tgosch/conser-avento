@@ -74,7 +74,7 @@ export default function InvestorStatus() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-[20px] h-24 animate-pulse" style={{ background: 'var(--surface2)' }} />
+            <div key={i} className="rounded-xl h-24 animate-pulse" style={{ background: 'var(--surface2)' }} />
           ))}
         </div>
       ) : updates.length === 0 ? (
@@ -97,7 +97,7 @@ export default function InvestorStatus() {
           {updates.map(u => (
             /* ERGÄNZUNG 2 — Farbiger Left-Border */
             <div key={u.id}
-              className={`rounded-[20px] p-5 border ${categoryStrip[u.category] ?? 'status-strip-neutral'}`}
+              className={`rounded-xl p-5 border ${categoryStrip[u.category] ?? 'status-strip-neutral'}`}
               style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs px-2.5 py-1 rounded-full font-semibold"

@@ -71,7 +71,7 @@ export default function PartnerRevenue() {
 
       {/* ── WHAT YOU GET ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 animate-fade-up delay-3">
-        <div className="card p-6" style={{ borderLeft: '3px solid var(--brand)' }}>
+        <div className="card p-6 border-left-brand">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp size={16} style={{ color: 'var(--brand)' }} />
             <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Für Sie als Partner</p>
@@ -90,7 +90,7 @@ export default function PartnerRevenue() {
             ))}
           </ul>
         </div>
-        <div className="card p-6" style={{ borderLeft: '3px solid #22C55E' }}>
+        <div className="card p-6 border-left-success">
           <div className="flex items-center gap-2 mb-4">
             <Shield size={16} style={{ color: '#22C55E' }} />
             <p className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Transparente Provision</p>

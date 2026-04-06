@@ -16,7 +16,7 @@ export default function NdaModal({ onClose }: { onClose: () => void }) {
       onClick={e => { if (e.target === e.currentTarget) onClose() }}>
       <div ref={dialogRef} tabIndex={-1}
         role="dialog" aria-modal="true" aria-labelledby="nda-modal-title"
-        className="w-full max-w-xl rounded-[24px] flex flex-col border outline-none" style={{ background: 'var(--surface)', borderColor: 'var(--border)', maxHeight: '80vh' }}>
+        className="w-full max-w-xl rounded-2xl flex flex-col border outline-none" style={{ background: 'var(--surface)', borderColor: 'var(--border)', maxHeight: '80vh' }}>
         <div className="flex items-center justify-between px-6 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
           <h2 id="nda-modal-title" className="font-bold text-base" style={{ color: 'var(--text-primary)' }}>Geheimhaltungsvereinbarung (NDA)</h2>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg hover:opacity-70 transition" style={{ color: 'var(--text-secondary)' }} aria-label="Schließen"><X size={20} /></button>

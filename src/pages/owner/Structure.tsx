@@ -78,7 +78,7 @@ function TeamCard({
   onDelete: (id: string) => void
 }) {
   return (
-    <div className="rounded-[18px] p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+    <div className="rounded-xl p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
       <div className="flex items-start gap-3 mb-3">
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center text-white text-base font-bold shrink-0"
@@ -148,7 +148,7 @@ function PartnerCard({
   const sm = statusMeta[partner.status] ?? statusMeta.active
 
   return (
-    <div className="rounded-[18px] p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+    <div className="rounded-xl p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div
@@ -216,7 +216,7 @@ function AddTeamForm({ onAdded }: { onAdded: () => void }) {
   }
 
   return (
-    <div className="rounded-[18px] p-5 border" style={{ background: '#F8FAFF', borderColor: '#0066FF33' }}>
+    <div className="rounded-xl p-5 border" style={{ background: '#F8FAFF', borderColor: '#0066FF33' }}>
       <p className="font-semibold text-sm mb-3" style={{ color: '#000' }}>Neue Person</p>
       <div className="grid grid-cols-2 gap-2 mb-2">
         <input placeholder="Name *" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -330,7 +330,7 @@ export default function OwnerStructure() {
               { label: 'Sitz',              value: 'Deutschland' },
               { label: 'Gründungsjahr',     value: '2025' },
             ].map(s => (
-              <div key={s.label} className="rounded-[16px] p-4 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+              <div key={s.label} className="rounded-lg p-4 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
                 <p className="text-xs mb-1" style={{ color: '#999' }}>{s.label}</p>
                 <p className="font-bold text-sm" style={{ color: '#000' }}>{s.value}</p>
               </div>
@@ -341,7 +341,7 @@ export default function OwnerStructure() {
 
           {/* Bautech Holding */}
           <div className="flex flex-col items-center">
-            <div className="w-full max-w-xs rounded-[18px] p-5 border-2 text-center"
+            <div className="w-full max-w-xs rounded-xl p-5 border-2 text-center"
               style={{ background: '#1C1C1E', borderColor: '#363636' }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
                 style={{ background: 'rgba(255,255,255,0.12)' }}>
@@ -357,7 +357,7 @@ export default function OwnerStructure() {
             {/* Companies */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-6">
               {COMPANIES.map(c => (
-                <div key={c.name} className="rounded-[18px] p-5 border cursor-pointer transition-all hover:shadow-md"
+                <div key={c.name} className="rounded-xl p-5 border cursor-pointer transition-all hover:shadow-md"
                   style={{ background: '#FFF', borderColor: '#E5E7EB' }}
                   onClick={() => setExpanded(expanded === c.name ? null : c.name)}>
                   <div className="flex items-start justify-between mb-3">
@@ -394,7 +394,7 @@ export default function OwnerStructure() {
             </div>
 
             {/* Code Ara */}
-            <div className="w-full rounded-[18px] p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+            <div className="w-full rounded-xl p-5 border" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: 'rgba(45,106,79,0.12)' }}>
@@ -431,7 +431,7 @@ export default function OwnerStructure() {
       {tab === 'partner' && (
         <div>
           {partners.length === 0 ? (
-            <div className="rounded-[20px] border p-12 text-center" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
+            <div className="rounded-xl border p-12 text-center" style={{ background: '#FFF', borderColor: '#E5E7EB' }}>
               <p className="text-2xl mb-3">🤝</p>
               <p className="font-semibold text-sm" style={{ color: '#000' }}>Noch keine Partner</p>
               <p className="text-xs mt-1" style={{ color: '#999' }}>Partner werden in der Supabase `partners`-Tabelle verwaltet</p>

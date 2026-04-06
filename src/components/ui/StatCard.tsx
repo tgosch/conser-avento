@@ -23,7 +23,7 @@ export function StatCard({ label, value, sub, icon, trend, accentColor = '#063D3
 
   return (
     <div
-      className={`rounded-[20px] p-5 border hover-card card-enter ${className}`}
+      className={`rounded-xl p-5 border hover-card card-enter ${className}`}
       style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
     >
       {icon && <span className="text-2xl block mb-3">{icon}</span>}

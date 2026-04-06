@@ -284,7 +284,7 @@ export default function OwnerPhasePlan() {
 
       {/* ── Visual Timeline Header ── */}
       {phases.length > 0 && (
-        <div className="rounded-[20px] p-5 border mb-6 overflow-x-auto"
+        <div className="rounded-xl p-5 border mb-6 overflow-x-auto"
           style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: '#999999' }}>
             PHASENÜBERSICHT
@@ -335,7 +335,7 @@ export default function OwnerPhasePlan() {
       {/* Empty state */}
       {phases.length === 0 && (
         <div
-          className="rounded-[20px] border"
+          className="rounded-xl border"
           style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
         >
           <EmptyTimeline onAdd={() => setShowModal(true)} />

@@ -229,7 +229,7 @@ function CustomTooltip({ active, payload, label, metric }: {
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-[12px] px-3 py-2 text-xs border shadow-md"
+    <div className="rounded-md px-3 py-2 text-xs border shadow-md"
       style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
       <p className="font-semibold mb-0.5">{label}</p>
       <p style={{ color: metric === 'kunden' ? '#063D3E' : '#D4662A' }}>
@@ -256,7 +256,7 @@ export default function InvestorFuture() {
   const phase = PHASES.find(p => p.id === selectedPhase) ?? PHASES[0]
 
   return (
-    <div className="max-w-5xl fade-up">
+    <div className="max-w-5xl animate-fade-up">
 
       {/* ── Header ── */}
       <div className="mb-6">
@@ -269,7 +269,7 @@ export default function InvestorFuture() {
       </div>
 
       {/* ── Warum Jetzt? — 3-card grid ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 fade-up fade-up-1">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 animate-fade-up delay-1">
         {[
           {
             icon: '🏗️',
@@ -290,9 +290,9 @@ export default function InvestorFuture() {
             color: '#0066FF',
           },
         ].map(card => (
-          <div key={card.title} className="rounded-[20px] p-5 border hover-card"
+          <div key={card.title} className="rounded-xl p-5 border hover-card"
             style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-            <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-xl mb-3"
+            <div className="w-10 h-10 rounded-md flex items-center justify-center text-xl mb-3"
               style={{ background: `${card.color}12` }}>{card.icon}</div>
             <p className="font-bold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>{card.title}</p>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{card.body}</p>
@@ -308,7 +308,7 @@ export default function InvestorFuture() {
           { icon: '💶', value: '181M€', label: 'Revenue-Ziel', sub: 'bis 2032' },
           { icon: '📈', value: '49%', label: 'EBITDA Ziel', sub: 'Zielmarge' },
         ].map(stat => (
-          <div key={stat.label} className="rounded-[16px] p-4 border flex flex-col"
+          <div key={stat.label} className="rounded-lg p-4 border flex flex-col"
             style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <span className="text-2xl mb-2">{stat.icon}</span>
             <span className="text-xl md:text-2xl font-bold leading-none mb-1"
@@ -320,7 +320,7 @@ export default function InvestorFuture() {
       </div>
 
       {/* ── Seed-Round Banner ── */}
-      <div className="rounded-[20px] p-5 mb-6 flex items-center gap-4 flex-wrap fade-up fade-up-3"
+      <div className="rounded-xl p-5 mb-6 flex items-center gap-4 flex-wrap animate-fade-up delay-3"
         style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%)' }}>
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">SEED-RUNDE LÄUFT</p>
@@ -330,14 +330,14 @@ export default function InvestorFuture() {
           </p>
         </div>
         <Link to="/investor/chat"
-          className="shrink-0 px-5 py-2.5 rounded-[12px] text-sm font-bold transition hover:opacity-90"
+          className="shrink-0 px-5 py-2.5 rounded-md text-sm font-bold transition hover:opacity-90"
           style={{ background: '#D4662A', color: 'white' }}>
           Gespräch starten →
         </Link>
       </div>
 
       {/* ── Desktop Timeline Stepper ── */}
-      <div className="hidden md:block rounded-[20px] border p-6 mb-6"
+      <div className="hidden md:block rounded-xl border p-6 mb-6"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <p className="text-xs font-semibold uppercase tracking-wider mb-5"
           style={{ color: 'var(--text-secondary)' }}>PHASEN-ÜBERSICHT</p>
@@ -388,7 +388,7 @@ export default function InvestorFuture() {
             <button
               key={p.id}
               onClick={() => setSelectedPhase(p.id)}
-              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-[12px] border transition-all text-xs font-semibold"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-md border transition-all text-xs font-semibold"
               style={{
                 background: selectedPhase === p.id ? p.accentColor : 'var(--surface)',
                 color: selectedPhase === p.id ? 'white' : 'var(--text-secondary)',
@@ -405,7 +405,7 @@ export default function InvestorFuture() {
       {/* ── Selected Phase Detail ── */}
       <div
         key={phase.id}
-        className="rounded-[20px] border-2 overflow-hidden mb-8"
+        className="rounded-xl border-2 overflow-hidden mb-8"
         style={{ borderColor: phase.accentColor, background: 'var(--surface)' }}
       >
         {/* Phase Header */}
@@ -500,7 +500,7 @@ export default function InvestorFuture() {
               style={{ color: 'var(--text-secondary)' }}>KEY METRICS</p>
             <div className="grid grid-cols-2 gap-2 mb-5">
               {phase.keyMetrics.map(m => (
-                <div key={m.label} className="rounded-[12px] p-3 border"
+                <div key={m.label} className="rounded-md p-3 border"
                   style={{ background: phase.bgColor, borderColor: 'var(--border)' }}>
                   <div className="flex items-center gap-1.5 mb-1">
                     <span className="text-base">{m.icon}</span>
@@ -554,7 +554,7 @@ export default function InvestorFuture() {
       </div>
 
       {/* ── Customer Growth Chart ── */}
-      <div className="rounded-[20px] border p-5 md:p-6 mb-8"
+      <div className="rounded-xl border p-5 md:p-6 mb-8"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <div className="flex items-start justify-between mb-5 gap-3 flex-wrap">
           <div>
@@ -651,7 +651,7 @@ export default function InvestorFuture() {
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {MILESTONES.map((m, idx) => (
-            <div key={m.id} className="rounded-[16px] p-4 border relative overflow-hidden"
+            <div key={m.id} className="rounded-lg p-4 border relative overflow-hidden"
               style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
               {/* Step number */}
               <div
@@ -676,7 +676,7 @@ export default function InvestorFuture() {
       </div>
 
       {/* ── CAC Evolution (Desktop only, optional detail) ── */}
-      <div className="hidden md:block rounded-[20px] border p-6"
+      <div className="hidden md:block rounded-xl border p-6"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <h2 className="font-bold text-base mb-5" style={{ color: 'var(--text-primary)' }}>
           Kunden-Akquisitionskosten (CAC) — Entwicklung

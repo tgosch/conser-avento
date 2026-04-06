@@ -87,7 +87,7 @@ export default function PartnerSettings() {
         Einstellungen
       </h1>
 
-      <div className="flex gap-1 p-1 rounded-[12px] mb-6" style={{ background: 'var(--surface2)' }}>
+      <div className="flex gap-1 p-1 rounded-md mb-6" style={{ background: 'var(--surface2)' }}>
         {([
           { key: 'profile', label: 'Profil' },
           { key: 'security', label: 'Sicherheit' },

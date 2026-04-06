@@ -35,7 +35,7 @@ export default function InvestorDashboard() {
     <div className="max-w-5xl mx-auto animate-fade-up">
 
       {/* HERO */}
-      <div className="relative rounded-[28px] overflow-hidden mb-8 noise-overlay"
+      <div className="relative rounded-3xl overflow-hidden mb-8 noise-overlay"
            style={{
              background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
              minHeight: 220,
@@ -140,7 +140,7 @@ export default function InvestorDashboard() {
       </div>
 
       {/* VIDEO PITCH */}
-      <div className="relative rounded-[28px] overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
+      <div className="relative rounded-3xl overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
            style={{
              background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
            }}>
@@ -196,7 +196,7 @@ export default function InvestorDashboard() {
       <div className="mb-8 delay-2 animate-fade-up">
         <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>PROOF OF CONCEPT</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay"
+          <div className="relative rounded-2xl overflow-hidden p-5 md:p-7 noise-overlay"
                style={{ background: 'linear-gradient(145deg, #071F20 0%, #0A3436 100%)', minHeight: 200 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />
@@ -230,7 +230,7 @@ export default function InvestorDashboard() {
               </p>
             </div>
           </div>
-          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay"
+          <div className="relative rounded-2xl overflow-hidden p-5 md:p-7 noise-overlay"
                style={{ background: 'linear-gradient(145deg, #3D1A08 0%, #6B2D0C 100%)', minHeight: 200 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />
@@ -287,7 +287,7 @@ export default function InvestorDashboard() {
       <div className="mb-8 delay-2 animate-fade-up">
         <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>WAS WIR BAUEN</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
+          <div className="relative rounded-2xl overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
                style={{ background: 'linear-gradient(145deg, #071F20 0%, #0A3436 100%)', minHeight: 180 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />
@@ -308,7 +308,7 @@ export default function InvestorDashboard() {
               </div>
             </div>
           </div>
-          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
+          <div className="relative rounded-2xl overflow-hidden p-5 md:p-7 noise-overlay hover-lift"
                style={{ background: 'linear-gradient(145deg, #6B2D0C 0%, #8B3D12 100%)', minHeight: 180 }}>
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
                  style={{ background: 'rgba(255,255,255,0.04)' }} />

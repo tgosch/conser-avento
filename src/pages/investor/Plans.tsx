@@ -40,7 +40,7 @@ function DocItem({ icon, label, slug, available, desc, date, readTime }: {
   icon: string; label: string; slug: string; available: boolean; desc: string; date: string; readTime?: string
 }) {
   const content = (
-    <div className={`flex items-start gap-3 px-3 py-3 rounded-[12px] transition group ${available ? 'card-interactive' : 'opacity-50'}`}>
+    <div className={`flex items-start gap-3 px-3 py-3 rounded-md transition group ${available ? 'card-interactive' : 'opacity-50'}`}>
       <span className="text-xl shrink-0 mt-0.5">{icon}</span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2 mb-0.5">

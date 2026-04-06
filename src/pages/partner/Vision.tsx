@@ -37,7 +37,7 @@ export default function PartnerVision() {
 
       {/* ── THE PROBLEM ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 animate-fade-up delay-2">
-        <div className="card p-6" style={{ borderLeft: '3px solid var(--danger)' }}>
+        <div className="card p-6 border-left-danger">
           <p className="label-tag mb-4" style={{ color: 'var(--danger)' }}>PROBLEM FÜR HANDWERKER</p>
           <ul className="space-y-3">
             {[

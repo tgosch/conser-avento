@@ -99,7 +99,7 @@ export default function InvestorPlanDetail() {
   if (!meta) return <div className="p-8 text-center text-secondary">Bereich nicht gefunden.</div>
 
   return (
-    <div className="max-w-5xl fade-up">
+    <div className="max-w-5xl animate-fade-up">
       <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-6" style={{ color: 'var(--text-secondary)' }}>
         <Link to="/investor/dashboard" className="hover:text-accent transition">Dashboard</Link>
         <ChevronRight size={12} />
@@ -109,7 +109,7 @@ export default function InvestorPlanDetail() {
       </nav>
 
       <div className="flex items-center gap-3 mb-5 min-w-0">
-        <div className="w-10 h-10 md:w-14 md:h-14 rounded-[12px] md:rounded-[16px] flex items-center justify-center text-2xl md:text-3xl shrink-0" style={{ background: 'rgba(6,61,62,0.10)' }}>
+        <div className="w-10 h-10 md:w-14 md:h-14 rounded-md md:rounded-lg flex items-center justify-center text-2xl md:text-3xl shrink-0" style={{ background: 'rgba(6,61,62,0.10)' }}>
           {meta.icon}
         </div>
         <div className="min-w-0">
@@ -120,7 +120,7 @@ export default function InvestorPlanDetail() {
 
       <div
         ref={viewerRef}
-        className="rounded-[20px] overflow-hidden mb-4 relative border"
+        className="rounded-xl overflow-hidden mb-4 relative border"
         style={{ aspectRatio: '16/9', boxShadow: 'var(--shadow-md)', borderColor: 'var(--border)', background: 'var(--surface)' }}
       >
         <button onClick={toggleFullscreen}

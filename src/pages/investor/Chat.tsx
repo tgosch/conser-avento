@@ -127,7 +127,7 @@ export default function InvestorChat() {
                   ].map(q => (
                     <button key={q}
                       onClick={() => { setInput(q); inputRef.current?.focus() }}
-                      className="text-left px-4 py-2.5 rounded-[12px] text-xs font-medium transition hover:opacity-80"
+                      className="text-left px-4 py-2.5 rounded-md text-xs font-medium transition hover:opacity-80"
                       style={{ background: 'var(--surface2)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
                       {q} →
                     </button>
@@ -243,7 +243,7 @@ export default function InvestorChat() {
             <textarea value={proposal} onChange={e => setProposal(e.target.value)}
               placeholder="Beschreiben Sie Ihren Vorschlag oder stellen Sie Ihre Fragen…"
               rows={4}
-              className="w-full px-4 py-3 rounded-[12px] text-sm outline-none border resize-none"
+              className="w-full px-4 py-3 rounded-md text-sm outline-none border resize-none"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text-primary)', lineHeight: '1.6' }} />
             <button onClick={sendProposal} disabled={!proposal.trim() || submitting}
               className="btn btn-accent w-full">

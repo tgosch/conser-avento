@@ -122,7 +122,7 @@ export default function InvestorSidebar({ open, onClose }: Props) {
 
         {/* Bottom */}
         <div className="p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="mb-3 px-3 py-2.5 rounded-[12px] relative overflow-hidden"
+          <div className="mb-3 px-3 py-2.5 rounded-md relative overflow-hidden"
                style={{ background: 'rgba(200,97,26,0.18)', border: '1px solid rgba(200,97,26,0.25)' }}>
             <div className="flex items-center justify-between mb-0.5">
               <span className="label-overline" style={{ color: 'rgba(255,255,255,0.45)' }}>Seed Round</span>

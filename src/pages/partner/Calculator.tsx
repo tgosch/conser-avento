@@ -133,7 +133,7 @@ export default function PartnerCalculator() {
         {/* Results */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           {/* Monthly */}
-          <div className="card p-6" style={{ borderLeft: '3px solid var(--brand)' }}>
+          <div className="card p-6 border-left-brand">
             <p className="text-xs font-semibold mb-1" style={{ color: 'var(--text-tertiary)' }}>Monatlich</p>
             <p className="text-2xl font-bold mb-0.5" style={{ color: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>
               €{monthlyCommission.toLocaleString('de-DE')}
@@ -144,7 +144,7 @@ export default function PartnerCalculator() {
           </div>
 
           {/* Yearly */}
-          <div className="card p-6" style={{ borderLeft: '3px solid var(--accent)' }}>
+          <div className="card p-6 border-left-accent">
             <p className="text-xs font-semibold mb-1" style={{ color: 'var(--text-tertiary)' }}>Jahr 1</p>
             <p className="text-2xl font-bold mb-0.5" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>
               €{yearlyCommission.toLocaleString('de-DE')}

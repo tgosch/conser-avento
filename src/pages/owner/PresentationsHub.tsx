@@ -59,7 +59,7 @@ function GridCard({
   const cat = getCategoryMeta(p.category)
   return (
     <div
-      className="group relative rounded-[18px] overflow-hidden border hover-lift"
+      className="group relative rounded-xl overflow-hidden border hover-lift"
       style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}
     >
       {/* Colour header */}
@@ -446,7 +446,7 @@ export default function PresentationsHub() {
       {/* Upload Panel */}
       {showUpload && (
         <div
-          className="rounded-[20px] p-5 border mb-6 accordion-content"
+          className="rounded-xl p-5 border mb-6 accordion-content"
           style={{ background: '#FFFFFF', borderColor: '#E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
         >
           <h2 className="font-bold text-sm mb-4" style={{ color: '#000' }}>Neue Präsentation hochladen</h2>
@@ -703,7 +703,7 @@ export default function PresentationsHub() {
           <div className="w-8 h-8 rounded-full border-2 animate-spin" style={{ borderColor: '#E5E7EB', borderTopColor: '#063D3E' }} />
         </div>
       ) : fetchError ? (
-        <div className="rounded-[20px] border p-8 text-center" style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}>
+        <div className="rounded-xl border p-8 text-center" style={{ background: '#FFF5F5', borderColor: '#FED7D7' }}>
           <AlertCircle size={32} className="mx-auto mb-3" style={{ color: '#FF3B30' }} />
           <p className="font-semibold text-sm mb-1" style={{ color: '#FF3B30' }}>Fehler beim Laden</p>
           <p className="text-xs mb-4 font-mono" style={{ color: '#666' }}>{fetchError}</p>
@@ -712,7 +712,7 @@ export default function PresentationsHub() {
           </button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-[20px] border p-16 text-center" style={{ background: '#FFFFFF', borderColor: '#E5E7EB' }}>
+        <div className="rounded-xl border p-16 text-center" style={{ background: '#FFFFFF', borderColor: '#E5E7EB' }}>
           <p className="text-4xl mb-4">📂</p>
           <p className="font-semibold text-sm mb-1" style={{ color: '#000' }}>
             {searchQuery ? 'Keine Treffer' : 'Noch keine Präsentationen'}

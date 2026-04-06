@@ -146,7 +146,7 @@ export default function OwnerChat() {
               <button
                 key={inv.id}
                 onClick={() => selectInvestor(inv)}
-                className="w-full text-left px-3 py-3 rounded-[12px] transition mb-0.5 flex items-center gap-3"
+                className="w-full text-left px-3 py-3 rounded-md transition mb-0.5 flex items-center gap-3"
                 style={{ background: isActive ? 'var(--surface2)' : 'transparent' }}>
                 {/* Avatar */}
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"

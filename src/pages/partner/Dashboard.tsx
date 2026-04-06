@@ -41,7 +41,7 @@ export default function PartnerDashboard() {
     <div className="max-w-5xl mx-auto">
 
       {/* ── HERO ── */}
-      <div className="relative rounded-[24px] overflow-hidden mb-8 animate-fade-up"
+      <div className="relative rounded-2xl overflow-hidden mb-8 animate-fade-up"
         style={{ background: '#063D3E' }}>
         <div className="relative z-10 px-6 py-8 md:px-10 md:py-12">
           <p className="text-xs font-medium tracking-wide mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
@@ -69,8 +69,7 @@ export default function PartnerDashboard() {
       </div>
 
       {/* EARNINGS TEASER */}
-      <div className="card p-4 mb-8 animate-fade-up delay-1 flex items-center gap-4"
-           style={{ borderLeft: '3px solid var(--accent)' }}>
+      <div className="card p-4 mb-8 animate-fade-up delay-1 flex items-center gap-4 border-left-accent">
         <div className="flex-1">
           <p className="text-xs font-semibold" style={{ color: 'var(--text-tertiary)' }}>Ihr Umsatzpotenzial</p>
           <p className="text-lg font-bold" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>

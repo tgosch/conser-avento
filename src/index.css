@@ -68,7 +68,24 @@
   --radius-lg:        16px;
   --radius-xl:        20px;
   --radius-2xl:       24px;
+  --radius-3xl:       28px;
   --radius-pill:      999px;
+
+  /* Hero Gradient Palette */
+  --hero-dark-1: #071F20;
+  --hero-dark-2: #0A3436;
+  --hero-dark-3: #0D4547;
+  --hero-dark-4: #082628;
+
+  /* Overlay Stops (für dunkle Hero-Sections) */
+  --overlay-light-5:  rgba(255,255,255,0.05);
+  --overlay-light-10: rgba(255,255,255,0.10);
+  --overlay-light-15: rgba(255,255,255,0.15);
+  --overlay-light-20: rgba(255,255,255,0.20);
+  --overlay-light-40: rgba(255,255,255,0.40);
+  --overlay-light-50: rgba(255,255,255,0.50);
+  --overlay-light-60: rgba(255,255,255,0.60);
+  --overlay-light-85: rgba(255,255,255,0.85);
 
   /* Mobile */
   --bottom-nav-height: 72px;
@@ -305,6 +322,14 @@ textarea, select {
 ═══════════════════════════════════════════════════════════════════ */
 
 /* Premium hover lift */
+/* ── Border-Left Accent Utilities ──────────────────────────────── */
+.border-left-brand   { border-left: 3px solid var(--brand); }
+.border-left-accent  { border-left: 3px solid var(--accent); }
+.border-left-info    { border-left: 3px solid var(--info); }
+.border-left-success { border-left: 3px solid var(--success); }
+.border-left-danger  { border-left: 3px solid var(--danger); }
+
+/* ── Hover Utilities ──────────────────────────────────────────── */
 .hover-lift {
   transition: transform 0.2s cubic-bezier(0.34,1.2,0.64,1),
               box-shadow 0.2s ease;

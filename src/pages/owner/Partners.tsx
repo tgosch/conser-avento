@@ -240,7 +240,7 @@ export default function OwnerPartners() {
 
       {/* ── Hinzufügen-Formular ── */}
       {showForm && (
-        <form onSubmit={handleSave} className="rounded-[20px] p-6 border mb-6 slide-up"
+        <form onSubmit={handleSave} className="rounded-xl p-6 border mb-6 animate-slide-up"
           style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <h2 className="font-bold text-sm mb-5" style={{ color: 'var(--text-primary)' }}>Neuer Partner</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -356,7 +356,7 @@ export default function OwnerPartners() {
         const goal = 30
         const pct = Math.min(100, Math.round((partners.length / goal) * 100))
         return (
-          <div className="rounded-[16px] p-4 border mb-5"
+          <div className="rounded-lg p-4 border mb-5"
             style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>
@@ -381,7 +381,7 @@ export default function OwnerPartners() {
             style={{ borderColor: 'var(--border)', borderTopColor: '#063D3E' }} />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-[20px] p-12 border text-center"
+        <div className="rounded-xl p-12 border text-center"
           style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <AlertCircle size={32} className="mx-auto mb-3" style={{ color: 'var(--text-tertiary)' }} />
           <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Noch keine Partner</p>
@@ -395,7 +395,7 @@ export default function OwnerPartners() {
             const logoUrl = getLogoUrl(p.logo_path)
             const isUploading = uploadingLogoFor === p.id
             return (
-              <div key={p.id} className="rounded-[20px] p-4 border flex items-center gap-4"
+              <div key={p.id} className="rounded-xl p-4 border flex items-center gap-4"
                 style={{
                   background: 'var(--surface)',
                   borderColor: 'var(--border)',
@@ -477,7 +477,7 @@ export default function OwnerPartners() {
       )}
 
       {/* ── Sicherheitshinweis ── */}
-      <div className="mt-8 rounded-[16px] p-4 border text-xs leading-relaxed"
+      <div className="mt-8 rounded-lg p-4 border text-xs leading-relaxed"
         style={{ background: 'rgba(6,61,62,0.04)', borderColor: 'rgba(6,61,62,0.15)', color: 'var(--text-secondary)' }}>
         <p className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Datenschutz-Hinweis (DSGVO)</p>
         <p>Diese Seite verarbeitet ausschließlich Firmendaten (keine personenbezogenen Daten gem. Art. 4 DSGVO). Logo-Uploads werden in einem geschützten Supabase-Storage-Bucket gespeichert. Nur authentifizierte Nutzer mit Service-Role-Key können Logos hochladen. Investoren sehen nur die öffentliche URL.</p>

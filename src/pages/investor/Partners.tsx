@@ -96,11 +96,11 @@ export default function InvestorPartners() {
     <div className="max-w-5xl">
       <div className="skeleton h-8 w-32 rounded-xl mb-3" />
       <div className="skeleton h-4 w-56 rounded-lg mb-8" />
-      <div className="skeleton h-28 rounded-[20px] mb-8" />
+      <div className="skeleton h-28 rounded-xl mb-8" />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-        {[1,2,3,4,5,6].map(i => <div key={i} className="skeleton h-24 rounded-[20px]" />)}
+        {[1,2,3,4,5,6].map(i => <div key={i} className="skeleton h-24 rounded-xl" />)}
       </div>
-      <div className="skeleton h-20 rounded-[20px]" />
+      <div className="skeleton h-20 rounded-xl" />
     </div>
   )
 

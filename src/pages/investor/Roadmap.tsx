@@ -164,7 +164,7 @@ export default function InvestorRoadmap() {
   const [expanded, setExpanded] = useState<number | null>(null)
 
   return (
-    <div className="max-w-5xl fade-up">
+    <div className="max-w-5xl animate-fade-up">
       {/* ── Header ── */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
@@ -200,7 +200,7 @@ export default function InvestorRoadmap() {
 
       {/* ── Current Team ── */}
       <div
-        className="rounded-[20px] border-2 p-5 md:p-6 mb-6"
+        className="rounded-xl border-2 p-5 md:p-6 mb-6"
         style={{ background: 'var(--surface)', borderColor: '#185FA5' }}
       >
         <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
@@ -236,7 +236,7 @@ export default function InvestorRoadmap() {
         </div>
 
         {/* Team expansion */}
-        <div className="rounded-[12px] p-4 border" style={{ borderColor: 'var(--border)', background: 'rgba(24,95,165,0.04)' }}>
+        <div className="rounded-md p-4 border" style={{ borderColor: 'var(--border)', background: 'rgba(24,95,165,0.04)' }}>
           <p className="text-xs font-bold mb-3" style={{ color: '#185FA5' }}>📈 Team-Expansion nach Funding (Apr–Jun 2026)</p>
           <div className="flex flex-wrap gap-2">
             {[
@@ -262,7 +262,7 @@ export default function InvestorRoadmap() {
 
       {/* ── Partner Strategy ── */}
       <div
-        className="rounded-[20px] border p-5 md:p-6 mb-6"
+        className="rounded-xl border p-5 md:p-6 mb-6"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
       >
         <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
@@ -276,7 +276,7 @@ export default function InvestorRoadmap() {
           {PARTNERS.map(p => (
             <div
               key={p.name}
-              className="rounded-[12px] p-3 border"
+              className="rounded-md p-3 border"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}
             >
               <p className="text-sm font-bold mb-0.5" style={{ color: 'var(--text-primary)' }}>{p.name}</p>
@@ -302,7 +302,7 @@ export default function InvestorRoadmap() {
           ].map(e => (
             <div
               key={e.timeline}
-              className="rounded-[12px] p-3 border flex items-start gap-3"
+              className="rounded-md p-3 border flex items-start gap-3"
               style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}
             >
               <span className="text-xl font-bold flex-shrink-0" style={{ color: '#185FA5', minWidth: 48 }}>{e.count}</span>
@@ -333,7 +333,7 @@ export default function InvestorRoadmap() {
           return (
             <div
               key={phase.num}
-              className="rounded-[16px] border-2 overflow-hidden"
+              className="rounded-lg border-2 overflow-hidden"
               style={{ borderColor: isOpen ? c1 : 'var(--border)', background: 'var(--surface)' }}
             >
               {/* Header bar */}
@@ -420,7 +420,7 @@ export default function InvestorRoadmap() {
 
       {/* ── Conser <-> Avento Sync ── */}
       <div
-        className="rounded-[20px] border p-5 md:p-6 mb-6"
+        className="rounded-xl border p-5 md:p-6 mb-6"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
       >
         <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
@@ -459,7 +459,7 @@ export default function InvestorRoadmap() {
 
       {/* ── Cost Breakdown ── */}
       <div
-        className="rounded-[20px] border p-5 md:p-6"
+        className="rounded-xl border p-5 md:p-6"
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
       >
         <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
