@@ -152,12 +152,12 @@ const PARTNERS = [
 ]
 
 const COSTS = [
-  { label: 'Seed Round', amount: '1,5 M€', desc: 'für 10% equity | Post-Money 15 M€' },
-  { label: 'Engineering (24 Mo)', amount: '540k€', desc: '3 Backend (intern) + 1 Frontend (intern)' },
+  { label: 'Seed-Finanzierung', amount: 'ab 1,2 M€', desc: 'Mindest-Runway 12 Monate · offen nach oben' },
+  { label: 'Engineering (24 Mo)', amount: '540k€', desc: '4 Entwickler (intern) + Entwicklungspartner' },
   { label: 'Infra & Tools', amount: '300k€', desc: 'AWS, Services, 3rd-party APIs' },
   { label: 'Total Project', amount: '890k€', desc: '24 Monate Entwicklung bis GA' },
-  { label: 'Breakeven Point', amount: 'Mo 1–2', desc: 'Nach Revenue-Launch (Month 6-7 Post-Seed)' },
-  { label: 'ROI für Investoren', amount: '190–280x', desc: 'Base to Bull Case (Year 6+)' },
+  { label: 'Breakeven Point', amount: 'Mo 6–7', desc: 'Nach Revenue-Launch Post-Seed' },
+  { label: 'Konditionen', amount: 'Individuell', desc: 'Equity / Wandeldarlehen / SAFE' },
 ]
 
 export default function InvestorRoadmap() {
@@ -168,10 +168,10 @@ export default function InvestorRoadmap() {
       {/* ── Header ── */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
-          Enterprise Roadmap
+          Operativer Sprint-Plan
         </h1>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-          2026–2027 · 24 Monate · Der Weg zur Marktführerschaft in der Baubranche
+          Detaillierte Ausführungsplanung · Sprints, Ressourcen & Meilensteine
         </p>
       </div>
 
@@ -179,11 +179,11 @@ export default function InvestorRoadmap() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
         {[
           { label: 'Timeline', value: '24 Monate' },
-          { label: 'Start Team', value: '2 + 1 + 2' },
+          { label: 'Team', value: '6 + 2 geplant' },
           { label: 'Target Customers', value: '75.000+' },
           { label: 'Revenue Y6', value: '181 M€' },
           { label: 'Expansion', value: 'DACH → EU' },
-          { label: 'Investor Return', value: '190–280x' },
+          { label: 'Konditionen', value: 'Individuell' },
         ].map(s => (
           <div
             key={s.label}

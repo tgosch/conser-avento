@@ -5,39 +5,39 @@ import aventoLogo from '../../assets/avento_kachel.webp'
 import conserLogo from '../../assets/conser_kachel.webp'
 
 interface Doc {
-  icon: string; label: string; slug: string; available: boolean; desc: string
+  icon: string; label: string; slug: string; available: boolean; desc: string; date: string; readTime?: string
 }
 
 const businessDocs: Doc[] = [
   { icon: '📊', label: 'Pitch-Deck',              slug: 'pitch-deck',              available: true,
-    desc: '20 Folien · Investment Case, Markt, Team, Financials' },
+    desc: '20 Folien · Investment Case, Markt, Team, Financials', date: 'Stand: Apr 2026', readTime: '~10 min' },
   { icon: '📋', label: 'Business-Plan',            slug: 'business-plan',           available: true,
-    desc: 'Vollständige Strategie · Wettbewerb · Go-to-Market' },
+    desc: 'Vollständige Strategie · Wettbewerb · Go-to-Market', date: 'Stand: Apr 2026', readTime: '~20 min' },
   { icon: '📈', label: 'Sales Funnel Endkunden',   slug: 'sales-funnel-endkunden',  available: true,
-    desc: 'Wie wir Handwerksbetriebe gewinnen und langfristig halten' },
+    desc: 'Wie wir Handwerksbetriebe gewinnen und langfristig halten', date: 'Stand: Mär 2026', readTime: '~8 min' },
   { icon: '🏢', label: 'Sales Funnel Business',    slug: 'sales-funnel-business',   available: true,
-    desc: 'B2B Partner-Vertriebsstrategie für Großhändler & Distributoren' },
+    desc: 'B2B Partner-Vertriebsstrategie für Großhändler & Distributoren', date: 'Stand: Apr 2026', readTime: '~8 min' },
   { icon: '👤', label: 'Persona Endkunde',         slug: 'persona-endkunde',        available: true,
-    desc: 'ICP-Analyse · Wer ist unser idealer Handwerkskunde' },
+    desc: 'ICP-Analyse · Wer ist unser idealer Handwerkskunde', date: 'Stand: Mär 2026', readTime: '~5 min' },
   { icon: '🤝', label: 'Persona Businesspartner', slug: 'persona-businesspartner',  available: false,
-    desc: 'Profil des idealen Distributions- und Integrationspartners' },
+    desc: 'Profil des idealen Distributions- und Integrationspartners', date: 'Geplant' },
 ]
 
 const finanzDocs: Doc[] = [
   { icon: '💰', label: 'Finanzplan',                 slug: 'finanzplan',            available: true,
-    desc: '5-Jahres-Projektion · Konservativ + Base Case + Bull Case' },
+    desc: '5-Jahres-Projektion · Konservativ + Base Case + Bull Case', date: 'Stand: Apr 2026', readTime: '~15 min' },
   { icon: '📉', label: 'Detaillierte Finanzanalyse', slug: 'finanzanalyse',         available: false,
-    desc: 'Unit Economics · CAC · LTV · Payback-Period (ab Seed verfügbar)' },
+    desc: 'Unit Economics · CAC · LTV · Payback-Period (ab Seed verfügbar)', date: 'Geplant' },
   { icon: '💵', label: 'Invest & Möglichkeiten',     slug: 'invest-moeglichkeiten', available: true,
-    desc: 'Beteiligungsoptionen · Konditionen · Investor-Return-Szenarien' },
+    desc: 'Beteiligungsoptionen · Konditionen · Investor-Return-Szenarien', date: 'Stand: Apr 2026', readTime: '~10 min' },
   { icon: '🗓️', label: 'Roadmap Kapital',            slug: 'roadmap-kapital',       available: false,
-    desc: 'Seed → Series A Trigger → Series A Close · Kapitalplanung' },
+    desc: 'Seed → Series A Trigger → Series A Close · Kapitalplanung', date: 'Geplant' },
   { icon: '🔐', label: 'Sicherheiten & Treuhänder',  slug: 'sicherheiten',          available: false,
-    desc: 'Rechtliche Absicherung · Treuhänder-Modell · NDA-Framework' },
+    desc: 'Rechtliche Absicherung · Treuhänder-Modell · NDA-Framework', date: 'Geplant' },
 ]
 
-function DocItem({ icon, label, slug, available, desc }: {
-  icon: string; label: string; slug: string; available: boolean; desc: string
+function DocItem({ icon, label, slug, available, desc, date, readTime }: {
+  icon: string; label: string; slug: string; available: boolean; desc: string; date: string; readTime?: string
 }) {
   const content = (
     <div className={`flex items-start gap-3 px-3 py-3 rounded-[12px] transition group ${available ? 'card-interactive' : 'opacity-50'}`}>
@@ -57,6 +57,9 @@ function DocItem({ icon, label, slug, available, desc }: {
           }
         </div>
         <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{desc}</p>
+        <p className="text-[10px] mt-1" style={{ color: 'var(--text-tertiary)' }}>
+          {date}{readTime ? ` · ${readTime}` : ''}
+        </p>
       </div>
     </div>
   )

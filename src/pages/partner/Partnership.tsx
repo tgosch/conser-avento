@@ -238,6 +238,23 @@ export default function PartnerPartnership() {
           </a>
         </div>
       </div>
+      {/* NACH GO-LIVE */}
+      <div className="card p-6 md:p-8 mb-8 animate-fade-up">
+        <h2 className="text-sm font-semibold mb-5" style={{ color: 'var(--text-primary)' }}>Nach Go-Live — Ihr laufender Support</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { icon: '🤝', title: 'Persönlicher Ansprechpartner', desc: 'Ein dedizierter Account Manager begleitet Ihre Partnerschaft — von der Integration bis zur Optimierung.' },
+            { icon: '📊', title: 'Monatliches Reporting', desc: 'Detaillierte Berichte zu Bestellungen, Umsatz und Kundenfeedback. Transparenz auf beiden Seiten.' },
+            { icon: '🔧', title: 'Technischer Support', desc: 'Unser Entwicklerteam steht für API-Fragen, Katalog-Updates und Integrationsthemen zur Verfügung.' },
+          ].map(s => (
+            <div key={s.title} className="p-4 rounded-xl" style={{ background: 'var(--surface2)' }}>
+              <span className="text-xl block mb-2">{s.icon}</span>
+              <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>{s.title}</p>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

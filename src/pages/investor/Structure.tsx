@@ -205,7 +205,7 @@ export default function InvestorStructure() {
                 { name: 'Torben Gosch',  role: 'CEO & Founder',       equity: '60%', status: 'Gründer' },
                 { name: 'Martin Grote',  role: 'CFO & Co-Founder',    equity: '35%', status: 'Gründer' },
                 { name: 'Code Ara GmbH', role: 'Entwicklungspartner', equity: '5%',  status: 'Strategisch' },
-                { name: 'Investor Pool', role: 'Seed Round (€1,5M)',   equity: 'TBD', status: 'Offen' },
+                { name: 'Investor Pool', role: 'Seed Round (offen)',     equity: 'TBD', status: 'Offen' },
               ].map((row, i) => (
                 <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
                   <td className="py-3 font-semibold" style={{ color: 'var(--text-primary)' }}>{row.name}</td>
@@ -226,8 +226,8 @@ export default function InvestorStructure() {
           </table>
         </div>
         <p className="text-xs mt-4" style={{ color: 'var(--text-tertiary)' }}>
-          Pre-Seed Kapitalisierungstabelle. Investor-Anteile entstehen durch die Seed-Runde (€1,5M).
-          Genaue Konditionen im Gespräch mit Torben.
+          Kapitalisierungstabelle. Investor-Anteile und Konditionen werden individuell verhandelt.
+          Details im persönlichen Gespräch mit Torben.
         </p>
       </div>
 

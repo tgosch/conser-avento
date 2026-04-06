@@ -10,15 +10,23 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Wie ist die aktuelle Bewertung?',
-        a: 'Pre-Money Bewertung von €13,5M bei einer Seed-Runde von €1,5M (Post-Money €15M). Basierend auf vergleichbaren B2B SaaS-Unternehmen im Construction-Tech Bereich mit ähnlichem Traction-Level und Marktpotenzial.',
+        a: 'Die Bewertung wird individuell mit jedem Investor besprochen. Grundlage sind unser Traction-Level, die Marktgröße (€42 Mrd. DACH-Baumarkt) und vergleichbare Construction-Tech Deals. Mindest-Runway: 12 Monate (~€1,2M).',
       },
       {
         q: 'Wie wird Verwässerung gehandhabt?',
-        a: 'Die Seed-Runde ist auf ca. 10% Verwässerung ausgelegt. Weitere Runden (Series A: Q2 2027, 20–30M€) sind geplant. Frühe Investoren profitieren von Anti-Dilution-Schutzklauseln und der größten Wertsteigerung zwischen Seed und Series A.',
+        a: 'Beteiligungshöhe und Konditionen werden individuell verhandelt. Wir sind offen für verschiedene Instrumente — Equity, Wandeldarlehen oder SAFE. Frühe Investoren profitieren von der größten Wertsteigerung zwischen Seed und Series A.',
       },
       {
         q: 'Was ist die Exit-Strategie?',
         a: 'Primär: Trade Sale an einen großen Bau-Software-Anbieter (Nemetschek, Procore, Autodesk) oder strategischen Industrieinvestor. Sekundär: IPO ab €500M+ Bewertung. Zeithorizont: 5–7 Jahre. Construction-Tech ist aktuell einer der aktivsten M&A-Sektoren in Europa.',
+      },
+      {
+        q: 'Wie werden Investoren auf dem Laufenden gehalten?',
+        a: 'Monatliche KPI-Updates per E-Mail, Quartalsberichte mit Finanzdaten, und 24/7 Zugang zum Investor-Portal mit Live-Status. Zusätzlich: Direkter Chat mit dem Gründerteam und halbjährliche Investor-Calls.',
+      },
+      {
+        q: 'Gibt es einen Beirat oder Advisory Board?',
+        a: 'Der Beirat befindet sich im Aufbau. Investoren mit strategischem Mehrwert erhalten die Möglichkeit, eine Advisory-Position einzunehmen. Details werden individuell besprochen.',
       },
     ],
   },
@@ -48,7 +56,7 @@ const FAQ_DATA = [
     questions: [
       {
         q: 'Wie wird das Team nach dem Funding aufgebaut?',
-        a: 'Aktuell: 3 Gründer (CEO, CTO, CDO) + strategischer Entwicklungspartner (Code Ara GmbH, 10% Equity). Nach Funding: 3 Backend-Entwickler, 2 Frontend-Entwickler, 1 DevOps innerhalb von 6 Monaten. 45% des Seed-Kapitals fließen direkt in Engineering und Produktentwicklung.',
+        a: 'Aktuell: 6-köpfiges Team — CEO, CFO, 2 Full-Stack-Entwickler, UI/UX-Designer und Kundenberaterin + Code Ara GmbH als strategischer Entwicklungspartner. Nach Funding: Team-Ausbau nach Bedarf mit Fokus auf Entwicklung und Vertrieb. Nächster Monat: +2 Entwickler geplant.',
       },
       {
         q: 'Ist DSGVO-Konformität sichergestellt?',

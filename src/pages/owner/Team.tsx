@@ -300,7 +300,7 @@ export default function OwnerTeam() {
 
       {/* ── Post-Seed Hire Planner ── */}
       <div className="rounded-[20px] p-6 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-        <SectionHeader label="Planung" title="Post-Seed Hire Planner" sub="Geplante Einstellungen nach erfolgreicher Seed-Runde (€1,5M)" />
+        <SectionHeader label="Planung" title="Post-Seed Hire Planner" sub="Geplante Einstellungen nach erfolgreicher Seed-Finanzierung" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           {[
             { role: 'Backend Developer', when: 'Q3 2026', priority: 'Hoch', icon: '⚙️', color: '#063D3E', note: 'Node.js / Supabase Edge Functions' },
@@ -328,7 +328,7 @@ export default function OwnerTeam() {
           ))}
         </div>
         <p className="text-xs mt-4" style={{ color: 'var(--text-tertiary)' }}>
-          Einstellungsplan basierend auf Seed-Runde €1,5M · Finaler Plan im Gespräch mit Torben.
+          Einstellungsplan nach Seed-Finanzierung · Finaler Plan im Gespräch mit Torben.
         </p>
       </div>
     </div>

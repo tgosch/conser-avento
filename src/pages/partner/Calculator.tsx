@@ -33,7 +33,20 @@ export default function PartnerCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Inputs */}
         <div className="lg:col-span-3 card p-6 md:p-8">
-          <h2 className="text-sm font-bold mb-6" style={{ color: 'var(--text-primary)' }}>Ihre Annahmen</h2>
+          <h2 className="text-sm font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Ihre Annahmen</h2>
+
+          <div className="flex gap-2 mb-6">
+            <button onClick={() => { setCustomers(2000); setAvgOrder(500); setDigitalRate(10); setCommission(3) }}
+              className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
+              style={{ background: 'var(--surface2)', color: 'var(--text-secondary)' }}>
+              Konservativ
+            </button>
+            <button onClick={() => { setCustomers(15000); setAvgOrder(1000); setDigitalRate(40); setCommission(6) }}
+              className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
+              style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>
+              Optimistisch
+            </button>
+          </div>
 
           <div className="flex flex-col gap-6">
             {/* Customers */}
@@ -91,6 +104,9 @@ export default function PartnerCalculator() {
                 <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>5%</span>
                 <span className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>60%</span>
               </div>
+              <p className="text-[10px] mt-1.5 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>
+                Anteil der Handwerker, die digital über Conser bestellen statt telefonisch/per Fax. Jahr 1 typisch: 10–15%, Jahr 3: 30–50%.
+              </p>
             </div>
 
             {/* Commission */}

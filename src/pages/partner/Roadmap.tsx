@@ -4,31 +4,31 @@ const PHASES = [
   {
     phase: 'Phase 1', period: 'Mai 2026', title: 'Conser MVP', icon: '🚀',
     items: ['7 Produktionspartner live', '12,8M Produkte auf dem Marktplatz', 'Payment-System aktiv'],
-    partnerBenefit: 'Ihr Katalog ist live und suchbar für alle Handwerker.',
+    partnerBenefit: 'Ihr Katalog ist live — 12,8M Produkte suchbar für alle Handwerker in der DACH-Region.',
     status: 'active',
   },
   {
     phase: 'Phase 2', period: 'Q3 2026', title: 'Avento Beta', icon: '⚡',
     items: ['ERP-Integration für Handwerker', 'Erste automatische Bestellungen', 'Mobile App Beta'],
-    partnerBenefit: 'Erste automatische Bestellungen von Avento-Nutzern direkt an Sie.',
+    partnerBenefit: 'Erste automatische Bestellungen direkt aus dem Avento ERP. Kein manueller Aufwand für Sie.',
     status: 'upcoming',
   },
   {
     phase: 'Phase 3', period: 'Q4 2026', title: 'Deep Integration', icon: '🔗',
     items: ['Conser ↔ Avento Vollsync', 'KI-Produktempfehlungen', 'Echtzeit Verfügbarkeit'],
-    partnerBenefit: 'KI empfiehlt Ihre Produkte aktiv basierend auf Projektbedarf.',
+    partnerBenefit: 'KI-gestützte Produktempfehlungen priorisieren Ihre Produkte bei passenden Projekten.',
     status: 'upcoming',
   },
   {
     phase: 'Phase 4', period: 'Q1 2027', title: 'Mobile & Advanced', icon: '📱',
     items: ['iOS/Android App Launch', '1-Click Bestellung', 'Push-Benachrichtigungen für Lieferungen'],
-    partnerBenefit: 'Handwerker bestellen mobil von der Baustelle — direkt bei Ihnen.',
+    partnerBenefit: 'Volle Plattform-Integration. Ihre Produkte werden bei jedem relevanten Projekt automatisch vorgeschlagen.',
     status: 'upcoming',
   },
   {
     phase: 'Phase 5', period: 'Q2 2027', title: 'GA Launch & Expansion', icon: '🌍',
     items: ['75.000 Kunden Ziel', 'Europa-Expansion (AT, CH)', '100+ Produktionspartner'],
-    partnerBenefit: 'Zugang zum europäischen Markt mit 100+ Partnern im Netzwerk.',
+    partnerBenefit: 'Expansion in weitere DACH-Märkte. Ihr Sortiment erreicht Handwerker in AT, CH und darüber hinaus.',
     status: 'upcoming',
   },
 ]

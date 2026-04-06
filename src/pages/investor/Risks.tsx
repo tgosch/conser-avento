@@ -7,6 +7,7 @@ const risks = [
     title: 'Digitalisierungstempo der Baubranche',
     risk: 'Die Baubranche digitalisiert langsamer als erwartet. Unsere Wachstumsprognosen basieren auf einer schrittweisen Adoption — aber das Tempo könnte niedriger ausfallen.',
     mitigation: 'Unser Produkt löst ein akutes Schmerzproblem (Zettelwirtschaft, manuelle Bestellungen). Selbst bei konservativer Adoption von 5% statt 10% erreichen wir Break-Even. Zudem senken regulatorische Anforderungen (e-Rechnung, GoBD) den Widerstand gegen Digitalisierung.',
+    monitoring: 'Tracking: Monatliche Analyse der Partner-Pipeline und Conversion-Rate',
     probability: 'Mittel',
     impact: 'Hoch',
   },
@@ -16,6 +17,7 @@ const risks = [
     title: 'Nemetschek, SAP, Procore',
     risk: 'Große Player wie Nemetschek, SAP oder Procore könnten ein ähnliches integriertes Ökosystem bauen und uns mit Marketing-Budget überholen.',
     mitigation: 'Unser Vorteil ist Geschwindigkeit und Fokus. SAP baut für Konzerne, wir für den 5-Mann-Betrieb. Nemetschek fokussiert Architekten, nicht Handwerker. Procore ist US-zentriert. Unser Markt (KMU-Handwerker DACH) wird von keinem dieser Player aktiv bedient. Zudem schaffen wir Switching Costs durch integrierte Workflows und Datenhistorie.',
+    monitoring: 'Tracking: Sprint-Velocity und Uptime-Monitoring (99,9% SLA)',
     probability: 'Niedrig',
     impact: 'Hoch',
   },
@@ -25,6 +27,7 @@ const risks = [
     title: 'Team-Aufbau und Partner-Commitment',
     risk: 'Wir könnten Schwierigkeiten haben, Senior-Entwickler zu rekrutieren. Produktionspartner könnten ihre Zusagen verzögern oder zurückziehen.',
     mitigation: 'Unser CTO hat ein aktives Netzwerk in der DACH-Tech-Community. Für die ersten 12 Monate setzen wir auf ein schlankes Core-Team (3-5 Entwickler) plus bewährten Entwicklungspartner. Bei den Produktionspartnern haben wir Absichtserklärungen und laufende Gespräche — der Marktplatz funktioniert auch mit 3 Partnern profitabel.',
+    monitoring: 'Tracking: Quartals-Review der Teamzufriedenheit und offenen Positionen',
     probability: 'Mittel',
     impact: 'Mittel',
   },
@@ -32,8 +35,9 @@ const risks = [
     icon: Banknote,
     category: 'Finanzrisiko',
     title: 'Burn Rate und Runway',
-    risk: 'Die Seed-Runde von €1,5M könnte bei Verzögerungen nicht bis zum Break-Even reichen. Unser geplanter Runway beträgt 18 Monate.',
+    risk: 'Die Seed-Finanzierung könnte bei Verzögerungen nicht bis zum Break-Even reichen. Unser geplanter Runway beträgt mindestens 12–18 Monate.',
     mitigation: 'Unser Kostenmodell ist schlank: 60% Engineering, 20% Marketing, 20% Operations. Bei Bedarf können wir Marketing zurückfahren und den Runway auf 24 Monate strecken. Zudem generiert der Conser Marktplatz ab Tag 1 Kommissions-Einnahmen — jede Bestellung reduziert unseren Netto-Burn.',
+    monitoring: 'Tracking: Wöchentlicher Cash-Flow-Report, monatlicher Burn-Rate-Check',
     probability: 'Niedrig',
     impact: 'Hoch',
   },
@@ -106,6 +110,11 @@ export default function Risks() {
                 <p className="text-xs font-semibold" style={{ color: 'var(--success)' }}>Gegenmaßnahme</p>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{r.mitigation}</p>
+              {r.monitoring && (
+                <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>
+                  📊 {r.monitoring}
+                </p>
+              )}
             </div>
           </div>
         ))}

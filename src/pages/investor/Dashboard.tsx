@@ -15,6 +15,9 @@ const categoryLabel: Record<string, string> = {
   general: 'Allgemein', milestone: 'Meilenstein', important: 'Wichtig',
 }
 
+const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
+const currentMonth = `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
+
 export default function InvestorDashboard() {
   const [updates, setUpdates] = useState<Update[]>([])
 
@@ -95,7 +98,7 @@ export default function InvestorDashboard() {
         <div className="flex items-center gap-2 mb-5">
           <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
           <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
-            Wo wir stehen — Stand April 2026
+            Wo wir stehen — Stand {currentMonth}
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -159,16 +162,16 @@ export default function InvestorDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 delay-1 animate-fade-up">
         {[
           {
-            icon: '💰', title: 'Die Runde', accent: 'var(--brand)',
-            items: [['Volumen','€1,5M Seed'],['Form','SAFE / Equity'],['Schließung','Mai 2026'],['Mittelverwendung','45% Tech · 25% Sales']],
+            icon: '💰', title: 'Was wir suchen', accent: 'var(--brand)',
+            items: [['Mindest-Runway','12 Monate (~€1,2M)'],['Form','Individuell verhandelbar'],['Beteiligung','Nach Vereinbarung'],['Status','Seed-Runde offen']],
           },
           {
             icon: '⚡', title: 'Warum Jetzt', accent: 'var(--accent)',
-            items: [['Regulierung','EU Digital Construction 2027'],['Lücke','73% auf Excel/Papier'],['First Mover','Kein integrierter Anbieter'],['Einstieg','Frühste Phase = beste Terms']],
+            items: [['Regulierung','EU Digital Construction 2027'],['Lücke','73% auf Excel/Papier'],['First Mover','Kein integrierter Anbieter'],['Timing','Frühste Phase = größtes Potenzial']],
           },
           {
             icon: '🎯', title: 'Was du bekommst', accent: 'var(--info)',
-            items: [['ROI-Projektion','190–280x (Basis/Bull)'],['Beirat','ab €75k Advisory-Position'],['Reporting','Quartalsberichte'],['Zugang','24/7 Investor-Portal']],
+            items: [['Reporting','Quartalsberichte'],['Portal','24/7 Investor-Portal'],['Zugang','Direktzugang zum Gründerteam'],['Konditionen','Individuell im Gespräch']],
           },
         ].map(col => (
           <div key={col.title} className="card card-interactive p-5">
@@ -187,6 +190,97 @@ export default function InvestorDashboard() {
             </dl>
           </div>
         ))}
+      </div>
+
+      {/* PROOF OF CONCEPT — GRÜNDER TRACK RECORD */}
+      <div className="mb-8 delay-2 animate-fade-up">
+        <p className="label-tag mb-4" style={{ color: 'var(--text-tertiary)' }}>PROOF OF CONCEPT</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay"
+               style={{ background: 'linear-gradient(145deg, #071F20 0%, #0A3436 100%)', minHeight: 200 }}>
+            <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
+                 style={{ background: 'rgba(255,255,255,0.04)' }} />
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                     style={{ background: '#063D3E', border: '2px solid rgba(255,255,255,0.15)' }}>TG</div>
+                <div>
+                  <p className="font-bold text-sm text-white">Torben Gosch</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>CEO & Geschäftsführer</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { label: 'Healthness', desc: 'Aufgebautes Unternehmen im Health-Bereich' },
+                  { label: 'BuchBalance', desc: 'Eigenentwickelte Buchhaltungs-App — App Store Ready' },
+                  { label: 'Zentari', desc: 'KI-Business-OS — Pre-Launch, 11.000+ Zeilen Code' },
+                ].map(item => (
+                  <div key={item.label} className="flex items-start gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: 'var(--accent)' }} />
+                    <div>
+                      <span className="text-xs font-semibold text-white">{item.label}</span>
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.50)' }}> — {item.desc}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[10px] font-semibold mt-4 px-2.5 py-1 rounded-full inline-flex"
+                 style={{ background: 'rgba(200,97,26,0.2)', color: 'var(--accent)' }}>
+                Nachgewiesene Execution — digital & physisch
+              </p>
+            </div>
+          </div>
+          <div className="relative rounded-[24px] overflow-hidden p-5 md:p-7 noise-overlay"
+               style={{ background: 'linear-gradient(145deg, #3D1A08 0%, #6B2D0C 100%)', minHeight: 200 }}>
+            <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full"
+                 style={{ background: 'rgba(255,255,255,0.04)' }} />
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                     style={{ background: '#D4662A', border: '2px solid rgba(255,255,255,0.15)' }}>MG</div>
+                <div>
+                  <p className="font-bold text-sm text-white">Martin Grote</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>CFO & Co-Founder</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { label: 'Software-Exits', desc: 'Eigene Software gebaut und mehrfach verkauft' },
+                  { label: 'Steuerbranche', desc: 'Tiefes Verständnis für Finanz-Compliance & Recht' },
+                  { label: 'ERP-Profi', desc: 'Langjährige Enterprise-Software-Erfahrung' },
+                ].map(item => (
+                  <div key={item.label} className="flex items-start gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: 'rgba(255,255,255,0.4)' }} />
+                    <div>
+                      <span className="text-xs font-semibold text-white">{item.label}</span>
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.50)' }}> — {item.desc}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[10px] font-semibold mt-4 px-2.5 py-1 rounded-full inline-flex"
+                 style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)' }}>
+                Bewährter Tech-Unternehmer mit Finance-Expertise
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="card p-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { value: '430.000', label: 'Handwerksbetriebe', sub: 'DACH-Region' },
+              { value: '73%', label: 'Noch auf Papier', sub: 'Digitalisierungslücke' },
+              { value: '€42 Mrd.', label: 'Baumarkt DACH', sub: 'Gesamtpotenzial' },
+              { value: '2027', label: 'EU-Richtlinie', sub: 'Digital Construction' },
+            ].map(s => (
+              <div key={s.label} className="text-center">
+                <p className="text-lg font-bold mb-0.5" style={{ color: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>{s.value}</p>
+                <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+                <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{s.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* WAS WIR BAUEN */}

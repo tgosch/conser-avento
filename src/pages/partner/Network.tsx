@@ -2,9 +2,9 @@ import type { Partner } from '../../lib/supabase'
 import { Calendar, Landmark, Shield, CreditCard, Server } from 'lucide-react'
 
 const FALLBACK_PRODUCTION: Partner[] = [
-  { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär & Heizung', description: 'Führender Großhändler für Sanitär, Heizung und Klima', status: 'partner', logo_path: null, initials: 'SH', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
-  { id: 'p2', name: 'Baustoffe', type: 'production', category: 'Baustoffe', description: 'Internationaler Baustoffhändler', status: 'negotiating', logo_path: null, initials: 'BS', color: '#008C45', visible: true, order_index: 2, created_at: '' },
-  { id: 'p3', name: 'Elektro', type: 'production', category: 'Elektro', description: 'Elektro-Großhandel für Fachbetriebe', status: 'active', logo_path: null, initials: 'EL', color: '#E30613', visible: true, order_index: 3, created_at: '' },
+  { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär & Heizung', description: 'Führender Großhändler für Sanitär, Heizung und Klima · ~300.000 Produkte', status: 'partner', logo_path: null, initials: 'SH', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
+  { id: 'p2', name: 'Baustoffe', type: 'production', category: 'Baustoffe', description: 'Internationaler Baustoffhändler · ~12 Mio. Produkte', status: 'negotiating', logo_path: null, initials: 'BS', color: '#008C45', visible: true, order_index: 2, created_at: '' },
+  { id: 'p3', name: 'Elektro', type: 'production', category: 'Elektro', description: 'Elektro-Großhandel für Fachbetriebe · ~400.000 Produkte', status: 'active', logo_path: null, initials: 'EL', color: '#E30613', visible: true, order_index: 3, created_at: '' },
   { id: 'p4', name: 'Befestigungstechnik', type: 'production', category: 'Befestigungstechnik', description: 'Spezialist für Befestigungs- und Montagetechnik', status: 'active', logo_path: null, initials: 'BF', color: '#CC0000', visible: true, order_index: 4, created_at: '' },
   { id: 'p5', name: 'Dach & Fassade', type: 'production', category: 'Dach & Fassade', description: 'Dachbaustoffe und Fassadensysteme', status: 'partner', logo_path: null, initials: 'DF', color: '#7C3AED', visible: true, order_index: 5, created_at: '' },
   { id: 'p6', name: 'Werkzeuge & Maschinen', type: 'production', category: 'Werkzeuge & Maschinen', description: 'Profi-Werkzeuge und Baumaschinen', status: 'active', logo_path: null, initials: 'WM', color: '#003DA5', visible: true, order_index: 6, created_at: '' },
@@ -62,7 +62,7 @@ export default function PartnerNetwork() {
             Produktionspartner · 7 Branchen
           </p>
           <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>
-            12,8 Mio. Produkte
+            12,8 Mio. Produkte · 7 Kategorien
           </span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -217,7 +217,7 @@ const GROWTH_DATA = [
 
 // ── Investment Milestones ─────────────────────────────────────────
 const MILESTONES = [
-  { id: 1, label: 'Seed Close', period: 'Mai 2026', amount: '1,5 M€', desc: 'MVP-Finanzierung', icon: '🌱', color: '#063D3E' },
+  { id: 1, label: 'Seed-Finanzierung', period: 'Offen', amount: 'ab 1,2 M€', desc: '12 Monate Runway', icon: '🌱', color: '#063D3E' },
   { id: 2, label: 'Series A Trigger', period: 'Q1 2027', amount: '5k Kunden', desc: '12M€ Revenue Ziel', icon: '📊', color: '#0066FF' },
   { id: 3, label: 'Series A Close', period: 'Q2 2027', amount: '20–30 M€', desc: 'Scale-Finanzierung', icon: '💼', color: '#D4662A' },
   { id: 4, label: 'Series B Trigger', period: 'Q3 2028', amount: '15k Kunden', desc: '40M€ Revenue Ziel', icon: '🚀', color: '#34C759' },
@@ -324,7 +324,7 @@ export default function InvestorFuture() {
         style={{ background: 'linear-gradient(135deg, #063D3E 0%, #0A5C5E 100%)' }}>
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">SEED-RUNDE LÄUFT</p>
-          <p className="text-white font-bold text-base leading-tight">Jetzt einsteigen: €1,5M Seed-Runde · ab €25.000</p>
+          <p className="text-white font-bold text-base leading-tight">Jetzt einsteigen: Seed-Runde · Konditionen individuell</p>
           <p className="text-white/70 text-xs mt-1">
             Finanziert Phase 1 & 2 — Conser Webshop Launch + Marketing. Investor-Anteile entstehen durch diese Runde.
           </p>

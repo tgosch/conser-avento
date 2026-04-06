@@ -205,44 +205,34 @@ export default function InvestorChat() {
             <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Beteiligungsoptionen — Seed-Runde</p>
           </div>
 
-          {/* ERGÄNZUNG 3 — Klarere Konditionen */}
-          <div className="p-4 flex flex-col gap-3">
-            {[
-              {
-                pct: '5%', min: 'ab €25.000', label: 'Basispaket',
-                desc: 'Vollständige Investor-Rechte · Quarterly Updates',
-                highlight: false,
-              },
-              {
-                pct: '10%', min: 'ab €75.000', label: 'Premiumpaket',
-                desc: 'Advisory-Position im Beirat · Direktzugang zum Gründerteam',
-                highlight: true,
-              },
-            ].map(opt => (
-              <div key={opt.pct} className="rounded-[14px] p-4 border"
-                   style={{
-                     background: opt.highlight ? 'rgba(6,61,62,0.06)' : 'var(--surface2)',
-                     borderColor: opt.highlight ? 'rgba(6,61,62,0.25)' : 'var(--border)',
-                   }}>
-                <div className="flex items-start justify-between mb-1">
-                  <span className="text-2xl font-bold" style={{ color: 'var(--brand)' }}>{opt.pct}</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                        style={{
-                          background: opt.highlight ? 'var(--brand)' : 'var(--surface3)',
-                          color: opt.highlight ? 'white' : 'var(--text-secondary)',
-                        }}>
-                    {opt.label}
-                  </span>
-                </div>
-                <p className="text-xs font-semibold mb-1" style={{ color: 'var(--brand)' }}>{opt.min}</p>
-                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{opt.desc}</p>
+          {/* INDIVIDUELLE BETEILIGUNG */}
+          <div className="p-4">
+            <div className="rounded-[14px] p-5 border"
+                 style={{ background: 'rgba(6,61,62,0.06)', borderColor: 'rgba(6,61,62,0.25)' }}>
+              <p className="font-bold text-sm mb-2" style={{ color: 'var(--brand)' }}>Individuelle Beteiligung</p>
+              <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                Konditionen, Beteiligungshöhe und Investmentform werden individuell mit jedem Investor besprochen.
+                Wir sind offen für Equity, Wandeldarlehen und SAFE-Agreements.
+              </p>
+              <div className="flex flex-col gap-1.5">
+                {[
+                  ['Mindest-Runway', '12 Monate (~€1,2M)'],
+                  ['Beteiligung', 'Nach Vereinbarung'],
+                  ['Quartalsberichte', 'Für alle Investoren'],
+                  ['Investor-Portal', '24/7 Zugang'],
+                ].map(([k, v]) => (
+                  <div key={k} className="flex items-baseline justify-between">
+                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{k}</span>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{v}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
           <div className="px-4 pb-2">
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)', lineHeight: '1.65' }}>
-              Teilen Sie uns Ihren Vorschlag mit. Wir melden uns dann persönlich bei Ihnen — unverbindlich.
+              Teilen Sie uns Ihr Interesse mit. Wir melden uns persönlich bei Ihnen — unverbindlich und vertraulich.
             </p>
           </div>
 

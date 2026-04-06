@@ -68,6 +68,25 @@ export default function PartnerDashboard() {
         </div>
       </div>
 
+      {/* EARNINGS TEASER */}
+      <div className="card p-4 mb-8 animate-fade-up delay-1 flex items-center gap-4"
+           style={{ borderLeft: '3px solid var(--accent)' }}>
+        <div className="flex-1">
+          <p className="text-xs font-semibold" style={{ color: 'var(--text-tertiary)' }}>Ihr Umsatzpotenzial</p>
+          <p className="text-lg font-bold" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>
+            Berechnen Sie Ihre Kommission
+          </p>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+            75.000 Handwerker · 12,8 Mio. Produkte · individuelle Kommission
+          </p>
+        </div>
+        <Link to="/partner/calculator"
+          className="px-4 py-2 rounded-full text-xs font-semibold shrink-0"
+          style={{ background: 'var(--accent)', color: 'white' }}>
+          Calculator öffnen
+        </Link>
+      </div>
+
       {/* ── ONBOARDING FORTSCHRITT ── */}
       <div className="card p-6 md:p-8 mb-8 animate-fade-up delay-1">
         <div className="flex items-center justify-between mb-5">
