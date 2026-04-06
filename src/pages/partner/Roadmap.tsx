@@ -103,7 +103,7 @@ export default function PartnerRoadmap() {
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { phase: '1', partners: '7', region: 'DACH Kernmarkt', icon: '🇩🇪', active: true },
+            { phase: '1', partners: '7 / 25', region: 'DACH Kernmarkt', icon: '🇩🇪', active: true },
             { phase: '2-3', partners: '+12', region: 'Erweiterte DACH', icon: '🇦🇹', active: false },
             { phase: '4-5', partners: '+20', region: 'Europa', icon: '🇪🇺', active: false },
           ].map((e, i) => (

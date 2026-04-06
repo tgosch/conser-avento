@@ -25,7 +25,7 @@ const PHASES = [
     ],
     keyMetrics: [
       { icon: '📦', label: 'Produkte live', value: '2,3M' },
-      { icon: '🤝', label: 'Partner', value: '7' },
+      { icon: '🤝', label: 'Partner', value: '7 / 25' },
       { icon: '💰', label: 'Budget', value: '300k€' },
       { icon: '⏱️', label: 'Dauer', value: '3 Mon.' },
     ],

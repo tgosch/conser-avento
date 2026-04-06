@@ -15,7 +15,7 @@ const erp = [
 
 const shop = [
   { title: '2,3 Mio. Produkte', desc: 'Das größte B2B-Sortiment für Baustoffe in der DACH-Region. Rohre, Kabel, Fliesen, Dämmstoffe, Werkzeuge — alles an einem Ort.' },
-  { title: '7 Premium-Hersteller', desc: '7 führende Großhändler der DACH-Region. Faire Großhandelspreise, direkt verhandelt.' },
+  { title: '7 Premium-Hersteller', desc: 'Aktuell 7 führende Großhändler, Ziel: 25 bis Ende 2027. Faire Großhandelspreise, direkt verhandelt.' },
   { title: '24h Baustellen-Lieferung', desc: 'DPD/DHL Integration. Direkt auf die Baustelle, an den Lagerplatz oder ins Büro. Express-Option für dringende Fälle.' },
   { title: 'Flexible Zahlungswege', desc: 'Rechnung mit 30 Tagen Zahlungsziel, SEPA-Lastschrift, Kreditkarte. Monatliche Sammelrechnung für Stammkunden.' },
   { title: 'KI-gestützte Suche', desc: 'Findet exakt was du brauchst — auch bei Tippfehlern, Teilnummern oder umgangssprachlichen Begriffen. Artikelvergleich inklusive.' },
@@ -103,7 +103,7 @@ export default function FeaturesSection() {
                       <div className="space-y-2">
                         {(tab === 'erp'
                           ? ['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Buchhaltung', 'Controlling', 'Team', 'Mobile']
-                          : ['2,3M Produkte', '7 Hersteller', '24h Lieferung', 'KI-Suche', 'ERP-Integration', 'Zahlung']
+                          : ['2,3M Produkte', '7 / 25 Hersteller', '24h Lieferung', 'KI-Suche', 'ERP-Integration', 'Zahlung']
                         ).map((f) => (
                           <div key={f} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left"
                             style={{ background: 'var(--bg)' }}>

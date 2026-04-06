@@ -296,7 +296,7 @@ export default function InvestorRoadmap() {
         </p>
         <div className="space-y-2">
           {[
-            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7', region: 'DACH-Region', desc: '7 führende Großhändler aus SHK, Elektro, Holz und Baustoffen = 2,3M Produkte' },
+            { timeline: 'Phase 1 (Jul–Aug 2026)', count: '7 (Ziel: 25)', region: 'DACH-Region', desc: '7 führende Großhändler aus SHK, Elektro, Holz und Baustoffen = 2,3M Produkte' },
             { timeline: 'Phase 2–3 (Sep 2026–Feb 2027)', count: '+8–12', region: 'Erweiterte DACH', desc: 'Zusätzliche regionale Partner (Baustoff-Häuser, Großhändler, Spezialisten)' },
             { timeline: 'Phase 4–5 (Mär–Mai 2027)', count: '+10–20', region: 'Europa', desc: 'Internationale Partner in FR, NL, AT, IT, ES, Poland, Czech (30–50 Partner Ziel)' },
           ].map(e => (

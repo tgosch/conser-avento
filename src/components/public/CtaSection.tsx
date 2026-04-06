@@ -43,7 +43,7 @@ export default function CtaSection() {
           <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
             <AnimatedNumber target={2300000} label="Produkte" color="#C8611A" />
             <AnimatedNumber target={14} label="Gewerke" color="white" />
-            <AnimatedNumber target={7} label="Hersteller" color="#C8611A" />
+            <AnimatedNumber target={7} suffix=" / 25" label="Hersteller (aktuell / Ziel)" color="#C8611A" />
           </div>
         </ScrollReveal>
 
