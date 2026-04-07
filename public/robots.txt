@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 Disallow: /investor/
 Disallow: /owner/
 Disallow: /partner/
 Disallow: /reset-password
 
-Sitemap: https://conser-avento-app.vercel.app/sitemap.xml
+Sitemap: https://conser-avento.de/sitemap.xml
