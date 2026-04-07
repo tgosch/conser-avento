@@ -95,7 +95,7 @@ export function buildNewsletterHtml(params: {
     </div>
     <div class="footer">
       <p>Sie erhalten diese E-Mail, weil Sie sich im Investor-Portal registriert haben.<br>
-      &copy; 2025 Avento &amp; Conser</p>
+      &copy; 2026 Avento &amp; Conser</p>
     </div>
   </div>
 </body>

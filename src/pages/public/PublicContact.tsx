@@ -143,7 +143,7 @@ export default function PublicContact() {
                       <Mail size={18} style={{ color: 'var(--brand)' }} />
                     </div>
                     <h3 className="text-sm font-bold mb-1" style={{ color: 'var(--text-primary)' }}>E-Mail</h3>
-                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>info@conser-avento.de</p>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>support@conser-avento.de</p>
                     <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>Antwort innerhalb von 24h</p>
                   </div>
                 </ScrollReveal>

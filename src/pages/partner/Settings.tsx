@@ -120,7 +120,7 @@ export default function PartnerSettings() {
             </div>
           ))}
           <p className="text-xs pt-2" style={{ color: 'var(--text-tertiary)' }}>
-            Änderungen am Profil bitte per E-Mail an info@conser-avento.de
+            Änderungen am Profil bitte per E-Mail an support@conser-avento.de
           </p>
         </div>
       )}
@@ -172,7 +172,7 @@ export default function PartnerSettings() {
         <div className="card p-6 flex flex-col gap-4">
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Ihre Daten werden gemäß der DSGVO verarbeitet. Bei Fragen:{' '}
-            <a href="mailto:info@conser-avento.de" className="text-accent underline">info@conser-avento.de</a>
+            <a href="mailto:support@conser-avento.de" className="text-accent underline">support@conser-avento.de</a>
           </p>
 
           <button onClick={handleExportData} className="btn btn-secondary w-full justify-center">
