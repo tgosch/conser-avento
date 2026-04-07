@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { ArrowRight, ExternalLink, ShoppingCart, Users, Eye, CheckCircle, Circle, Calendar, Shield, Building2, Landmark, CreditCard } from 'lucide-react'
+import BookingModal from '../../components/BookingModal'
 import spaceAiLogo from '../../assets/SpaceAI.png'
 import bauDokuLogo from '../../assets/BauDokuAI.png'
 const conserLogo = '/conser.PNG'
@@ -30,6 +32,7 @@ function mapStatusToStep(status: string): number {
 
 export default function PartnerDashboard() {
   const { user } = useAuth()
+  const [showBooking, setShowBooking] = useState(false)
   const partner = user?.partner
   const status = partner?.status ?? 'negotiating'
   const currentStep = mapStatusToStep(status) - 1
@@ -59,11 +62,11 @@ export default function PartnerDashboard() {
               style={{ background: 'white', color: '#063D3E' }}>
               Partnermodell ansehen
             </Link>
-            <a href="https://calendly.com/torben-gosch" target="_blank" rel="noopener noreferrer"
+            <button onClick={() => setShowBooking(true)}
               className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium"
               style={{ border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)' }}>
               <Calendar size={13} /> Termin vereinbaren
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -283,6 +286,7 @@ export default function PartnerDashboard() {
           </Link>
         ))}
       </div>
+      {showBooking && <BookingModal onClose={() => setShowBooking(false)} />}
     </div>
   )
 }

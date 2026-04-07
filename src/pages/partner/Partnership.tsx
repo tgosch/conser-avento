@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Users, ShoppingCart, Eye, BarChart3, Megaphone, Link2, ArrowRight, Shield, CheckCircle, Clock, Server, MapPin, PartyPopper, Handshake, Calendar } from 'lucide-react'
 import { LaptopMockup } from '../../components/showcase/DeviceMockup'
+import BookingModal from '../../components/BookingModal'
 import conserShopImg from '../../assets/conser-shop.webp'
 
 // ── 8-Schritte Onboarding ────────────────────────────────────────
@@ -34,6 +36,7 @@ const CONCERNS = [
 ]
 
 export default function PartnerPartnership() {
+  const [showBooking, setShowBooking] = useState(false)
   return (
     <div className="max-w-5xl mx-auto">
 
@@ -232,10 +235,10 @@ export default function PartnerPartnership() {
           ))}
         </div>
         <div className="px-6 py-4 text-center" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
-          <a href="https://calendly.com/torben-gosch" target="_blank" rel="noopener noreferrer"
+          <button onClick={() => setShowBooking(true)}
             className="inline-flex items-center gap-2 text-sm font-semibold hover-press" style={{ color: 'var(--brand)' }}>
             <Calendar size={14} /> Termin vereinbaren <ArrowRight size={14} />
-          </a>
+          </button>
         </div>
       </div>
       {/* NACH GO-LIVE */}
@@ -255,6 +258,7 @@ export default function PartnerPartnership() {
           ))}
         </div>
       </div>
+      {showBooking && <BookingModal onClose={() => setShowBooking(false)} />}
     </div>
   )
 }

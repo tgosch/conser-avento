@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import type { Partner } from '../../lib/supabase'
 import { Calendar, Landmark, Shield, CreditCard, Server } from 'lucide-react'
+import BookingModal from '../../components/BookingModal'
 
 const FALLBACK_PRODUCTION: Partner[] = [
   { id: 'p1', name: 'Sanitär & Heizung', type: 'production', category: 'Sanitär & Heizung', description: 'Führender Großhändler für Sanitär, Heizung und Klima · ~300.000 Produkte', status: 'partner', logo_path: null, initials: 'SH', color: '#0055A4', visible: true, order_index: 1, created_at: '' },
@@ -19,6 +21,7 @@ const STATUS_MAP: Record<string, { bg: string; text: string; label: string }> = 
 }
 
 export default function PartnerNetwork() {
+  const [showBooking, setShowBooking] = useState(false)
   const production = FALLBACK_PRODUCTION
 
   return (
@@ -115,13 +118,14 @@ export default function PartnerNetwork() {
           <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)', maxWidth: 360, margin: '0 auto' }}>
             Schließen Sie sich führenden Unternehmen der Baubranche an.
           </p>
-          <a href="https://calendly.com/torben-gosch" target="_blank" rel="noopener noreferrer"
+          <button onClick={() => setShowBooking(true)}
             className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-medium"
             style={{ background: 'white', color: '#063D3E' }}>
             <Calendar size={14} /> Termin vereinbaren
-          </a>
+          </button>
         </div>
       </div>
+      {showBooking && <BookingModal onClose={() => setShowBooking(false)} />}
     </div>
   )
 }
