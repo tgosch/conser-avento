@@ -29,7 +29,7 @@ function AnimatedNumber({ target, suffix = '', prefix = '', label, color }: {
       <p className="text-3xl md:text-4xl font-bold mb-2" style={{ color, fontFamily: 'var(--font-mono)' }}>
         {prefix}{value.toLocaleString('de-DE')}{suffix}
       </p>
-      <p className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</p>
+      <p className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>{label}</p>
     </div>
   )
 }
@@ -52,14 +52,14 @@ export default function CtaSection() {
             fontSize: 'clamp(1.75rem, 4vw, 3.25rem)',
             fontFamily: 'var(--font-display)',
             color: 'white',
-            fontWeight: 400,
+            fontWeight: 700,
             letterSpacing: '-0.03em',
             lineHeight: 1.1,
             maxWidth: 550,
           }}>
             Bereit, dein Handwerk zu digitalisieren?
           </h2>
-          <p className="text-sm md:text-base mb-10 mx-auto" style={{ color: 'rgba(255,255,255,0.45)', maxWidth: 400 }}>
+          <p className="text-sm md:text-base mb-10 mx-auto" style={{ color: 'rgba(255,255,255,0.7)', maxWidth: 440 }}>
             Kostenloser Testzugang. Persönliches Onboarding. Jederzeit kündbar. Keine Kreditkarte nötig.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -70,7 +70,7 @@ export default function CtaSection() {
             </Link>
             <Link to="/produkte"
               className="w-full sm:w-auto text-center px-8 py-3.5 rounded-full text-sm font-medium transition-all hover:opacity-80"
-              style={{ border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)' }}>
+              style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.85)' }}>
               Produkte ansehen
             </Link>
           </div>

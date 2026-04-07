@@ -14,7 +14,7 @@ export default function ModulesSection() {
             fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
-            fontWeight: 400,
+            fontWeight: 700,
             letterSpacing: '-0.03em',
           }}>
             Das Ökosystem.
@@ -36,15 +36,15 @@ export default function ModulesSection() {
                   <img src={aventoLogo} alt="Avento" className="w-10 h-10 rounded-xl" loading="lazy" />
                   <div>
                     <h3 className="text-lg font-semibold text-white">Avento ERP</h3>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Handwerker-Betriebssystem</p>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Handwerker-Betriebssystem</p>
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.7)' }}>
                   Kalkulation, Zeiterfassung, Rechnungen, Controlling, Team-Steuerung und Mobile App. Das komplette Betriebssystem für jeden Handwerksbetrieb — gewerkübergreifend und offline-fähig.
                 </p>
 
                 {/* Sub-modules: SpaceAI + BauDoku */}
-                <p className="text-[10px] uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                <p className="text-[10px] uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Integrierte KI-Module
                 </p>
                 <div className="flex flex-col gap-3">
@@ -57,9 +57,9 @@ export default function ModulesSection() {
                         <span className="text-sm font-medium text-white">SpaceAI</span>
                         <span className="text-[9px] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.15)', color: '#4ADE80' }}>Live</span>
                       </div>
-                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>KI-Gartengestaltung — Foto hochladen, Umgestaltung erhalten</p>
+                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>KI-Gartengestaltung — Foto hochladen, Umgestaltung erhalten</p>
                     </div>
-                    <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
+                    <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.5)' }} />
                   </a>
 
                   <a href="https://baudoku-ai.vercel.app" target="_blank" rel="noopener noreferrer"
@@ -71,9 +71,9 @@ export default function ModulesSection() {
                         <span className="text-sm font-medium text-white">BauDoku AI</span>
                         <span className="text-[9px] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.15)', color: '#4ADE80' }}>Live</span>
                       </div>
-                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>Automatische Baudokumentation — Fotos, Berichte, Protokolle</p>
+                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>Automatische Baudokumentation — Fotos, Berichte, Protokolle</p>
                     </div>
-                    <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
+                    <ArrowUpRight size={14} style={{ color: 'rgba(255,255,255,0.5)' }} />
                   </a>
 
                   <div className="flex items-center gap-3 p-3 rounded-xl"
@@ -85,7 +85,7 @@ export default function ModulesSection() {
                         <span className="text-sm font-medium text-white">BuchBalance</span>
                         <span className="text-[9px] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.15)', color: '#4ADE80' }}>Live</span>
                       </div>
-                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>Angebundene Buchhaltung — Rechnungen, DATEV, USt</p>
+                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>Angebundene Buchhaltung — Rechnungen, DATEV, USt</p>
                     </div>
                   </div>
                 </div>
@@ -93,7 +93,7 @@ export default function ModulesSection() {
                 <div className="flex flex-wrap gap-1.5 mt-6">
                   {['Kalkulation', 'Zeiterfassung', 'Rechnungen', 'Controlling', 'Team', 'Mobile'].map(t => (
                     <span key={t} className="text-[10px] px-2 py-1 rounded-md"
-                      style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}>{t}</span>
+                      style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>{t}</span>
                   ))}
                 </div>
               </div>

@@ -84,7 +84,7 @@ export default function PublicNavbar() {
             <div className="public-container pt-6 flex flex-col gap-1">
               {navLinks.map(link => (
                 <Link key={link.to} to={link.to} onClick={() => setMenuOpen(false)}
-                  className="py-3 text-xl font-medium"
+                  className="py-3 text-xl font-semibold"
                   style={{
                     fontFamily: 'var(--font-display)',
                     color: location.pathname === link.to ? 'var(--text-primary)' : 'var(--text-tertiary)',

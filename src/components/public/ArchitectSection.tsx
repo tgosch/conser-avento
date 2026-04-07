@@ -35,7 +35,7 @@ export default function ArchitectSection() {
                 fontSize: 'clamp(1.75rem, 4vw, 3.25rem)',
                 fontFamily: 'var(--font-display)',
                 color: 'var(--text-primary)',
-                fontWeight: 400,
+                fontWeight: 700,
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,
               }}>

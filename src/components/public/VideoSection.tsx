@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Volume2, VolumeX } from 'lucide-react'
+import { Play } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 
 export default function VideoSection() {
   const [playing, setPlaying] = useState(false)
-  const [muted, setMuted] = useState(true)
   const [error, setError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -14,12 +13,6 @@ export default function VideoSection() {
     if (videoRef.current) {
       videoRef.current.play().catch(() => setError(true))
     }
-  }
-
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setMuted(!muted)
-    if (videoRef.current) videoRef.current.muted = !muted
   }
 
   // Don't render section if video fails
@@ -33,7 +26,7 @@ export default function VideoSection() {
             fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
-            fontWeight: 400,
+            fontWeight: 700,
             letterSpacing: '-0.03em',
           }}>
             Sehen, wie es funktioniert.
@@ -47,7 +40,7 @@ export default function VideoSection() {
 
               <video
                 ref={videoRef}
-                muted={muted}
+                muted
                 playsInline
                 loop
                 preload="metadata"
@@ -76,14 +69,6 @@ export default function VideoSection() {
                 </motion.div>
               )}
 
-              {/* Mute toggle — immer sichtbar wenn Video spielt */}
-              {playing && (
-                <button onClick={toggleMute}
-                  className="absolute bottom-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}>
-                  {muted ? <VolumeX size={14} color="white" /> : <Volume2 size={14} color="white" />}
-                </button>
-              )}
             </div>
           </div>
         </ScrollReveal>

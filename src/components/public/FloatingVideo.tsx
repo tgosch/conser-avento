@@ -1,11 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Volume2, VolumeX, Maximize2, Minimize2 } from 'lucide-react'
+import { X, Maximize2, Minimize2 } from 'lucide-react'
 
 export default function FloatingVideo() {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(false)
-  const [muted, setMuted] = useState(true)
   const [expanded, setExpanded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -21,11 +20,6 @@ export default function FloatingVideo() {
     setVisible(false)
     setDismissed(true)
     if (videoRef.current) videoRef.current.pause()
-  }
-
-  const toggleMute = () => {
-    setMuted(!muted)
-    if (videoRef.current) videoRef.current.muted = !muted
   }
 
   const toggleExpand = () => {
@@ -61,10 +55,10 @@ export default function FloatingVideo() {
             {/* Video */}
             <video
               ref={videoRef}
-              src="/werbe.video.1.MOV"
+              src="/werbevideo1.mp4"
               autoPlay
               loop
-              muted={muted}
+              muted
               playsInline
               className="w-full block"
               style={{ aspectRatio: '9/16', maxHeight: expanded ? '80vh' : '400px', objectFit: 'cover' }}
@@ -75,11 +69,6 @@ export default function FloatingVideo() {
               style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)' }}>
               <p className="text-[10px] font-medium text-white/70">Conser & Avento</p>
               <div className="flex items-center gap-1.5">
-                <button onClick={toggleMute}
-                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
-                  style={{ background: 'rgba(255,255,255,0.1)' }}>
-                  {muted ? <VolumeX size={12} color="white" /> : <Volume2 size={12} color="white" />}
-                </button>
                 <button onClick={toggleExpand}
                   className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:bg-white/20 hidden sm:flex"
                   style={{ background: 'rgba(255,255,255,0.1)' }}>

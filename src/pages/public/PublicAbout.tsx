@@ -19,7 +19,7 @@ export default function PublicAbout() {
         <ScrollReveal>
           <p className="label-overline mb-4" style={{ color: 'var(--brand)' }}>Über uns</p>
           <h1 className="mb-6"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400, maxWidth: 500 }}>
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700, maxWidth: 500 }}>
             Wir bauen die Zukunft der Baubranche.
           </h1>
           <p className="text-base max-w-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
@@ -34,7 +34,7 @@ export default function PublicAbout() {
         <div className="public-container">
           <ScrollReveal className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="mb-6"
-              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400, lineHeight: 1.3 }}>
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700, lineHeight: 1.3 }}>
               &ldquo;Die Baubranche braucht keine weitere App — sie braucht ein Ökosystem.&rdquo;
             </h2>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
@@ -88,7 +88,7 @@ export default function PublicAbout() {
         <div className="public-container text-center">
           <ScrollReveal>
             <h2 className="mb-6"
-              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400 }}>
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700 }}>
               Wollen Sie Teil der Geschichte sein?
             </h2>
             <div className="flex flex-wrap justify-center gap-4">

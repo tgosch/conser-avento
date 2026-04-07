@@ -4,7 +4,7 @@ module.exports = {
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
-      fontFamily: { sans: ['Geist', 'system-ui', 'sans-serif'] },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
       colors: {
         bg: 'var(--bg)',
         surface: 'var(--surface)',

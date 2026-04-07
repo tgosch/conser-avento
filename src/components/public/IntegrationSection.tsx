@@ -27,7 +27,7 @@ export default function IntegrationSection() {
             fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
-            fontWeight: 400,
+            fontWeight: 700,
             letterSpacing: '-0.03em',
           }}>
             Alles verbunden. Automatisch.

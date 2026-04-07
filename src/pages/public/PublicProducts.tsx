@@ -34,7 +34,7 @@ export default function PublicProducts() {
         <ScrollReveal>
           <p className="label-overline mb-4" style={{ color: 'var(--brand)' }}>Produkte</p>
           <h1 className="mb-6"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400, maxWidth: 500 }}>
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700, maxWidth: 500 }}>
             Alles für dein Handwerk. Ein Ökosystem.
           </h1>
           <p className="text-base max-w-lg" style={{ color: 'var(--text-secondary)' }}>
@@ -126,7 +126,7 @@ export default function PublicProducts() {
         <div className="public-container text-center">
           <ScrollReveal>
             <h2 className="mb-6"
-              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400 }}>
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700 }}>
               Bereit es auszuprobieren?
             </h2>
             <p className="text-sm max-w-sm mx-auto mb-8" style={{ color: 'var(--text-secondary)' }}>

@@ -43,7 +43,7 @@ export default function PublicContact() {
           <p className="text-xs font-semibold uppercase tracking-widest mb-3"
             style={{ color: 'var(--brand)' }}>Kontakt</p>
           <h1 className="mb-6"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 400, letterSpacing: '-0.02em', maxWidth: 500 }}>
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.02em', maxWidth: 500 }}>
             Sprechen wir über die Zukunft.
           </h1>
           <p className="text-lg max-w-xl leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
