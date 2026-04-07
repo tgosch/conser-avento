@@ -36,8 +36,8 @@ export default function FloatingVideo() {
           transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
           className="fixed z-50"
           style={{
-            bottom: expanded ? '50%' : 24,
-            right: expanded ? '50%' : 24,
+            bottom: expanded ? '50%' : 'max(24px, calc(24px + env(safe-area-inset-bottom, 0px)))',
+            right: expanded ? '50%' : 'max(24px, calc(24px + env(safe-area-inset-right, 0px)))',
             transform: expanded ? 'translate(50%, 50%)' : undefined,
             width: expanded ? 'min(90vw, 640px)' : 'min(320px, calc(100vw - 48px))',
           }}

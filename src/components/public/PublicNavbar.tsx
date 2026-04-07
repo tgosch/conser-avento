@@ -79,7 +79,7 @@ export default function PublicNavbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 top-14 z-40 md:hidden"
-            style={{ background: 'rgba(255,255,255,0.98)', backdropFilter: 'blur(20px)' }}
+            style={{ background: '#FFFFFF' }}
           >
             <div className="public-container pt-6 flex flex-col gap-1">
               {navLinks.map(link => (
