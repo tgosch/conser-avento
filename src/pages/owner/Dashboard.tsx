@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabaseAdmin as supabase } from '../../lib/supabase'
 import type { Update, Document, Phase, PhaseEntry } from '../../lib/supabase'
 import { toast } from 'react-toastify'
+import { sendEmail } from '../../lib/resend'
 import KpiStrip from '../../components/dashboard/KpiStrip'
 import PriorityQueue from '../../components/dashboard/PriorityQueue'
 import IntroTool from '../../components/dashboard/IntroTool'
@@ -258,6 +259,37 @@ export default function OwnerDashboard() {
               <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>{t.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* EMAIL TEST */}
+      <div className="mt-6 card p-5 animate-fade-up delay-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>E-Mail-Test</p>
+            <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Sendet Test-Mail an gosch@healthness-fuerth.de via Resend</p>
+          </div>
+          <button
+            onClick={async () => {
+              toast.info('Sende Test-Mail...')
+              const result = await sendEmail({
+                to: 'gosch@healthness-fuerth.de',
+                subject: 'Conser & Avento — E-Mail-Test',
+                html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
+                  <h2 style="color:#063D3E;font-size:20px;">E-Mail-System funktioniert</h2>
+                  <p style="color:#555;font-size:14px;line-height:1.6;">Diese Test-Mail wurde am ${new Date().toLocaleString('de-DE')} über Resend gesendet.</p>
+                  <p style="color:#555;font-size:14px;">Absender: noreply@conser-avento.de</p>
+                  <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+                  <p style="color:#999;font-size:11px;">Conser & Avento — Das Ökosystem für die Baubranche</p>
+                </div>`,
+              })
+              if (result.success) toast.success('Test-Mail gesendet!')
+              else toast.error(`Fehler: ${result.error}`)
+            }}
+            className="btn btn-primary btn-sm"
+          >
+            Test senden
+          </button>
         </div>
       </div>
 
