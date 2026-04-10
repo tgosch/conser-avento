@@ -35,42 +35,38 @@ export default function InvestorDashboard() {
   return (
     <div className="max-w-5xl mx-auto animate-fade-up">
 
-      {/* HERO */}
-      <div className="relative rounded-3xl overflow-hidden mb-8 noise-overlay"
+      {/* HERO — kompakt */}
+      <div className="relative rounded-2xl overflow-hidden mb-6 noise-overlay"
            style={{
              background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
-             minHeight: 220,
            }}>
-        <div className="absolute -right-32 -top-32 w-96 h-96 rounded-full opacity-[0.06]"
+        <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full opacity-[0.06]"
              style={{ background: 'radial-gradient(circle, #FFFFFF 0%, transparent 70%)' }} />
-        <div className="absolute -left-16 bottom-0 w-64 h-64 rounded-full opacity-[0.04]"
-             style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
 
-        <div className="relative z-10 p-5 md:p-10 flex flex-col md:flex-row gap-6 md:gap-8">
+        <div className="relative z-10 p-5 md:p-8 flex flex-col md:flex-row gap-5 md:gap-8">
           <div className="flex-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5"
-                 style={{ background: 'rgba(200,97,26,0.2)', border: '1px solid rgba(200,97,26,0.35)' }}>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full mb-4"
+                 style={{ background: 'rgba(200,97,26,0.2)', border: '1px solid rgba(200,97,26,0.3)' }}>
               <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
-              <span className="text-xs font-bold tracking-wide uppercase" style={{ color: 'var(--accent)' }}>
+              <span className="text-[10px] font-bold tracking-wide uppercase" style={{ color: 'var(--accent)' }}>
                 Seed Round offen
               </span>
             </div>
-            <h1 className="text-display-lg text-white mb-3" style={{ maxWidth: 440 }}>
+            <h1 className="text-xl md:text-2xl font-bold text-white mb-2" style={{ maxWidth: 400, letterSpacing: '-0.03em' }}>
               Die Infrastruktur für die deutsche Baubranche
             </h1>
-            <p className="text-sm mb-6 leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)', maxWidth: 400 }}>
-              Avento ERP + Conser Marktplatz — das erste vollständig integrierte
-              Ökosystem für Handwerksbetriebe. DACH-first, Europe later.
+            <p className="text-xs mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)', maxWidth: 380 }}>
+              Avento ERP + Conser Marktplatz — das erste integrierte Ökosystem für Handwerksbetriebe. DACH-first.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               <Link to="/investor/plans"
-                className="btn btn-accent btn-lg pulse-ring">
-                Pitch-Deck ansehen <ArrowRight size={15} />
+                className="btn btn-accent btn-sm pulse-ring">
+                Pitch-Deck <ArrowRight size={13} />
               </Link>
               <Link to="/investor/chat"
-                className="btn btn-lg"
-                style={{ background: 'rgba(255,255,255,0.10)', color: 'white',
-                         border: '1px solid rgba(255,255,255,0.15)' }}>
+                className="btn btn-sm"
+                style={{ background: 'rgba(255,255,255,0.08)', color: 'white',
+                         border: '1px solid rgba(255,255,255,0.12)', fontSize: 12 }}>
                 Chat mit Torben
               </Link>
             </div>
@@ -94,27 +90,27 @@ export default function InvestorDashboard() {
         </div>
       </div>
 
-      {/* WO WIR STEHEN — Aktueller Status */}
-      <div className="card p-5 md:p-8 mb-8 animate-fade-up delay-1">
-        <div className="flex items-center gap-2 mb-5">
-          <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
-          <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
-            Wo wir stehen — Stand {currentMonth}
+      {/* WO WIR STEHEN — kompakt */}
+      <div className="card p-4 md:p-5 mb-6 animate-fade-up delay-1">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
+          <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+            Stand {currentMonth}
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {[
-            { label: 'Phase', value: 'Pre-Revenue', sub: 'Seed-Runde offen' },
-            { label: 'Team', value: '6', sub: '2 Gründer + 4 Mitarbeiter' },
-            { label: 'Gespräche', value: '100+', sub: 'Handwerksbetriebe' },
-            { label: 'Partner', value: '7', sub: 'In Verhandlung' },
-            { label: 'Produkte', value: '12,8M', sub: 'Im Onboarding' },
+            { label: 'Phase', value: 'Pre-Rev', sub: 'Seed offen' },
+            { label: 'Team', value: '6', sub: '2 Gründer + 4' },
+            { label: 'Gespräche', value: '100+', sub: 'Betriebe' },
+            { label: 'Partner', value: '7', sub: 'Verhandlung' },
+            { label: 'Produkte', value: '12,8M', sub: 'Onboarding' },
             { label: 'Investiert', value: 'EK', sub: 'Eigenkapital' },
           ].map(s => (
-            <div key={s.label} className="text-center md:text-left">
-              <p className="text-lg font-bold mb-0.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{s.value}</p>
-              <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
-              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{s.sub}</p>
+            <div key={s.label}>
+              <p className="text-base font-bold leading-none mb-0.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{s.value}</p>
+              <p className="text-[10px] font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+              <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>{s.sub}</p>
             </div>
           ))}
         </div>
@@ -140,25 +136,20 @@ export default function InvestorDashboard() {
         </div>
       </div>
 
-      {/* VIDEO PITCH */}
-      <div className="relative rounded-3xl overflow-hidden mb-8 animate-fade-up delay-1 group cursor-pointer hover-lift aspect-[4/3] md:aspect-video"
+      {/* VIDEO PITCH — compact */}
+      <div className="relative rounded-2xl overflow-hidden mb-6 animate-fade-up delay-1 group cursor-pointer hover-lift"
            style={{
-             background: 'linear-gradient(135deg, #071F20 0%, #0A3436 45%, #0D4547 70%, #082628 100%)',
+             background: 'linear-gradient(135deg, #071F20 0%, #0A3436 50%, #082628 100%)',
            }}>
-        <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full opacity-[0.06]"
-             style={{ background: 'radial-gradient(circle, #FFFFFF 0%, transparent 70%)' }} />
-        <div className="absolute -left-16 -bottom-16 w-48 h-48 rounded-full opacity-[0.04]"
-             style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
-               style={{ background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}>
-            <Play size={24} fill="white" color="white" style={{ marginLeft: 2 }} />
+        <div className="relative z-10 flex items-center gap-5 p-5 md:p-6">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
+               style={{ background: 'rgba(255,255,255,0.10)', border: '1.5px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
+            <Play size={20} fill="white" color="white" style={{ marginLeft: 2 }} />
           </div>
-          <h3 className="text-lg md:text-xl font-bold text-white mb-2">90 Sekunden mit Torben</h3>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Pitch-Video · Coming Soon</p>
-          <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.30)', maxWidth: 320 }}>
-            Persönlicher Pitch von Torben Gosch — Warum wir bauen, was wir bauen.
-          </p>
+          <div>
+            <h3 className="text-sm md:text-base font-bold text-white mb-0.5">90 Sekunden mit Torben</h3>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Pitch-Video · Coming Soon</p>
+          </div>
         </div>
       </div>
 

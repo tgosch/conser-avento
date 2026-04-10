@@ -5,6 +5,7 @@ import ScreenshotsSection from '../../components/public/ScreenshotsSection'
 import ModulesSection from '../../components/public/ModulesSection'
 import IntegrationSection from '../../components/public/IntegrationSection'
 import ArchitectSection from '../../components/public/ArchitectSection'
+import FaqSection from '../../components/public/FaqSection'
 import CtaSection from '../../components/public/CtaSection'
 
 export default function PublicHome() {
@@ -50,6 +51,7 @@ export default function PublicHome() {
       <ModulesSection />
       <IntegrationSection />
       <ArchitectSection />
+      <FaqSection />
       <CtaSection />
     </>
   )

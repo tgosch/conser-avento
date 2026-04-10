@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, MessageSquare, Bell, Handshake, MoreHorizontal } from 'lucide-react'
+import { LayoutDashboard, MessageSquare, BarChart3, Globe, MoreHorizontal } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import NavItem from './NavItem'
 
 const mainNav = [
-  { to: '/owner/dashboard', icon: LayoutDashboard, label: 'Home',    exact: true },
-  { to: '/owner/chat',      icon: MessageSquare,   label: 'Chat',    badge: true },
-  { to: '/owner/updates',   icon: Bell,            label: 'Updates' },
-  { to: '/owner/partners',  icon: Handshake,       label: 'Partner' },
+  { to: '/owner/dashboard',  icon: LayoutDashboard, label: 'Home',      exact: true },
+  { to: '/owner/analytics',  icon: BarChart3,       label: 'Analytics' },
+  { to: '/owner/chat',       icon: MessageSquare,   label: 'Chat',      badge: true },
+  { to: '/owner/ecosystem',  icon: Globe,           label: 'System' },
 ]
 
 interface Props { onMoreClick: () => void }

@@ -53,6 +53,16 @@ const OwnerStructure = React.lazy(() => import('./pages/owner/Structure'))
 const OwnerSettings = React.lazy(() => import('./pages/owner/Settings'))
 const OwnerTeam = React.lazy(() => import('./pages/owner/Team'))
 const OwnerPresentationsHub = React.lazy(() => import('./pages/owner/PresentationsHub'))
+const OwnerEcosystem = React.lazy(() => import('./pages/owner/Ecosystem'))
+const OwnerRequests = React.lazy(() => import('./pages/owner/Requests'))
+const OwnerMarketing = React.lazy(() => import('./pages/owner/Marketing'))
+const OwnerCommunication = React.lazy(() => import('./pages/owner/Communication'))
+const OwnerAnalytics = React.lazy(() => import('./pages/owner/Analytics'))
+const OwnerContentEditor = React.lazy(() => import('./pages/owner/ContentEditor'))
+const OwnerSupportCenter = React.lazy(() => import('./pages/owner/SupportCenter'))
+const OwnerUserManagement = React.lazy(() => import('./pages/owner/UserManagement'))
+const OwnerMarketingTracker = React.lazy(() => import('./pages/owner/MarketingTracker'))
+const OwnerTaxOverview = React.lazy(() => import('./pages/owner/TaxOverview'))
 
 // Partner pages (lazy)
 const PartnerDashboard = React.lazy(() => import('./pages/partner/Dashboard'))
@@ -175,9 +185,19 @@ function AppRoutes() {
         <Route path="/owner" element={<OwnerGuard><OwnerLayout /></OwnerGuard>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<OwnerDashboard />} />
-          <Route path="docs" element={<OwnerDocs />} />
+          <Route path="analytics" element={<OwnerAnalytics />} />
+          <Route path="ecosystem" element={<OwnerEcosystem />} />
           <Route path="chat" element={<OwnerChat />} />
+          <Route path="communication" element={<OwnerCommunication />} />
+          <Route path="requests" element={<OwnerRequests />} />
+          <Route path="marketing" element={<OwnerMarketing />} />
+          <Route path="content" element={<OwnerContentEditor />} />
+          <Route path="support" element={<OwnerSupportCenter />} />
+          <Route path="users" element={<OwnerUserManagement />} />
+          <Route path="marketing-tracker" element={<OwnerMarketingTracker />} />
+          <Route path="tax" element={<OwnerTaxOverview />} />
           <Route path="updates" element={<OwnerUpdates />} />
+          <Route path="docs" element={<OwnerDocs />} />
           <Route path="partners" element={<OwnerPartners />} />
           <Route path="future" element={<OwnerFuture />} />
           <Route path="phases" element={<OwnerPhasePlan />} />

@@ -75,19 +75,19 @@ export default function InvestorSidebar({ open, onClose }: Props) {
           <X size={16} />
         </button>
 
-        {/* Brand */}
-        <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>
+        {/* Brand — compact */}
+        <div className="px-3 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
             Investor Portal
           </p>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto scrollbar-thin flex flex-col gap-5" aria-label="Investor Navigation">
+        {/* Nav — compact */}
+        <nav className="flex-1 px-2.5 py-3 overflow-y-auto scrollbar-thin flex flex-col gap-3" aria-label="Investor Navigation">
           {NAV.map(({ group, items }) => (
             <div key={group}>
-              <p className="sidebar-group-label mb-2">{group}</p>
-              <div className="flex flex-col gap-0.5">
+              <p className="text-[9px] font-bold uppercase tracking-[0.12em] px-2 mb-1" style={{ color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>{group}</p>
+              <div className="flex flex-col">
                 {items.map(({ to, icon: Icon, label }) => (
                   <NavLink
                     key={to}
@@ -95,14 +95,15 @@ export default function InvestorSidebar({ open, onClose }: Props) {
                     end={to.endsWith('dashboard')}
                     onClick={onClose}
                     className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                    style={{ fontSize: 12, padding: '5px 8px', gap: 8 }}
                   >
                     {({ isActive }) => (
                       <>
-                        <Icon size={15} className="shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
+                        <Icon size={13} className="shrink-0" strokeWidth={isActive ? 2.2 : 1.7} />
                         <span className="flex-1 truncate">{label}</span>
                         {isActive && (
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0"
-                                style={{ background: 'rgba(255,255,255,0.5)' }} />
+                          <span className="w-1 h-1 rounded-full shrink-0"
+                                style={{ background: 'rgba(255,255,255,0.4)' }} />
                         )}
                       </>
                     )}

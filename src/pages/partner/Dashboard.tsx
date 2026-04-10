@@ -43,29 +43,29 @@ export default function PartnerDashboard() {
   return (
     <div className="max-w-5xl mx-auto">
 
-      {/* ── HERO ── */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 animate-fade-up"
+      {/* ── HERO — kompakt ── */}
+      <div className="relative rounded-2xl overflow-hidden mb-6 animate-fade-up"
         style={{ background: '#063D3E' }}>
-        <div className="relative z-10 px-6 py-8 md:px-10 md:py-12">
-          <p className="text-xs font-medium tracking-wide mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
+        <div className="relative z-10 px-5 py-6 md:px-8 md:py-8">
+          <p className="text-[10px] font-bold tracking-[0.12em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>
             Partner Portal
           </p>
-          <h1 className="text-2xl md:text-3xl font-semibold text-white mb-3" style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+          <h1 className="text-xl md:text-2xl font-semibold text-white mb-2" style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
             {greeting}, {partner?.name ?? 'Partner'}
           </h1>
-          <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.55)', maxWidth: 480 }}>
-            Gemeinsam die Baubranche digitalisieren. Zugang zu 75.000 Handwerksbetrieben — automatisierte Bestellungen direkt aus dem ERP, ohne manuellen Aufwand für Sie.
+          <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.5)', maxWidth: 440 }}>
+            Zugang zu 75.000 Handwerksbetrieben — automatisierte Bestellungen direkt aus dem ERP.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             <Link to="/partner/partnership"
-              className="px-6 py-2.5 rounded-full text-sm font-medium"
+              className="px-5 py-2 rounded-full text-xs font-semibold"
               style={{ background: 'white', color: '#063D3E' }}>
               Partnermodell ansehen
             </Link>
             <button onClick={() => setShowBooking(true)}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium"
-              style={{ border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)' }}>
-              <Calendar size={13} /> Termin vereinbaren
+              className="flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-medium"
+              style={{ border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.65)' }}>
+              <Calendar size={11} /> Termin
             </button>
           </div>
         </div>
@@ -89,36 +89,41 @@ export default function PartnerDashboard() {
         </Link>
       </div>
 
-      {/* ── ONBOARDING FORTSCHRITT ── */}
-      <div className="card p-6 md:p-8 mb-8 animate-fade-up delay-1">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Ihr Onboarding</h2>
-          <span className="text-xs font-medium px-2.5 py-1 rounded-full"
-            style={{ background: 'var(--brand-dim)', color: 'var(--brand)' }}>
-            Schritt {currentStep + 1} von 8
+      {/* ── ONBOARDING FORTSCHRITT — kompakt ── */}
+      <div className="card p-5 mb-6 animate-fade-up delay-1">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Ihr Onboarding</h2>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+            style={{ background: 'var(--brand-dim)', color: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>
+            {currentStep + 1}/8
           </span>
         </div>
-        {/* Progress */}
-        <div className="h-1 rounded-full mb-5" style={{ background: 'var(--surface3)' }}>
-          <div className="h-full rounded-full" style={{ width: `${((currentStep + 1) / 8) * 100}%`, background: 'var(--brand)' }} />
+        {/* Progress Bar */}
+        <div className="flex gap-1 mb-4">
+          {STEPS.map((_, i) => (
+            <div key={i} className="flex-1 h-1.5 rounded-full transition-all" style={{
+              background: i < currentStep ? '#22C55E' : i === currentStep ? 'var(--brand)' : 'var(--surface3)',
+            }} />
+          ))}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {/* Steps — scrollable on mobile */}
+        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory md:grid md:grid-cols-4 md:overflow-visible">
           {STEPS.map((s, i) => {
             const done = i < currentStep
             const active = i === currentStep
             return (
-              <div key={s.key} className="p-3 rounded-xl"
+              <div key={s.key} className="min-w-[140px] md:min-w-0 snap-start p-2.5 rounded-xl flex-shrink-0"
                 style={{
                   background: active ? 'var(--brand-dim)' : 'var(--surface2)',
                   border: active ? '1px solid var(--brand)' : '1px solid transparent',
-                  opacity: !done && !active ? 0.5 : 1,
+                  opacity: !done && !active ? 0.45 : 1,
                 }}>
-                <div className="flex items-center gap-1.5 mb-1">
-                  {done ? <CheckCircle size={11} style={{ color: '#22C55E' }} /> : <Circle size={11} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />}
-                  <span className="text-[9px] font-medium" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{i + 1}/8</span>
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  {done ? <CheckCircle size={10} style={{ color: '#22C55E' }} /> : <Circle size={10} style={{ color: active ? 'var(--brand)' : 'var(--text-tertiary)' }} />}
+                  <span className="text-[8px] font-bold" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{i + 1}</span>
                 </div>
-                <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
-                <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>{s.desc}</p>
+                <p className="text-[11px] font-semibold leading-tight" style={{ color: 'var(--text-primary)' }}>{s.label}</p>
+                <p className="text-[9px] hidden md:block" style={{ color: 'var(--text-tertiary)' }}>{s.desc}</p>
               </div>
             )
           })}

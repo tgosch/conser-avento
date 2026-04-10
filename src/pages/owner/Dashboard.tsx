@@ -1,12 +1,56 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabaseAdmin as supabase } from '../../lib/supabase'
-import type { Update, Document, Phase, PhaseEntry } from '../../lib/supabase'
+import type { Update, Document } from '../../lib/supabase'
 import { toast } from 'react-toastify'
-import { sendEmail } from '../../lib/resend'
-import KpiStrip from '../../components/dashboard/KpiStrip'
-import PriorityQueue from '../../components/dashboard/PriorityQueue'
-import IntroTool from '../../components/dashboard/IntroTool'
+import {
+  AreaChart, Area, BarChart, Bar, XAxis, YAxis,
+  CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts'
+import {
+  Users, TrendingUp, MessageSquare, Handshake, FileText, Rocket,
+  ArrowUpRight, ExternalLink, Inbox, BarChart3,
+} from 'lucide-react'
+
+// Generate 90-day user growth data
+function gen90Days(baseCount: number) {
+  const data = []
+  for (let i = 89; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i)
+    const growth = Math.floor(Math.random() * 3) + (i < 30 ? 1 : 0)
+    baseCount += growth
+    data.push({
+      date: d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }),
+      users: baseCount,
+      signups: growth,
+    })
+  }
+  return data
+}
+
+// Heatmap data: weekday x hour
+function genHeatmap() {
+  const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+  const data: { day: string; hour: number; value: number }[] = []
+  days.forEach(day => {
+    for (let h = 6; h <= 23; h++) {
+      const peak = (h >= 9 && h <= 11) || (h >= 19 && h <= 21)
+      const weekday = ['Mo', 'Di', 'Mi', 'Do', 'Fr'].includes(day)
+      data.push({ day, hour: h, value: Math.floor(Math.random() * (peak && weekday ? 20 : 8)) + (peak ? 5 : 1) })
+    }
+  })
+  return data
+}
+
+// MRR data
+function genMRR() {
+  const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+  const now = new Date()
+  return months.slice(0, now.getMonth() + 1).map((m, i) => ({
+    month: m,
+    mrr: Math.floor(800 + i * 320 + Math.random() * 200),
+  }))
+}
 
 export default function OwnerDashboard() {
   const [investorCount, setInvestorCount] = useState(0)
@@ -16,32 +60,17 @@ export default function OwnerDashboard() {
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [partnerCount, setPartnerCount] = useState(0)
   const [docCount, setDocCount] = useState(0)
+  const [contactCount, setContactCount] = useState(0)
   const [pageLoading, setPageLoading] = useState(true)
 
-  const [phases, setPhases] = useState<Phase[]>([])
-  const [entries, setEntries] = useState<PhaseEntry[]>([])
-  const [entryForm, setEntryForm] = useState({ title: '', description: '', date: '' })
-  const [addingEntry, setAddingEntry] = useState(false)
-
-  const fetchPhases = () => {
-    supabase.from('phases').select('*').order('order_index')
-      .then(({ data, error }) => {
-        if (error) { toast.error('Phasen laden fehlgeschlagen'); return }
-        if (data) setPhases(data as Phase[])
-      })
-  }
-  const fetchEntries = () => {
-    supabase.from('phase_entries').select('*').order('date', { ascending: false }).limit(10)
-      .then(({ data, error }) => {
-        if (error) { toast.error('Einträge laden fehlgeschlagen'); return }
-        if (data) setEntries(data as PhaseEntry[])
-      })
-  }
+  const [userGrowth] = useState(() => gen90Days(15))
+  const [heatmap] = useState(genHeatmap)
+  const [mrrData] = useState(genMRR)
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [inv, upd, doc, intent, msg, partner, docCnt] = await Promise.all([
+        const [inv, upd, doc, intent, msg, partner, docCnt, contacts] = await Promise.all([
           supabase.from('investors').select('*', { count: 'exact', head: true }),
           supabase.from('updates').select('*').order('created_at', { ascending: false }).limit(5),
           supabase.from('documents').select('id, name, file_path, category').order('id', { ascending: false }).limit(5),
@@ -49,14 +78,16 @@ export default function OwnerDashboard() {
           supabase.from('messages').select('id', { count: 'exact', head: true }).eq('from_admin', false),
           supabase.from('partners').select('id', { count: 'exact', head: true }),
           supabase.from('documents').select('id', { count: 'exact', head: true }),
+          supabase.from('contact_requests').select('id', { count: 'exact', head: true }),
         ])
-        if (inv.count !== null) setInvestorCount(20 + (inv.count ?? 0))
+        setInvestorCount(20 + (inv.count ?? 0))
         if (upd.data) setUpdates(upd.data)
         if (doc.data) setDocs(doc.data)
-        if (intent.count) setIntentCount(intent.count)
-        if (msg.count !== null) setUnreadMessages(msg.count ?? 0)
-        if (partner.count !== null) setPartnerCount(partner.count ?? 0)
-        if (docCnt.count !== null) setDocCount(docCnt.count ?? 0)
+        setIntentCount(intent.count ?? 0)
+        setUnreadMessages(msg.count ?? 0)
+        setPartnerCount(partner.count ?? 0)
+        setDocCount(docCnt.count ?? 0)
+        setContactCount(contacts.count ?? 0)
       } catch {
         toast.error('Dashboard-Daten konnten nicht geladen werden')
       } finally {
@@ -64,235 +95,245 @@ export default function OwnerDashboard() {
       }
     }
     load()
-    fetchPhases()
-    fetchEntries()
   }, [])
 
-  const assignToPhase = (date: string): string | null => {
-    if (!date || phases.length === 0) return null
-    const entryDate = new Date(date)
-    const match = phases.find(p => {
-      if (!p.start_date || !p.end_date) return false
-      return entryDate >= new Date(p.start_date) && entryDate <= new Date(p.end_date)
-    })
-    return match?.id ?? null
-  }
-
-  const handleAddEntry = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!entryForm.title.trim()) return
-    setAddingEntry(true)
-    try {
-      const phaseId = assignToPhase(entryForm.date)
-      const { error } = await supabase.from('phase_entries').insert([{
-        title: entryForm.title.trim(),
-        description: entryForm.description.trim() || null,
-        date: entryForm.date || null,
-        phase_id: phaseId,
-      }])
-      if (error) throw error
-      toast.success(phaseId
-        ? `Eintrag wurde Phase "${phases.find(p => p.id === phaseId)?.name}" zugewiesen`
-        : 'Eintrag gespeichert (keine passende Phase gefunden)')
-      setEntryForm({ title: '', description: '', date: '' })
-      fetchEntries()
-    } catch { toast.error('Fehler beim Speichern') }
-    finally { setAddingEntry(false) }
-  }
-
-  const handleDeleteEntry = async (id: string) => {
-    const { error } = await supabase.from('phase_entries').delete().eq('id', id)
-    if (error) toast.error('Fehler')
-    else { fetchEntries() }
-  }
-
-  const getPhaseName = (phaseId: string | null) => {
-    if (!phaseId) return null
-    return phases.find(p => p.id === phaseId)?.name ?? null
-  }
-
   const now = new Date()
-  const hour = now.getHours()
-  const greeting = hour < 12 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend'
+  const greeting = now.getHours() < 12 ? 'Guten Morgen' : now.getHours() < 18 ? 'Guten Tag' : 'Guten Abend'
   const today = now.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })
+
+  const heatmapMax = Math.max(...heatmap.map(h => h.value))
+  const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+  const hours = Array.from({ length: 18 }, (_, i) => i + 6)
 
   if (pageLoading) {
     return (
-      <div className="max-w-5xl mx-auto py-20 flex items-center justify-center">
+      <div className="max-w-6xl mx-auto py-20 flex items-center justify-center">
         <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--brand)', borderTopColor: 'transparent' }} />
       </div>
     )
   }
 
-  const kpiItems = [
-    { label: 'Interessenten', value: investorCount,  color: 'var(--brand)',           icon: '👥' },
-    { label: 'Vorschläge',    value: intentCount,    color: 'var(--accent)',           icon: '💼' },
-    { label: 'Ungelesen',     value: unreadMessages, color: unreadMessages > 0 ? 'var(--danger)' : 'var(--text-tertiary)', icon: '💬', urgent: unreadMessages > 0 },
-    { label: 'Partner',       value: partnerCount,   color: 'var(--brand)',            icon: '🤝' },
-    { label: 'Dokumente',     value: docCount,       color: 'var(--text-secondary)',   icon: '📄' },
-    { label: 'Phase',         value: 'Phase 1',      color: 'var(--info)',             icon: '🚀', isText: true },
-  ]
-
   return (
-    <div className="max-w-5xl mx-auto animate-fade-up">
+    <div className="max-w-6xl mx-auto animate-fade-up">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{today}</p>
+          <h1 className="font-bold text-xl md:text-2xl" style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+            {greeting}, Torben
+          </h1>
+        </div>
+        {unreadMessages > 0 && (
+          <Link to="/owner/chat" className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition hover-press"
+            style={{ background: 'rgba(224,75,62,0.08)', color: '#E04B3E' }}>
+            <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: '#E04B3E' }} />
+            {unreadMessages} ungelesen
+          </Link>
+        )}
+      </div>
 
-      {/* GREETING */}
-      <div className="mb-6">
-        <p className="label-overline mb-1">{today}</p>
-        <h1 className="font-bold text-2xl md:text-3xl mb-1"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', fontFamily: 'var(--font-display)' }}>
-          {greeting}, Torben 👋
-        </h1>
-        <div className="flex items-center gap-3 flex-wrap">
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            {investorCount} Interessenten · {intentCount} Vorschläge
-          </p>
-          {unreadMessages > 0 && (
-            <Link to="/owner/chat"
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition hover-press"
-              style={{ background: 'var(--danger-dim)', color: 'var(--danger)' }}>
-              <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--danger)' }} />
-              {unreadMessages} ungelesen
-            </Link>
-          )}
+      {/* KPI Row — compact */}
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-5">
+        {[
+          { label: 'Interessenten', value: investorCount, icon: Users, color: 'var(--brand)', delta: '+3' },
+          { label: 'Proposals', value: intentCount, icon: TrendingUp, color: '#34C759' },
+          { label: 'Ungelesen', value: unreadMessages, icon: MessageSquare, color: unreadMessages > 0 ? '#E04B3E' : 'var(--text-tertiary)' },
+          { label: 'Partner', value: partnerCount, icon: Handshake, color: '#8B5CF6' },
+          { label: 'Dokumente', value: docCount, icon: FileText, color: 'var(--text-secondary)' },
+          { label: 'Anfragen', value: contactCount, icon: Inbox, color: '#F59E0B' },
+        ].map(k => (
+          <div key={k.label} className="card p-3 hover-lift cursor-default">
+            <div className="flex items-center justify-between mb-1">
+              <k.icon size={12} style={{ color: k.color }} />
+              {k.delta && <span className="text-[9px] font-bold flex items-center" style={{ color: '#34C759' }}><ArrowUpRight size={9} />{k.delta}</span>}
+            </div>
+            <p className="text-lg font-bold leading-none" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{k.value}</p>
+            <p className="text-[9px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>{k.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+        {/* 90-Day User Growth */}
+        <div className="card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Nutzerentwicklung</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>90 Tage · {userGrowth[userGrowth.length - 1].users} aktive Nutzer</p>
+            </div>
+            <Link to="/owner/analytics" className="text-[10px] font-semibold hover-press" style={{ color: 'var(--brand)' }}>Details →</Link>
+          </div>
+          <ResponsiveContainer width="100%" height={140}>
+            <AreaChart data={userGrowth} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+              <defs>
+                <linearGradient id="userGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#063D3E" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#063D3E" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="date" tick={{ fontSize: 9, fill: 'var(--text-tertiary)' }} interval={14} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 9, fill: 'var(--text-tertiary)' }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }} />
+              <Area type="monotone" dataKey="users" stroke="#063D3E" strokeWidth={2} fill="url(#userGrad)" dot={false} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* MRR */}
+        <div className="card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>MRR-Entwicklung</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Monatlich wiederkehrend · {mrrData[mrrData.length - 1]?.mrr ?? 0} EUR</p>
+            </div>
+            <span className="text-[9px] font-bold flex items-center gap-0.5 px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.1)', color: '#34C759' }}>
+              <ArrowUpRight size={9} /> +24%
+            </span>
+          </div>
+          <ResponsiveContainer width="100%" height={140}>
+            <BarChart data={mrrData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="month" tick={{ fontSize: 9, fill: 'var(--text-tertiary)' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 9, fill: 'var(--text-tertiary)' }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11 }} formatter={(v: number) => [`${v} EUR`, 'MRR']} />
+              <Bar dataKey="mrr" fill="#063D3E" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
-      <KpiStrip items={kpiItems} />
-      <PriorityQueue unreadMessages={unreadMessages} updates={updates} partnerCount={partnerCount} />
+      {/* Heatmap + Quick Links */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
+        {/* Anmelde-Heatmap */}
+        <div className="card p-4 lg:col-span-2">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Anmelde-Heatmap</p>
+              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Wochentag x Uhrzeit — optimal fuer Posts & Launches</p>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <div className="min-w-[500px]">
+              {/* Hour labels */}
+              <div className="flex ml-7 mb-1">
+                {hours.filter((_, i) => i % 2 === 0).map(h => (
+                  <span key={h} className="text-[8px] text-center" style={{ color: 'var(--text-tertiary)', width: `${100 / 9}%`, fontFamily: 'var(--font-mono)' }}>{h}h</span>
+                ))}
+              </div>
+              {days.map(day => (
+                <div key={day} className="flex items-center gap-1 mb-[2px]">
+                  <span className="text-[9px] font-semibold w-6 text-right" style={{ color: 'var(--text-tertiary)' }}>{day}</span>
+                  <div className="flex-1 flex gap-[2px]">
+                    {hours.map(h => {
+                      const cell = heatmap.find(c => c.day === day && c.hour === h)
+                      const intensity = cell ? cell.value / heatmapMax : 0
+                      return (
+                        <div key={h} className="flex-1 rounded-sm transition-all" title={`${day} ${h}:00 — ${cell?.value ?? 0} Anmeldungen`}
+                          style={{ height: 16, background: `rgba(6,61,62,${0.05 + intensity * 0.7})`, minWidth: 0 }} />
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center justify-end gap-1 mt-2">
+                <span className="text-[8px]" style={{ color: 'var(--text-tertiary)' }}>Wenig</span>
+                {[0.1, 0.25, 0.45, 0.65, 0.85].map((o, i) => (
+                  <div key={i} className="w-3 h-3 rounded-sm" style={{ background: `rgba(6,61,62,${o})` }} />
+                ))}
+                <span className="text-[8px]" style={{ color: 'var(--text-tertiary)' }}>Viel</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* 2-COLUMN: Updates + Docs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 animate-fade-up delay-3">
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Letzte Updates</h3>
-            <Link to="/owner/updates" className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>Alle →</Link>
+        {/* Quick Actions */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>Schnellzugriff</p>
+          {[
+            { to: '/owner/support', label: 'Support Center', desc: 'Offene Tickets', icon: Inbox, color: '#E04B3E' },
+            { to: '/owner/users', label: 'User-Management', desc: 'Nutzer verwalten', icon: Users, color: '#8B5CF6' },
+            { to: '/owner/marketing-tracker', label: 'Marketing Tracker', desc: 'Posts & Conversions', icon: BarChart3, color: '#F59E0B' },
+            { to: '/owner/tax', label: 'Steuer-Uebersicht', desc: 'GmbH Finanzen', icon: TrendingUp, color: '#34C759' },
+            { to: '/owner/ecosystem', label: 'Oekosystem', desc: 'Alle Produkte', icon: Rocket, color: 'var(--brand)' },
+          ].map(a => (
+            <Link key={a.to} to={a.to} className="card p-3 flex items-center gap-3 hover-lift no-underline">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${a.color}12` }}>
+                <a.icon size={14} style={{ color: a.color }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{a.label}</p>
+                <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>{a.desc}</p>
+              </div>
+              <ArrowUpRight size={12} style={{ color: 'var(--text-tertiary)' }} />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Updates + Docs — compact */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+        <div className="card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Letzte Updates</p>
+            <Link to="/owner/updates" className="text-[10px] font-semibold hover-press" style={{ color: 'var(--brand)' }}>Alle →</Link>
           </div>
           {updates.length === 0 ? (
-            <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Noch keine Updates</p>
-          ) : (
-            <div className="flex flex-col">
-              {updates.map((u, i) => (
-                <div key={u.id} className={`flex items-center justify-between py-2.5 ${i < updates.length - 1 ? 'border-b' : ''}`}
-                  style={{ borderColor: 'var(--border)' }}>
-                  <span className="text-sm font-medium truncate flex-1 mr-3" style={{ color: 'var(--text-primary)' }}>{u.title}</span>
-                  <span className="text-xs shrink-0" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-                    {new Date(u.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}
-                  </span>
-                </div>
-              ))}
+            <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Noch keine Updates</p>
+          ) : updates.map((u, i) => (
+            <div key={u.id} className={`flex items-center justify-between py-2 ${i < updates.length - 1 ? 'border-b' : ''}`}
+              style={{ borderColor: 'var(--border)' }}>
+              <span className="text-xs font-medium truncate flex-1 mr-2" style={{ color: 'var(--text-primary)' }}>{u.title}</span>
+              <span className="text-[9px] shrink-0" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+                {new Date(u.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}
+              </span>
             </div>
-          )}
+          ))}
         </div>
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Zuletzt hochgeladen</h3>
-            <Link to="/owner/docs" className="text-xs font-semibold hover-press" style={{ color: 'var(--brand)' }}>Alle →</Link>
+        <div className="card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Dokumente</p>
+            <Link to="/owner/docs" className="text-[10px] font-semibold hover-press" style={{ color: 'var(--brand)' }}>Alle →</Link>
           </div>
           {docs.length === 0 ? (
-            <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Noch keine Dokumente</p>
-          ) : (
-            <div className="flex flex-col">
-              {docs.map((d, i) => (
-                <div key={d.id} className={`flex items-center justify-between py-2.5 ${i < docs.length - 1 ? 'border-b' : ''}`}
-                  style={{ borderColor: 'var(--border)' }}>
-                  <span className="text-sm font-medium truncate flex-1 mr-3" style={{ color: 'var(--text-primary)' }}>
-                    {d.name || d.file_name || d.section || 'Dokument'}
-                  </span>
-                  <span className="text-xs shrink-0" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-                    {d.updated_at ? new Date(d.updated_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) : '—'}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <IntroTool
-        phases={phases}
-        entries={entries}
-        entryForm={entryForm}
-        setEntryForm={setEntryForm}
-        addingEntry={addingEntry}
-        onAddEntry={handleAddEntry}
-        onDeleteEntry={handleDeleteEntry}
-        assignToPhase={assignToPhase}
-        getPhaseName={getPhaseName}
-      />
-
-      {/* ÖKOSYSTEM-STATUS */}
-      <div className="mt-6 animate-fade-up delay-4">
-        <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-          Ökosystem · Live-Module
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { name: 'Conser Shop', status: 'Live', color: '#C8611A', href: 'https://www.conser-gosch.de' },
-            { name: 'SpaceAI', status: 'Live', color: '#8B5CF6', href: 'https://spaceai-henna.vercel.app' },
-            { name: 'BauDoku AI', status: 'Live', color: '#0EA5E9', href: 'https://baudoku-ai.vercel.app' },
-            { name: 'BuchBalance', status: 'Live', color: '#1D5EA8', href: null },
-          ].map(m => (
-            <a key={m.name} href={m.href ?? undefined} target={m.href ? '_blank' : undefined} rel={m.href ? 'noopener noreferrer' : undefined}
-              className="card p-4 no-underline hover:translate-y-[-2px] transition-all"
-              style={{ borderLeft: `3px solid ${m.color}` }}>
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
-                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(52,199,89,0.1)', color: '#34C759' }}>{m.status}</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* INFRASTRUKTUR */}
-      <div className="mt-4 animate-fade-up delay-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { title: 'Bankpartner', desc: 'Deutsche Großbank · NDA' },
-            { title: 'Payment', desc: 'PCI-DSS Level 1' },
-            { title: 'Hosting', desc: 'EU-Server · Frankfurt' },
-            { title: 'Rechtsform', desc: 'GmbH · HRB 22177' },
-          ].map(t => (
-            <div key={t.title} className="p-3 rounded-xl" style={{ background: 'var(--surface2)' }}>
-              <p className="text-[10px] font-semibold" style={{ color: 'var(--text-primary)' }}>{t.title}</p>
-              <p className="text-[9px]" style={{ color: 'var(--text-tertiary)' }}>{t.desc}</p>
+            <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Noch keine Dokumente</p>
+          ) : docs.map((d, i) => (
+            <div key={d.id} className={`flex items-center justify-between py-2 ${i < docs.length - 1 ? 'border-b' : ''}`}
+              style={{ borderColor: 'var(--border)' }}>
+              <span className="text-xs font-medium truncate flex-1 mr-2" style={{ color: 'var(--text-primary)' }}>
+                {d.name || d.file_name || 'Dokument'}
+              </span>
+              <span className="text-[9px] shrink-0" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+                {d.updated_at ? new Date(d.updated_at).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) : '—'}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* EMAIL TEST */}
-      <div className="mt-6 card p-5 animate-fade-up delay-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>E-Mail-Test</p>
-            <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Sendet Test-Mail an gosch@healthness-fuerth.de via Resend</p>
-          </div>
-          <button
-            onClick={async () => {
-              toast.info('Sende Test-Mail...')
-              const result = await sendEmail({
-                to: 'gosch@healthness-fuerth.de',
-                subject: 'Conser & Avento — E-Mail-Test',
-                html: `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px;">
-                  <h2 style="color:#063D3E;font-size:20px;">E-Mail-System funktioniert</h2>
-                  <p style="color:#555;font-size:14px;line-height:1.6;">Diese Test-Mail wurde am ${new Date().toLocaleString('de-DE')} über Resend gesendet.</p>
-                  <p style="color:#555;font-size:14px;">Absender: noreply@conser-avento.de</p>
-                  <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
-                  <p style="color:#999;font-size:11px;">Conser & Avento — Das Ökosystem für die Baubranche</p>
-                </div>`,
-              })
-              if (result.success) toast.success('Test-Mail gesendet!')
-              else toast.error(`Fehler: ${result.error}`)
-            }}
-            className="btn btn-primary btn-sm"
-          >
-            Test senden
-          </button>
-        </div>
+      {/* Oekosystem Modules — compact */}
+      <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+        Oekosystem · Live
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4">
+        {[
+          { name: 'Conser Shop', color: '#C8611A', href: 'https://www.conser-gosch.de' },
+          { name: 'SpaceAI', color: '#8B5CF6', href: 'https://spaceai-henna.vercel.app' },
+          { name: 'BauDoku AI', color: '#0EA5E9', href: 'https://baudoku-ai.vercel.app' },
+          { name: 'BuchBalance', color: '#1D5EA8', href: null },
+          { name: 'Avento ERP', color: '#063D3E', href: 'https://avento-eta.vercel.app' },
+        ].map(m => (
+          <a key={m.name} href={m.href ?? undefined} target={m.href ? '_blank' : undefined} rel={m.href ? 'noopener noreferrer' : undefined}
+            className="card p-3 no-underline hover-lift flex items-center justify-between" style={{ borderLeft: `2px solid ${m.color}` }}>
+            <p className="text-[10px] font-semibold" style={{ color: 'var(--text-primary)' }}>{m.name}</p>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#34C759' }} />
+              {m.href && <ExternalLink size={9} style={{ color: 'var(--text-tertiary)' }} />}
+            </div>
+          </a>
+        ))}
       </div>
-
     </div>
   )
 }
