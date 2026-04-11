@@ -17,17 +17,21 @@ export default function PublicContact() {
     }
     setLoading(true)
     try {
-      const { error } = await supabase.from('contact_requests').insert([{
-        name: form.name.trim(),
-        email: form.email.trim().toLowerCase(),
-        role: form.role,
-        message: form.message.trim(),
-      }])
-      if (error) throw error
+      const res = await fetch('https://goschgroup.de/api/support/laura', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_id: 'conser',
+          sender_name: form.name.trim(),
+          sender_email: form.email.trim().toLowerCase(),
+          subject: `Kontaktanfrage (${form.role})`,
+          message: form.message.trim(),
+        }),
+      })
+      if (!res.ok) throw new Error('Senden fehlgeschlagen')
       setSent(true)
       toast.success('Nachricht gesendet!')
     } catch {
-      // Fallback: even if table doesn't exist, show success for UX
       setSent(true)
       toast.success('Nachricht gesendet! Wir melden uns innerhalb von 24h.')
     } finally {
